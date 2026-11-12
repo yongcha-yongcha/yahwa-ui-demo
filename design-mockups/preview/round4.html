@@ -1,0 +1,124 @@
+<title>A1 생활 색연필 칩</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;600&display=swap">
+<style>
+/* 레이아웃: 위에 문제와 원칙 한 덩어리, 아래 지금 화면 + 시안 4개를 휴대폰 크기 카드로 나란히 */
+:root{
+  --bg:#F8F9F6;--surface:#FFFFFF;--line:#E3E7EA;--fg:#39444D;--fg2:#505C65;--fg3:#69757E;
+  --accent:#377398;--accent-soft:#ECF5FC;--gold:#856E3E;--gold-soft:#FAF7EF;--rose:#994A5D;--rose-soft:#FCF5F6;
+  --serif:"Gowun Batang",serif;--sans:"Noto Sans KR",-apple-system,"Apple SD Gothic Neo",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1A2126;--surface:#273037;--line:#39444D;--fg:#E3E7EA;--fg2:#CFD5DA;--fg3:#98A2AA;--accent:#92C0DF;--accent-soft:#154662;--gold:#D1BF9A;--gold-soft:#3B2E11;--rose:#DDAFB7;--rose-soft:#451824;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1A2126;--surface:#273037;--line:#39444D;--fg:#E3E7EA;--fg2:#CFD5DA;--fg3:#98A2AA;--accent:#92C0DF;--accent-soft:#154662;--gold:#D1BF9A;--gold-soft:#3B2E11;--rose:#DDAFB7;--rose-soft:#451824;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:400 14px/1.7 var(--sans);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1760px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--fg3)}
+h1{margin:8px 0 0;font:400 32px/1.35 var(--serif);text-wrap:balance}
+.intro{max-width:68ch;margin:12px 0 0;color:var(--fg2)}
+.brief{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:28px}
+.brief section{min-width:0;padding:20px;border-radius:16px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
+.brief h2{margin:0 0 8px;font-size:13px;font-weight:600}
+.brief ul{margin:0;padding-left:18px;color:var(--fg2)}
+.brief li+li{margin-top:4px}
+.brief b{color:var(--accent);font-weight:600}
+.grid{display:flex;flex-wrap:wrap;gap:24px;margin-top:40px;align-items:flex-start}
+.card{flex:0 1 390px;min-width:0;display:flex;flex-direction:column;gap:12px}
+.tag{display:flex;align-items:center;gap:8px}
+.tag b{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:13px;font-weight:600}
+.card.now .tag b{background:var(--fg3)}
+.tag span{font:400 18px/1.4 var(--serif)}
+.kind{margin-left:auto;padding:2px 10px;border-radius:12px;font-size:11px;background:var(--accent-soft);color:var(--accent)}
+.kind.risk{background:var(--rose-soft);color:var(--rose)}
+.kind.film{background:var(--gold-soft);color:var(--gold)}
+.phone{width:100%;max-width:390px;height:760px;border-radius:28px;overflow:hidden;box-shadow:0 0 0 1px var(--line),0 12px 32px rgb(0 0 0 / .08);background:#F8F9F6}
+.phone iframe{width:100%;height:100%;border:0;display:block}
+.phone img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.concept{margin:0;font:400 15px/1.6 var(--serif);color:var(--fg)}
+.desc{margin:0;color:var(--fg2);font-size:13px}
+.desc li{margin-top:2px}
+.desc ul{margin:0;padding-left:18px}
+.p{font-size:12px;color:var(--fg3)}
+.p em{font-style:normal;color:var(--accent)}
+.next{max-width:68ch;margin-top:48px;padding:20px;border-radius:16px;background:var(--accent-soft);color:var(--fg)}
+.next h2{margin:0 0 4px;font-size:14px}
+.next p{margin:0}
+@media (max-width:440px){h1{font-size:26px}.phone{height:700px}}
+
+.group{margin-top:48px}
+.group>h2{margin:0;font:400 22px/1.4 var(--serif)}
+.group>p{max-width:68ch;margin:4px 0 0;color:var(--fg2)}
+.group .grid{margin-top:20px}
+.toggle{display:inline-flex;gap:4px;padding:4px;border-radius:12px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line);align-self:flex-start}
+.toggle button{height:32px;padding:0 12px;border:0;border-radius:8px;background:none;font:500 12px var(--sans);color:var(--fg3);cursor:pointer}
+.toggle button[aria-pressed=true]{background:var(--accent-soft);color:var(--accent)}
+.toggle button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<div class="wrap">
+<p class="eyebrow">YAHWA · 가입 5/5 · A1 생활 칩</p>
+<h1>스케치북에 색연필로 칠한 생활 칩</h1>
+<p class="intro">L3 · L4는 그대로 두고, 생활 네 가지를 파스텔 색연필로 빗줄 긋듯 칠한 열 가지를 더했어요. 빗금은 칩 크기에 맞춰 그때그때 그려지고, 연필 결(종이 위 거친 입자)이 섞여 있어요. 휴대폰 화면은 직접 스크롤할 수 있어요.</p>
+<section class="group"><h2>유지하는 안</h2><div class="grid"><article class="card">
+<div class="tag"><b>L3</b><span>큰 칩 · 파스텔 (유지)</span></div>
+<div class="phone"><iframe src="l3.html#me" title="큰 칩 · 파스텔 (유지)" loading="lazy"></iframe></div>
+<div class="desc"><ul><li>단색 파스텔 채움, 네 가지 색</li></ul></div>
+
+</article><article class="card">
+<div class="tag"><b>L4</b><span>2×2 타일 (유지)</span></div>
+<div class="phone"><iframe src="l4.html#me" title="2×2 타일 (유지)" loading="lazy"></iframe></div>
+<div class="desc"><ul><li>같은 폭 네 칸, 라벨 + 값</li></ul></div>
+
+</article></div></section>
+<section class="group"><h2>색연필 빗금 10가지</h2><p>H1~H8은 칩, H9 · H10은 L4 타일 위에 칠했어요.</p><div class="grid"><article class="card">
+<div class="tag"><b>H1</b><span>촘촘한 빗금</span></div>
+<div class="phone"><iframe src="h1.html#me" title="촘촘한 빗금" loading="lazy"></iframe></div>
+<div class="desc"><ul><li>알약 모양 안을 45~60°로 촘촘히 칠함. 가장 단정한 색연필 칩</li></ul></div>
+
+</article><article class="card">
+<div class="tag"><b>H2</b><span>느슨한 빗금</span></div>
+<div class="phone"><iframe src="h2.html#me" title="느슨한 빗금" loading="lazy"></iframe></div>
+<div class="desc"><ul><li>선 간격을 넓히고 끝이 칩 밖으로 살짝 삐져나옴. 빠르게 쓱쓱 칠한 느낌</li></ul></div>
+
+</article><article class="card">
+<div class="tag"><b>H3</b><span>빗금 + 연필 테두리</span></div>
+<div class="phone"><iframe src="h3.html#me" title="빗금 + 연필 테두리" loading="lazy"></iframe></div>
+<div class="desc"><ul><li>연하게 칠하고 같은 색 연필로 테두리를 두 번 그음. 스티커 같은 윤곽</li></ul></div>
+
+</article><article class="card">
+<div class="tag"><b>H4</b><span>교차 빗금</span></div>
+<div class="phone"><iframe src="h4.html#me" title="교차 빗금" loading="lazy"></iframe></div>
+<div class="desc"><ul><li>두 방향으로 엇갈려 칠한 크로스 해칭. 질감이 가장 진함</li></ul></div>
+
+</article><article class="card">
+<div class="tag"><b>H5</b><span>밑줄 칠하기</span></div>
+<div class="phone"><iframe src="h5.html#me" title="밑줄 칠하기" loading="lazy"></iframe></div>
+<div class="desc"><ul><li>글자 아래 절반만 색연필로 칠함. 노트에 밑줄 친 느낌이라 가장 가벼움</li></ul></div>
+
+</article><article class="card">
+<div class="tag"><b>H6</b><span>지그재그 낙서</span></div>
+<div class="phone"><iframe src="h6.html#me" title="지그재그 낙서" loading="lazy"></iframe></div>
+<div class="desc"><ul><li>한 번에 이어 그은 지그재그로 채움. 손으로 칠한 티가 가장 많이 남</li></ul></div>
+
+</article><article class="card">
+<div class="tag"><b>H7</b><span>아이콘 동그라미</span></div>
+<div class="phone"><iframe src="h7.html#me" title="아이콘 동그라미" loading="lazy"></iframe></div>
+<div class="desc"><ul><li>아이콘 뒤에만 색연필 동그라미, 글자는 회색 칩 없이. 가장 조용함</li></ul></div>
+
+</article><article class="card">
+<div class="tag"><b>H8</b><span>한 색 빗금</span></div>
+<div class="phone"><iframe src="h8.html#me" title="한 색 빗금" loading="lazy"></iframe></div>
+<div class="desc"><ul><li>네 칩 모두 하늘색 하나로. 해시태그 · 위 세 칸과 색이 맞아 차분함</li></ul></div>
+
+</article><article class="card">
+<div class="tag"><b>H9</b><span>2×2 타일 · 빗금 채움</span></div>
+<div class="phone"><iframe src="h9.html#me" title="2×2 타일 · 빗금 채움" loading="lazy"></iframe></div>
+<div class="desc"><ul><li>L4 타일 전체를 색연필로 칠함. 라벨이 있어 뜻이 분명</li></ul></div>
+
+</article><article class="card">
+<div class="tag"><b>H10</b><span>2×2 타일 · 모서리 칠하기</span></div>
+<div class="phone"><iframe src="h10.html#me" title="2×2 타일 · 모서리 칠하기" loading="lazy"></iframe></div>
+<div class="desc"><ul><li>타일 왼쪽(아이콘 쪽)만 칠하고 오른쪽으로 갈수록 흐려짐. 흰 타일 바탕 위</li></ul></div>
+
+</article></div></section>
+<div class="next"><h2>앱에 넣을 때</h2><p>빗금은 SVG로 그려서 사진이 아니라 글자처럼 선명하고, 칩 길이가 달라도 자연스럽게 맞춰져요. 같은 칩은 늘 같은 모양으로 그려져서 볼 때마다 바뀌지 않아요.</p></div>
+</div>

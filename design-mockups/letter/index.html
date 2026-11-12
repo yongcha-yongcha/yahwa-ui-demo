@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>편지 세부 다듬기</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398;--pg-on:#fff;--ease-out:cubic-bezier(0.23, 1, 0.32, 1);--ease-drawer:cubic-bezier(0.32, 0.72, 0, 1)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.wrap{max-width:1640px;margin:0 auto;padding:36px 16px 80px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:88ch;margin:10px 0 0;color:var(--pg-fg2)}
+section.part{margin-top:40px}
+section.part>h2{margin:0;font:400 23px/1.4 var(--font-serif)}
+section.part>p{max-width:88ch;margin:6px 0 0;color:var(--pg-fg2);font-size:13px}
+.phones{display:flex;flex-wrap:wrap;gap:24px;margin-top:18px}
+.col{display:flex;flex-direction:column;gap:10px;width:360px;max-width:100%}
+.col h3{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.col h3 b{display:grid;place-items:center;min-width:26px;height:26px;padding:0 8px;border-radius:13px;background:var(--pg-accent);color:var(--pg-on);font:600 12px var(--font-sans)}
+.col h3 b.now{background:var(--pg-line);color:var(--pg-fg2)}
+.col h3 em{font:600 11px/1 var(--font-sans);font-style:normal;padding:4px 8px;border-radius:10px;background:var(--color-bg-accent-soft);color:var(--color-fg-accent-strong)}
+.col>p{margin:0;min-height:88px;font-size:13px;color:var(--pg-fg2)}
+.box{max-width:1180px;margin-top:24px;padding:16px 18px;border-radius:16px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);font-size:13px;color:var(--pg-fg2)}
+.box h4{margin:0 0 8px;font-size:14px;color:var(--pg-fg)}.box ul{margin:0;padding-left:18px}.box li+li{margin-top:5px}.box b{color:var(--pg-fg)}
+
+.phone{position:relative;width:360px;max-width:100%;height:780px;border-radius:36px;overflow:hidden;background:linear-gradient(var(--color-bg-subtle),var(--color-bg-page) 220px);color:var(--color-fg-primary);box-shadow:0 0 0 1px var(--pg-line),0 16px 40px rgb(0 0 0 / .12);isolation:isolate}
+.phone.shot{background:#F8F9F6 url(now.jpg) 0 0/360px auto no-repeat}
+.page{position:absolute;inset:0;overflow-y:auto;scrollbar-width:none;padding:0 var(--layout-gutter) 150px}
+.page::-webkit-scrollbar{display:none}
+.top{display:flex;justify-content:space-between;align-items:center;height:64px;padding-top:20px;margin:0 -10px}
+.ib{display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;border-radius:22px;background:none;color:var(--color-fg-secondary);cursor:pointer}
+.ib svg{width:24px;height:24px;fill:currentColor}
+/* 보낸 사람 줄 */
+.from{display:flex;align-items:center;gap:12px;width:calc(100% + 16px);margin:12px -8px 16px;padding:8px;border:0;border-radius:16px;background:none;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.from:active{background:var(--color-bg-muted)}
+.from img{flex:none;width:44px;height:44px;border-radius:50%;object-fit:cover}
+.from span{flex:1;min-width:0}
+.from b{display:block;font:600 15px/1.4 var(--font-sans);color:var(--color-fg-primary)}
+.from small{display:block;margin-top:3px;font:400 12px/1.4 var(--font-sans);color:var(--color-fg-muted)}
+.from small i{font-style:normal;color:var(--color-fg-love,#B26073);font-weight:600}
+.from .go{flex:none;display:inline-flex;align-items:center;gap:2px;font:500 12px/1 var(--font-sans);color:var(--color-fg-muted)}
+.from .go svg{width:16px;height:16px;fill:currentColor}
+/* 편지 (지금 앱 그대로) */
+.paper{padding:24px 20px;border:1px solid var(--color-border-default);border-radius:4px 20px 4px 4px;background:var(--color-bg-surface);box-shadow:0 5px 18px rgb(30 50 70 / .03)}
+.paper .to{font:15px/1.8 var(--font-serif);color:var(--color-fg-accent)}
+.paper p{margin:16px 0 32px;min-height:128px;font:16px/2 var(--font-serif);color:var(--color-fg-primary);word-break:keep-all;background:repeating-linear-gradient(transparent 0,transparent 31px,var(--color-bg-muted) 31px,var(--color-bg-muted) 32px)}
+.paper footer{display:grid;gap:6px;text-align:right;color:var(--color-fg-muted);font:12px/1.6 var(--font-sans)}
+/* 편지 아래 한 줄 */
+.lock{display:flex;align-items:center;justify-content:center;gap:6px;margin:16px 0 0;font:400 12px/1.5 var(--font-sans);color:var(--color-fg-muted)}
+.lock svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.keep{margin:6px 0 0;text-align:center;font:400 11px/1.5 var(--font-sans);color:var(--color-fg-muted)}
+/* 서로 연결된 편지 */
+.contact{margin-top:16px;padding:14px 16px;border-radius:16px;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-default)}
+.contact b{display:flex;align-items:center;gap:6px;font:600 14px/1.4 var(--font-sans)}
+.contact b svg{width:16px;height:16px;fill:none;stroke:var(--color-fg-accent);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.contact dl{display:grid;grid-template-columns:auto 1fr auto;gap:8px 12px;align-items:center;margin:10px 0 0;font:400 13px/1.4 var(--font-sans)}
+.contact dt{color:var(--color-fg-muted)}.contact dd{margin:0;font-weight:600;font-variant-numeric:tabular-nums}
+.contact .cp{height:28px;padding:0 10px;border:0;border-radius:14px;background:var(--color-bg-muted);color:var(--color-fg-secondary);font:600 12px/1 var(--font-sans);cursor:pointer}
+.reply-card{margin-top:16px;padding:16px 18px;border-radius:4px 4px 20px 4px;background:color-mix(in srgb,var(--color-bg-accent-soft) 35%,var(--color-bg-surface));border:1px solid var(--color-border-default)}
+.reply-card small{font:600 11px/1 var(--font-sans);color:var(--color-fg-accent)}
+.reply-card p{margin:8px 0 0;font:15px/1.9 var(--font-serif);word-break:keep-all}
+/* 아래 고정 */
+.dock{position:absolute;left:0;right:0;bottom:0;z-index:5;padding:16px var(--layout-gutter) 28px;background:linear-gradient(transparent,var(--color-bg-page) 26%)}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:52px;border:0;border-radius:14px;font:600 16px/1 var(--font-sans);cursor:pointer;transition:transform 120ms var(--ease-out)}
+.btn:active{transform:scale(.98)}
+.btn.pri{background:var(--color-bg-accent);color:var(--color-fg-inverse)}
+.btn.ghost{background:var(--color-bg-muted);color:var(--color-fg-secondary);font-weight:500;font-size:15px}
+.price{display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 9px;border-radius:12px;background:color-mix(in srgb,var(--white) 22%,transparent);font:600 12px/1 var(--font-sans)}
+.price svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.pair{display:grid;grid-template-columns:1fr 1.8fr;gap:8px}
+.textlink{display:block;margin:6px auto 0;height:40px;padding:0 10px;border:0;background:none;color:var(--color-fg-muted);font:500 13px/1 var(--font-sans);cursor:pointer}
+/* 시트 */
+.layer{position:absolute;inset:0;z-index:30;pointer-events:none}.layer.on{pointer-events:auto}
+.dim{position:absolute;inset:0;background:var(--photo-sheet-dim);opacity:0;transition:opacity 240ms var(--ease-out)}.layer.on .dim{opacity:1;transition-duration:300ms}
+.sheet{position:absolute;left:0;right:0;bottom:0;padding:8px var(--layout-gutter) 32px;border-radius:24px 24px 0 0;background:var(--color-bg-surface);transform:translateY(100%);transition:transform 240ms var(--ease-out)}
+.layer.on .sheet{transform:none;transition:transform 300ms var(--ease-drawer)}
+.handle{display:block;width:36px;height:4px;margin:0 auto 12px;border-radius:2px;background:var(--color-bg-control)}
+.row{display:flex;align-items:center;gap:12px;width:calc(100% + 16px);height:52px;margin:0 -8px;padding:0 8px;border:0;border-radius:12px;background:none;color:var(--color-fg-primary);font:500 15px/1 var(--font-sans);text-align:left;cursor:pointer}
+.row:active{background:var(--color-bg-muted)}
+.row svg{width:24px;height:24px;fill:var(--color-fg-secondary)}
+.row.danger{color:var(--color-fg-danger)}.row.danger svg{fill:var(--color-fg-danger)}
+.toast{position:absolute;left:50%;bottom:120px;z-index:40;transform:translate(-50%,6px);padding:8px 14px;border-radius:10px;background:var(--color-bg-inverse);color:var(--color-fg-inverse);font:500 12px/20px var(--font-sans);white-space:nowrap;opacity:0;transition:opacity 180ms var(--ease-out),transform 180ms var(--ease-out);pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){.sheet,.layer.on .sheet{transform:none;opacity:0;transition:opacity 200ms ease}.layer.on .sheet{opacity:1}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">편지함 · 편지 세부</p>
+  <h1 class="title">편지는 그대로, 둘레를 가볍게</h1>
+  <p class="intro">편지 카드는 지금 앱 그대로 두고 그 둘레만 다듬었어요. 오른쪽 위 “A LITTLE CLOSER”는 이미 앱에서 지웠어요. 세 안 모두 아래 탭을 끄고 답장 버튼을 아래에 고정해서, 버튼이 아래 탭에 가려지던 문제가 없어져요. 버튼 · 더보기 · 보낸 사람 줄을 눌러 보세요.</p>
+
+  <section class="part">
+    <h2>① 받은 편지 · 답장 전</h2>
+    <p>공통으로 바뀐 것: 보낸 사람 줄을 프로필로 가는 한 줄로(사진 44 · 이름 · “11월 11일 · 4일 뒤 사라져요” · 프로필 ›) 바꿔 “프로필 보기” 버튼을 없앴어요. “천천히 읽고…” 문장과 하늘색 연락처 상자는 편지 아래 자물쇠 한 줄로, 보관 안내도 그 아래 작게 합쳤어요.</p>
+    <div class="phones">
+      <div class="col"><h3><b class="now">지금</b>정리 전</h3><p>보낸 사람 줄 · 안내 문장 · 연락처 상자 · 큰 답장 버튼 · 작은 버튼 두 개 · 보관 안내가 위아래로 쌓여 있고, 아래 버튼들이 아래 탭에 가려져요.</p><div class="phone shot"></div></div>
+      <div class="col"><h3><b>L1</b>나란히 두 버튼</h3><p>아래에 “정중히 거절하기”(회색) · “답장 쓰기 무료”(파랑)를 나란히. 두 선택이 한눈에 보여요.</p><div class="phone" id="l1"></div></div>
+      <div class="col"><h3><b>L2</b>답장 하나 + 글자 링크<em>추천</em></h3><p>답장 쓰기만 크게, 그 아래 연한 글자 “정중히 거절할래요”. 마음을 전하는 쪽을 먼저 권하면서 거절도 숨기지 않아요.</p><div class="phone" id="l2"></div></div>
+      <div class="col"><h3><b>L3</b>거절은 더보기로</h3><p>아래는 답장 쓰기 하나뿐, 거절 · 신고는 오른쪽 위 더보기(···) 시트에. 화면이 가장 가벼워요.</p><div class="phone" id="l3"></div></div>
+    </div>
+  </section>
+
+  <section class="part">
+    <h2>② 다른 상태 (L2 기준)</h2>
+    <p>같은 틀로 다른 상태도 맞췄어요. 답장 값은 버튼 안 작은 칩으로 보여 줘요(무료 · 40리프).</p>
+    <div class="phones">
+      <div class="col"><h3><b>S1</b>답장이 40리프</h3><p>보낸 사람이 일반 편지(40리프)로 보낸 경우. 버튼 칩이 “나뭇잎 40”으로 바뀌고, 누르면 쓰는 리프 카드 시트(교환 요청과 같은 모양)를 거쳐요.</p><div class="phone" id="s1"></div></div>
+      <div class="col"><h3><b>S2</b>내가 보낸 편지</h3><p>보낸 사람 줄이 “○○님에게 보낸 편지 · 답장을 기다리고 있어요”. 아래는 “프로필 보기”만 조용히.</p><div class="phone" id="s2"></div></div>
+      <div class="col"><h3><b>S3</b>서로 답장을 나눈 뒤</h3><p>답장이 편지 아래 작은 카드로 붙고, 자물쇠 줄 대신 “서로의 연락처” 카드(복사 버튼)가 열려요. 아래 버튼은 “대화 이어가기”.</p><div class="phone" id="s3"></div></div>
+    </div>
+  </section>
+
+  <div class="box"><h4>공통 규칙</h4><ul>
+    <li>편지 카드(모서리 4 · 20 · 4 · 4, 줄 노트, 고운바탕)는 지금 그대로.</li>
+    <li>편지 세부에서는 아래 탭을 끄고, 아래에 고정된 버튼 칸(52)을 둬요. 내용은 그 위까지 스크롤.</li>
+    <li>보낸 사람 줄: 사진 44 + 이름 15 굵게 + 날짜 · 남은 날 12(3일 이하면 로즈) + “프로필 ›”. 누르면 상대 프로필.</li>
+    <li>편지 아래: 자물쇠 아이콘 + “답장을 나누면 서로의 연락처가 공개돼요” 12, 그 아래 “읽은 편지는 7일 동안 보관돼요” 11.</li>
+    <li>“정중히 거절하기”는 지금처럼 한 번 더 묻는 단계로 이어져요(시트로 바꿀 수 있어요).</li>
+  </ul></div>
+</div>
+
+<script>
+const CL='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.293 5.28896C14.6835 4.89851 15.3165 4.89859 15.7071 5.28896C16.0975 5.6794 16.0975 6.31246 15.7071 6.70302L10.4131 11.9979L15.7071 17.2899C16.0976 17.6804 16.0975 18.3134 15.7071 18.704C15.3166 19.0945 14.6836 19.0944 14.293 18.704L8.29303 12.706C7.90262 12.3155 7.90268 11.6824 8.29303 11.2919L14.293 5.28896Z"/></svg>';
+const CR='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.29301 7.29096C9.68355 6.90051 10.3166 6.90047 10.7071 7.29096L14.7071 11.2919C15.0975 11.6825 15.0976 12.3155 14.7071 12.706L10.7071 16.706C10.3165 17.0965 9.68353 17.0965 9.29301 16.706C8.9025 16.3155 8.90249 15.6825 9.29301 15.2919L12.586 11.998L9.29301 8.70502C8.90256 8.31448 8.90252 7.68144 9.29301 7.29096Z"/></svg>';
+const MORE='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9.95898C7.10808 9.95898 7.99997 10.8685 8 11.9619C8 13.0557 7.10879 13.9658 6 13.9658C4.87472 13.9658 4 13.0491 4 11.9619C4.00003 10.875 4.87543 9.95898 6 9.95898ZM12 9.95898C13.1081 9.95898 14 10.8685 14 11.9619C14 13.0557 13.1088 13.9658 12 13.9658C10.8912 13.9658 10 13.0557 10 11.9619C10 10.8685 10.8919 9.95898 12 9.95898ZM18 9.95898C19.1081 9.95898 20 10.8685 20 11.9619C20 13.0557 19.1088 13.9658 18 13.9658C16.8747 13.9658 16 13.0491 16 11.9619C16 10.875 16.8754 9.95898 18 9.95898Z"/></svg>';
+const LOCK='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 11h12v9H6z M8.5 11V8a3.5 3.5 0 0 1 7 0v3"/></svg>';
+const OPEN='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 11h12v9H6z M8.5 11V8a3.5 3.5 0 0 1 6.6-1.6"/></svg>';
+const LEAF='<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 38C2 14 24 6 42 6C42 28 30 42 14 34M8 42L32 18"/></svg>';
+const SIREN='M18.0009 17.9849L17.998 17.98H6.00383L6.0009 17.9849V19.9897L6.00383 19.9937H17.998L18.0009 19.9897V17.9849ZM15.0038 12.9663C15.0038 11.3361 13.6661 9.99756 12.0029 9.99756C10.3366 9.99756 9.00286 11.3351 9.00286 12.9663V15.98H11.0029V12.9663C11.0029 12.414 11.4506 11.9663 12.0029 11.9663C12.5551 11.9663 13.0029 12.414 13.0029 12.9663V15.98H15.0038V12.9663ZM17.0038 15.98H18.0019C19.1146 15.98 20.0008 16.8922 20.0009 17.9829V19.9897C20.0009 21.0808 19.1153 21.9937 18.0019 21.9937H5.99993C4.88658 21.9937 4.0009 21.0809 4.0009 19.9897V17.9829C4.00097 16.8921 4.88731 15.98 5.99993 15.98H7.00286V12.9663C7.00286 10.2175 9.24512 7.99756 12.0029 7.99756C14.7556 7.99756 17.0038 10.2165 17.0038 12.9663V15.98Z';
+const XMARK='M17.293 5.293a1 1 0 1 1 1.414 1.414L13.414 12l5.293 5.293a1 1 0 0 1-1.414 1.414L12 13.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L10.586 12 5.293 6.707a1 1 0 0 1 1.414-1.414L12 10.586z';
+const BODY='프로필 속 산책 이야기가 마음에 남았어요. 함께 이야기 나눠보고 싶어요.';
+const paper=(to,body,by)=>`<article class="paper"><span class="to">${to}</span><p>${body}</p><footer><time>11월 11일</time><span>${by} 드림</span></footer></article>`;
+function from(dir,sub){return `<button class="from" type="button" data-t="봄빛 님 프로필로 가요"><img src="spring.jpg" alt=""><span><b>${dir==='in'?'봄빛님이 보낸 편지':'봄빛님에게 보낸 편지'}</b><small>${sub}</small></span><span class="go">프로필${CR}</span></button>`;}
+const lock=`<p class="lock">${LOCK}답장을 나누면 서로의 연락처가 공개돼요</p><p class="keep">읽은 편지는 7일 동안 보관돼요</p>`;
+const price=(free)=>free?'<span class="price">무료</span>':`<span class="price">${LEAF}40</span>`;
+function screen(id,{more=false,body,dock}){const ph=document.getElementById(id);
+  ph.innerHTML=`<div class="page"><div class="top"><button class="ib" aria-label="편지함으로">${CL}</button>${more?`<button class="ib" data-more aria-label="편지 더보기">${MORE}</button>`:''}</div>${body}</div><div class="dock">${dock}</div><div class="toast" role="status"></div>`;
+  ph.addEventListener('click',e=>{const t=e.target.closest('[data-t]');if(t){toast(ph,t.dataset.t);return;}if(e.target.closest('[data-more]'))sheet(ph);if(e.target.closest('[data-cost]'))costSheet(ph);});}
+function toast(ph,t){const el=ph.querySelector('.toast');el.textContent=t;el.classList.add('on');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('on'),1600);}
+function openLayer(ph,html){ph.querySelector('.layer')?.remove();const L=document.createElement('div');L.className='layer';L.innerHTML=`<div class="dim"></div><div class="sheet" role="dialog" aria-modal="true"><span class="handle" aria-hidden="true"></span>${html}</div>`;ph.append(L);requestAnimationFrame(()=>requestAnimationFrame(()=>L.classList.add('on')));const close=t=>{L.classList.remove('on');setTimeout(()=>L.remove(),260);if(t)toast(ph,t);};L.querySelector('.dim').onclick=()=>close();L.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>close(b.dataset.c));}
+function sheet(ph){openLayer(ph,`<button class="row" data-c="한 번 더 묻는 단계로 이어져요"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${XMARK}"/></svg>정중히 거절하기</button><button class="row danger" data-c="신고 사유를 고르는 단계로 이어져요"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${SIREN}"/></svg>신고하기</button>`);}
+function costSheet(ph){openLayer(ph,`<b style="display:block;font:600 18px/1.4 var(--font-sans)">답장을 쓸까요?</b><p style="margin:4px 0 16px;font:400 14px/1.6 var(--font-sans);color:var(--color-fg-secondary);word-break:keep-all">답장을 보내면 서로의 연락처가 공개돼요. 쓴 리프는 돌려받지 않아요.</p><div style="display:flex;align-items:center;gap:12px;margin:0 0 20px;padding:16px;border-radius:16px;background:var(--color-bg-muted)"><span style="display:grid;place-items:center;width:40px;height:40px;border-radius:20px;background:var(--color-bg-surface);color:var(--color-fg-accent)"><svg viewBox="0 0 48 48" width="22" height="22" style="fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M10 38C2 14 24 6 42 6C42 28 30 42 14 34M8 42L32 18"/></svg></span><span style="flex:1"><small style="display:block;font-size:12px;color:var(--color-fg-muted)">사용할 리프</small><strong style="font:600 20px/1.3 var(--font-sans)">40리프</strong></span><span style="text-align:right;font:500 12px/1.5 var(--font-sans);color:var(--color-fg-muted)">보유<b style="display:block;font:600 14px/1.3 var(--font-sans);color:var(--color-fg-secondary)">100리프</b></span></div><div class="pair" style="grid-template-columns:1fr 1fr"><button class="btn ghost" data-c="">취소</button><button class="btn pri" data-c="답장 쓰기로 가요">답장 쓰기</button></div>`);}
+
+const IN_SUB='11월 11일 · 4일 뒤 사라져요';
+const inBody=from('in',IN_SUB)+paper('당신에게',BODY,'봄빛')+lock;
+screen('l1',{body:inBody,dock:`<div class="pair"><button class="btn ghost" data-t="한 번 더 묻는 단계로 이어져요">정중히 거절하기</button><button class="btn pri" data-t="답장 쓰기로 가요">답장 쓰기 ${price(true)}</button></div>`});
+screen('l2',{body:inBody,dock:`<button class="btn pri" data-t="답장 쓰기로 가요">답장 쓰기 ${price(true)}</button><button class="textlink" data-t="한 번 더 묻는 단계로 이어져요">정중히 거절할래요</button>`});
+screen('l3',{more:true,body:inBody,dock:`<button class="btn pri" data-t="답장 쓰기로 가요">답장 쓰기 ${price(true)}</button>`});
+screen('s1',{body:from('in','11월 11일 · <i>2일 뒤 사라져요</i>')+paper('당신에게','좋아하는 전시 이야기를 더 들려주실래요?','느린오후').replace('봄빛','느린오후')+lock,dock:`<button class="btn pri" data-cost>답장 쓰기 ${price(false)}</button><button class="textlink" data-t="한 번 더 묻는 단계로 이어져요">정중히 거절할래요</button>`});
+screen('s2',{body:from('out','11월 12일 · 답장을 기다리고 있어요')+paper('봄빛님에게','저도 산책 좋아해요. 주말에 자주 걷는 길이 있어요.','나')+`<p class="lock">${LOCK}답장이 오면 서로의 연락처가 공개돼요</p><p class="keep">읽지 않으면 3일 뒤 쓴 리프가 돌아와요</p>`,dock:`<button class="btn ghost" data-t="봄빛 님 프로필로 가요">프로필 보기</button>`});
+screen('s3',{body:from('in','11월 11일 · 서로 답장을 나눴어요')+paper('당신에게',BODY,'봄빛')+`<div class="reply-card"><small>내 답장 · 11월 12일</small><p>저도 산책 좋아해요. 주말에 자주 걷는 길이 있어요.</p></div><div class="contact"><b>${OPEN}서로의 연락처</b><dl><dt>봄빛</dt><dd>카카오톡 spring_walk</dd><button class="cp" data-t="복사했어요">복사</button><dt>나</dt><dd>카카오톡 yahwa_demo</dd><span></span></dl></div><p class="keep">연결된 편지는 7일 동안 보관돼요</p>`,dock:`<button class="btn pri" data-t="대화로 가요">대화 이어가기</button>`});
+</script>
+</body>
+</html>

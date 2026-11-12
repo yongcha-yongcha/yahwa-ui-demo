@@ -1,0 +1,80 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>소개 미리보기 2차 B1</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--color-bg-page);color:var(--color-fg-primary);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ic{display:inline-block;flex:none;width:var(--s,20px);height:var(--s,20px);background:currentColor;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat}
+.i-back{--m:var(--ic-chevron-left-large);--s:24px}.i-next{--m:var(--ic-chevron-right);--s:20px}.i-down{--m:var(--ic-chevron-down);--s:16px}
+.app{position:relative;height:100%;max-width:430px;margin:0 auto;display:flex;flex-direction:column;overflow:hidden;background:var(--color-bg-page)}
+.top{flex:none;height:52px;padding:0 20px;display:flex;align-items:center;justify-content:space-between}
+.back{width:44px;height:44px;margin-left:-10px;border:0;background:none;display:grid;place-items:center}
+.back .ic{transform:translateX(-8px)}
+.cnt{font-size:12px;color:var(--color-fg-accent-strong);font-variant-numeric:tabular-nums}
+.gauge{flex:none;height:3px;margin:0 20px;border-radius:3px;background:var(--color-bg-notice);overflow:hidden}
+.gauge i{display:block;width:100%;height:100%;background:var(--color-bg-button-primary)}
+.body{flex:1;min-height:0;overflow-y:auto;padding:28px 20px 32px;scrollbar-width:none}
+.body::-webkit-scrollbar{display:none}
+h1{margin:0;font:400 28px/1.45 var(--font-serif);letter-spacing:-.5px}
+.lead{margin:12px 0 0;font-size:13px;line-height:1.7;color:var(--color-fg-tertiary)}
+.lead small{display:block;font-size:11px;color:var(--color-fg-subtle)}
+.photo{position:relative;margin-top:28px;height:330px;border-radius:90px 90px 18px 18px;overflow:hidden;background:var(--color-bg-notice)}
+.photo img{width:100%;height:100%;object-fit:cover;display:block}
+.photo .arrow{position:absolute;right:8px;top:50%;margin-top:-22px;width:44px;height:44px;border:0;border-radius:50%;background:color-mix(in srgb,var(--white) 82%,transparent);display:grid;place-items:center;color:var(--color-fg-primary)}
+.photo .count{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);padding:2px 8px;border-radius:10px;background:color-mix(in srgb,var(--cool-neutral-900) 45%,transparent);color:var(--white);font-size:11px;font-variant-numeric:tabular-nums}
+.me{scroll-margin-top:96px}
+.qa{margin-top:40px}
+.qa h3{margin:0 0 8px;font:400 19px/1.7 var(--font-serif);color:var(--color-fg-accent-strong)}
+.qa p{margin:0;font-size:14px;line-height:2;color:var(--color-fg-secondary)}
+.bottom{flex:none;padding:12px 20px calc(20px + env(safe-area-inset-bottom,0px));background:var(--color-bg-page);box-shadow:0 -1px 0 var(--color-border-default)}
+.cta{width:100%;height:52px;border:0;border-radius:14px;background:var(--color-bg-button-primary);color:var(--white);font-size:15px;font-weight:600}
+.fi{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+.r-name{margin:28px 0 0;font:400 30px/1.3 var(--font-serif);letter-spacing:-.5px}
+.r-meta{display:flex;align-items:center;gap:4px;margin:8px 0 0;font-size:14px;color:var(--color-fg-secondary)}
+.r-meta .fi{width:16px;height:16px;color:var(--color-fg-tertiary)}
+.r-meta i{width:2px;height:2px;margin:0 4px;border-radius:50%;background:var(--color-fg-subtle)}
+.r-tags{display:flex;flex-wrap:wrap;gap:4px 12px;margin:12px 0 0;padding:0;list-style:none;font-size:13px;color:var(--color-fg-accent-strong)}
+.r-h{margin:0 0 12px;font-size:12px;font-weight:500;color:var(--color-fg-tertiary)}
+
+.b1-head{display:flex;align-items:baseline;gap:12px;margin-top:28px}
+.b1-head .r-name{margin:0}
+.b1-stamp{font:500 12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:1px;color:var(--gold-600)}
+.b1-roll{margin-top:28px;padding:20px 0;background:var(--gold-50);position:relative;border-radius:4px}
+.b1-roll::before,.b1-roll::after{content:"";position:absolute;left:8px;right:8px;height:6px;background:radial-gradient(ellipse 3px 2px,var(--color-bg-page) 0 2.5px,transparent 3px) 0 0/14px 6px repeat-x}
+.b1-roll::before{top:6px}.b1-roll::after{bottom:6px}
+.b1-edge{display:flex;justify-content:space-between;padding:0 16px;margin-bottom:8px;font:500 11px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:1px;color:var(--gold-500)}
+.b1-frames{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding:0 8px}
+.b1-f{padding:12px;background:color-mix(in srgb,var(--white) 70%,transparent);display:flex;flex-direction:column;gap:2px}
+.b1-f:first-child{border-radius:3px 0 0 3px}.b1-f:last-child{border-radius:0 3px 3px 0}
+.b1-f small{font-size:11px;color:var(--color-fg-tertiary)}
+.b1-f b{font-size:17px;font-weight:600;line-height:1.35}
+.b1-life{display:flex;flex-wrap:wrap;gap:4px 16px;margin:12px 16px 0;font-size:13px;color:var(--color-fg-secondary)}
+.b1-life em{font:500 11px/1 ui-monospace,SFMono-Regular,Menlo,monospace;font-style:normal;color:var(--gold-500);margin-right:4px}
+
+</style></head><body><div class="app">
+<div class="top"><button type="button" class="back" aria-label="이전 화면"><i class="ic i-back" aria-hidden="true"></i></button><span class="cnt">5 / 5</span></div>
+<div class="gauge"><i></i></div>
+<div class="body" id="body">
+<h1>당신의 첫 소개,<br>이렇게 보여요.</h1>
+<p class="lead">상대방에게 보여줄 첫 소개예요.<small>가상 정보와 예시 사진을 사용한 시연용 프로필 · 사진을 옆으로 넘겨보세요</small></p>
+<div class="photo"><img src="img/p1.jpg" alt="내 대표 사진"><button type="button" class="arrow" aria-label="다음 사진"><i class="ic i-next" aria-hidden="true"></i></button><span class="count">1 / 5</span></div>
+<section class="me" id="me" aria-label="나의 정보">
+<div class="b1-head"><h2 class="r-name">하늘</h2><span class="b1-stamp">SEOUL '26</span></div><p class="r-meta"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-6-6-11a6 6 0 0 1 12 0c0 5-6 11-6 11ZM12 8.5v3"/></svg>서울<i></i>여성</p><ul class="r-tags" aria-label="해시태그"><li>#산책메이트</li><li>#카페탐방러</li><li>#다정한사람</li><li>#에겐녀</li><li>#필름감성</li></ul>
+<div class="b1-roll" role="group" aria-label="나의 정보">
+<div class="b1-edge" aria-hidden="true"><span>YAHWA 400</span><span>▸01</span><span>▸02</span><span>▸03</span></div>
+<div class="b1-frames"><div class="b1-f"><small>하는 일</small><b>직장인</b></div><div class="b1-f"><small>키</small><b>168cm</b></div><div class="b1-f"><small>성격</small><b>INFP</b></div></div>
+<p class="b1-life"><span><em>04</em>비흡연</span><span><em>05</em>술은 가끔</span><span><em>06</em>무교</span><span><em>07</em>대학교 졸업</span></p>
+</div>
+</section>
+<section class="qa"><h3>“간단한 자기소개를 들려주세요”</h3><p>서울에서 일하는 하늘이에요. 주말에는 동네 카페를 찾거나 산책하며 여유로운 시간을 보내는 걸 좋아해요.</p></section>
+</div>
+<div class="bottom"><button type="button" class="cta">이 소개로 완성하기</button></div>
+</div>
+<script>
+/* 비교 페이지에서 #me로 열면 이름 영역부터 보이게 */
+if(location.hash==='#me'){const b=document.getElementById('body'),m=document.getElementById('me');requestAnimationFrame(()=>{b.scrollTop=m.offsetTop-b.offsetTop-80;});}
+
+</script></body></html>

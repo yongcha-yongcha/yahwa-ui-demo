@@ -48,7 +48,7 @@ const STEP_SCREENS=['verify','verify-code','terms','profile'];
 /* 사진 등록 ~ 소개 미리보기도 같은 방식. 항목이 많아서 앞 4개까지만 차례로 떠오름 */
 const INTRO_SCREENS=['photos','details','story','hashtags','preview'];
 const STEP_MOTION={rise:30,duration:800,stagger:50,exit:100,maxStagger:3};
-const STEP_FIXED='.ob-top,.ob-progress,.intro-step-gauge,.ob-bottom';
+const STEP_FIXED='.ob-top,.ob-progress,.intro-step-gauge,.ob-bottom,.auth-back';
 /* 튕김 없는 스프링 곡선 */
 const STEP_EASE='linear('+Array.from({length:41},(_,i)=>{const t=i/40;return i===40?1:+(1-Math.exp(-9*t)*(1+9*t)).toFixed(4)}).join(',')+')';
 function kind(a,b,hint){
@@ -56,6 +56,13 @@ function kind(a,b,hint){
   if(hint)return hint==='tab'?'fade':hint;
   if(STEP_SCREENS.includes(a)&&STEP_SCREENS.includes(b))return 'rise';
   if(INTRO_SCREENS.includes(a)&&INTRO_SCREENS.includes(b))return 'rise';
+  /* 웰컴 ↔ 가입 · 로그인: 사진이 천천히 옅어지고 가입 내용이 떠오름 (시안 A) */
+  if(a==='welcome'&&b==='auth')return 'wrise';
+  if(a==='auth'&&b==='welcome')return 'wback';
+  /* 가입 · 로그인 ↔ 휴대폰 인증: 떠오르기, 진행바는 새로 채움 */
+  if((a==='auth'&&b==='verify')||(a==='verify'&&b==='auth'))return 'rise';
+  /* 기본 프로필 ↔ 사진 등록: 앞뒤 화면과 같은 떠오르기로 잇고, 진행바만 새 장처럼 다시 채움 */
+  if((a==='profile'&&b==='photos')||(a==='photos'&&b==='profile'))return 'rise';
   const ia=FLOW.indexOf(a),ib=FLOW.indexOf(b);
   if(ia>-1&&ib>-1)return ib>ia?'push':'pop';
   if(a in DEPTH&&b in DEPTH)return DEPTH[a]<DEPTH[b]?'push':DEPTH[a]>DEPTH[b]?'pop':'fade';
@@ -72,6 +79,42 @@ const hideExcept=name=>document.querySelectorAll('.screen:not(.gnb-layer)').forE
 function animateBody(hint){
   const x=hint==='push'?24:hint==='pop'?-24:0;
   $('fx-body').animate([{opacity:0,transform:`translateX(${x}px)`},{opacity:1,transform:'translateX(0)'}],{duration:220,easing:EASE_OUT});
+}
+/* 웰컴 전환: 사진은 0.26초 동안 천천히 옅어지며 4% 커지고, 다음 화면 내용은 다른 단계처럼 떠오름 */
+const WELCOME_MOTION={fade:260,grow:1.04,startAt:200,back:320,settle:700};
+function riseItems(list,base,anims,cap=Infinity){
+  list.forEach((c,i)=>{const delay=base+Math.min(i,cap)*STEP_MOTION.stagger;
+    anims.push(c.animate([{transform:`translateY(${STEP_MOTION.rise}px)`},{transform:'translateY(0)'}],{duration:STEP_MOTION.duration,delay,easing:STEP_EASE,fill:'backwards'}));
+    anims.push(c.animate([{opacity:0},{opacity:1}],{duration:STEP_MOTION.duration/2,delay,easing:EASE_OUT,fill:'backwards'}));});
+}
+const shownKids=el=>[...el.children].filter(c=>c.getClientRects().length);
+function welcomeOut(old,next){
+  const anims=[],W=WELCOME_MOTION;
+  old.hidden=false;old.style.zIndex=2;old.style.pointerEvents='none';
+  const visual=old.querySelector('.welcome-visual'),acts=old.querySelector('.welcome-actions');
+  anims.push(old.animate([{opacity:1},{opacity:1,offset:.6},{opacity:0}],{duration:W.fade,fill:'forwards'}));
+  if(visual)anims.push(visual.animate([{transform:'scale(1)'},{transform:`scale(${W.grow})`}],{duration:W.fade,easing:'ease-out',fill:'forwards'}));
+  if(acts)shownKids(acts).forEach(c=>anims.push(c.animate([{opacity:1},{opacity:0}],{duration:140,easing:'ease-out',fill:'forwards'})));
+  riseItems(shownKids(next).filter(c=>!c.matches(STEP_FIXED)),W.startAt,anims);
+  const clean=()=>{old.hidden=true;old.style.zIndex='';old.style.pointerEvents='';};
+  const token={anims,clean};pending=token;
+  setTimeout(()=>{if(pending===token){clean();}},W.fade);
+  Promise.all(anims.map(a=>a.finished)).then(()=>{if(pending===token)finish();}).catch(()=>{});
+}
+function welcomeIn(old,next){
+  const anims=[],W=WELCOME_MOTION;
+  old.hidden=false;old.style.zIndex=2;old.style.pointerEvents='none';old.style.setProperty('background','none','important');
+  const exits=shownKids(old).map(c=>c.animate([{opacity:1},{opacity:0}],{duration:STEP_MOTION.exit,easing:'ease-out',fill:'forwards'}));
+  anims.push(...exits);
+  const visual=next.querySelector('.welcome-visual'),acts=next.querySelector('.welcome-actions');
+  anims.push(next.animate([{opacity:0},{opacity:1}],{duration:W.back,delay:STEP_MOTION.exit,easing:EASE_OUT,fill:'backwards'}));
+  if(visual)anims.push(visual.animate([{transform:`scale(${W.grow})`},{transform:'scale(1)'}],{duration:W.settle,delay:STEP_MOTION.exit,easing:EASE_OUT,fill:'backwards'}));
+  const words=visual?[...visual.querySelectorAll('h1,.film-logo,.welcome-tilt-heart')]:[];
+  riseItems([...words,...(acts?shownKids(acts):[])],STEP_MOTION.exit+120,anims);
+  const clean=()=>{old.hidden=true;old.style.zIndex='';old.style.pointerEvents='';old.style.removeProperty('background');exits.forEach(a=>a.cancel());};
+  const token={anims,clean};pending=token;
+  Promise.all(exits.map(a=>a.finished)).then(()=>{if(pending===token)clean();}).catch(()=>{});
+  Promise.all(anims.map(a=>a.finished)).then(()=>{if(pending===token)finish();}).catch(()=>{});
 }
 function riseSwap(old,next){
   const shown=c=>!c.matches(STEP_FIXED)&&c.getClientRects().length;
@@ -97,7 +140,14 @@ function riseSwap(old,next){
   });
   });
   const from=old.querySelector('.ob-progress i,.intro-step-gauge i'),to=next.querySelector('.ob-progress i,.intro-step-gauge i');
-  if(from&&to&&from.style.width&&to.style.width)anims.push(to.animate([{width:from.style.width},{width:to.style.width}],{duration:360,easing:DRAWER}));
+  /* 가입 3단계와 소개 5단계는 다른 장: 진행바가 줄어들지 않고 빈 막대에서 새로 채워짐 */
+  const chapter=STEP_SCREENS.includes(old.id)!==STEP_SCREENS.includes(next.id);
+  if(chapter&&to&&to.style.width){
+    const bar=to.parentElement,label=next.querySelector('.intro-step-label');
+    anims.push(bar.animate([{opacity:0},{opacity:1}],{duration:200,delay:STEP_MOTION.exit,easing:EASE_OUT,fill:'backwards'}));
+    anims.push(to.animate([{width:'0%'},{width:to.style.width}],{duration:520,delay:STEP_MOTION.exit+180,easing:DRAWER,fill:'backwards'}));
+    if(label)anims.push(label.animate([{opacity:0,transform:'translateY(4px)'},{opacity:1,transform:'none'}],{duration:280,delay:STEP_MOTION.exit+120,easing:EASE_OUT,fill:'backwards'}));
+  }else if(from&&to&&from.style.width&&to.style.width)anims.push(to.animate([{width:from.style.width},{width:to.style.width}],{duration:360,easing:DRAWER}));
   const token={anims,clean:cleanOld};
   pending=token;
   if(exits.length)Promise.all(exits.map(a=>a.finished)).then(()=>{if(pending===token)cleanOld();}).catch(()=>{});else cleanOld();
@@ -108,10 +158,15 @@ window.swapScreens=(prev,name)=>{
   const hint=window.__navHint;window.__navHint=null;
   const next=$(name),old=$(prev);
   hideExcept(name);
-  if(prev===name){if(name==='features'&&hint&&!reduce.matches)animateBody(hint);return;}
+  if(prev===name){if(name==='features'&&hint&&hint!=='tab'&&!reduce.matches)animateBody(hint);return;}
   const k=reduce.matches||!old?'none':kind(prev,name,hint);
   if(k==='none')return;
+  /* 하단 메뉴 탭끼리(같은 깊이 0)는 애니메이션 없이 바로 바꿔요(시안 “탭 전환 잔상” T2).
+     예전에는 옛 화면 위에서 새 화면이 170ms 동안 서서히 나타나 두 화면이 겹쳐 보였어요. 하단 메뉴 캡슐 움직임은 그대로 */
+  if(k==='fade'&&(hint==='tab'||(DEPTH[prev]===0&&DEPTH[name]===0)))return;
   if(k==='rise'){riseSwap(old,next);return;}
+  if(k==='wrise'){welcomeOut(old,next);return;}
+  if(k==='wback'){welcomeIn(old,next);return;}
   old.hidden=false;
   old.style.pointerEvents='none';
   const anims=[];
@@ -206,7 +261,8 @@ function syncTabRoot(name){
 }
 show=function(name){prevShow(name);syncTabRoot(name);updateDock(name);};
 
-/* 알림(토스트)은 지금 화면의 아래 버튼 영역과 하단 탭 위 12px에 띄움. 아래 영역을 침범하지 않게 */
+/* 알림(토스트)은 지금 화면의 아래 버튼 영역과 하단 탭 위 12px에 띄움. 아래 영역을 침범하지 않게
+   (상대 프로필처럼 버튼 영역이 하단 탭 위에 떠 있어도 .ob-bottom이면 기준에 넣어요) */
 const TOAST_GAP=12;
 function placeToast(el){
   const pr=phone.getBoundingClientRect(),z=pr.height/phone.offsetHeight||1;
@@ -215,7 +271,7 @@ function placeToast(el){
   const cands=[...(scr?scr.children:[])];
   if(!layer.classList.contains('is-off'))cands.push(nav);
   let top=pr.bottom;
-  cands.forEach(n=>{if(!n.getClientRects().length)return;const cs=getComputedStyle(n);if(!/absolute|fixed|sticky/.test(cs.position))return;if(!n.querySelector('button,a,[role=button]'))return;const r=n.getBoundingClientRect();if(r.bottom<pr.bottom-64*z||r.top<pr.top+pr.height*.4)return;top=Math.min(top,r.top);});
+  cands.forEach(n=>{if(!n.getClientRects().length)return;const cs=getComputedStyle(n);if(!/absolute|fixed|sticky/.test(cs.position))return;if(!n.querySelector('button,a,[role=button]'))return;const r=n.getBoundingClientRect();if((r.bottom<pr.bottom-64*z&&!n.classList.contains('ob-bottom'))||r.top<pr.top+pr.height*.4)return;top=Math.min(top,r.top);});
   el.style.bottom=Math.round((pr.bottom-top)/z+TOAST_GAP)+'px';
 }
 /* 알림 모션: 아래에서 7px · 90%에서 떠오르며 460ms로 나타나고, 최소 2.8초 머문 뒤 4px 내려가며 380ms로 흐려짐(부드러운 ease-out). 새 알림으로 바뀔 땐 이전 것은 바로 빠짐 */

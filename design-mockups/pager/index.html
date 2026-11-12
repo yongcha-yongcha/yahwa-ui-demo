@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>인연 넘김 표시</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398;--pg-on:#fff;--ease-out:cubic-bezier(0.23, 1, 0.32, 1)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.wrap{max-width:1640px;margin:0 auto;padding:36px 16px 64px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:84ch;margin:10px 0 0;color:var(--pg-fg2)}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:16px}
+.bar button{height:40px;padding:0 14px;border:0;border-radius:10px;background:var(--pg-accent);color:var(--pg-on);font-weight:600;cursor:pointer}
+.bar button.ghost{background:none;color:var(--pg-fg);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.bar span{font-size:13px;color:var(--pg-fg3)}
+.phones{display:flex;flex-wrap:wrap;gap:24px;margin-top:20px}
+.col{display:flex;flex-direction:column;gap:10px;width:360px;max-width:100%}
+.col h2{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.col h2 b{display:grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:13px;background:var(--pg-accent);color:var(--pg-on);font:600 12px var(--font-sans)}
+.col h2 b.now{background:var(--pg-line);color:var(--pg-fg2)}
+.col h2 em{font:600 11px/1 var(--font-sans);font-style:normal;padding:4px 8px;border-radius:10px;background:var(--color-bg-accent-soft);color:var(--color-fg-accent-strong)}
+.col>p{margin:0;min-height:66px;font-size:13px;color:var(--pg-fg2)}
+.zoom{position:relative;width:360px;max-width:100%;height:132px;border-radius:20px;overflow:hidden;box-shadow:0 0 0 1px var(--pg-line);background:#F8F9F6}
+.zoom .phone{position:absolute;left:-90px;top:-911px;transform:scale(1.5);transform-origin:0 0;box-shadow:none;border-radius:0;pointer-events:none}
+.zoom::after{content:"넘김 표시 1.5배";position:absolute;left:10px;top:8px;padding:2px 8px;border-radius:8px;background:rgb(0 0 0 / .5);color:#fff;font:600 11px/1.6 var(--font-sans)}
+.panel{margin-top:32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.box{padding:18px;border-radius:18px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.box h3{margin:0 0 10px;font-size:14px}
+.box ul{margin:0;padding-left:18px;font-size:13px;color:var(--pg-fg2)}
+.box li+li{margin-top:6px}
+table{width:100%;border-collapse:collapse;font-size:12px;line-height:1.6}
+th,td{padding:8px 6px;text-align:left;vertical-align:top;border-top:1px solid var(--pg-line)}
+th{width:40px;color:var(--pg-fg3);font-weight:600}
+.note{margin:10px 0 0;font-size:12px;color:var(--pg-fg3)}
+
+/* 폰: 실제 앱 화면(넘김 표시만 지운 캡처) 위에 넘김 표시만 새로 */
+.phone{position:relative;width:360px;max-width:100%;height:780px;border-radius:36px;overflow:hidden;background:#F8F9F6 url(clean.jpg) 0 0/360px 780px no-repeat;box-shadow:0 0 0 1px var(--pg-line),0 16px 40px rgb(0 0 0 / .12);color:var(--color-fg-primary)}
+.phone.now{background-image:url(now.jpg)}
+.pager{position:absolute;left:var(--layout-gutter);right:var(--layout-gutter);top:618px;height:66px;display:flex;align-items:center;justify-content:center;gap:8px}
+.arrow{display:grid;place-items:center;flex:none;width:44px;height:44px;padding:0;border:0;border-radius:22px;background:none;color:var(--color-fg-secondary);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.arrow svg{width:20px;height:20px;fill:currentColor;transition:transform 120ms var(--ease-out)}
+.arrow:active svg{transform:scale(.88)}
+.arrow:disabled{color:var(--color-fg-disabled,var(--color-border-strong));cursor:default}
+.arrow:disabled:active svg{transform:none}
+.arrow:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:-4px}
+
+/* A 숫자만 가볍게 */
+.a .count{min-width:56px;text-align:center;font:400 15px/1 var(--font-sans);font-variant-numeric:tabular-nums;color:var(--color-fg-muted);letter-spacing:.2px}
+.a .count b{font-weight:600;color:var(--color-fg-primary)}
+.a .pager{gap:12px}
+
+/* B 시간대 점 */
+.ps-row{display:flex;align-items:center;gap:14px}
+.ps{display:flex;align-items:center;gap:6px}
+.ps small{flex:none;white-space:nowrap;font:500 11px/1 var(--font-sans);color:var(--color-fg-muted);transition:color 200ms var(--ease-out)}
+.ps.is-cur small{color:var(--color-fg-primary);font-weight:600}
+.pd-row{display:flex;gap:4px}
+.pd{display:block;flex:none;font-style:normal;width:6px;height:6px;border-radius:3px;background:color-mix(in srgb,var(--color-fg-secondary) 45%,transparent);transition:width 220ms var(--ease-out),background-color 220ms var(--ease-out)}
+.pd.is-locked{background:none;box-shadow:inset 0 0 0 1.25px var(--color-border-strong)}
+.pd.is-cur{width:16px;background:var(--color-fg-accent);box-shadow:none}
+.pd.is-cur.is-locked{background:var(--color-border-strong)}
+.b .pager{gap:4px}
+
+/* C 문장으로 */
+.c .say{display:grid;justify-items:center;gap:6px;min-width:150px;text-align:center}
+.c .say b{font:600 15px/1 var(--font-sans);color:var(--color-fg-primary)}
+.c .say small{font:400 11px/1 var(--font-sans);color:var(--color-fg-muted);font-variant-numeric:tabular-nums}
+.c .pager{gap:12px}
+
+.swap{animation:swap 200ms var(--ease-out)}
+@keyframes swap{from{opacity:.2;transform:translateY(3px)}}
+@media (prefers-reduced-motion:reduce){.arrow:active svg{transform:none}.pd{transition:background-color 200ms ease}.swap{animation:fade 160ms ease}}
+@keyframes fade{from{opacity:.4}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">인연 홈 · 카드 아래 넘김 표시</p>
+  <h1 class="title">01 / 08을 조금 더 다정하게</h1>
+  <p class="intro">카드와 아래 탭, 윗부분(방금 적용한 A안)은 지금 앱 화면 그대로이고, 카드 아래 넘김 표시만 바꿨어요. 오늘 인연 8명은 12시 · 15시 · 18시 · 21시에 두 명씩 열려요. 지금 시연 상태는 12시 두 명만 열려 있어요. 각 폰의 화살표를 눌러 넘겨 보세요(카드 그림은 그대로이고 표시만 바뀌어요).</p>
+  <div class="bar"><button type="button" id="all-next">세 안 같이 다음</button><button type="button" class="ghost" id="all-prev">같이 이전</button><span id="all-state">1번째 인연</span></div>
+
+  <div class="phones">
+    <div class="col">
+      <h2><b class="now">지금</b>정리 전</h2>
+      <p>“01 / 08”이 23px로 카드 버튼 글자(인연 열어보기)보다 커서 눈이 먼저 가요. 앞에 0을 붙여 기계 숫자처럼 보이고, 화살표와 숫자 사이가 넓어서 한 덩어리로 안 읽혀요.</p>
+      <div class="phone now"></div>
+      <div class="zoom"><div class="phone now"></div></div>
+    </div>
+    <div class="col">
+      <h2><b>A</b>숫자만 가볍게</h2>
+      <p>“1 / 8”로 0을 빼고 15px로 줄여요. 지금 번호만 진하게, 전체 수는 연하게. 화살표도 20으로 줄이고 숫자 곁으로 모아 한 덩어리로 보여요.</p>
+      <div class="phone a" data-k="a"></div>
+      <div class="zoom"><div class="phone a" data-k="a"></div></div>
+    </div>
+    <div class="col">
+      <h2><b>B</b>시간대 점<em>추천</em></h2>
+      <p>숫자 대신 12시 · 15시 · 18시 · 21시마다 점 두 개. 지금 보는 사람은 길쭉한 파랑, 열린 사람은 채운 점, 아직 안 열린 사람은 빈 점이에요. 위의 일정 문구와 그대로 이어져요.</p>
+      <div class="phone b" data-k="b"></div>
+      <div class="zoom"><div class="phone b" data-k="b"></div></div>
+    </div>
+    <div class="col">
+      <h2><b>C</b>문장으로</h2>
+      <p>“첫 번째 인연” · “12시에 도착 · 오늘 8명 중”처럼 말로 알려 줘요. 안 열린 사람은 “15시에 만나요”. 가장 다정하지만 글자가 늘어요.</p>
+      <div class="phone c" data-k="c"></div>
+      <div class="zoom"><div class="phone c" data-k="c"></div></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="box">
+      <h3>세 안 비교</h3>
+      <table>
+        <tr><th>A</th><td>바꾸는 양이 가장 적고 어느 화면에나 어울려요. 다만 “8명이 시간대별로 열린다”는 건 여전히 보이지 않아요.</td></tr>
+        <tr><th>B</th><td>지금 몇 번째인지, 누가 열렸고 누가 기다리는지를 한눈에 보여 줘요. 바로 위 “매일 12시 · 15시 · 18시 · 21시, 두 명씩”을 그림으로 다시 보여 주는 셈이라 화면이 하나의 이야기로 묶여요. 점이 작아서 숫자보다 정확한 번호는 덜 또렷해요(화면 낭독은 “8명 중 1번째, 12시 인연”으로 읽어요).</td></tr>
+        <tr><th>C</th><td>야화 말투와 가장 잘 맞고 따뜻해요. 대신 넘길 때마다 글자가 바뀌어 눈이 자꾸 아래로 가고, 다섯 번째부터는 문장이 길어져요.</td></tr>
+      </table>
+      <p class="note"><b>추천은 B</b>예요. 숫자가 주던 “몇 번째”에 더해 “언제 열리는지”까지 알려 주면서 카드보다 눈에 덜 띄어요. 숫자를 꼭 남기고 싶으면 A가 가장 안전해요.</p>
+    </div>
+    <div class="box">
+      <h3>세 안 공통</h3>
+      <ul>
+        <li>화살표는 지금처럼 Figma <code>Line/Arrow/chevron</code>을 쓰되 24 → 20, 색 <code>--color-fg-secondary</code>. 누르는 영역 44는 그대로예요.</li>
+        <li>첫 장에서 이전, 마지막 장에서 다음은 흐리게(지금과 같음). 누르면 화살표가 88%로 들어가요(120ms).</li>
+        <li>표시가 바뀔 때 200ms로 살짝 떠오르며 바뀌어요. 움직임 줄이기 설정이면 흐려졌다 나타나기만 해요.</li>
+        <li>넘김 표시 자리(카드 아래 66px)와 카드 · 아래 탭 위치는 그대로예요.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+const L='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.293 7.29096C13.6834 6.90047 14.3165 6.90051 14.707 7.29096C15.0975 7.68144 15.0975 8.31448 14.707 8.70502L11.4131 11.998L14.707 15.2919C15.0975 15.6825 15.0975 16.3155 14.707 16.706C14.3165 17.0965 13.6835 17.0965 13.293 16.706L9.29297 12.706C8.90249 12.3155 8.90253 11.6825 9.29297 11.2919L13.293 7.29096Z"/></svg>';
+const R='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.29301 7.29096C9.68355 6.90051 10.3166 6.90047 10.7071 7.29096L14.7071 11.2919C15.0975 11.6825 15.0976 12.3155 14.7071 12.706L10.7071 16.706C10.3165 17.0965 9.68353 17.0965 9.29301 16.706C8.9025 16.3155 8.90249 15.6825 9.29301 15.2919L12.586 11.998L9.29301 8.70502C8.90256 8.31448 8.90252 7.68144 9.29301 7.29096Z"/></svg>';
+const N=8,SLOTS=[12,15,18,21],OPEN=2; // 지금 시연 상태: 12시 두 명만 열림
+const ORD=['첫','두','세','네','다섯','여섯','일곱','여덟'];
+const slotOf=i=>SLOTS[Math.floor(i/2)],locked=i=>i>=OPEN;
+let idx=0;
+const body={
+  a:i=>`<span class="count" aria-hidden="true"><b>${i+1}</b> / ${N}</span>`,
+  b:i=>`<span class="ps-row" aria-hidden="true">${SLOTS.map((h,g)=>`<span class="ps${Math.floor(i/2)===g?' is-cur':''}"><small>${h}시</small><span class="pd-row">${[0,1].map(k=>{const j=g*2+k;return `<i class="pd${j===i?' is-cur':''}${locked(j)?' is-locked':''}"></i>`}).join('')}</span></span>`).join('')}</span>`,
+  c:i=>`<span class="say" aria-hidden="true"><b>${ORD[i]} 번째 인연</b><small>${locked(i)?slotOf(i)+'시에 만나요':slotOf(i)+'시에 도착'} · 오늘 ${N}명 중</small></span>`
+};
+const label=i=>`${N}명 중 ${i+1}번째, ${slotOf(i)}시 인연${locked(i)?', 아직 열리지 않았어요':''}`;
+function render(animate){
+  document.querySelectorAll('.phone[data-k]').forEach(p=>{const k=p.dataset.k;
+    if(p.querySelector('.pager')){const [prev,next]=p.querySelectorAll('.arrow');prev.disabled=idx===0;next.disabled=idx===N-1;const mid=p.querySelector('.mid');mid.setAttribute('aria-label',label(idx));
+      if(k==='b'){p.querySelectorAll('.ps').forEach((s,g)=>s.classList.toggle('is-cur',Math.floor(idx/2)===g));p.querySelectorAll('.pd').forEach((d,j)=>d.classList.toggle('is-cur',j===idx));}
+      else{mid.innerHTML=body[k](idx);if(animate)mid.firstElementChild.classList.add('swap');}
+      return;}
+    p.innerHTML=`<div class="pager" role="group" aria-label="오늘의 인연 넘기기"><button type="button" class="arrow" data-d="-1" aria-label="이전 인연"${idx===0?' disabled':''}>${L}</button><span class="mid" role="status" aria-label="${label(idx)}">${body[k](idx)}</span><button type="button" class="arrow" data-d="1" aria-label="다음 인연"${idx===N-1?' disabled':''}>${R}</button></div>`;
+    if(animate&&k!=='b')p.querySelector('.mid>*').classList.add('swap');});
+  document.getElementById('all-state').textContent=`${idx+1}번째 인연 · ${slotOf(idx)}시${locked(idx)?' (아직 안 열림)':''}`;
+}
+function go(d){const n=Math.min(N-1,Math.max(0,idx+d));if(n===idx)return;idx=n;
+  // B는 점이 길어졌다 줄어드는 걸 보이려고 다시 그리지 않고 클래스만 바꿔요
+  render(true);}
+document.addEventListener('click',e=>{const b=e.target.closest('.arrow');if(b&&!b.disabled)go(+b.dataset.d);});
+document.getElementById('all-next').onclick=()=>go(1);
+document.getElementById('all-prev').onclick=()=>go(-1);
+document.addEventListener('keydown',e=>{if(!e.target.closest?.('.pager'))return;if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);});
+render(false);
+</script>
+</body>
+</html>

@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>커뮤니티 간격 다듬기</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398;--pg-on:#fff;
+  --ease-out:cubic-bezier(0.23, 1, 0.32, 1);--ease-drawer:cubic-bezier(0.32, 0.72, 0, 1);--rose:#C8697E;--rose-soft:#F8E8EC}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button,input{font:inherit;color:inherit}
+.wrap{max-width:1640px;margin:0 auto;padding:36px 16px 80px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:88ch;margin:10px 0 0;color:var(--pg-fg2)}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.toc a{padding:6px 12px;border-radius:16px;box-shadow:inset 0 0 0 1px var(--pg-line);color:var(--pg-fg);text-decoration:none;font-size:13px}
+section.part{margin-top:44px}
+section.part>h2{margin:0;font:400 23px/1.4 var(--font-serif)}
+section.part>p{max-width:88ch;margin:6px 0 0;color:var(--pg-fg2);font-size:13px}
+.phones{display:flex;flex-wrap:wrap;gap:24px;margin-top:18px}
+.col{display:flex;flex-direction:column;gap:10px;width:360px;max-width:100%}
+.col h3{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.col h3 b{display:grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:13px;background:var(--pg-accent);color:var(--pg-on);font:600 12px var(--font-sans)}
+.col h3 b.now{background:var(--pg-line);color:var(--pg-fg2)}
+.col>p{margin:0;min-height:88px;font-size:13px;color:var(--pg-fg2)}
+.col>p em{font-style:normal;color:var(--pg-fg)}
+.notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:18px}
+.box{padding:16px 18px;border-radius:16px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);font-size:13px;color:var(--pg-fg2)}
+.box h4{margin:0 0 8px;font-size:14px;color:var(--pg-fg)}
+.box ul{margin:0;padding-left:18px}.box li+li{margin-top:5px}
+.box b{color:var(--pg-fg)}
+.chk{display:inline-flex;align-items:center;gap:8px;margin-top:12px;font-size:13px}
+
+/* ── 폰 ── */
+.phone{position:relative;width:360px;max-width:100%;height:780px;border-radius:36px;overflow:hidden;background:var(--color-bg-page);color:var(--color-fg-primary);box-shadow:0 0 0 1px var(--pg-line),0 16px 40px rgb(0 0 0 / .12);isolation:isolate}
+.phone.shot{background:#F8F9F6 0 0/360px 780px no-repeat}
+.page{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;background:linear-gradient(var(--color-bg-subtle),var(--color-bg-page) 220px)}
+.page::-webkit-scrollbar{display:none}
+.gnb{position:absolute;left:0;right:0;bottom:18px;height:72px;z-index:8;background:url(gnb.jpg) 0 0/360px 90px no-repeat;pointer-events:none}
+.ib{display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;border-radius:22px;background:none;color:var(--color-fg-secondary);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ib svg{width:24px;height:24px;fill:currentColor}
+.ib:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:-4px}
+
+/* 목록 머리 */
+.lh{display:flex;align-items:flex-start;justify-content:space-between;padding:28px var(--layout-gutter) 0}
+.lh h4{margin:0;display:flex;align-items:center;gap:6px;font:400 26px/1.45 var(--font-serif)}
+.lh h4 svg{width:24px;height:24px;fill:none;stroke:var(--color-fg-accent);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.lh p{margin:2px 0 0;font:400 12px/1.5 var(--font-sans);color:var(--color-fg-accent)}
+.lh .bell{position:relative;margin:0 -10px 0 0}
+.lh .bell::after{content:"";position:absolute;right:11px;top:11px;width:7px;height:7px;border-radius:50%;background:var(--color-bg-danger,#D46262);box-shadow:0 0 0 2px var(--color-bg-page)}
+.tabs{display:flex;align-items:center;gap:20px;margin:16px var(--layout-gutter) 0;border-bottom:1px solid var(--color-border-default)}
+.tabs button{position:relative;height:44px;padding:0;border:0;background:none;color:var(--color-fg-muted);font:500 15px/1 var(--font-sans);cursor:pointer}
+.tabs button[aria-pressed="true"]{color:var(--color-fg-primary);font-weight:600}
+.tabs button[aria-pressed="true"]::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;border-radius:1px;background:var(--color-fg-primary)}
+.tabs .rule{margin-left:auto;color:var(--color-fg-muted);font-size:13px}
+.fab{position:absolute;right:var(--layout-gutter);bottom:106px;z-index:7;display:flex;align-items:center;gap:6px;height:48px;padding:0 18px 0 14px;border:0;border-radius:24px;background:var(--color-bg-accent);color:var(--color-fg-inverse);font:600 15px/1 var(--font-sans);box-shadow:0 6px 16px rgb(30 70 100 / .24);cursor:pointer}
+.fab svg{width:20px;height:20px;fill:currentColor}
+
+/* 글 한 개 (공통) */
+.post{display:block;width:100%;padding:20px var(--layout-gutter);border:0;background:none;text-align:left;color:inherit;cursor:pointer}
+.who{display:flex;align-items:center;gap:8px}
+.who .face{flex:none;width:32px;height:32px;border-radius:50%;overflow:hidden}
+.who .face svg{display:block;width:100%;height:100%;padding:2px}
+.who .face .sketch-shirt{fill:var(--shirt,var(--color-bg-muted));stroke:var(--color-fg-secondary);stroke-width:1.5;stroke-linejoin:round}
+.who .face .sketch-line{fill:none;stroke:var(--color-fg-secondary);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.g{display:inline-block;padding:2px 7px;border-radius:8px;font:600 11px/1.5 var(--font-sans)}
+.g.f{color:var(--color-fg-love-strong,#9B4B5E);background:var(--color-bg-love-soft,#F8E8EC)}
+.g.m{color:var(--color-fg-accent-strong);background:var(--color-bg-notice,#E8F1F8)}
+.who .me{font:600 11px/1.5 var(--font-sans);color:var(--color-fg-secondary)}
+.who time{font:400 12px/1 var(--font-sans);color:var(--color-fg-muted)}
+.post .body{margin:10px 0 0;font:400 15px/1.7 var(--font-sans);color:var(--color-fg-primary);white-space:pre-line;word-break:keep-all}
+.post .pic{position:relative;margin-top:12px;border-radius:16px;overflow:hidden;aspect-ratio:4/3;background:var(--color-bg-subtle)}
+.post .pic img{width:100%;height:100%;object-fit:cover;display:block}
+.post .pic .n{position:absolute;right:10px;top:10px;padding:3px 8px;border-radius:10px;background:rgb(0 0 0 / .45);color:#fff;font:600 11px/1.4 var(--font-sans);font-variant-numeric:tabular-nums}
+.acts{display:flex;align-items:center;gap:4px;margin:10px 0 -8px -10px}
+.act{display:inline-flex;align-items:center;gap:5px;height:40px;min-width:44px;padding:0 10px;border:0;border-radius:20px;background:none;color:var(--color-fg-secondary);font:500 13px/1 var(--font-sans);font-variant-numeric:tabular-nums;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color 160ms var(--ease-out),color 160ms var(--ease-out)}
+.act svg{flex:none;width:20px;height:20px;fill:currentColor;overflow:visible}
+.act .cnt{display:inline-block;min-width:1ch;overflow:hidden;height:16px;line-height:16px}
+.act .cnt span{display:block}
+.act.zero .cnt{color:var(--color-fg-muted)}
+.act.like.on{color:var(--rose)}
+.act:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:-2px}
+.sep{height:1px;margin:0 var(--layout-gutter);background:var(--color-border-default)}
+
+/* A: 선 아이콘 · 줄 구분 */
+/* B: 카드 · 알약 버튼 */
+.v-b .page{background:linear-gradient(var(--color-bg-subtle),var(--color-bg-muted) 260px)}
+.v-b .list{display:grid;gap:12px;padding:16px var(--layout-gutter) 160px}
+.v-b .post{padding:16px;border-radius:20px;background:var(--color-bg-surface);box-shadow:0 1px 0 rgb(30 50 70 / .04),inset 0 0 0 1px var(--color-border-default)}
+.v-b .acts{margin:12px 0 0;gap:8px}
+.v-b .act{height:34px;min-width:0;padding:0 12px;background:var(--color-bg-muted)}
+.v-b .act.like.on{background:var(--rose-soft)}
+.v-b .sep{display:none}
+.v-b .tabs{margin-bottom:0}
+/* C: 손그림 · 노트 */
+.v-c .act svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.v-c .act.like svg path{stroke-dasharray:120;stroke-dashoffset:0}
+.v-c .act.like.on svg path{fill:color-mix(in srgb,var(--rose) 22%,transparent)}
+.v-c .sep{height:0;border-top:1.5px dashed color-mix(in srgb,var(--color-border-default) 100%,transparent);background:none}
+.v-c .post .pic{transform:rotate(-.6deg);border-radius:6px;box-shadow:0 2px 8px rgb(30 50 70 / .10);border:6px solid var(--white)}
+.v-c .post:nth-child(4n+3) .pic{transform:rotate(.6deg)}
+.list{padding-bottom:160px}
+
+/* ── 글 상세 ── */
+.dt{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;height:64px;padding:20px var(--layout-gutter) 0;background:linear-gradient(var(--color-bg-subtle) 70%,transparent)}
+.dt .ib:first-child{margin-left:-10px}.dt .ib:last-child{margin-right:-10px}
+.d-post{padding:8px var(--layout-gutter) 0}
+.d-post .who .face{width:36px;height:36px}
+.d-post .who b{font:600 14px/1.3 var(--font-sans)}
+.d-post .who .sub{display:block;margin-top:2px;font:400 12px/1 var(--font-sans);color:var(--color-fg-muted)}
+.d-post .body{margin:14px 0 0;font:400 16px/1.75 var(--font-sans);white-space:pre-line;word-break:keep-all}
+.d-post .pic{position:relative;margin-top:14px;border-radius:16px;overflow:hidden;aspect-ratio:4/3}
+.d-post .pic img{width:100%;height:100%;object-fit:cover;display:block}
+.d-row{display:flex;align-items:center;margin:12px 0 0 -10px}
+.xreq{margin-left:auto;display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:0;border-radius:16px;background:none;box-shadow:inset 0 0 0 1px var(--color-border-accent);color:var(--color-fg-accent-strong);font:600 12px/1 var(--font-sans);cursor:pointer}
+.xreq svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.xcard{display:flex;align-items:center;gap:12px;margin:16px 0 0;padding:14px 14px 14px 16px;border-radius:16px;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-default);width:100%;border:0;text-align:left;cursor:pointer}
+.xcard span{flex:1}.xcard b{display:block;font:600 14px/1.4 var(--font-sans);color:var(--color-fg-primary)}.xcard small{font:400 12px/1.5 var(--font-sans);color:var(--color-fg-secondary)}
+.xcard .go{flex:none;height:32px;padding:0 12px;border-radius:16px;background:var(--color-bg-accent);color:var(--color-fg-inverse);font:600 12px/32px var(--font-sans)}
+.cm-h{display:flex;align-items:baseline;gap:6px;margin:24px var(--layout-gutter) 4px;padding-top:20px;border-top:8px solid var(--color-bg-muted);margin-left:0;margin-right:0;padding-left:var(--layout-gutter)}
+.cm-h b{font:600 15px/1.4 var(--font-sans)}.cm-h span{font:600 15px/1.4 var(--font-sans);color:var(--color-fg-accent)}
+.cmt{display:flex;gap:10px;padding:12px var(--layout-gutter) 4px}
+.cmt.reply{padding-left:calc(var(--layout-gutter) + 38px)}
+.cmt .face{flex:none;width:28px;height:28px;border-radius:50%;overflow:hidden}
+.cmt .face svg{display:block;width:100%;height:100%;padding:2px}
+.cmt .face .sketch-shirt{fill:var(--shirt,var(--color-bg-muted));stroke:var(--color-fg-secondary);stroke-width:1.5}
+.cmt .face .sketch-line{fill:none;stroke:var(--color-fg-secondary);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.cmt .c{flex:1;min-width:0}
+.cmt .ch{display:flex;align-items:center;gap:6px}
+.cmt .ch b{font:600 13px/1.3 var(--font-sans)}
+.cmt .ch time{font:400 11px/1 var(--font-sans);color:var(--color-fg-muted)}
+.cmt .ch .ib{margin:-12px -12px -12px auto;width:40px;height:40px}.cmt .ch .ib svg{width:18px;height:18px}
+.cmt p{margin:4px 0 0;font:400 14px/1.6 var(--font-sans);word-break:keep-all}
+.cmt .ca{display:flex;align-items:center;gap:2px;margin:2px 0 0 -10px}
+.cmt .ca .act{height:32px;font-size:12px;padding:0 10px}
+.cmt .ca .act svg{width:16px;height:16px}
+.cmt .tag{font:600 10px/1.5 var(--font-sans);padding:1px 6px;border-radius:6px;background:var(--color-bg-muted);color:var(--color-fg-secondary)}
+.empty-c{margin:8px var(--layout-gutter) 0;padding:20px;border-radius:14px;background:var(--color-bg-surface);text-align:center;font:400 13px/1.6 var(--font-sans);color:var(--color-fg-muted)}
+.bar{position:absolute;left:0;right:0;bottom:0;z-index:8;display:flex;align-items:center;gap:8px;padding:10px var(--layout-gutter) 28px;background:var(--color-bg-page);box-shadow:0 -1px 0 var(--color-border-default)}
+.bar .in{flex:1;display:flex;align-items:center;min-height:44px;padding:0 6px 0 16px;border-radius:22px;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-default)}
+.bar .in:focus-within{box-shadow:inset 0 0 0 1.5px var(--color-border-focus)}
+.bar input{flex:1;min-width:0;height:44px;border:0;background:none;outline:none;font:400 15px/1 var(--font-sans);color:var(--color-fg-primary)}
+.bar input::placeholder{color:var(--color-fg-muted)}
+.bar .send{flex:none;display:grid;place-items:center;width:34px;height:34px;border:0;border-radius:17px;background:var(--color-bg-accent);color:var(--color-fg-inverse);cursor:pointer;transition:background-color 160ms var(--ease-out),transform 160ms var(--ease-out)}
+.bar .send:disabled{background:var(--color-bg-control);color:var(--color-fg-muted);cursor:default}
+.bar .send svg{width:18px;height:18px;fill:currentColor}
+.bar .replying{position:absolute;left:0;right:0;top:-32px;display:flex;justify-content:space-between;align-items:center;height:32px;padding:0 var(--layout-gutter);background:var(--color-bg-muted);font:500 12px/1 var(--font-sans);color:var(--color-fg-secondary)}
+.bar .replying button{height:32px;border:0;background:none;color:var(--color-fg-muted);font-size:12px;cursor:pointer}
+
+/* 시트 */
+.layer{position:absolute;inset:0;z-index:30;pointer-events:none}.layer.on{pointer-events:auto}
+.dim{position:absolute;inset:0;background:var(--photo-sheet-dim);opacity:0;transition:opacity 240ms var(--ease-out)}.layer.on .dim{opacity:1;transition-duration:300ms}
+.sheet{position:absolute;left:0;right:0;bottom:0;padding:8px var(--layout-gutter) 32px;border-radius:24px 24px 0 0;background:var(--color-bg-surface);transform:translateY(100%);transition:transform 240ms var(--ease-out)}
+.layer.on .sheet{transform:none;transition:transform 300ms var(--ease-drawer)}
+.handle{display:block;width:36px;height:4px;margin:0 auto 12px;border-radius:2px;background:var(--color-bg-control)}
+.row{display:flex;align-items:center;gap:12px;width:calc(100% + 16px);height:52px;margin:0 -8px;padding:0 8px;border:0;border-radius:12px;background:none;color:var(--color-fg-primary);font:500 15px/1 var(--font-sans);text-align:left;cursor:pointer}
+.row:active{background:var(--color-bg-muted)}
+.row svg{width:24px;height:24px;fill:var(--color-fg-secondary)}
+.row.danger,.row.danger svg{color:var(--color-fg-danger);fill:var(--color-fg-danger)}
+.hr{height:1px;margin:8px 0;background:var(--color-border-default)}
+.toast{position:absolute;left:50%;bottom:120px;z-index:40;transform:translate(-50%,6px);padding:8px 14px;border-radius:10px;background:var(--color-bg-inverse);color:var(--color-fg-inverse);font:500 12px/20px var(--font-sans);white-space:nowrap;opacity:0;transition:opacity 180ms var(--ease-out),transform 180ms var(--ease-out);pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.spark{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--rose);pointer-events:none}
+@media (prefers-reduced-motion:reduce){.sheet,.layer.on .sheet{transform:none;opacity:0;transition:opacity 200ms ease}.layer.on .sheet{opacity:1}}
+
+/* 간격 안 */
+.list .post{padding:var(--gap,20px) var(--layout-gutter)}
+.list .post .acts{margin-bottom:-8px}
+.d-post .who .sub{margin-top:var(--meta-gap,2px)}
+.d-post .who .who-t{display:block}
+/* 빈 댓글 */
+.e1{margin:28px var(--layout-gutter) 0;text-align:center}
+.e1 svg{width:40px;height:40px;fill:none;stroke:var(--color-border-strong);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.e1 b{display:block;margin-top:6px;font:500 14px/1.5 var(--font-sans);color:var(--color-fg-secondary)}
+.e1 small{display:block;margin-top:2px;font:400 12px/1.5 var(--font-sans);color:var(--color-fg-muted)}
+.e2{margin:12px var(--layout-gutter) 0;font:400 13px/1.6 var(--font-sans);color:var(--color-fg-muted)}
+.e3{display:flex;align-items:center;gap:10px;width:calc(100% - var(--layout-gutter) * 2);margin:12px var(--layout-gutter) 0;padding:10px 0;border:0;background:none;text-align:left;cursor:pointer}
+.e3 .face{flex:none;width:28px;height:28px;border-radius:50%;background:var(--color-bg-muted);display:grid;place-items:center}
+.e3 .face svg{width:16px;height:16px;fill:var(--color-fg-muted)}
+.e3 span{font:400 14px/1.5 var(--font-sans);color:var(--color-fg-muted)}
+.e3 span b{font-weight:600;color:var(--color-fg-accent)}
+/* 입력칸 포커스: 지금(띠) · 고친 뒤 */
+.bar input.bug{border-radius:12px;box-shadow:inset 0 0 0 .5px var(--color-fg-accent)}
+.bar .in.is-focus{box-shadow:inset 0 0 0 1.5px var(--color-border-focus)}
+.cm-h{border-top:1px solid var(--color-border-default)!important;margin-left:var(--layout-gutter)!important;margin-right:var(--layout-gutter)!important;padding-left:0!important}
+.gaptag{display:inline-block;margin-left:6px;padding:2px 8px;border-radius:10px;background:var(--pg-line);color:var(--pg-fg2);font:600 11px/1.5 var(--font-sans)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">커뮤니티 · 간격 다듬기</p>
+  <h1 class="title">글 사이는 촘촘하게, 빈 자리는 조용하게</h1>
+  <p class="intro">지금 앱의 목록 A · 상세 A 그대로에서 간격만 다듬었어요. 공감 하트 · 글 열기도 그대로 눌러 볼 수 있어요.</p>
+  <section class="part">
+    <h2>① 커뮤니티 메인 · 글 사이 간격</h2>
+    <p>지금은 글을 감싼 상자 두 겹에 위아래 20씩 들어가서, 반응 줄과 다음 글 사이가 80쯤 벌어져 있어요. 글 위아래 여백을 한 겹으로 합치고 값만 바꿔 봤어요. 숫자는 구분선 위 · 아래 여백이에요.</p>
+    <div class="phones">
+      <div class="col"><h3><b class="now">지금</b>40 + 40<span class="gaptag">사이 약 80</span></h3><p>글 하나가 화면을 다 차지해서 한 번에 보이는 글이 적어요.</p><div class="phone v-a" id="g0" style="--gap:40px"></div></div>
+      <div class="col"><h3><b>G1</b>24 + 24<span class="gaptag">사이 48</span></h3><p>지금보다 한결 촘촘하면서 여유가 남아요. 사진 글이 이어져도 답답하지 않아요.</p><div class="phone v-a" id="g1" style="--gap:24px"></div></div>
+      <div class="col"><h3><b>G2</b>20 + 20<span class="gaptag">사이 40</span><em style="font:600 11px/1 var(--font-sans);font-style:normal;padding:4px 8px;border-radius:10px;background:var(--color-bg-accent-soft);color:var(--color-fg-accent-strong);margin-left:6px">추천</em></h3><p>여백선(20)과 같은 값이라 화면 전체 박자가 맞아요. 짧은 글이 많은 피드에서 가장 읽기 좋아요.</p><div class="phone v-a" id="g2" style="--gap:20px"></div></div>
+      <div class="col"><h3><b>G3</b>16 + 16<span class="gaptag">사이 32</span></h3><p>가장 촘촘해요. 한 화면에 글이 많이 보이지만, 사진 글 사이에선 조금 붙어 보여요.</p><div class="phone v-a" id="g3" style="--gap:16px"></div></div>
+    </div>
+  </section>
+  <section class="part">
+    <h2>② 글 상세 · 시간 줄 · 빈 댓글 · 입력칸</h2>
+    <p>세 폰 모두 “1일 전”을 이름 줄에서 2 → 6으로 띄웠고, 입력칸을 눌렀을 때 안쪽에 생기던 얇은 띠(지금 앱 공통 포커스 규칙이 안쪽 글자 칸에도 걸린 것)를 없앴어요. 바깥 둥근 테두리만 진해져요. 다른 건 “아직 이야기가 없어요” 자리예요. 입력칸을 눌러 보세요.</p>
+    <div class="phones">
+      <div class="col"><h3><b class="now">지금</b>상자 · 붙은 시간</h3><p>흰 상자가 갑자기 공간을 나누고, 시간이 이름에 붙어 있어요. 입력칸을 누르면 안쪽에 띠가 하나 더 생겨요(오른쪽 아래처럼).</p><div class="phone" id="e0"></div></div>
+      <div class="col"><h3><b>E1</b>가운데 · 손그림 말풍선<em style="font:600 11px/1 var(--font-sans);font-style:normal;padding:4px 8px;border-radius:10px;background:var(--color-bg-accent-soft);color:var(--color-fg-accent-strong)">추천</em></h3><p>배경 없이 연한 손그림 말풍선 + “아직 이야기가 없어요” · “첫 이야기를 남겨 보세요”. 비어 있다는 게 부드럽게 보여요.</p><div class="phone" id="e1"></div></div>
+      <div class="col"><h3><b>E2</b>한 줄 안내</h3><p>“이야기” 머리 아래 연한 글자 한 줄만. 가장 조용하고 공간도 가장 적게 써요.</p><div class="phone" id="e2"></div></div>
+      <div class="col"><h3><b>E3</b>첫 댓글 자리</h3><p>댓글이 들어갈 자리에 빈 얼굴 + “<b>첫 이야기</b>를 남겨 볼까요?” 한 줄. 누르면 입력칸으로 바로 가요.</p><div class="phone" id="e3"></div></div>
+    </div>
+  </section>
+</div>
+<script>
+const SK={"f": ["<svg style=\"background:#EAE5F2;--shirt:#E9EBD9\" viewBox=\"0 0 72 80\" aria-hidden=\"true\"><path class=\"sketch-shirt\" d=\"M14 77L18 50Q21 43 29 42L35 49L42 42Q52 44 56 53L61 77\"></path><g class=\"sketch-line\"><path d=\"M22 45Q14 37 23 24C18 10 42 8 45 22L48 46M25 19Q33 23 41 18\"></path><path d=\"M28 25L28 33Q34 42 41 33L42 27M30 38L29 43M39 38L42 43M19 54L16 73M52 54L56 74M29 43Q34 55 42 43\"></path><path d=\"M32 28h.3M39 28h.3\"></path></g></svg>", "<svg style=\"background:#DDEDF0;--shirt:#F1E8EE\" viewBox=\"0 0 72 80\" aria-hidden=\"true\"><path class=\"sketch-shirt\" d=\"M14 77L18 50Q21 43 29 42L35 49L42 42Q52 44 56 53L61 77\"></path><g class=\"sketch-line\"><path d=\"M23 32Q14 27 20 19C12 8 24 5 28 14Q41 8 45 22M26 20L42 18\"></path><path d=\"M28 25L28 33Q34 42 41 33L42 27M30 38L29 43M39 38L42 43M19 54L16 73M52 54L56 74M29 43Q34 55 42 43\"></path><path d=\"M32 28h.3M39 28h.3\"></path></g></svg>"], "m": ["<svg style=\"background:#E5ECE7;--shirt:#E3EDE5\" viewBox=\"0 0 72 80\" aria-hidden=\"true\"><path class=\"sketch-shirt\" d=\"M14 77L18 50Q21 43 29 42L35 49L42 42Q52 44 56 53L61 77\"></path><g class=\"sketch-line\"><path d=\"M22 27L21 17Q34 7 45 18L44 27M25 19Q35 22 42 17\"></path><path d=\"M26 26h9v6h-9zM37 26h8v6h-8zM35 28h2\"></path><path d=\"M28 25L28 33Q34 42 41 33L42 27M30 38L29 43M39 38L42 43M19 54L16 73M52 54L56 74M29 43Q34 55 42 43\"></path><path d=\"M32 28h.3M39 28h.3\"></path></g></svg>", "<svg style=\"background:#E3EDE5;--shirt:#F1E2E0\" viewBox=\"0 0 72 80\" aria-hidden=\"true\"><path class=\"sketch-shirt\" d=\"M14 77L18 50Q21 43 29 42L35 49L42 42Q52 44 56 53L61 77\"></path><g class=\"sketch-line\"><path d=\"M24 27C16 21 23 10 35 13C48 10 49 26 42 29M24 20Q33 24 42 18\"></path><path d=\"M26 26h9v6h-9zM37 26h8v6h-8zM35 28h2\"></path><path d=\"M28 25L28 33Q34 42 41 33L42 27M30 38L29 43M39 38L42 43M19 54L16 73M52 54L56 74M29 43Q34 55 42 43\"></path><path d=\"M32 28h.3M39 28h.3\"></path></g></svg>"]};
+const ICON={
+ heart:'M20.0029 9.04344C20.0029 7.7381 19.6274 6.85641 19.126 6.28465C18.6205 5.70837 17.9184 5.36821 17.1279 5.26902C15.5046 5.06541 13.6889 5.894 12.8984 7.48191C12.7294 7.82145 12.3822 8.03645 12.0029 8.0366C11.624 8.0366 11.2777 7.82195 11.1084 7.48289C10.316 5.89412 8.49947 5.06558 6.87695 5.26902C6.08674 5.36816 5.3851 5.70839 4.87988 6.28465C4.37864 6.85638 4.00293 7.73786 4.00293 9.04344C4.00301 11.5635 5.94075 14.0526 8.16797 16.0337C9.24899 16.9952 10.3347 17.7813 11.1523 18.3276C11.4892 18.5527 11.7799 18.7345 12.0029 18.8716C12.2259 18.7345 12.5166 18.5527 12.8535 18.3276C13.6711 17.7813 14.7569 16.9952 15.8379 16.0337C18.0651 14.0526 20.0028 11.5635 20.0029 9.04344ZM22.0029 9.04344C22.0028 12.4982 19.4406 15.5063 17.168 17.5278C15.9991 18.5675 14.8346 19.4095 13.9648 19.9907C13.529 20.2819 13.1645 20.5089 12.9072 20.6645C12.7786 20.7423 12.6765 20.8021 12.6055 20.8432C12.57 20.8638 12.5419 20.88 12.5225 20.8911C12.513 20.8965 12.5054 20.9007 12.5 20.9038C12.4972 20.9053 12.4948 20.9068 12.4932 20.9077L12.4912 20.9087L12.4902 20.9096C12.2253 21.0574 11.9094 21.0762 11.6318 20.9653L11.5156 20.9096L11.5127 20.9077C11.511 20.9068 11.5086 20.9053 11.5059 20.9038C11.5004 20.9007 11.4929 20.8965 11.4834 20.8911C11.4639 20.88 11.4359 20.8638 11.4004 20.8432C11.3294 20.8021 11.2272 20.7423 11.0986 20.6645C10.8414 20.5089 10.4768 20.2819 10.041 19.9907C9.17124 19.4095 8.00672 18.5675 6.83789 17.5278C4.56522 15.5063 2.00301 12.4982 2.00293 9.04344C2.00293 7.33859 2.50261 5.96252 3.37598 4.96629C4.24544 3.97457 5.41839 3.43639 6.62793 3.28465C8.52639 3.04654 10.6196 3.75103 12.002 5.27976C13.3835 3.75045 15.4782 3.0465 17.377 3.28465C18.5865 3.43643 19.7602 3.97376 20.6299 4.96531C21.5037 5.96152 22.0029 7.33838 22.0029 9.04344Z',
+ heartFill:'M12.003 5.25697C12.938 4.25297 14.188 3.56896 15.552 3.34096C18.211 2.83896 20.743 4.11596 21.642 6.71596C21.897 7.44596 22.002 8.22198 22.002 9.04298C22.002 10.731 21.359 12.3729 20.437 13.8319C19.543 15.2009 18.398 16.4319 17.167 17.5269C16.159 18.3939 15.087 19.2149 13.965 19.9899C13.481 20.3099 12.993 20.629 12.487 20.903C12.186 21.085 11.816 21.085 11.515 20.903C11.009 20.629 10.521 20.3099 10.042 19.9899C8.91999 19.2149 7.84803 18.3939 6.84003 17.5269C5.60303 16.4319 4.46297 15.2009 3.56897 13.8319C2.64797 12.3729 2.004 10.731 2 9.04298C2 8.22198 2.10499 7.44596 2.35999 6.71596C3.26299 4.11596 5.79501 2.83896 8.45001 3.34096C9.81401 3.56896 11.068 4.25297 12.003 5.25697Z',
+ chat:'M20 5.02881C19.9999 4.48 19.5415 4.02197 19 4.02197H5C4.4585 4.02197 4.0001 4.48 4 5.02881V18.6196L5.29199 17.3228L5.29297 17.3218C6.03826 16.5777 6.99796 16.0249 8 16.0249H19C19.5415 16.0249 20 15.5669 20 15.0181V5.02881ZM22 15.0181C22 16.6591 20.6584 18.0249 19 18.0249H8C7.72207 18.0249 7.24168 18.2031 6.70703 18.7368L6.70605 18.7358L4.70801 20.7417L4.70215 20.7476C4.37329 21.072 3.93481 21.1959 3.51074 21.1196C3.13483 21.052 2.84532 20.8443 2.65137 20.6489C2.26328 20.2578 2 19.6631 2 19.0327V5.02881C2.0001 3.38778 3.34162 2.02197 5 2.02197H19C20.6584 2.02197 21.9999 3.38778 22 5.02881V15.0181Z',
+ more:'M6 9.95898C7.10808 9.95898 7.99997 10.8685 8 11.9619C8 13.0557 7.10879 13.9658 6 13.9658C4.87472 13.9658 4 13.0491 4 11.9619C4.00003 10.875 4.87543 9.95898 6 9.95898ZM12 9.95898C13.1081 9.95898 14 10.8685 14 11.9619C14 13.0557 13.1088 13.9658 12 13.9658C10.8912 13.9658 10 13.0557 10 11.9619C10 10.8685 10.8919 9.95898 12 9.95898ZM18 9.95898C19.1081 9.95898 20 10.8685 20 11.9619C20 13.0557 19.1088 13.9658 18 13.9658C16.8747 13.9658 16 13.0491 16 11.9619C16 10.875 16.8754 9.95898 18 9.95898Z',
+ back:'M14.293 5.28896C14.6835 4.89851 15.3165 4.89859 15.7071 5.28896C16.0975 5.6794 16.0975 6.31246 15.7071 6.70302L10.4131 11.9979L15.7071 17.2899C16.0976 17.6804 16.0975 18.3134 15.7071 18.704C15.3166 19.0945 14.6836 19.0944 14.293 18.704L8.29303 12.706C7.90262 12.3155 7.90268 11.6824 8.29303 11.2919L14.293 5.28896Z',
+ up:'M10.9989 19.001V7.41504L7.70598 10.708C7.31545 11.0985 6.68244 11.0985 6.29192 10.708C5.90139 10.3175 5.90139 9.68447 6.29192 9.29395L11.2919 4.29395L11.3652 4.22754C11.5431 4.0817 11.7669 4.00098 11.9989 4.00098C12.2641 4.00099 12.5185 4.10642 12.706 4.29395L17.705 9.29395C18.0955 9.68448 18.0955 10.3175 17.705 10.708C17.3145 11.0985 16.6814 11.0985 16.2909 10.708L12.9989 7.41504V19.001C12.9989 19.5533 12.5512 20.001 11.9989 20.001C11.4467 20.001 10.9989 19.5533 10.9989 19.001Z',
+ plus:'M11 5a1 1 0 1 1 2 0v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6z',
+ bell:'M12 2.5c-3.6 0-6.5 2.9-6.5 6.5v3.6L4.2 15a1 1 0 0 0 .9 1.5h13.8a1 1 0 0 0 .9-1.5l-1.3-2.4V9c0-3.6-2.9-6.5-6.5-6.5Zm0 2c2.5 0 4.5 2 4.5 4.5v3.9c0 .2 0 .3.1.5l.6 1.1H6.8l.6-1.1c.1-.2.1-.3.1-.5V9c0-2.5 2-4.5 4.5-4.5ZM9.6 18.5a2.5 2.5 0 0 0 4.8 0Z',
+ siren:'M18.0009 17.9849L17.998 17.98H6.00383L6.0009 17.9849V19.9897L6.00383 19.9937H17.998L18.0009 19.9897V17.9849ZM15.0038 12.9663C15.0038 11.3361 13.6661 9.99756 12.0029 9.99756C10.3366 9.99756 9.00286 11.3351 9.00286 12.9663V15.98H11.0029V12.9663C11.0029 12.414 11.4506 11.9663 12.0029 11.9663C12.5551 11.9663 13.0029 12.414 13.0029 12.9663V15.98H15.0038V12.9663ZM17.0038 15.98H18.0019C19.1146 15.98 20.0008 16.8922 20.0009 17.9829V19.9897C20.0009 21.0808 19.1153 21.9937 18.0019 21.9937H5.99993C4.88658 21.9937 4.0009 21.0809 4.0009 19.9897V17.9829C4.00097 16.8921 4.88731 15.98 5.99993 15.98H7.00286V12.9663C7.00286 10.2175 9.24512 7.99756 12.0029 7.99756C14.7556 7.99756 17.0038 10.2165 17.0038 12.9663V15.98ZM11.0029 4.98291V2.97607C11.0029 2.42379 11.4506 1.97607 12.0029 1.97607C12.5551 1.97607 13.0029 2.42379 13.0029 2.97607V4.98291C13.0029 5.53519 12.5551 5.98291 12.0029 5.98291C11.4506 5.98291 11.0029 5.53519 11.0029 4.98291Z',
+ eyeoff:'M1.29288 1.29288C1.68341 0.902383 2.31643 0.902367 2.70694 1.29288L22.7069 21.2948C23.0974 21.6854 23.0974 22.3184 22.7069 22.7089C22.3164 23.0994 21.6834 23.0994 21.2929 22.7089L16.7958 18.2118C15.2747 18.8527 13.5034 19.0019 11.9999 19.0019C7.65647 19.0019 3.74139 16.3911 2.07608 12.3866C1.9739 12.1406 1.97453 11.8639 2.07706 11.6181C2.81801 9.84151 3.88707 8.08827 5.43741 6.85147L1.29288 2.70694C0.902383 2.31641 0.902367 1.68338 1.29288 1.29288ZM6.86319 8.27823C5.68773 9.14947 4.78043 10.4658 4.0917 11.996C5.52895 15.0393 8.60187 17.0019 11.9999 17.0019C13.124 17.0019 14.2482 16.9075 15.2255 16.6405L6.86319 8.27823ZM11.9999 4.99991C16.3435 4.99991 20.2585 7.61047 21.9237 11.619C22.0263 11.866 22.0254 12.144 21.9218 12.3905C21.6463 13.045 21.3132 13.8774 20.8163 14.579C20.4971 15.0297 19.8725 15.1364 19.4218 14.8173C18.9711 14.4981 18.8643 13.8734 19.1835 13.4228C19.4615 13.0302 19.6755 12.5613 19.9091 12.0126C18.4724 8.96402 15.399 6.99991 11.9999 6.99991C11.4476 6.99991 10.9999 6.55219 10.9999 5.99991C10.9999 5.44762 11.4476 4.99991 11.9999 4.99991Z',
+ slash:'M20 11.999C20 7.58316 16.4176 3.99902 12 3.99902C10.1514 3.99902 8.44951 4.62714 7.09473 5.68066L18.3164 16.9043C19.37 15.5495 20 13.8487 20 11.999ZM4 11.999C4 16.4186 7.58214 19.999 12 19.999C13.8479 19.999 15.5479 19.3705 16.9023 18.3184L5.68164 7.0957C4.62858 8.45051 4 10.1514 4 11.999ZM22 11.999C22 17.5235 17.5221 21.999 12 21.999C6.47786 21.999 2 17.5235 2 11.999C2 6.47888 6.47757 1.99902 12 1.99902C17.5224 1.99902 22 6.47888 22 11.999Z'
+};
+const HS='M8.00003 24C1.00003 10 17 5.00001 23 19C30 1.33514e-05 46 8.00001 37 23C31.6667 29.6667 23.3334 35.3333 12 40C20 32.6667 30.3334 29.3333 43 30';
+const TALK='M16 20H32M16 26H26M8 12C18.6667 9.33333 29.3333 9.99999 40 14V32L26 34L14 42V34L8 32V12Z';
+const ic=(k,s=24)=>`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${ICON[k]}"/></svg>`;
+const k=()=>document.getElementById('slow').checked?4:1;
+const reduce=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+const EO='cubic-bezier(0.23, 1, 0.32, 1)';
+
+const POSTS=[
+ {id:'p4',g:'f',sk:0,t:'방금',body:'카페에서 두 시간 수다 떨고 남은 사진은 커피 한 장ㅋㅋ 얼음 다 녹은 줄도 몰랐네',pic:'cafe.jpg',picN:1,likes:12,comments:[]},
+ {id:'p3',g:'m',sk:0,t:'3일 전',me:true,body:'날씨 좋은 날 가볍게 산책하고 싶어요.',likes:0,comments:[{g:'f',sk:1,who:'익명 1',t:'2일 전',b:'이야기가 반가워요. 오늘도 좋은 하루 보내세요.',likes:2},{g:'m',sk:1,who:'익명 · 글쓴이',t:'2일 전',b:'고마워요! 내일은 한강 쪽으로 걸어 보려고요.',likes:1,reply:true,author:true}]},
+ {id:'p0',g:'f',sk:1,t:'3일 전',body:'퇴근길에 꽃 샀는데 포장 풀기가 아까움ㅋㅋ 그냥 이대로 꽂아두면 안 되나요',pic:'walk.jpg',picN:3,likes:3,comments:[{g:'m',sk:0,who:'익명 1',t:'3일 전',b:'ㅋㅋ 저도요',likes:0}]},
+ {id:'p1',g:'m',sk:1,t:'4일 전',body:'비 온다! 오늘 플레이리스트 첫 곡 추천받습니다 ☔',likes:10,comments:[]},
+ {id:'p2',g:'f',sk:0,t:'4일 전',body:'첫 만남에 산책 괜찮아요? 카페에 마주 앉으면 면접 보는 것처럼 얼어버려서요…',likes:17,comments:[]}];
+const face=(g,i)=>`<span class="face">${(g==='f'?SK.f:SK.m)[i%2]}</span>`;
+const gchip=g=>`<span class="g ${g}">${g==='f'?'여성':'남성'}</span>`;
+
+/* 공감 · 이야기 버튼 */
+function likeIcon(v,on){if(v==='c')return `<svg viewBox="0 0 48 48" aria-hidden="true"><path d="${HS}"/></svg>`;return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${on?ICON.heartFill:ICON.heart}"/></svg>`;}
+function talkIcon(v){if(v==='c')return `<svg viewBox="0 0 48 48" aria-hidden="true"><path d="${TALK}"/></svg>`;return ic('chat');}
+function acts(p,v){const n=p.comments.length;return `<div class="acts"><button type="button" class="act like${p.on?' on':''}${p.likes?'':' zero'}" data-like="${p.id}" aria-pressed="${!!p.on}" aria-label="공감 ${p.likes}">${likeIcon(v,p.on)}<span class="cnt"><span>${p.likes}</span></span></button><button type="button" class="act talk${n?'':' zero'}" aria-label="이야기 ${n}">${talkIcon(v)}<span class="cnt"><span>${n}</span></span></button></div>`;}
+function rollCount(btn,from,to){const box=btn.querySelector('.cnt'),K=k();const up=to>from;box.innerHTML=`<span>${to}</span>`;if(reduce())return;box.firstElementChild.animate([{transform:`translateY(${up?14:-14}px)`,opacity:0},{transform:'none',opacity:1}],{duration:240*K,easing:EO});}
+function popLike(btn,v,on){const svg=btn.querySelector('svg'),K=k();if(reduce())return;
+  if(!on){svg.animate([{transform:'scale(.9)'},{transform:'scale(1)'}],{duration:160*K,easing:EO});return;}
+  if(v==='a'){svg.animate([{transform:'scale(1)'},{transform:'scale(.8)',offset:.25},{transform:'scale(1.25)',offset:.6},{transform:'scale(1)'}],{duration:420*K,easing:EO});
+    const r=btn.getBoundingClientRect(),pr=btn.closest('.phone').getBoundingClientRect(),cx=r.left-pr.left+10+10,cy=r.top-pr.top+r.height/2;
+    for(let i=0;i<6;i++){const s=document.createElement('i');s.className='spark';s.style.left=(cx-3)+'px';s.style.top=(cy-3)+'px';btn.closest('.phone').append(s);const a=i/6*Math.PI*2-Math.PI/2,d=16;
+      s.animate([{transform:'translate(0,0) scale(.4)',opacity:1},{transform:`translate(${Math.cos(a)*d}px,${Math.sin(a)*d}px) scale(.9)`,opacity:1,offset:.6},{transform:`translate(${Math.cos(a)*d*1.3}px,${Math.sin(a)*d*1.3}px) scale(.2)`,opacity:0}],{duration:460*K,delay:80*K,easing:EO,fill:'backwards'}).onfinish=()=>s.remove();}}
+  if(v==='b'){btn.animate([{transform:'scale(1)'},{transform:'scale(.94)',offset:.3},{transform:'scale(1)'}],{duration:260*K,easing:EO});svg.animate([{transform:'scale(.7) rotate(-8deg)'},{transform:'scale(1.18) rotate(4deg)',offset:.55},{transform:'none'}],{duration:380*K,easing:EO});}
+  if(v==='c'){const path=svg.querySelector('path');path.animate([{strokeDashoffset:120},{strokeDashoffset:0}],{duration:420*K,easing:'cubic-bezier(0.33, 1, 0.68, 1)'});svg.animate([{transform:'rotate(0)'},{transform:'rotate(-10deg)',offset:.35},{transform:'rotate(6deg)',offset:.7},{transform:'rotate(0)'}],{duration:520*K,easing:EO});}}
+function toggleLike(ph,btn,v){const p=findPost(ph,btn.dataset.like);if(!p)return;const from=p.likes;p.on=!p.on;p.likes+=p.on?1:-1;
+  btn.classList.toggle('on',p.on);btn.classList.toggle('zero',!p.likes);btn.setAttribute('aria-pressed',p.on);btn.setAttribute('aria-label','공감 '+p.likes);
+  if(v!=='c'){const svg=btn.querySelector('svg path');svg.setAttribute('d',p.on?ICON.heartFill:ICON.heart);}
+  rollCount(btn,from,p.likes);popLike(btn,v,p.on);}
+const STATE=new Map();
+function findPost(ph,id){return STATE.get(ph.id).find(p=>p.id===id)||(STATE.get(ph.id).flatMap(p=>p.comments).find(c=>c.id===id));}
+
+/* ① 목록 */
+function list(ph,v){const posts=STATE.get(ph.id);
+  ph.innerHTML=`<div class="page"><div class="lh"><div><h4>익명 이야기<svg viewBox="0 0 48 48" aria-hidden="true"><path d="${TALK}"/></svg></h4><p>마음 편히, 이름 없이 나누는 이야기</p></div><button class="ib bell" aria-label="알림">${ic('bell')}</button></div>
+   <div class="tabs"><button aria-pressed="true">전체</button><button aria-pressed="false">공감순</button><button aria-pressed="false">내 글</button><button class="rule">이용수칙</button></div>
+   <div class="list">${posts.map((p,i)=>`${i&&v!=='b'?'<div class="sep"></div>':''}<div class="post" role="button" tabindex="0" data-open="${p.id}"><div class="who">${face(p.g,p.sk)}${gchip(p.g)}${p.me?'<span class="me">나</span>':''}<time>${p.t}</time></div><p class="body">${p.body}</p>${p.pic?`<div class="pic"><img src="${p.pic}" alt="익명글 첨부 사진">${p.picN>1?`<span class="n">1/${p.picN}</span>`:''}</div>`:''}${acts(p,v)}</div>`).join('')}</div></div>
+   <button class="fab">${ic('plus')}글쓰기</button><div class="gnb"></div>`;}
+/* ② 상세 */
+function detail(ph,v,id,back,o={}){const p=STATE.get(ph.id).find(x=>x.id===id)||STATE.get(ph.id)[0];p.comments.forEach((c,i)=>c.id=c.id||p.id+'-c'+i);
+  const cm=c=>`<div class="cmt${c.reply?' reply':''}">${face(c.g,c.sk)}<div class="c"><div class="ch"><b>${c.who}</b>${c.author?'':''}<time>${c.t}</time><button class="ib" data-more="comment" aria-label="댓글 더보기">${ic('more')}</button></div><p>${c.b}</p><div class="ca"><button type="button" class="act like${c.on?' on':''}${c.likes?'':' zero'}" data-like="${c.id}" aria-pressed="${!!c.on}">${likeIcon('a',c.on)}<span class="cnt"><span>${c.likes}</span></span></button><button type="button" class="act" data-reply="${c.who}">답글 달기</button></div></div></div>`;
+  const xr=v==='a'?`<button class="xreq" data-x>${'<svg viewBox="0 0 48 48" aria-hidden="true"><path d="'+HS+'"/></svg>'}프로필 교환 요청</button>`:'';
+  const xc=v==='b'&&!p.me?`<button class="xcard" data-x><span><b>이 이야기에 마음이 갔다면</b><small>글쓴이에게 프로필 교환을 요청할 수 있어요. 수락하면 서로의 프로필이 열려요.</small></span><span class="go">교환 요청</span></button>`:'';
+  ph.innerHTML=`<div class="page" style="padding-bottom:96px"><div class="dt"><button class="ib" data-back aria-label="목록으로">${ic('back')}</button><button class="ib" data-more="post" aria-label="글 더보기">${ic('more')}</button></div>
+   <article class="d-post"><div class="who">${face(p.g,p.sk)}<span><span style="display:flex;align-items:center;gap:6px">${gchip(p.g)}<b>익명 · 글쓴이</b></span><span class="sub">${p.t}</span></span></div>
+   <p class="body">${p.body}</p>${p.pic?`<div class="pic"><img src="${p.pic}" alt="익명글 첨부 사진"></div>`:''}
+   <div class="d-row">${acts(p,'a').replace('<div class="acts">','').replace(/<\/div>$/,'')}${p.me?'':xr}</div>${xc}</article>
+   <div class="cm-h"><b>이야기</b><span>${p.comments.length}</span></div>
+   ${p.comments.length?p.comments.map(cm).join(''):'<div class="empty-c">아직 이야기가 없어요. 첫 이야기를 남겨 보세요.</div>'}
+   <div style="height:16px"></div></div>
+   <div class="bar"><div class="in"><input type="text" placeholder="따뜻한 이야기를 남겨 주세요" aria-label="이야기 남기기"><button class="send" disabled aria-label="보내기">${ic('up')}</button></div></div>`;
+  ph.dataset.from=back||'';}
+
+function toast(ph,t){let el=ph.querySelector('.toast');if(!el){el=document.createElement('div');el.className='toast';ph.append(el);}el.textContent=t;el.classList.add('on');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('on'),1600);}
+
+const TALKSK='<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M16 20H32M16 26H26M8 12C18.6667 9.33333 29.3333 9.99999 40 14V32L26 34L14 42V34L8 32V12Z"/></svg>';
+function wireList(ph){ph.addEventListener('click',e=>{const lk=e.target.closest('[data-like]');if(lk){e.stopPropagation();toggleLike(ph,lk,'a');}});}
+['g0','g1','g2','g3'].forEach(id=>{const ph=document.getElementById(id);STATE.set(id,JSON.parse(JSON.stringify(POSTS)));list(ph,'a');wireList(ph);});
+function emptyDetail(ph,kind){const p=STATE.get(ph.id).find(x=>x.id==='p1');p.comments=[];
+ _detail0(ph,'a','p1','');ph.querySelector('.d-post .who').innerHTML=ph.querySelector('.d-post .who').innerHTML;
+ const sub=ph.querySelector('.d-post .sub');if(sub)sub.style.marginTop=kind==='e0'?'2px':'6px';
+ const box=ph.querySelector('.empty-c');
+ if(kind==='e1')box.outerHTML='<div class="e1">'+TALKSK+'<b>아직 이야기가 없어요</b><small>첫 이야기를 남겨 보세요</small></div>';
+ if(kind==='e2')box.outerHTML='<p class="e2">아직 이야기가 없어요. 첫 이야기를 남겨 보세요.</p>';
+ if(kind==='e3')box.outerHTML='<button class="e3" type="button" data-focus><span class="face"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+ICON.chat+'"/></svg></span><span><b>첫 이야기</b>를 남겨 볼까요?</span></button>';
+ const inp=ph.querySelector('.bar input'),inbox=ph.querySelector('.bar .in');
+ if(kind==='e0'){inp.addEventListener('focus',()=>inp.classList.add('bug'));inp.addEventListener('blur',()=>inp.classList.remove('bug'));inp.style.outline='none';}
+ else{inp.style.outline='none';}
+ ph.addEventListener('click',e=>{if(e.target.closest('[data-focus]'))inp.focus();const lk=e.target.closest('[data-like]');if(lk)toggleLike(ph,lk,'a');});
+ ph.addEventListener('input',e=>{if(e.target===inp)ph.querySelector('.send').disabled=!inp.value.trim();});}
+const _detail0=detail;
+['e0','e1','e2','e3'].forEach(id=>{const ph=document.getElementById(id);STATE.set(id,JSON.parse(JSON.stringify(POSTS)));emptyDetail(ph,id);});
+</script>
+</body>
+</html>

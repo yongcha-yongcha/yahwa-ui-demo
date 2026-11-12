@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>마이페이지 다듬기</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398;--pg-on:#fff;--ease-out:cubic-bezier(0.23, 1, 0.32, 1)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.wrap{max-width:1640px;margin:0 auto;padding:36px 16px 80px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:96ch;margin:10px 0 0;color:var(--pg-fg2)}
+.ia{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;max-width:1180px;margin-top:18px}
+.ia div{padding:12px 14px;border-radius:14px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);font-size:12px;color:var(--pg-fg2)}
+.ia b{display:block;margin-bottom:2px;font-size:13px;color:var(--pg-fg)}
+.row{display:flex;flex-wrap:wrap;gap:24px;margin-top:26px}
+.col{display:flex;flex-direction:column;gap:10px;width:360px;max-width:100%}
+.col h3{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.col h3 b{display:grid;place-items:center;min-width:26px;height:26px;padding:0 8px;border-radius:13px;background:var(--pg-accent);color:var(--pg-on);font:600 12px var(--font-sans)}
+.col h3 b.now{background:var(--pg-line);color:var(--pg-fg2)}
+.col h3 em{font:600 11px/1 var(--font-sans);font-style:normal;padding:4px 8px;border-radius:10px;background:var(--sky-100);color:var(--color-fg-accent-strong)}
+.col>p{margin:0;min-height:108px;font-size:13px;color:var(--pg-fg2)}
+.nowimg{display:block;width:360px;max-width:100%;height:780px;object-fit:cover;object-position:top;border-radius:36px;box-shadow:0 0 0 1px var(--pg-line),0 16px 40px rgb(0 0 0 / .12)}
+.box{max-width:1180px;margin-top:32px;padding:16px 18px;border-radius:16px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);font-size:13px;color:var(--pg-fg2)}
+.box h4{margin:0 0 8px;font-size:14px;color:var(--pg-fg)}.box ul{margin:0;padding-left:18px}.box li+li{margin-top:5px}.box b{color:var(--pg-fg)}
+
+/* ---------- 폰 ---------- */
+.phone{position:relative;width:360px;max-width:100%;height:780px;border-radius:36px;overflow:hidden;background:linear-gradient(var(--sky-50),var(--paper) 220px);color:var(--color-fg-primary);box-shadow:0 0 0 1px var(--pg-line),0 16px 40px rgb(0 0 0 / .12);isolation:isolate}
+.page{position:absolute;inset:0;overflow-y:auto;padding:44px 20px 120px;scrollbar-width:none}
+.page::-webkit-scrollbar{display:none}
+.top{display:flex;align-items:center;justify-content:space-between;height:40px}
+.top h2{margin:0;font:400 26px/40px var(--font-serif)}
+.ib{display:grid;place-items:center;width:44px;height:44px;margin-right:-10px;border:0;background:none;color:var(--color-fg-secondary);cursor:pointer}
+.ib svg{width:24px;height:24px}
+svg.s{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.sh{display:flex;align-items:center;justify-content:space-between;min-height:40px;margin:24px 0 0;font:600 13px/1 var(--font-sans);color:var(--color-fg-muted)}
+.card{border-radius:16px;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-default)}
+.list{padding:0 16px}
+.r{display:flex;align-items:center;gap:12px;width:100%;min-height:52px;padding:0;border:0;background:none;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity 120ms ease}
+.r:active{opacity:.6}
+.r+.r{box-shadow:0 -1px 0 var(--color-border-default)}
+.r .ico{flex:none;display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:var(--color-bg-subtle);color:var(--color-fg-accent)}
+.r .ico svg{width:18px;height:18px}
+.r .k{flex:1;min-width:0;font:400 15px/1.4 var(--font-sans)}
+.r .v{font:400 13px/1.4 var(--font-sans);color:var(--color-fg-muted);white-space:nowrap}
+.r .chev{flex:none;width:20px;height:20px;color:var(--color-fg-muted);background:currentColor;-webkit-mask:var(--ic-chevron-right) center/contain no-repeat;mask:var(--ic-chevron-right) center/contain no-repeat}
+.live{display:inline-flex;align-items:center;gap:5px;color:var(--mint-700);font-weight:500}
+.live i{width:6px;height:6px;border-radius:50%;background:var(--mint-400);box-shadow:0 0 0 3px color-mix(in srgb,var(--mint-400) 20%,transparent)}
+.pause{color:var(--color-fg-muted)}
+.av{position:relative;flex:none;border-radius:50%;background:url(v1.jpg) center 30%/cover;box-shadow:0 0 0 3px var(--color-bg-surface),0 0 0 4px var(--color-border-default)}
+.pen{position:absolute;right:-2px;bottom:-2px;display:grid;place-items:center;width:26px;height:26px;border-radius:13px;background:var(--color-bg-surface);box-shadow:0 2px 6px rgb(30 50 70 / .14);color:var(--color-fg-accent)}
+.pen i{width:14px;height:14px;background:currentColor;-webkit-mask:var(--ic-pencil) center/contain no-repeat;mask:var(--ic-pencil) center/contain no-repeat}
+.cert{display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 8px;border-radius:12px;background:var(--color-bg-subtle);color:var(--color-fg-accent-strong);font:500 12px/1 var(--font-sans)}
+.cert svg{width:14px;height:14px}
+.btn{display:flex;align-items:center;justify-content:center;gap:6px;height:44px;border:0;border-radius:14px;font:600 14px/1 var(--font-sans);cursor:pointer;transition:transform 120ms var(--ease-out)}
+.btn:active{transform:scale(.98)}
+.btn.soft{background:var(--color-bg-subtle);color:var(--color-fg-accent-strong)}
+.btn.line{background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-default);color:var(--color-fg-primary)}
+.btn.pri{background:var(--color-bg-accent);color:var(--color-fg-inverse)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+/* 채움 카드 (프로필 수정과 같은 모양, 작게) */
+.done{display:flex;align-items:center;gap:12px;width:100%;margin-top:16px;padding:14px 16px;border:0;border-radius:16px;background:var(--sky-50);text-align:left;cursor:pointer}
+.ring{position:relative;flex:none;width:40px;height:40px}
+.ring svg{width:40px;height:40px;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:4}
+.ring .bg{stroke:color-mix(in srgb,var(--color-fg-accent) 18%,transparent)}.ring .fg{stroke:var(--color-fg-accent);stroke-linecap:round}
+.ring span{position:absolute;inset:0;display:grid;place-items:center;font:600 11px/1 var(--font-sans);color:var(--color-fg-accent-strong)}
+.done .tx{flex:1;min-width:0}.done b{display:block;font:600 14px/1.4 var(--font-sans)}.done small{display:block;margin-top:2px;font:400 12px/1.5 var(--font-sans);color:var(--color-fg-secondary)}
+.done .chev{flex:none;width:20px;height:20px;color:var(--color-fg-muted);background:currentColor;-webkit-mask:var(--ic-chevron-right) center/contain no-repeat;mask:var(--ic-chevron-right) center/contain no-repeat}
+/* 지갑 */
+.wallet{display:flex;align-items:center;gap:12px;padding:16px}
+.wallet .lf{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:20px;background:var(--color-bg-subtle);color:var(--color-fg-accent)}
+.wallet .lf svg{width:22px;height:22px}
+.wallet .t{flex:1}.wallet small{display:block;font:400 12px/1.4 var(--font-sans);color:var(--color-fg-muted)}.wallet strong{font:600 22px/1.3 var(--font-sans);font-variant-numeric:tabular-nums}.wallet strong span{margin-left:2px;font-size:14px;font-weight:500;color:var(--color-fg-secondary)}
+.wallet .btn{height:36px;padding:0 16px;border-radius:18px}
+.wallet+.list{box-shadow:0 -1px 0 var(--color-border-default)}
+
+/* M2 소개 카드 */
+.hero{position:relative;margin-top:16px;border-radius:22px;overflow:hidden;aspect-ratio:1/1.02;background:url(v1.jpg) center 30%/cover}
+.hero::after{content:"";position:absolute;inset:auto 0 0;height:62%;background:linear-gradient(transparent,rgb(20 28 34 / .62))}
+.hero .tag{position:absolute;left:14px;top:14px;z-index:1;display:inline-flex;align-items:center;gap:5px;height:26px;padding:0 10px;border-radius:13px;background:rgb(255 255 255 / .62);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);color:var(--mint-700);font:500 12px/1 var(--font-sans)}
+.hero .tag i{width:6px;height:6px;border-radius:50%;background:var(--mint-400)}
+.hero .in{position:absolute;left:18px;right:18px;bottom:16px;z-index:1;color:#fff}
+.hero .in b{font:400 28px/1.3 var(--font-serif)}
+.hero .in small{display:block;margin-top:2px;font:400 13px/1.4 var(--font-sans);opacity:.9}
+.hero .pair{margin-top:14px}
+.hero .btn.glass{background:rgb(255 255 255 / .9);color:var(--color-fg-primary)}
+.hero .btn.glass2{background:rgb(255 255 255 / .2);box-shadow:inset 0 0 0 1px rgb(255 255 255 / .6);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.tile{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:14px;border:0;border-radius:16px;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-default);text-align:left;cursor:pointer}
+.tile .ico{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:var(--color-bg-subtle);color:var(--color-fg-accent)}
+.tile .ico svg{width:18px;height:18px}
+.tile small{font:400 12px/1.3 var(--font-sans);color:var(--color-fg-muted)}
+.tile b{font:600 16px/1.3 var(--font-sans);font-variant-numeric:tabular-nums}
+
+/* M3 상태 한눈에 */
+.me{display:flex;align-items:center;gap:14px;margin-top:16px}
+.me .nm{flex:1;min-width:0}.me .nm b{display:block;font:400 22px/1.3 var(--font-serif)}.me .nm small{display:block;margin-top:2px;font:400 12px/1.5 var(--font-sans);color:var(--color-fg-muted)}
+.me .lk{flex:none;display:inline-flex;align-items:center;gap:2px;height:44px;border:0;background:none;color:var(--color-fg-accent);font:600 13px/1 var(--font-sans);cursor:pointer}
+.me .lk i{width:16px;height:16px;background:currentColor;-webkit-mask:var(--ic-chevron-right) center/contain no-repeat;mask:var(--ic-chevron-right) center/contain no-repeat}
+.stat{display:grid;grid-template-columns:repeat(3,1fr);margin-top:16px;padding:12px 0}
+.stat button{display:flex;flex-direction:column;align-items:center;gap:4px;border:0;background:none;cursor:pointer}
+.stat button+button{box-shadow:-1px 0 0 var(--color-border-default)}
+.stat small{font:400 11px/1.3 var(--font-sans);color:var(--color-fg-muted)}
+.stat b{font:600 15px/1.3 var(--font-sans);font-variant-numeric:tabular-nums}
+.stat b.live{font-size:14px}
+.purse{position:relative;margin-top:12px;padding:18px;border-radius:20px;background:linear-gradient(135deg,var(--sky-100),color-mix(in srgb,var(--mint-100) 80%,var(--sky-50)));overflow:hidden}
+.purse small{display:block;font:500 12px/1.4 var(--font-sans);color:var(--color-fg-secondary)}
+.purse strong{display:block;margin-top:2px;font:600 30px/1.2 var(--font-sans);font-variant-numeric:tabular-nums;color:var(--color-fg-primary)}
+.purse strong span{margin-left:4px;font-size:15px;font-weight:500;color:var(--color-fg-secondary)}
+.purse .leafbg{position:absolute;right:-6px;top:-6px;width:96px;height:96px;color:rgb(255 255 255 / .7)}
+.purse .pair{margin-top:14px}
+.purse .btn.white{background:rgb(255 255 255 / .9);color:var(--color-fg-accent-strong)}
+
+.gnb{position:absolute;left:20px;right:20px;bottom:20px;z-index:5;height:64px;border-radius:32px;background:color-mix(in srgb,var(--paper) 70%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 6px 24px rgb(30 50 70 / .08),inset 0 0 0 1px rgb(255 255 255 / .6);display:flex;align-items:center;justify-content:space-around;padding:0 6px}
+.gnb span{width:22px;height:22px;border-radius:6px;background:var(--color-bg-control)}
+.gnb span.on{width:60px;height:52px;border-radius:26px;background:var(--sky-100);position:relative}
+.gnb span.on::after{content:"";position:absolute;left:50%;top:50%;width:32px;height:32px;margin:-16px 0 0 -16px;border-radius:50%;background:url(v1.jpg) center 30%/cover;box-shadow:0 0 0 2px var(--color-fg-accent)}
+.toast{position:absolute;left:50%;bottom:100px;z-index:9;transform:translate(-50%,6px);padding:8px 14px;border-radius:10px;background:var(--color-bg-inverse);color:var(--color-fg-inverse);font:500 12px/1.5 var(--font-sans);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 200ms ease,transform 200ms var(--ease-out)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="eyebrow">YAHWA · 마이페이지</p>
+<h1 class="title">마이페이지 다듬기</h1>
+<p class="intro">지금은 사진 · 이름 · “프로필 수정” 아래에 메뉴 8개가 같은 무게로 이어져요. 내가 지금 다른 사람에게 보이는지, 리프가 얼마인지, 소개를 더 채울 게 있는지는 한눈에 안 보여요. 오른쪽 위 “MY LITTLE STORY”는 세 안 모두 지웠어요. 마이페이지에서 보여줄 것을 아래 다섯 가지로 정리했어요.</p>
+<div class="ia">
+  <div><b>1. 나</b>사진 · 이름 · 나이 · 사는 곳 · 인증 표시, 프로필 수정 · 내 소개 보기</div>
+  <div><b>2. 다음 한 가지</b>소개 채움(5/7)과 가장 비어 있는 한 칸 — 프로필 수정과 같은 카드</div>
+  <div><b>3. 지금 상태</b>인연 공개 중 / 쉬어가는 중 (민트 점), 인증 개수</div>
+  <div><b>4. 리프</b>보유 104 · 충전 · 무료 리프 받기 · 쿠폰함</div>
+  <div><b>5. 나머지</b>취향 설정 · 지인 차단 · 내 연락처 · 알림 설정 · 설정 · 도움말</div>
+</div>
+
+<div class="row">
+  <div class="col"><h3><b class="now">지금</b>현재 화면</h3><p>메뉴 8개가 모두 같은 줄이라 리프 잔액도 작은 회색 글로만 보여요. 공개 상태 · 소개 채움은 마이페이지에 없어요. 오른쪽 위에 꾸밈용 영문이 있어요.</p><img class="nowimg" src="now.jpg" alt="지금 마이페이지"></div>
+  <div class="col"><h3><b>M1</b>정돈된 목록<em>추천</em></h3><p>사진 옆에 이름 · 정보 · 인증, 아래에 “프로필 수정 / 내 소개 보기”. 소개 채움 카드 하나, 리프는 숫자가 크게 보이는 지갑 카드. 나머지는 “만남 · 안전 · 앱” 세 묶음의 흰 카드 목록(프로필 수정 화면과 같은 결).</p><div class="phone" data-v="m1"></div></div>
+  <div class="col"><h3><b>M2</b>소개 카드형</h3><p>맨 위를 상대가 보는 첫 사진 카드처럼 크게. 그 위에 공개 상태 칩과 수정 · 미리보기 버튼을 얹어요. 리프 · 쿠폰 · 인증 · 무료 리프는 2×2 타일. 가장 감성적이지만 목록이 아래로 많이 밀려요.</p><div class="phone" data-v="m2"></div></div>
+  <div class="col"><h3><b>M3</b>상태 한눈에</h3><p>설정 · 도움말은 오른쪽 위 톱니로 올리고, 이름 아래에 “공개 · 인증 · 소개” 세 칸 요약. 리프는 하늘 → 민트 그라데이션 지갑 카드로 가장 크게. 목록은 묶음 없이 5줄만 남아 가장 짧아요.</p><div class="phone" data-v="m3"></div></div>
+</div>
+
+<div class="box">
+  <h4>세 안 공통</h4>
+  <ul>
+    <li><b>머리</b>: “마이페이지” 고운바탕 26만 남기고 영문 머리글은 지워요(다른 탭 제목과 같은 자리).</li>
+    <li><b>소개 채움</b>은 프로필 수정 화면의 채움 카드와 같은 계산(7개 중 몇 개)이라, 마이페이지에서 누르면 프로필 수정으로 바로 가요. 다 채우면 카드가 사라져요.</li>
+    <li><b>공개 상태</b>는 최근활동과 같은 민트 점으로 “공개 중”, 쉬어가는 중이면 회색. 누르면 인연 공개 설정으로.</li>
+    <li><b>아이콘</b>은 지금 마이페이지 손그림 아이콘 그대로 쓰고, 목록 줄 52 · 터치영역 44를 지켜요.</li>
+  </ul>
+</div>
+</div>
+<script>
+const IC={leaf:'M5 18C3 7 12 3 21 3c0 10-5 17-13 16M4 22 16 9',person:'M8 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0M4 22c0-11 16-11 16 0',shield:'M12 2 3 6v6c0 5 9 10 9 10s9-5 9-10V6ZM8 12l3 3 5-6',bell:'M6 10c0-8 12-8 12 0v5l2 3H4l2-3ZM9 21h6',cloud:'M5 18c-6-2-3-10 2-9c0-8 12-8 13 0c6 0 6 9 0 9ZM8 22h8',note:'M5 3h14v18H5ZM8 8h8M8 12h8M8 16h5',sun:'M8 12a4 4 0 1 0 8 0a4 4 0 1 0-8 0M12 1v3M12 20v3M1 12h3M20 12h3M4 4l2 2M18 18l2 2M4 20l2-2M18 6l2-2',ticket:'M3 5h18v5a2 2 0 0 0 0 4v5H3v-5a2 2 0 0 0 0-4ZM15 8v2M15 14v2',heart:'M12 20C9 18 3 14 3 9a4.5 4.5 0 0 1 9-1a4.5 4.5 0 0 1 9 1c0 5-6 9-9 11Z',gear:'M12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6ZM19 12l2-1-1-3-2 .3-1.3-1.3L17 5l-3-1-1 2h-2l-1-2-3 1 .3 2L6 8.3 4 8l-1 3 2 1v1l-2 1 1 3 2-.3 1.3 1.3L7 19l3 1 1-2h2l1 2 3-1-.3-2 1.3-1.3 2 .3 1-3-2-1Z'};
+const svg=(k,c='s')=>'<svg class="'+c+'" viewBox="0 0 24 24" aria-hidden="true"><path d="'+IC[k]+'"/></svg>';
+const row=(ic,k,v='',go)=>'<button class="r" data-go="'+(go||k)+'"><span class="ico">'+svg(ic)+'</span><span class="k">'+k+'</span>'+(v?'<span class="v">'+v+'</span>':'')+'<span class="chev"></span></button>';
+const LIVE='<span class="live"><i></i>공개 중</span>';
+const ring='<span class="ring"><svg viewBox="0 0 40 40"><circle class="bg" cx="20" cy="20" r="16"/><circle class="fg" cx="20" cy="20" r="16" stroke-dasharray="100.5" stroke-dashoffset="28.7"/></svg><span>5/7</span></span>';
+const DONE='<button class="done" data-go="프로필 수정">'+ring+'<span class="tx"><b>소개를 거의 다 채웠어요</b><small>해시태그를 고르면 나다운 모습이 보여요.</small></span><span class="chev"></span></button>';
+const CERT='<span class="cert">'+svg('sun')+'기본 인증</span>';
+const V={
+m1:()=>'<div class="top"><h2>마이페이지</h2></div>'
+ +'<div class="me" style="margin-top:20px"><span class="av" style="width:72px;height:72px"><span class="pen"><i></i></span></span><div class="nm"><b>지우</b><small>남성 · 만 29세 · 서울 종로구</small><div style="margin-top:6px">'+CERT+'</div></div></div>'
+ +'<div class="pair" style="margin-top:16px"><button class="btn soft" data-go="프로필 수정">프로필 수정</button><button class="btn line" data-go="내 소개 보기">내 소개 보기</button></div>'
+ +DONE
+ +'<div class="sh">리프</div><div class="card"><div class="wallet"><span class="lf">'+svg('leaf')+'</span><span class="t"><small>보유 리프</small><strong>104<span>리프</span></strong></span><button class="btn pri" data-go="리프 충전">충전</button></div><div class="list">'+row('leaf','무료 리프 받기')+row('ticket','쿠폰함','0개')+'</div></div>'
+ +'<div class="sh">만남</div><div class="card list">'+row('cloud','인연 공개',LIVE)+row('heart','취향 설정')+row('shield','배지 · 인증','1개')+'</div>'
+ +'<div class="sh">안전 · 개인정보</div><div class="card list">'+row('person','지인 차단')+row('note','내 연락처')+'</div>'
+ +'<div class="sh">앱</div><div class="card list">'+row('bell','알림 설정')+row('note','설정 · 도움말')+'</div>',
+m2:()=>'<div class="top"><h2>마이페이지</h2><button class="ib" data-go="설정 · 도움말" aria-label="설정">'+svg('gear')+'</button></div>'
+ +'<div class="hero"><span class="tag"><i></i>인연 공개 중</span><div class="in"><b>지우</b><small>남성 · 만 29세 · 서울 종로구</small><div class="pair"><button class="btn glass" data-go="프로필 수정">프로필 수정</button><button class="btn glass2" data-go="내 소개 보기">미리보기</button></div></div></div>'
+ +DONE
+ +'<div class="tiles"><button class="tile" data-go="리프"><span class="ico">'+svg('leaf')+'</span><small>보유 리프</small><b>104</b></button><button class="tile" data-go="무료 리프 받기"><span class="ico">'+svg('leaf')+'</span><small>무료 리프</small><b>받으러 가기</b></button><button class="tile" data-go="쿠폰함"><span class="ico">'+svg('ticket')+'</span><small>쿠폰</small><b>0개</b></button><button class="tile" data-go="배지 · 인증"><span class="ico">'+svg('shield')+'</span><small>인증</small><b>1개</b></button></div>'
+ +'<div class="sh">설정</div><div class="card list">'+row('heart','취향 설정')+row('person','지인 차단')+row('note','내 연락처')+row('bell','알림 설정')+'</div>',
+m3:()=>'<div class="top"><h2>마이페이지</h2><button class="ib" data-go="설정 · 도움말" aria-label="설정">'+svg('gear')+'</button></div>'
+ +'<div class="me"><span class="av" style="width:56px;height:56px"></span><div class="nm"><b>지우</b><small>남성 · 만 29세 · 서울 종로구</small></div><button class="lk" data-go="프로필 수정">프로필 수정<i></i></button></div>'
+ +'<div class="card stat"><button data-go="인연 공개"><small>인연 공개</small><b class="live"><i></i>공개 중</b></button><button data-go="배지 · 인증"><small>인증</small><b>1개</b></button><button data-go="프로필 수정"><small>소개 채움</small><b>5 / 7</b></button></div>'
+ +'<div class="purse"><svg class="leafbg s" viewBox="0 0 24 24" aria-hidden="true" style="stroke-width:1"><path d="'+IC.leaf+'"/></svg><small>보유 리프</small><strong>104<span>리프</span></strong><div class="pair"><button class="btn white" data-go="무료 리프 받기">무료로 받기</button><button class="btn pri" data-go="리프 충전">충전하기</button></div></div>'
+ +'<div class="card list" style="margin-top:12px">'+row('heart','취향 설정')+row('ticket','쿠폰함','0개')+row('person','지인 차단')+row('note','내 연락처')+row('bell','알림 설정')+'</div>'
+};
+document.querySelectorAll('[data-v]').forEach(ph=>{ph.innerHTML='<div class="page">'+V[ph.dataset.v]()+'</div><div class="gnb"><span></span><span></span><span></span><span></span><span class="on"></span></div><div class="toast" role="status"></div>';
+ ph.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(!b)return;const t=ph.querySelector('.toast');t.textContent=b.dataset.go+' 화면으로 넘어가요';t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),1500);});});
+</script>
+</body>
+</html>

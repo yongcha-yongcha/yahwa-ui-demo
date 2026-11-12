@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>호감 하트 모션</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding:36px 16px 64px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:80ch;margin:10px 0 0;color:var(--pg-fg2)}
+.layout{display:flex;flex-wrap:wrap;gap:28px;margin-top:24px;align-items:flex-start}
+.phones{display:flex;flex-wrap:wrap;gap:24px}
+.col{display:flex;flex-direction:column;gap:10px;width:360px;max-width:100%}
+.col h2{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.col h2 b{display:grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:13px;background:var(--pg-accent);color:#fff;font:600 12px var(--font-sans)}
+.col>p{margin:0;font-size:13px;color:var(--pg-fg2)}
+.panel{position:sticky;top:16px;flex:1 1 360px;min-width:0;display:flex;flex-direction:column;gap:14px;padding:18px;border-radius:18px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.panel h3{margin:0;font-size:14px}
+.ctl{display:grid;grid-template-columns:112px minmax(0,1fr) 64px;gap:8px;align-items:center;font-size:13px}
+.ctl input[type=range]{width:100%;accent-color:var(--pg-accent)}
+.ctl output{text-align:right;font-size:12px;color:var(--pg-fg3);font-variant-numeric:tabular-nums}
+.chk{display:flex;align-items:center;gap:8px;font-size:13px}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+.btns button{height:40px;padding:0 14px;border:0;border-radius:10px;background:var(--pg-accent);color:#fff;font-weight:600;cursor:pointer}
+.btns button.ghost{background:none;color:var(--pg-fg);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.btns button:focus-visible{outline:2px solid var(--pg-accent);outline-offset:2px}
+.spec{margin:0;padding:12px;border-radius:12px;background:var(--pg);font:12px/1.7 ui-monospace,Menlo,monospace;color:var(--pg-fg2);white-space:pre-wrap;user-select:all}
+.seg{display:inline-flex;gap:4px;padding:3px;border-radius:10px;background:var(--pg)}
+.seg button{height:32px;padding:0 10px;border:0;border-radius:8px;background:none;font-size:12px;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--pg-surface);box-shadow:0 0 0 1px var(--pg-line);font-weight:600}
+
+/* ───── 휴대폰 아래쪽 (상대 프로필) ───── */
+.phone{position:relative;width:360px;max-width:100%;height:720px;border-radius:32px;overflow:hidden;background:var(--color-bg-page);color:var(--color-fg-primary);box-shadow:0 0 0 1px var(--pg-line),0 16px 40px rgb(0 0 0 / .12)}
+/* 휴대폰 안 스크롤 (버튼 · 하단 메뉴는 그 위에 고정) */
+.scroller{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;padding:0 0 200px}
+.scroller::-webkit-scrollbar{display:none}
+.gal{position:relative;height:440px;background:url(img/story.jpg) 50% 35%/cover}
+.gal .dots{position:absolute;left:0;right:0;bottom:16px;display:flex;justify-content:center;gap:4px}
+.gal .dots i{width:6px;height:6px;border-radius:3px;background:rgb(255 255 255 / .55)}
+.gal .dots i:first-child{width:16px;background:var(--white)}
+.gal .recent{position:absolute;left:16px;bottom:12px;display:flex;align-items:center;gap:4px;height:24px;padding:0 8px;border-radius:12px;background:rgb(39 48 55 / .42);color:var(--white);font-size:11px}
+.gal .recent::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--color-fg-activity-dot,#6FCF97)}
+.body{padding:0 20px}
+.who{margin-top:24px}
+.who h3{margin:0;font:400 var(--fact-name-size,26px)/1.3 var(--font-serif);letter-spacing:-.5px}
+.who p{margin:8px 0 0;font-size:14px;line-height:20px;color:var(--color-fg-secondary)}
+.tags{display:flex;flex-wrap:wrap;gap:4px 12px;margin:12px 0 0;padding:0;list-style:none;font-size:var(--fact-tag-size,14px);line-height:22px;color:var(--color-fg-accent-strong)}
+.key{display:flex;margin-top:28px;padding:20px 0;border-radius:var(--fact-key-radius,16px);background:var(--fact-key-bg,var(--color-bg-subtle))}
+.key div{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 4px;text-align:center}
+.key div+div{box-shadow:-1px 0 0 var(--fact-divider,var(--color-border-default))}
+.key b{font-size:15px;font-weight:600;line-height:1.35}
+.key small{font-size:11px;line-height:16px;color:var(--fact-key-label,var(--color-fg-tertiary))}
+.story{margin-top:36px}
+.story h4{margin:0 0 8px;font:400 19px/1.7 var(--font-serif);color:var(--color-fg-accent-strong)}
+.story p{margin:0;font-size:14px;line-height:2;color:var(--color-fg-secondary)}
+.story figure{margin:20px 0 0;height:240px;border-radius:12px;background:url(img/story.jpg) 50% 70%/cover}
+.story+.story figure{background-image:url(img/me.jpg);background-position:50% 30%}
+/* 좌우 배치: 하트는 왼쪽, 편지는 오른쪽 */
+.act{position:absolute;bottom:96px;z-index:3;display:grid;place-items:center;width:56px;height:56px;border:0;border-radius:28px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color 260ms ease,color 260ms ease,box-shadow 260ms ease}
+.act.heart{left:20px}.act.mail{right:20px}
+.act:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:3px}
+.act svg{width:26px;height:26px;overflow:visible}
+.act .ico{position:relative;display:grid;place-items:center;width:26px;height:26px;will-change:transform}
+.act .ico svg{grid-area:1/1}
+.act .line{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.act .fill{fill:currentColor;stroke:none}
+/* 색 채움 */
+.v-fill .heart{background:var(--rose-400,#E58E9E);color:var(--white);box-shadow:0 6px 16px color-mix(in srgb,var(--rose-500,#C9667D) 30%,transparent)}
+.v-fill .mail{background:var(--color-bg-button-primary);color:var(--white);box-shadow:0 6px 16px color-mix(in srgb,var(--sky-700,#2B5B78) 26%,transparent)}
+/* 글라스 (하단 메뉴와 같은 유리) */
+.v-glass .act{background:var(--gnb-bg);border:1px solid var(--gnb-border);-webkit-backdrop-filter:blur(var(--gnb-blur)) saturate(var(--gnb-saturate));backdrop-filter:blur(var(--gnb-blur)) saturate(var(--gnb-saturate));box-shadow:var(--gnb-shadow)}
+.v-glass .heart{color:var(--rose-500,#C9667D)}
+.v-glass .mail{color:var(--color-fg-accent-strong)}
+/* 보낸 뒤: 비활성처럼 */
+.act.is-off{cursor:default}
+.v-fill .heart.is-off{background:var(--color-bg-muted);color:var(--off-ink);box-shadow:none}
+.v-glass .heart.is-off{color:var(--off-ink);background:color-mix(in srgb,var(--paper) 40%,transparent);box-shadow:0 4px 12px color-mix(in srgb,var(--cool-neutral-800) 6%,transparent)}
+.phone{--off-ink:var(--cool-neutral-400)}
+.phone.off-rose{--off-ink:var(--rose-300,#EBB3BE)}
+/* 작은 하트 터짐 */
+.spark{position:absolute;z-index:4;width:10px;height:10px;pointer-events:none;color:var(--rose-400,#E58E9E)}
+.spark svg{width:100%;height:100%;fill:currentColor}
+/* 앱 하트 효과 */
+.loop-heart{display:inline-block;background:currentColor;-webkit-mask:url('img/heart-loop.png') center/190px 190px no-repeat;mask:url('img/heart-loop.png') center/190px 190px no-repeat;width:160px;height:100px}
+.bloom{position:absolute;z-index:4;left:50%;bottom:176px;pointer-events:none;display:flex;flex-direction:column;align-items:center;width:210px;padding:12px 10px 17px;border-radius:24px;background:color-mix(in srgb,var(--color-bg-page) 96%,transparent);box-shadow:0 8px 32px rgb(39 48 55 / .07);color:var(--color-fg-love);opacity:0;transform:translateX(-50%)}
+.bloom span:last-child{font:400 15px/1.4 var(--font-serif)}
+.bloom.is-playing{animation:appear 1.8s ease both}
+.bloom.is-playing .loop-heart{animation:beat .85s ease both}
+@keyframes appear{0%{opacity:0;translate:0 8px}15%,80%{opacity:1;translate:0 0}100%{opacity:0;translate:0 -5px}}
+@keyframes beat{0%{scale:.85}35%{scale:1.06}55%{scale:.97}75%{scale:1.03}100%{scale:1}}
+.nav{position:absolute;left:20px;right:20px;bottom:20px;height:64px;display:flex;align-items:center;padding:0 4px;border:1px solid var(--gnb-border);border-radius:32px;background:var(--gnb-bg);box-shadow:var(--gnb-shadow);-webkit-backdrop-filter:blur(var(--gnb-blur)) saturate(var(--gnb-saturate));backdrop-filter:blur(var(--gnb-blur)) saturate(var(--gnb-saturate))}
+.nav span{position:relative;flex:1;height:54px;display:grid;place-items:center;border-radius:27px;color:var(--gnb-icon)}
+.nav span.on{background:var(--gnb-selected-bg);color:var(--gnb-icon-active)}
+.nav svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.nav span.on svg{fill:currentColor;stroke:none}
+.nav i{position:absolute;left:50%;top:11px;margin-left:8px;width:8px;height:8px;border-radius:50%;background:var(--gnb-badge-bg);box-shadow:0 0 0 1px var(--white)}
+.nav img{width:32px;height:32px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1.5px var(--white)}
+@media (prefers-reduced-motion:reduce){.bloom.is-playing{animation:none;opacity:1}.bloom.is-playing .loop-heart{animation:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">YAHWA · 상대 프로필 · 호감 버튼</p>
+  <h1 class="title">하트가 뿅 튀었다 내려오며 채워지기</h1>
+  <p class="intro">하트는 왼쪽, 편지는 오른쪽 끝에 두고, 하트를 누르면 위로 뿅 튀었다가 내려오면서 아래부터 차오르고, 내려앉은 뒤 버튼이 비활성처럼 바뀌어요. 색을 채운 버전과 하단 메뉴 같은 유리 버전을 나란히 놓았어요. 오른쪽에서 값을 바꾸면 두 휴대폰이 같이 바뀌어요. 휴대폰 안을 스크롤하면 사진과 글 위로 버튼이 어떻게 보이는지 확인할 수 있고, 하트를 직접 눌러도 돼요.</p>
+  <div class="layout">
+    <div class="phones" id="phones"></div>
+    <section class="panel" aria-label="모션 조절">
+      <div class="btns"><button type="button" id="play">두 휴대폰 다시 재생</button><button type="button" class="ghost" id="reset">처음 상태로</button><button type="button" class="ghost" id="slow">0.25배 느리게 보기</button></div>
+      <h3>튀어 오름</h3>
+      <div id="g1"></div>
+      <h3>내려오며 채움</h3>
+      <div id="g2"></div>
+      <h3>보낸 뒤</h3>
+      <div id="g3"></div>
+      <div class="chk"><span>비활성 하트 색</span><span class="seg" id="offc"><button type="button" data-v="gray" aria-pressed="true">회색</button><button type="button" data-v="rose" aria-pressed="false">연한 로즈</button></span></div>
+      <label class="chk"><input type="checkbox" id="sparks" checked> 꼭대기에서 작은 하트 터짐</label>
+      <label class="chk"><input type="checkbox" id="bloomOn" checked> 지금 앱의 하트 효과("마음이 한 걸음 가까이")도 같이</label>
+      <pre class="spec" id="spec" aria-label="지금 값"></pre>
+    </section>
+  </div>
+</div>
+<script>
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const HEART_PATH='M16 26C12 23 4.5 17.5 5 11.3C5.4 5.5 12.2 5.5 15.6 12.2C18.1 5.2 25.8 4.9 27 10.8C28.1 16.1 21.6 23.1 16 26Z';
+const HEART_FILL='M16 27C12 24 3.6 18 4 11.2C4.4 4.5 12.1 4.3 15.6 10.2C18.3 3.9 26.8 3.8 28 10.6C29.1 16.5 22 24 16 27Z';
+const MAIL='<svg viewBox="0 0 24 24" aria-hidden="true"><path class="line" d="M3 6Q12 5 21 6V19H3Z M3 7L12 14L21 7 M3 19L9 13 M21 19L15 13"/></svg>';
+let uid=0;
+const heartIco=()=>{const id='hc'+(++uid);return `<span class="ico"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><clipPath id="${id}"><rect class="clip" x="0" y="0" width="32" height="32" style="transform:translateY(32px)"/></clipPath></defs><path class="fill" d="${HEART_FILL}" clip-path="url(#${id})"/><path class="line" d="${HEART_PATH}"/></svg></span>`;};
+const NAV=`<nav class="nav" aria-label="앱 메뉴"><span class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h7v8H3zM14 3h7v8h-7zM3 15h7v6H3zM14 15h7v6h-7z"/></svg></span><span><svg viewBox="0 0 32 32" aria-hidden="true"><path d="${HEART_PATH}"/></svg><i></i></span><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6Q12 5 21 6V19H3Z M3 7L12 14L21 7 M3 19L9 13 M21 19L15 13"/></svg></span><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v12H9l-5 4V5M8 9h8M8 13h5"/></svg><i></i></span><span><img src="img/me.jpg" alt=""></span></nav>`;
+const BODY=`<div class="gal" role="img" aria-label="대표 사진"><span class="recent">최근 활동</span><span class="dots"><i></i><i></i><i></i></span></div>
+<div class="body"><div class="who"><h3>서윤, 27</h3><p>서울 마포구 · 여성</p></div>
+<ul class="tags"><li>#필름카메라</li><li>#동네산책</li><li>#여름밤</li><li>#카페투어</li></ul>
+<div class="key"><div><b>164cm</b><small>키</small></div><div><b>그래픽 디자이너</b><small>하는 일</small></div><div><b>다정한</b><small>성격</small></div></div>
+<section class="story"><h4>“이런 사람에게 마음이 가요”</h4><p>말을 끝까지 들어주고 작은 약속도 소중하게 지키는 사람에게 마음이 가요.</p><figure role="img" aria-label="일상 사진"></figure></section>
+<section class="story"><h4>“요즘 빠져 있는 것”</h4><p>주말 아침에 필름 한 롤 들고 동네를 천천히 걷는 거요. 현상된 사진을 받는 날이 제일 설레요.</p><figure role="img" aria-label="일상 사진"></figure></section></div>`;
+/* 조절 값 */
+const S={press:.88,rise:30,peak:1.45,tilt:14,up:220,down:560,bounce:.38,fillAt:15,fillMs:420,offDelay:260,sparkN:6};
+const G=[
+ ['g1',[['press','눌림 크기',.7,1,.01,''],['rise','튀는 높이',0,70,2,'px'],['peak','꼭대기 크기',1,2,.05,'배'],['tilt','기울기',0,35,1,'°'],['up','올라가는 시간',80,600,10,'ms'],['sparkN','작은 하트 수',0,12,1,'개']]],
+ ['g2',[['down','내려오는 시간',200,1400,20,'ms'],['bounce','튕김',0,.7,.02,''],['fillAt','채움 시작',0,100,5,'%'],['fillMs','채움 길이',100,1200,20,'ms']]],
+ ['g3',[['offDelay','비활성 전환 지연',0,1200,20,'ms']]],
+];
+G.forEach(([id,list])=>{document.getElementById(id).innerHTML=list.map(([k,l,mn,mx,st,u])=>`<label class="ctl"><span>${l}</span><input type="range" data-k="${k}" min="${mn}" max="${mx}" step="${st}" value="${S[k]}"><output data-o="${k}">${S[k]}${u}</output></label>`).join('');});
+document.querySelectorAll('[data-k]').forEach(r=>r.addEventListener('input',()=>{S[r.dataset.k]=+r.value;const u=G.flatMap(g=>g[1]).find(x=>x[0]===r.dataset.k)[5];document.querySelector(`[data-o=${r.dataset.k}]`).textContent=r.value+u;spec();}));
+/* 스프링 곡선 (떨어지는 동안 바닥에서 튕김): 감쇠 진동을 linear()로 */
+function springEase(b){const n=40,pts=[];const z=Math.max(.05,1-b),w=2*Math.PI*1.1;for(let i=0;i<=n;i++){const t=i/n;let v;if(z>=1)v=1-Math.exp(-6*t)*(1+6*t);else{const wd=w*Math.sqrt(1-z*z);v=1-Math.exp(-z*w*t*4)*(Math.cos(wd*t*4)+z*w/wd*Math.sin(wd*t*4));}pts.push(i===n?1:+v.toFixed(4));}return 'linear('+pts.join(',')+')';}
+const P=[{k:'fill',tag:'A',name:'색 채움 · 좌우',desc:'하트는 로즈, 편지는 주요 버튼 파랑으로 채운 56px 동그라미. 보낸 뒤 하트 버튼은 회색 바탕으로 바뀌어 다시 누를 수 없어 보여요.'},{k:'glass',tag:'B',name:'글라스 · 좌우',desc:'하단 메뉴와 같은 유리(paper 60% · 흐림 6 · 흰 테두리 20%) 위에 색 아이콘. 사진 위를 지나도 하단 메뉴와 한 세트로 보여요. 보낸 뒤엔 유리가 옅어지고 하트가 회색으로 채워져요.'}];
+const wrapP=document.getElementById('phones'),phones=[];
+P.forEach(p=>{const c=document.createElement('section');c.className='col';
+  c.innerHTML=`<h2><b>${p.tag}</b>${p.name}</h2><div class="phone v-${p.k}"><div class="scroller" tabindex="0" aria-label="상대 프로필 (스크롤)">${BODY}</div><button type="button" class="act heart" aria-label="호감 보내기">${heartIco()}</button><button type="button" class="act mail" aria-label="편지 보내기">${MAIL}</button>${NAV}</div><p>${p.desc}</p>`;
+  wrapP.append(c);const ph=c.querySelector('.phone');phones.push(ph);
+  ph.querySelector('.heart').addEventListener('click',()=>pop(ph));});
+function reset(ph){ph.getAnimations({subtree:true}).forEach(a=>a.cancel());ph.querySelectorAll('.spark,.bloom').forEach(e=>e.remove());const b=ph.querySelector('.heart');b.classList.remove('is-off');b.removeAttribute('aria-disabled');b.setAttribute('aria-label','호감 보내기');ph.querySelector('.clip').style.transform='translateY(32px)';ph.dataset.sent='';}
+function pop(ph,k=1){
+  if(ph.dataset.sent)return;ph.dataset.sent='1';
+  const b=ph.querySelector('.heart'),ico=b.querySelector('.ico'),clip=b.querySelector('.clip');
+  b.setAttribute('aria-label','호감 보냄');b.setAttribute('aria-disabled','true');
+  const T=ms=>ms*k;
+  if(reduce){clip.style.transform='none';ico.animate([{opacity:.4},{opacity:1}],{duration:200});setTimeout(()=>{if(ph.dataset.sent)b.classList.add('is-off');},T(S.offDelay));if(document.getElementById('bloomOn').checked)bloom(ph);return;}
+  /* 1) 눌림 */
+  b.animate([{transform:'scale(1)'},{transform:`scale(${S.press})`},{transform:'scale(1)'}],{duration:T(160),easing:'cubic-bezier(0.23, 1, 0.32, 1)'});
+  /* 2) 튀어 오름 → 3) 튕기며 내려옴 (위치 · 크기 · 기울기를 한 줄로) */
+  const up=T(S.up),down=T(S.down);
+  /* 색 채움 버튼은 흰 하트가 동그라미 밖으로 나가면 바탕에 묻혀서, 나는 동안만 로즈로 */
+  const fly=ph.classList.contains('v-fill');const rose=getComputedStyle(document.documentElement).getPropertyValue('--rose-500').trim()||'#C9667D';
+  if(fly)ico.animate([{color:'#fff'},{color:rose,offset:.35},{color:rose}],{duration:up,fill:'forwards'});
+  ico.animate([{transform:'translateY(0) scale(1) rotate(0deg)'},{transform:`translateY(${-S.rise}px) scale(${S.peak}) rotate(${-S.tilt}deg)`}],{duration:up,easing:'cubic-bezier(0.2, 0.9, 0.3, 1)',fill:'forwards'}).finished.then(()=>{if(!ph.dataset.sent)return;
+    ico.animate([{transform:`translateY(${-S.rise}px) scale(${S.peak}) rotate(${-S.tilt}deg)`},{transform:'translateY(0) scale(1) rotate(0deg)'}],{duration:down,easing:springEase(S.bounce),fill:'forwards'});
+    if(fly)ico.animate([{color:rose},{color:rose,offset:.45},{color:'#fff'}],{duration:down,fill:'forwards'});
+    /* 채움: 내려오는 동안 아래부터 차오름 */
+    const start=down*S.fillAt/100;
+    clip.animate([{transform:'translateY(32px)'},{transform:'translateY(0)'}],{duration:T(S.fillMs),delay:start,easing:'cubic-bezier(0.33, 1, 0.68, 1)',fill:'forwards'}).finished.then(()=>{clip.style.transform='none';}).catch(()=>{});
+    if(document.getElementById('sparks').checked)sparks(ph,b,k);
+    setTimeout(()=>{if(ph.dataset.sent)b.classList.add('is-off');},down+T(S.offDelay));
+  });
+  if(document.getElementById('bloomOn').checked)setTimeout(()=>bloom(ph),T(120));
+}
+function sparks(ph,b,k){const pr=ph.getBoundingClientRect(),br=b.getBoundingClientRect(),cx=br.left-pr.left+br.width/2,cy=br.top-pr.top+br.height/2-S.rise;
+  for(let i=0;i<S.sparkN;i++){const s=document.createElement('span');s.className='spark';s.innerHTML=`<svg viewBox="0 0 32 32" aria-hidden="true"><path d="${HEART_FILL}"/></svg>`;s.style.left=(cx-5)+'px';s.style.top=(cy-5)+'px';ph.append(s);
+    const a=(-90+(i-(S.sparkN-1)/2)*(150/Math.max(1,S.sparkN-1)))*Math.PI/180,d=26+Math.random()*16,sz=.6+Math.random()*.6;
+    s.animate([{opacity:0,transform:'translate(0,0) scale(.3)'},{opacity:1,transform:`translate(${Math.cos(a)*d*.6}px,${Math.sin(a)*d*.6}px) scale(${sz})`,offset:.35},{opacity:0,transform:`translate(${Math.cos(a)*d}px,${Math.sin(a)*d+8}px) scale(${sz*.7})`}],{duration:620*k,easing:'cubic-bezier(0.23, 1, 0.32, 1)'}).onfinish=()=>s.remove();}}
+function bloom(ph){ph.querySelector('.bloom')?.remove();const b=document.createElement('div');b.className='bloom is-playing';b.setAttribute('aria-hidden','true');b.innerHTML='<span class="loop-heart"></span><span>마음이 한 걸음 가까이</span>';ph.append(b);setTimeout(()=>b.remove(),1800);}
+function spec(){document.getElementById('spec').textContent=`[호감 하트] 눌림 ${S.press} · 튀는 높이 ${S.rise}px · 꼭대기 ${S.peak}배 · 기울기 ${S.tilt}° · 올라감 ${S.up}ms (cubic-bezier(0.2,0.9,0.3,1))\n내려옴 ${S.down}ms 튕김 ${S.bounce} · 채움 ${S.fillAt}%부터 ${S.fillMs}ms (아래→위)\n비활성 ${S.offDelay}ms 뒤 · 색 ${document.querySelector('#offc [aria-pressed=true]').textContent} · 작은 하트 ${document.getElementById('sparks').checked?S.sparkN+'개':'없음'} · 앱 하트 효과 ${document.getElementById('bloomOn').checked?'같이':'없음'}`;}
+document.getElementById('play').addEventListener('click',()=>phones.forEach(ph=>{reset(ph);pop(ph);}));
+document.getElementById('slow').addEventListener('click',()=>phones.forEach(ph=>{reset(ph);pop(ph,4);}));
+document.getElementById('reset').addEventListener('click',()=>phones.forEach(reset));
+document.querySelectorAll('#offc button').forEach(x=>x.addEventListener('click',()=>{document.querySelectorAll('#offc button').forEach(y=>y.setAttribute('aria-pressed',y===x));phones.forEach(ph=>ph.classList.toggle('off-rose',x.dataset.v==='rose'));spec();}));
+['sparks','bloomOn'].forEach(id=>document.getElementById(id).addEventListener('change',spec));
+spec();
+</script>
+</body>
+</html>

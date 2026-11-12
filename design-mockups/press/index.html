@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>이야기 노트 눌림</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398;--pg-on:#fff;
+  --ease-out:cubic-bezier(0.23, 1, 0.32, 1);--s:.97;--prs:120ms;--rel:220ms}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.wrap{max-width:1440px;margin:0 auto;padding:36px 16px 64px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:80ch;margin:10px 0 0;color:var(--pg-fg2)}
+.layout{display:flex;flex-wrap:wrap;gap:28px;margin-top:24px;align-items:flex-start}
+.phones{display:flex;flex-wrap:wrap;gap:24px}
+.col{display:flex;flex-direction:column;gap:10px;width:340px;max-width:100%}
+.col h2{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.col h2 b{display:grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:13px;background:var(--pg-accent);color:var(--pg-on);font:600 12px var(--font-sans)}
+.col h2 em{font:600 11px/1 var(--font-sans);font-style:normal;padding:4px 8px;border-radius:10px;background:var(--color-bg-accent-soft);color:var(--color-fg-accent-strong)}
+.col>p{margin:0;font-size:13px;color:var(--pg-fg2)}
+.panel{position:sticky;top:16px;flex:1 1 280px;min-width:0;display:flex;flex-direction:column;gap:16px;padding:18px;border-radius:18px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.panel h3{margin:0;font-size:14px}
+.ctl{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;font-size:13px}
+.ctl input[type=range]{grid-column:1/-1;width:100%;accent-color:var(--pg-accent)}
+.ctl output{font-variant-numeric:tabular-nums;color:var(--pg-fg2)}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+.btns button{height:40px;padding:0 14px;border:0;border-radius:10px;background:var(--pg-accent);color:var(--pg-on);font-weight:600;cursor:pointer}
+.btns button.ghost{background:none;color:var(--pg-fg);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.btns button:focus-visible{outline:2px solid var(--pg-accent);outline-offset:2px}
+.chk{display:flex;align-items:center;gap:8px;font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:12px;line-height:1.6}
+th,td{padding:8px 6px;text-align:left;vertical-align:top;border-top:1px solid var(--pg-line)}
+th{width:56px;color:var(--pg-fg3);font-weight:600}
+.note{margin:0;font-size:12px;color:var(--pg-fg3)}
+
+/* 폰 */
+.phone{position:relative;width:340px;max-width:100%;height:600px;border-radius:32px;overflow:hidden;background:var(--color-bg-page);color:var(--color-fg-primary);box-shadow:0 0 0 1px var(--pg-line),0 16px 40px rgb(0 0 0 / .12)}
+.scroller{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;padding:56px 20px 40px}
+.scroller::-webkit-scrollbar{display:none}
+.scroller h1{margin:0;font:400 24px/1.5 var(--font-serif)}
+.st-count{margin:6px 0 0;font:400 12px/1.5 var(--font-sans);color:var(--color-fg-tertiary)}
+.st-count b{font-weight:600;color:var(--color-fg-accent-strong)}
+.st-note{--line:28px;position:relative;margin-top:16px;padding:var(--line) 16px var(--line) 32px;border-radius:4px 14px 14px 4px;background:var(--color-bg-surface) repeating-linear-gradient(to bottom,transparent 0 calc(var(--line) - 1px),var(--story-note-rule) calc(var(--line) - 1px) var(--line)) 0 0/100% var(--line);box-shadow:var(--story-note-shadow)}
+.st-note::before{content:"";position:absolute;left:22px;top:0;bottom:0;width:1px;background:var(--story-note-margin)}
+.st-entry{position:relative;isolation:isolate;display:grid;justify-items:start;width:100%;margin:0;padding:0;border:0;background:none;text-align:left;color:var(--color-fg-primary);cursor:pointer;-webkit-tap-highlight-color:transparent;border-radius:6px;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.st-entry+.st-entry{margin-top:var(--line)}
+.st-tape{display:inline-block;height:20px;margin:4px 0;padding:0 10px;transform:rotate(-1.5deg);font:600 11px/20px var(--font-sans);background:var(--story-tape-1);color:var(--story-tape-1-fg)}
+.st-tape.t2{background:var(--story-tape-2);color:var(--story-tape-2-fg);transform:rotate(1deg)}
+.st-tape.t3{background:var(--story-tape-3);color:var(--story-tape-3-fg);transform:rotate(-1deg)}
+.st-eq{margin:0;font:400 16px/var(--line) var(--font-serif);word-break:keep-all}
+.st-ea{font:400 13px/var(--line) var(--font-sans);color:var(--color-fg-secondary);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:keep-all}
+.st-entry:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:2px}
+
+/* 공통 눌림: 누를 땐 빠르게, 놓을 땐 조금 더 여유 있게 */
+.st-entry{transform-origin:50% 50%;transition:transform var(--rel) var(--ease-out),opacity var(--rel) var(--ease-out)}
+.st-entry.is-pressed{transform:scale(var(--s));transition-duration:var(--prs)}
+
+/* A 콘텐츠만 쏙 — 따로 더하는 것 없음 */
+
+/* B 종이 자국: 눌린 동안 항목 뒤에 옅은 바탕 (바탕도 함께 작아져요) */
+.b .st-entry::before{content:"";position:absolute;inset:-4px -8px -4px -6px;z-index:-1;border-radius:10px;background:var(--color-bg-muted);opacity:0;transition:opacity var(--rel) var(--ease-out)}
+.b .st-entry.is-pressed::before{opacity:1;transition-duration:var(--prs)}
+
+/* C 연해지기: 눌린 동안 글자가 살짝 연해져요 */
+.c .st-entry.is-pressed{opacity:.6}
+
+/* 놓으면 쓰기 화면처럼 넘어가는 흉내 */
+.goto{position:absolute;inset:0;display:grid;place-items:center;align-content:center;gap:8px;padding:24px;background:var(--color-bg-page);text-align:center;opacity:0;pointer-events:none;transition:opacity 200ms var(--ease-out)}
+.goto.on{opacity:1}
+.goto b{font:400 20px/1.5 var(--font-serif)}
+.goto small{font-size:12px;color:var(--color-fg-tertiary)}
+
+@media (prefers-reduced-motion:reduce){
+  .st-entry.is-pressed{transform:none}
+  .a .st-entry.is-pressed{opacity:.6}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">자기소개 · 이야기 노트</p>
+  <h1 class="title">누르면 이야기가 종이 안으로 쏙</h1>
+  <p class="intro">노트에 적힌 이야기를 누르는 동안 테이프·질문·답이 한 덩어리로 살짝 작아지고, 손을 떼면 제자리로 돌아와요. 노트 줄과 여백선은 그대로라서 종이 위 글이 안으로 눌리는 느낌이 나요. 세 안 모두 직접 꾹 눌러 보세요.</p>
+
+  <div class="layout">
+    <div class="phones" id="phones"></div>
+
+    <aside class="panel" aria-label="눌림 값 조정">
+      <h3>값 조정 · 세 안에 함께 적용</h3>
+      <label class="ctl">작아지는 정도 <output id="o-s">0.97배</output><input id="s" type="range" min="0.93" max="0.99" step="0.005" value="0.97"></label>
+      <label class="ctl">눌릴 때 <output id="o-p">120ms</output><input id="p" type="range" min="60" max="240" step="10" value="120"></label>
+      <label class="ctl">놓을 때 <output id="o-r">220ms</output><input id="r" type="range" min="120" max="400" step="10" value="220"></label>
+      <label class="chk"><input id="slow" type="checkbox"> 4배 느리게 보기</label>
+      <label class="chk"><input id="goto" type="checkbox"> 놓으면 쓰기 화면으로 넘어가기 (앱과 똑같이)</label>
+      <div class="btns"><button type="button" id="play">세 안 같이 눌러 보기</button><button type="button" class="ghost" id="reset">기본값으로</button></div>
+      <table>
+        <tr><th>A</th><td>콘텐츠만 작아져요. 가장 담백하고, 노트 종이는 전혀 안 바뀌어요.</td></tr>
+        <tr><th>B</th><td>작아지면서 뒤에 옅은 바탕이 깔려요. 어디를 눌렀는지 범위가 분명해요. 지금 앱의 눌림 바탕을 살린 안이에요.</td></tr>
+        <tr><th>C</th><td>작아지면서 글자가 연해져요. 바탕 없이 눌림을 조금 더 또렷하게 보여 줘요.</td></tr>
+      </table>
+      <p class="note">공통: 누르는 순간 바로 반응(손가락이 닿자마자), 끌어서 스크롤하면 10px부터 눌림이 풀려요. 동작 줄이기 설정에서는 크기 변화 없이 바탕·연해짐만 남겨요.</p>
+      <p class="note">앱에서는 손을 떼는 순간 쓰기 화면이 열려서, 주로 느껴지는 건 “누르고 있는 동안 작아지는 것”이에요. 위 체크박스로 똑같이 볼 수 있어요.</p>
+    </aside>
+  </div>
+</div>
+
+<script>
+const ENTRIES=[
+  ['t1','기본 소개 · 필수','간단한 자기소개를 들려주세요','서비스를 기획하는 지우예요. 쉬는 날에는 필름카메라를 들고 익숙한 골목의 새로운 장면을 찾아 걸어요.'],
+  ['t2','이야기 1 · 가까워지기','이런 사람에게 마음이 가요','작은 이야기도 귀 기울여 듣고 서로의 하루를 다정하게 응원해 주는 사람에게 마음이 가요.'],
+  ['t3','이야기 2 · 함께하는 연애','연인이 생기면 함께 하고 싶은 일은?','바다가 보이는 동네를 함께 걷고, 찍어 둔 사진을 보며 그날의 이야기를 오래 나누고 싶어요.']];
+const VARS=[
+  ['a','A','콘텐츠만 쏙','',''],
+  ['b','B','종이 자국','추천','작아지면서 옅은 바탕이 깔려요.'],
+  ['c','C','연해지기','','작아지면서 글자가 연해져요.']];
+VARS[0][4]='테이프·질문·답이 함께 작아져요.';
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+document.getElementById('phones').innerHTML=VARS.map(([k,n,name,tag,desc])=>`
+  <section class="col ${k}"><h2><b>${n}</b>${name}${tag?`<em>${tag}</em>`:''}</h2><p>${desc}</p>
+  <div class="phone"><div class="scroller"><h1>당신을 알아가는<br>작은 이야기</h1><p class="st-count">이야기 <b>3</b> / 3장 · 세 장을 다 담았어요</p>
+  <div class="st-note" role="group" aria-label="내 이야기 노트">${ENTRIES.map(([t,l,q,a])=>`<button type="button" class="st-entry"><span class="st-tape ${t}">${l}</span><span class="st-eq">${esc(q)}</span><span class="st-ea">${esc(a)}</span></button>`).join('')}</div></div>
+  <div class="goto" aria-hidden="true"><b>쓰기 화면</b><small>여기서 이야기를 고쳐 써요 · 잠시 뒤 돌아가요</small></div></div></section>`).join('');
+
+const root=document.documentElement,$=id=>document.getElementById(id);
+let slow=1;
+function apply(){const s=+$('s').value,p=+$('p').value,r=+$('r').value;
+  root.style.setProperty('--s',s);root.style.setProperty('--prs',p*slow+'ms');root.style.setProperty('--rel',r*slow+'ms');
+  $('o-s').textContent=s.toFixed(3).replace(/0$/,'')+'배';$('o-p').textContent=p+'ms';$('o-r').textContent=r+'ms';}
+['s','p','r'].forEach(id=>$(id).addEventListener('input',apply));
+$('slow').addEventListener('change',e=>{slow=e.target.checked?4:1;apply();});
+$('reset').addEventListener('click',()=>{$('s').value=.97;$('p').value=120;$('r').value=220;$('slow').checked=false;slow=1;apply();});
+
+function open(el){if(!$('goto').checked)return;const g=el.closest('.phone').querySelector('.goto');g.classList.add('on');setTimeout(()=>g.classList.remove('on'),1100);}
+document.querySelectorAll('.st-entry').forEach(el=>{
+  let sx=0,sy=0,on=false;
+  const down=()=>{on=true;el.classList.add('is-pressed');};
+  const up=()=>{if(!on)return false;on=false;el.classList.remove('is-pressed');return true;};
+  el.addEventListener('pointerdown',e=>{if(e.button)return;sx=e.clientX;sy=e.clientY;down();});
+  el.addEventListener('pointermove',e=>{if(on&&Math.hypot(e.clientX-sx,e.clientY-sy)>10)up();});
+  el.addEventListener('pointerup',()=>{if(up())open(el);});
+  el.addEventListener('pointercancel',up);el.addEventListener('pointerleave',up);
+  el.addEventListener('keydown',e=>{if((e.key===' '||e.key==='Enter')&&!e.repeat)down();});
+  el.addEventListener('keyup',e=>{if(e.key===' '||e.key==='Enter'){if(up())open(el);}});
+});
+$('play').addEventListener('click',()=>{const els=[...document.querySelectorAll('.col .st-entry:nth-child(2)')];
+  els.forEach(e=>e.classList.add('is-pressed'));setTimeout(()=>els.forEach(e=>e.classList.remove('is-pressed')),(+$('p').value+520)*slow);});
+apply();
+</script>
+</body>
+</html>

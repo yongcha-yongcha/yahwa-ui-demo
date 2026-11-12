@@ -1,0 +1,90 @@
+<title>위치 아이콘 시안</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;600&display=swap">
+<style>
+/* 레이아웃: 위에 문제와 원칙 한 덩어리, 아래 지금 화면 + 시안 4개를 휴대폰 크기 카드로 나란히 */
+:root{
+  --bg:#F8F9F6;--surface:#FFFFFF;--line:#E3E7EA;--fg:#39444D;--fg2:#505C65;--fg3:#69757E;
+  --accent:#377398;--accent-soft:#ECF5FC;--gold:#856E3E;--gold-soft:#FAF7EF;--rose:#994A5D;--rose-soft:#FCF5F6;
+  --serif:"Gowun Batang",serif;--sans:"Noto Sans KR",-apple-system,"Apple SD Gothic Neo",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1A2126;--surface:#273037;--line:#39444D;--fg:#E3E7EA;--fg2:#CFD5DA;--fg3:#98A2AA;--accent:#92C0DF;--accent-soft:#154662;--gold:#D1BF9A;--gold-soft:#3B2E11;--rose:#DDAFB7;--rose-soft:#451824;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1A2126;--surface:#273037;--line:#39444D;--fg:#E3E7EA;--fg2:#CFD5DA;--fg3:#98A2AA;--accent:#92C0DF;--accent-soft:#154662;--gold:#D1BF9A;--gold-soft:#3B2E11;--rose:#DDAFB7;--rose-soft:#451824;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:400 14px/1.7 var(--sans);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1760px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--fg3)}
+h1{margin:8px 0 0;font:400 32px/1.35 var(--serif);text-wrap:balance}
+.intro{max-width:68ch;margin:12px 0 0;color:var(--fg2)}
+.brief{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:28px}
+.brief section{min-width:0;padding:20px;border-radius:16px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
+.brief h2{margin:0 0 8px;font-size:13px;font-weight:600}
+.brief ul{margin:0;padding-left:18px;color:var(--fg2)}
+.brief li+li{margin-top:4px}
+.brief b{color:var(--accent);font-weight:600}
+.grid{display:flex;flex-wrap:wrap;gap:24px;margin-top:40px;align-items:flex-start}
+.card{flex:0 1 390px;min-width:0;display:flex;flex-direction:column;gap:12px}
+.tag{display:flex;align-items:center;gap:8px}
+.tag b{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:13px;font-weight:600}
+.card.now .tag b{background:var(--fg3)}
+.tag span{font:400 18px/1.4 var(--serif)}
+.kind{margin-left:auto;padding:2px 10px;border-radius:12px;font-size:11px;background:var(--accent-soft);color:var(--accent)}
+.kind.risk{background:var(--rose-soft);color:var(--rose)}
+.kind.film{background:var(--gold-soft);color:var(--gold)}
+.phone{width:100%;max-width:390px;height:760px;border-radius:28px;overflow:hidden;box-shadow:0 0 0 1px var(--line),0 12px 32px rgb(0 0 0 / .08);background:#F8F9F6}
+.phone iframe{width:100%;height:100%;border:0;display:block}
+.phone img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.concept{margin:0;font:400 15px/1.6 var(--serif);color:var(--fg)}
+.desc{margin:0;color:var(--fg2);font-size:13px}
+.desc li{margin-top:2px}
+.desc ul{margin:0;padding-left:18px}
+.p{font-size:12px;color:var(--fg3)}
+.p em{font-style:normal;color:var(--accent)}
+.next{max-width:68ch;margin-top:48px;padding:20px;border-radius:16px;background:var(--accent-soft);color:var(--fg)}
+.next h2{margin:0 0 4px;font-size:14px}
+.next p{margin:0}
+@media (max-width:440px){h1{font-size:26px}.phone{height:700px}}
+
+.group{margin-top:48px}
+.group>h2{margin:0;font:400 22px/1.4 var(--serif)}
+.group>p{max-width:68ch;margin:4px 0 0;color:var(--fg2)}
+.group .grid{margin-top:20px}
+.toggle{display:inline-flex;gap:4px;padding:4px;border-radius:12px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line);align-self:flex-start}
+.toggle button{height:32px;padding:0 12px;border:0;border-radius:8px;background:none;font:500 12px var(--sans);color:var(--fg3);cursor:pointer}
+.toggle button[aria-pressed=true]{background:var(--accent-soft);color:var(--accent)}
+.toggle button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<div class="wrap">
+<p class="eyebrow">YAHWA · 가입 5/5 · 위치 아이콘</p>
+<h1>지역 앞 위치 아이콘</h1>
+<p class="intro">Figma 아이콘 페이지에 있는 채움(Fill) · 두 색(Duocolor) 위치 아이콘을 지금 화면에 넣어 봤어요. 아이콘만 바뀌고 나머지는 지금 앱 그대로예요.</p>
+<div class="grid"><article class="card">
+<div class="tag"><b>P0</b><span>지금 · 선 아이콘</span></div>
+<div class="phone"><iframe src="p0.html#me" title="위치 아이콘 지금 · 선 아이콘" loading="lazy"></iframe></div>
+<div class="desc"><ul><li>Line/Navigation/map-pin. 선이 가늘고 속이 비어 옆 글자보다 약해 보여요</li></ul></div>
+</article><article class="card">
+<div class="tag"><b>P1</b><span>채움 · 회색</span></div>
+<div class="phone"><iframe src="p1.html#me" title="위치 아이콘 채움 · 회색" loading="lazy"></iframe></div>
+<div class="desc"><ul><li>Fill/Navigation/map-pin. 같은 모양을 채워서 글자 무게와 맞춤</li></ul></div>
+</article><article class="card">
+<div class="tag"><b>P2</b><span>채움 · 하늘</span></div>
+<div class="phone"><iframe src="p2.html#me" title="위치 아이콘 채움 · 하늘" loading="lazy"></iframe></div>
+<div class="desc"><ul><li>Fill/Navigation/map-pin을 야화 하늘색으로. 아래 아이콘들(하늘)과 색이 이어짐</li></ul></div>
+</article><article class="card">
+<div class="tag"><b>P3</b><span>하트 핀 · 회색</span></div>
+<div class="phone"><iframe src="p3.html#me" title="위치 아이콘 하트 핀 · 회색" loading="lazy"></iframe></div>
+<div class="desc"><ul><li>Fill/Navigation/map-pin-heart. 핀 안에 작은 하트가 뚫려 있어 데이팅 앱다움</li></ul></div>
+</article><article class="card">
+<div class="tag"><b>P4</b><span>하트 핀 · 로즈</span></div>
+<div class="phone"><iframe src="p4.html#me" title="위치 아이콘 하트 핀 · 로즈" loading="lazy"></iframe></div>
+<div class="desc"><ul><li>하트 핀을 옅은 로즈로. 가장 따뜻하지만 눈에 띄는 편</li></ul></div>
+</article><article class="card">
+<div class="tag"><b>P5</b><span>두 색 · 하늘 점</span></div>
+<div class="phone"><iframe src="p5.html#me" title="위치 아이콘 두 색 · 하늘 점" loading="lazy"></iframe></div>
+<div class="desc"><ul><li>Duocolor/Navigation/map-pin. 바깥은 회색 선, 가운데 점만 하늘색</li></ul></div>
+</article><article class="card">
+<div class="tag"><b>P6</b><span>두 색 · 로즈 하트</span></div>
+<div class="phone"><iframe src="p6.html#me" title="위치 아이콘 두 색 · 로즈 하트" loading="lazy"></iframe></div>
+<div class="desc"><ul><li>Duocolor/Navigation/map-pin-heart. 회색 핀 안에 로즈 하트</li></ul></div>
+</article></div>
+</div>

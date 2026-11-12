@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>인연 열기 글자 모션</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button,input{font:inherit;color:inherit}
+.wrap{max-width:1840px;margin:0 auto;padding:36px 16px 64px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:78ch;margin:10px 0 0;color:var(--pg-fg2)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin-top:20px}
+.bar label,.knob label{font-size:13px;color:var(--pg-fg2)}
+input[type=range]{accent-color:var(--pg-accent)}
+.bar input[type=range]{width:160px}
+.bar output{min-width:56px;font-size:13px;font-variant-numeric:tabular-nums}
+.tool{height:44px;padding:0 16px;border:0;border-radius:12px;background:var(--pg-accent);color:#fff;font-weight:600;cursor:pointer}
+.tool:focus-visible,.again:focus-visible{outline:2px solid var(--pg-accent);outline-offset:3px}
+.grid{display:flex;flex-wrap:wrap;gap:32px 24px;margin-top:28px}
+.item{flex:0 1 340px;min-width:0;display:flex;flex-direction:column;gap:10px}
+.item h2{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.item h2 b{display:grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:13px;background:var(--pg-accent);color:#fff;font:600 12px var(--font-sans)}
+.item.now h2 b{background:var(--pg-fg3)}
+.item>p{margin:0;font-size:13px;color:var(--pg-fg2)}
+.item .feel{font-size:12px;color:var(--pg-fg3)}
+.stage{padding:10px;border-radius:28px;background:var(--color-bg-page);box-shadow:0 0 0 1px var(--pg-line)}
+.again{height:40px;border:0;border-radius:10px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);font-size:12px;cursor:pointer}
+.knob{display:grid;grid-template-columns:52px 1fr 64px;align-items:center;gap:8px}
+.knob input{width:100%}
+.knob output{font-size:12px;text-align:right;font-variant-numeric:tabular-nums;color:var(--pg-fg2)}
+.spec{margin:0;padding:10px 12px;border-radius:10px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);font:12px/1.6 ui-monospace,Menlo,monospace;color:var(--pg-fg2);user-select:all;white-space:pre-wrap}
+
+/* ───── 인연 카드 (앱 수치: 320 × 494, 모서리 32) ───── */
+.card{position:relative;width:320px;max-width:100%;height:494px;border-radius:32px;overflow:hidden;cursor:pointer;isolation:isolate;background:var(--cool-neutral-200);-webkit-tap-highlight-color:transparent}
+.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%}
+.card .cover{z-index:0;filter:blur(14px)}
+.card .photo{z-index:1}
+.card.closed .photo{opacity:0}
+.badge{position:absolute;z-index:3;top:22px;left:16px;height:28px;padding:0 10px;border-radius:14px;background:color-mix(in srgb,var(--white) 88%,transparent);font:600 12px/28px var(--font-sans);color:var(--sage-700,#3D6B4F);display:flex;align-items:center;gap:6px}
+.badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--sage-500,#5E9A74)}
+.card.closed .badge{display:none}
+.arrive{position:absolute;z-index:4;top:22px;left:0;right:0;text-align:center;font:500 12px/20px var(--font-sans);color:#fff;text-shadow:0 1px 6px rgb(0 0 0 / .3)}
+.open{position:absolute;z-index:4;left:22px;right:22px;bottom:22px;height:52px;display:flex;align-items:center;justify-content:center;border-radius:16px;background:color-mix(in srgb,var(--white) 92%,transparent);color:var(--color-fg-primary);font:600 15px/1 var(--font-sans);box-shadow:0 6px 20px rgb(0 0 0 / .18);transition:transform 120ms ease-out}
+.card.closed:active .open{transform:scale(.97)}
+.card:not(.closed) .arrive,.card:not(.closed) .open{visibility:hidden}
+.copy{position:absolute;z-index:2;left:0;right:0;bottom:0;padding:64px 20px 24px;color:#fff}
+.tint{position:absolute;z-index:1;left:0;right:0;bottom:0;height:300px;background:linear-gradient(transparent,rgb(146 120 60 / .62) 45%,rgb(136 112 56 / .9))}
+.card.closed .copy,.card.closed .tint{opacity:0}
+.ttl{display:flex;align-items:baseline;gap:6px;min-height:35px}
+.ttl strong{font:700 27px/1.3 var(--font-sans)}
+.ttl span{font:700 20px/1.3 var(--font-sans)}
+.ttl i{align-self:center;width:20px;height:20px;border-radius:50%;background:#fff;display:grid;place-items:center}
+.ttl i::after{content:"";width:10px;height:6px;border:solid var(--sky-600,#377398);border-width:0 0 2px 2px;transform:translateY(-1px) rotate(-45deg)}
+.loc{margin:6px 0;font:400 13px/22px var(--font-sans);opacity:.92}
+.scene small{display:block;font:400 12px/20px var(--font-sans);opacity:.92}
+.scene p{margin:6px 0 0;font:500 14px/24px var(--font-sans)}
+.u{display:block}
+.u.ttl{display:flex}
+.mk{display:block;overflow:hidden}
+.mk>.u{will-change:transform}
+@media (prefers-reduced-motion:reduce){.open{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">YAHWA · 인연 홈 · 인연 열기</p>
+  <h1 class="title">열 때 글자가 아래에서 올라오기</h1>
+  <p class="intro">사진이 흐림을 걷으며 다가오는 지금 모션은 그대로 두고, 이름 · 지역 · 한 장면 글이 들어오는 방식만 달리했어요. 지금은 10px만 살짝 떠올라서 거의 보이지 않아요. 카드의 "인연 열어보기"를 누르거나 "다시 열기"를 눌러 보세요. 카드 아래 슬라이더로 값을 바꿀 수 있고, 맨 아래 값은 그대로 복사해 보내 주시면 돼요.</p>
+  <div class="bar">
+    <label for="start">글자 시작</label><input type="range" id="start" min="200" max="1400" step="50" value="650"><output id="o-start">650ms</output>
+    <label for="spd">속도 배율</label><input type="range" id="spd" min="0.5" max="3" step="0.1" value="1"><output id="o-spd">1.0배</output>
+    <button type="button" class="tool" id="all">전체 다시 열기</button>
+  </div>
+  <div class="grid" id="grid"></div>
+</div>
+<script>
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let K=1,START=650;const T=ms=>ms*K;
+const E='cubic-bezier(0.23, 1, 0.32, 1)',DRAWER='cubic-bezier(.32,.72,0,1)';
+/* 스프링 (앱 STEP_EASE와 같은 결 · 넘침 없음) */
+const SPRING='linear('+Array.from({length:41},(_,i)=>{const t=i/40;return i===40?1:+(1-Math.exp(-9*t)*(1+9*t)).toFixed(4)}).join(',')+')';
+const V=[
+ {tag:'지금',name:'지금 · 살짝 떠오르기',now:true,units:'block',dist:10,dur:420,gap:70,
+  desc:'이름 · 지역 · 한 장면, 세 덩어리가 10px 아래에서 420ms 동안 떠올라요.',feel:'거의 안 보임',
+  run(u,o){u.forEach((e,i)=>e.animate([{opacity:0,transform:`translateY(${o.dist}px)`},{opacity:1,transform:'none'}],{duration:T(o.dur),delay:T(START+i*o.gap),easing:E,fill:'backwards'}));}},
+ {tag:'A',name:'한 줄씩 떠오르기',units:'line',dist:24,dur:800,gap:60,
+  desc:'다섯 줄(이름 · 지역 · 한 장면 제목 · 글 두 줄)이 한 줄씩 24px 아래에서 올라와요. 가입 화면들과 같은 스프링이라 앱 전체 결이 맞아요.',feel:'단정함 · 앱과 같은 결',
+  run(u,o){u.forEach((e,i)=>{const d=T(START+i*o.gap);e.animate([{transform:`translateY(${o.dist}px)`},{transform:'none'}],{duration:T(o.dur),delay:d,easing:SPRING,fill:'backwards'});e.animate([{opacity:0},{opacity:1}],{duration:T(o.dur/2),delay:d,easing:E,fill:'backwards'});});}},
+ {tag:'B',name:'줄 아래에서 밀려 올라오기',units:'mask',dist:100,dur:720,gap:80,
+  desc:'줄마다 보이지 않는 창이 있고, 글자가 그 창 아래에서 밀려 올라와요. 영화 엔딩 크레딧이나 자막처럼 또렷하게 "등장"해요.',feel:'영화 같음 · 가장 또렷함',
+  run(u,o){u.forEach((e,i)=>e.animate([{transform:`translateY(${o.dist}%)`},{transform:'none'}],{duration:T(o.dur),delay:T(START+i*o.gap),easing:DRAWER,fill:'backwards'}));}},
+ {tag:'C',name:'흐림 걷히며 떠오르기',units:'line',dist:16,dur:900,gap:70,
+  desc:'사진처럼 글자도 흐린 채로 올라오며 선명해져요. 사진의 흐림 걷힘과 한 동작처럼 이어져요.',feel:'몽글 · 사진과 하나',
+  run(u,o){u.forEach((e,i)=>e.animate([{opacity:0,filter:'blur(6px)',transform:`translateY(${o.dist}px)`},{opacity:1,filter:'blur(0)',transform:'none'}],{duration:T(o.dur),delay:T(START+i*o.gap),easing:E,fill:'backwards'}));}},
+ {tag:'D',name:'이름 먼저, 나머지가 뒤따라',units:'line',dist:28,dur:900,gap:50,tintRise:true,
+  desc:'아래 색 그라데이션이 먼저 차오르고, 이름이 크게 올라와 자리를 잡은 뒤 나머지 줄이 가볍게 따라와요. 이름이 가장 먼저 읽혀요.',feel:'주인공 소개 · 리듬감',
+  run(u,o){const [t,...rest]=u,d0=T(START);
+   t.animate([{transform:`translateY(${o.dist}px) scale(.94)`},{transform:'none'}],{duration:T(o.dur),delay:d0,easing:SPRING,fill:'backwards'});
+   t.animate([{opacity:0},{opacity:1}],{duration:T(o.dur/2),delay:d0,easing:E,fill:'backwards'});
+   rest.forEach((e,i)=>e.animate([{opacity:0,transform:`translateY(${Math.round(o.dist/2)}px)`},{opacity:1,transform:'none'}],{duration:T(o.dur*.6),delay:d0+T(280+i*o.gap),easing:E,fill:'backwards'}));}},
+];
+const L1='출판사에서 책을 만드는 일을 해요. 주말 아침에는',L2='커피 한 잔을 들고 동네를 걷거나 작은 서점에…';
+function copyHtml(kind){
+  const w=h=>kind==='mask'?`<span class="mk"><span class="u">${h}</span></span>`:`<span class="u">${h}</span>`;
+  if(kind==='block')return `<div class="u ttl"><strong>봄빛,</strong><span>26세</span><i aria-label="본인 인증"></i></div><p class="u loc">서울 마포구</p><div class="u scene"><small>✦ 이 사람의 한 장면</small><p>${L1}<br>${L2}</p></div>`;
+  const ttl=kind==='mask'?`<span class="mk"><span class="u ttl"><strong>봄빛,</strong><span>26세</span><i aria-label="본인 인증"></i></span></span>`:`<span class="u ttl"><strong>봄빛,</strong><span>26세</span><i aria-label="본인 인증"></i></span>`;
+  return `${ttl}<p class="loc">${w('서울 마포구')}</p><div class="scene"><small>${w('✦ 이 사람의 한 장면')}</small><p>${w(L1)}${w(L2)}</p></div>`;
+}
+const grid=document.getElementById('grid'),cards=[];
+V.forEach((v,vi)=>{
+  const o={dist:v.dist,dur:v.dur,gap:v.gap};
+  const it=document.createElement('article');it.className='item'+(v.now?' now':'');
+  const unit=v.units==='mask'?'%':'px';
+  it.innerHTML=`<h2><b>${v.tag}</b>${v.name}</h2>
+  <div class="stage"><div class="card closed" role="button" tabindex="0" aria-label="인연 열어보기">
+    <img class="cover" src="img/a.jpg" alt="" aria-hidden="true"><img class="photo" src="img/a.jpg" alt="봄빛의 대표 사진">
+    <span class="badge">최근활동</span><div class="tint"></div><div class="copy">${copyHtml(v.units)}</div>
+    <span class="arrive">21:00에 도착한 인연</span><span class="open">인연 열어보기</span></div></div>
+  <button type="button" class="again">다시 열기</button>
+  <div class="knob"><label for="d${vi}">거리</label><input type="range" id="d${vi}" min="${unit==='%'?40:4}" max="${unit==='%'?140:60}" step="${unit==='%'?5:2}" value="${o.dist}"><output>${o.dist}${unit}</output></div>
+  <div class="knob"><label for="t${vi}">길이</label><input type="range" id="t${vi}" min="200" max="1600" step="20" value="${o.dur}"><output>${o.dur}ms</output></div>
+  <div class="knob"><label for="g${vi}">간격</label><input type="range" id="g${vi}" min="0" max="200" step="10" value="${o.gap}"><output>${o.gap}ms</output></div>
+  <p>${v.desc}</p><span class="feel">느낌 · ${v.feel}</span><pre class="spec"></pre>`;
+  grid.append(it);
+  const card=it.querySelector('.card'),spec=it.querySelector('.spec');
+  const writeSpec=()=>{spec.textContent=`[${v.tag}] ${v.name} · 글자 시작 ${START}ms · 거리 ${o.dist}${unit} · 길이 ${o.dur}ms · 간격 ${o.gap}ms`;};
+  [['d','dist',unit],['t','dur','ms'],['g','gap','ms']].forEach(([p,k,u])=>{const r=it.querySelector('#'+p+vi);r.addEventListener('input',()=>{o[k]=+r.value;r.nextElementSibling.textContent=r.value+u;writeSpec();});r.addEventListener('change',()=>openCard(true));});
+  const c={v,o,card,writeSpec};cards.push(c);writeSpec();
+  const openCard=again=>{if(again)reset(c);if(!card.classList.contains('closed'))return;open(c);};
+  c.openCard=openCard;
+  card.addEventListener('click',()=>openCard(false));
+  card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openCard(false);}});
+  it.querySelector('.again').addEventListener('click',()=>openCard(true));
+});
+function reset(c){c.card.getAnimations({subtree:true}).forEach(a=>a.cancel());c.card.classList.add('closed');c.card.setAttribute('aria-label','인연 열어보기');}
+function open(c){
+  const {card,v,o}=c,photo=card.querySelector('.photo'),cover=card.querySelector('.cover'),tint=card.querySelector('.tint');
+  const leaving=[card.querySelector('.arrive'),card.querySelector('.open')];
+  card.classList.remove('closed');card.setAttribute('aria-label','봄빛, 26세 · 서울 마포구');
+  if(reduce){photo.animate([{opacity:0},{opacity:1}],{duration:300,fill:'backwards'});[tint,card.querySelector('.copy')].forEach(e=>e.animate([{opacity:0},{opacity:1}],{duration:300,delay:200,fill:'backwards'}));return;}
+  /* 지금 앱의 열기 모션 그대로 (tokens --reveal-*) */
+  leaving.forEach(e=>e.animate([{opacity:1,visibility:'visible'},{opacity:0,visibility:'visible'}],{duration:T(200),easing:'ease-out'}));
+  photo.animate([{filter:'blur(14px) saturate(.94) brightness(1.06)'},{filter:'blur(0) saturate(1) brightness(1)'}],{duration:T(1200),delay:T(120),easing:E,fill:'both'});
+  photo.animate([{transform:`scale(${(1.01/1.06).toFixed(4)})`},{transform:'scale(1)'}],{duration:T(1850),delay:T(120),easing:E,fill:'both'});
+  cover.animate([{opacity:1},{opacity:0}],{duration:T(1200),delay:T(120+420),easing:E,fill:'forwards'});
+  if(v.tintRise)tint.animate([{opacity:0,transform:'translateY(40%)'},{opacity:1,transform:'none'}],{duration:T(800),delay:T(Math.max(0,START-250)),easing:DRAWER,fill:'backwards'});
+  else tint.animate([{opacity:0},{opacity:1}],{duration:T(500),delay:T(Math.max(0,START-200)),easing:E,fill:'backwards'});
+  v.run([...card.querySelectorAll('.copy .u')],o);
+}
+document.getElementById('all').addEventListener('click',()=>cards.forEach(c=>c.openCard(true)));
+const st=document.getElementById('start'),os=document.getElementById('o-start');
+st.addEventListener('input',()=>{START=+st.value;os.textContent=START+'ms';cards.forEach(c=>c.writeSpec());});
+const sp=document.getElementById('spd'),op=document.getElementById('o-spd');
+sp.addEventListener('input',()=>{K=+sp.value;op.textContent=K.toFixed(1)+'배';});
+</script>
+</body>
+</html>

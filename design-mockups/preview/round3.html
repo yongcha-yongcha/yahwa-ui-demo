@@ -1,0 +1,98 @@
+<title>A1 생활 영역 시안</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;600&display=swap">
+<style>
+/* 레이아웃: 위에 문제와 원칙 한 덩어리, 아래 지금 화면 + 시안 4개를 휴대폰 크기 카드로 나란히 */
+:root{
+  --bg:#F8F9F6;--surface:#FFFFFF;--line:#E3E7EA;--fg:#39444D;--fg2:#505C65;--fg3:#69757E;
+  --accent:#377398;--accent-soft:#ECF5FC;--gold:#856E3E;--gold-soft:#FAF7EF;--rose:#994A5D;--rose-soft:#FCF5F6;
+  --serif:"Gowun Batang",serif;--sans:"Noto Sans KR",-apple-system,"Apple SD Gothic Neo",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1A2126;--surface:#273037;--line:#39444D;--fg:#E3E7EA;--fg2:#CFD5DA;--fg3:#98A2AA;--accent:#92C0DF;--accent-soft:#154662;--gold:#D1BF9A;--gold-soft:#3B2E11;--rose:#DDAFB7;--rose-soft:#451824;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1A2126;--surface:#273037;--line:#39444D;--fg:#E3E7EA;--fg2:#CFD5DA;--fg3:#98A2AA;--accent:#92C0DF;--accent-soft:#154662;--gold:#D1BF9A;--gold-soft:#3B2E11;--rose:#DDAFB7;--rose-soft:#451824;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:400 14px/1.7 var(--sans);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1760px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--fg3)}
+h1{margin:8px 0 0;font:400 32px/1.35 var(--serif);text-wrap:balance}
+.intro{max-width:68ch;margin:12px 0 0;color:var(--fg2)}
+.brief{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:28px}
+.brief section{min-width:0;padding:20px;border-radius:16px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
+.brief h2{margin:0 0 8px;font-size:13px;font-weight:600}
+.brief ul{margin:0;padding-left:18px;color:var(--fg2)}
+.brief li+li{margin-top:4px}
+.brief b{color:var(--accent);font-weight:600}
+.grid{display:flex;flex-wrap:wrap;gap:24px;margin-top:40px;align-items:flex-start}
+.card{flex:0 1 390px;min-width:0;display:flex;flex-direction:column;gap:12px}
+.tag{display:flex;align-items:center;gap:8px}
+.tag b{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:13px;font-weight:600}
+.card.now .tag b{background:var(--fg3)}
+.tag span{font:400 18px/1.4 var(--serif)}
+.kind{margin-left:auto;padding:2px 10px;border-radius:12px;font-size:11px;background:var(--accent-soft);color:var(--accent)}
+.kind.risk{background:var(--rose-soft);color:var(--rose)}
+.kind.film{background:var(--gold-soft);color:var(--gold)}
+.phone{width:100%;max-width:390px;height:760px;border-radius:28px;overflow:hidden;box-shadow:0 0 0 1px var(--line),0 12px 32px rgb(0 0 0 / .08);background:#F8F9F6}
+.phone iframe{width:100%;height:100%;border:0;display:block}
+.phone img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.concept{margin:0;font:400 15px/1.6 var(--serif);color:var(--fg)}
+.desc{margin:0;color:var(--fg2);font-size:13px}
+.desc li{margin-top:2px}
+.desc ul{margin:0;padding-left:18px}
+.p{font-size:12px;color:var(--fg3)}
+.p em{font-style:normal;color:var(--accent)}
+.next{max-width:68ch;margin-top:48px;padding:20px;border-radius:16px;background:var(--accent-soft);color:var(--fg)}
+.next h2{margin:0 0 4px;font-size:14px}
+.next p{margin:0}
+@media (max-width:440px){h1{font-size:26px}.phone{height:700px}}
+
+.group{margin-top:48px}
+.group>h2{margin:0;font:400 22px/1.4 var(--serif)}
+.group>p{max-width:68ch;margin:4px 0 0;color:var(--fg2)}
+.group .grid{margin-top:20px}
+.toggle{display:inline-flex;gap:4px;padding:4px;border-radius:12px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line);align-self:flex-start}
+.toggle button{height:32px;padding:0 12px;border:0;border-radius:8px;background:none;font:500 12px var(--sans);color:var(--fg3);cursor:pointer}
+.toggle button[aria-pressed=true]{background:var(--accent-soft);color:var(--accent)}
+.toggle button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<div class="wrap">
+<p class="eyebrow">YAHWA · 가입 5/5 · A1 다듬기</p>
+<h1>A1 · 생활 네 가지 보여 주기</h1>
+<p class="intro">위쪽(이름 · 서울 · 여성 · 해시태그 · 세 칸 상자)은 A1 그대로 두고, 비흡연 · 술 · 종교 · 학력 네 가지만 여섯 가지로 바꿔 봤어요. 휴대폰 화면은 직접 스크롤할 수 있어요.</p>
+<div class="grid"><article class="card">
+<div class="tag"><b>A1</b><span>지금 A1 (비교용)</span></div>
+<div class="phone"><iframe src="a1.html#me" title="지금 A1 (비교용)" loading="lazy"></iframe></div>
+<div class="desc"><ul><li>칩 없이 13px 아이콘 + 글자 한 줄</li></ul></div>
+<p class="p">가볍지만 위 세 칸에 비해 너무 작아 보여요.</p>
+</article><article class="card">
+<div class="tag"><b>L1</b><span>큰 칩 · 테두리</span></div>
+<div class="phone"><iframe src="l1.html#me" title="큰 칩 · 테두리" loading="lazy"></iframe></div>
+<div class="desc"><ul><li>높이 40, 글자 14, 아이콘 18</li><li>흰 바탕 + 옅은 테두리, 아이콘은 회색</li></ul></div>
+<p class="p">요청하신 안이에요. 위 상자와 같은 흰색이라 한 세트로 보여요.</p>
+</article><article class="card">
+<div class="tag"><b>L2</b><span>큰 칩 · 흰 채움</span></div>
+<div class="phone"><iframe src="l2.html#me" title="큰 칩 · 흰 채움" loading="lazy"></iframe></div>
+<div class="desc"><ul><li>테두리를 빼고 흰 바탕만</li><li>아이콘을 하늘색으로 해서 위 세 칸과 같은 색 규칙</li></ul></div>
+<p class="p">L1보다 더 부드럽고, 위 상자와 재질이 똑같아요.</p>
+</article><article class="card">
+<div class="tag"><b>L3</b><span>큰 칩 · 파스텔</span></div>
+<div class="phone"><iframe src="l3.html#me" title="큰 칩 · 파스텔" loading="lazy"></iframe></div>
+<div class="desc"><ul><li>네 칩이 하늘 · 장미 · 금 · 세이지 파스텔 하나씩</li><li>자기소개 화면 테이프와 같은 색 계열</li></ul></div>
+<p class="p">가장 야화다운 안. 대신 해시태그(하늘색 글자)와 색이 겹쳐 시선이 분산될 수 있어요.</p>
+</article><article class="card">
+<div class="tag"><b>L4</b><span>2×2 타일</span></div>
+<div class="phone"><iframe src="l4.html#me" title="2×2 타일" loading="lazy"></iframe></div>
+<div class="desc"><ul><li>같은 폭 네 칸, 아이콘 + 라벨(작게) + 값</li><li>담배 · 술 · 종교 · 학력 라벨이 붙어 뜻이 분명해요</li></ul></div>
+<p class="p">줄바꿈 때 하나만 남는 문제가 없어요. 대신 화면 높이를 가장 많이 써요.</p>
+</article><article class="card">
+<div class="tag"><b>L5</b><span>한 상자로 합치기</span></div>
+<div class="phone"><iframe src="l5.html#me" title="한 상자로 합치기" loading="lazy"></iframe></div>
+<div class="desc"><ul><li>위 세 칸 상자 아래에 손그림 가로선을 긋고 네 칸을 작게</li><li>나의 정보 전체가 카드 한 장</li></ul></div>
+<p class="p">가장 정돈돼 보여요. 생활 값이 길어지면(예: 대학원 재학·졸업) 줄이 넘칠 수 있어요.</p>
+</article><article class="card">
+<div class="tag"><b>L6</b><span>소제목 + 큰 칩</span></div>
+<div class="phone"><iframe src="l6.html#me" title="소제목 + 큰 칩" loading="lazy"></iframe></div>
+<div class="desc"><ul><li>"생활" 소제목 아래 회색 칩</li><li>모서리를 덜 둥글게(12) 해서 해시태그 · 버튼과 구분</li></ul></div>
+<p class="p">묶음 이름이 보여서 처음 보는 사람도 이해가 빨라요.</p>
+</article></div>
+<div class="next"><h2>참고</h2><p>칩 안(L1 · L2 · L3 · L6)은 네 개가 한 줄에 다 안 들어가서 3 + 1로 줄이 나뉘어요. 값 길이에 따라 2 + 2가 되기도 해요. 줄 수를 늘 맞추고 싶으면 L4 · L5처럼 칸을 고정하는 쪽이 안전해요.</p></div>
+</div>

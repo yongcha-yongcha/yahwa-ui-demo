@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>취향 설정 다시 그리기</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398;--pg-on:#fff;
+  --ease-out:cubic-bezier(0.23, 1, 0.32, 1);--ease-drawer:cubic-bezier(0.32, 0.72, 0, 1)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.wrap{max-width:1640px;margin:0 auto;padding:36px 16px 80px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:86ch;margin:10px 0 0;color:var(--pg-fg2)}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.toc a{padding:6px 12px;border-radius:16px;box-shadow:inset 0 0 0 1px var(--pg-line);color:var(--pg-fg);text-decoration:none;font-size:13px}
+section.part{margin-top:44px}
+section.part>h2{margin:0;font:400 23px/1.4 var(--font-serif)}
+section.part>p{max-width:86ch;margin:6px 0 0;color:var(--pg-fg2);font-size:13px}
+.phones{display:flex;flex-wrap:wrap;gap:24px;margin-top:18px}
+.col{display:flex;flex-direction:column;gap:10px;width:360px;max-width:100%}
+.col h3{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.col h3 b{display:grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:13px;background:var(--pg-accent);color:var(--pg-on);font:600 12px var(--font-sans)}
+.col h3 b.now{background:var(--pg-line);color:var(--pg-fg2)}
+.col h3 em{font:600 11px/1 var(--font-sans);font-style:normal;padding:4px 8px;border-radius:10px;background:var(--color-bg-accent-soft);color:var(--color-fg-accent-strong)}
+.col>p{margin:0;min-height:88px;font-size:13px;color:var(--pg-fg2)}
+.col .again{align-self:flex-start;height:34px;padding:0 12px;border:0;border-radius:9px;background:none;box-shadow:inset 0 0 0 1px var(--pg-line);font-size:12px;cursor:pointer}
+.notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:18px}
+.box{padding:16px 18px;border-radius:16px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);font-size:13px;color:var(--pg-fg2)}
+.box h4{margin:0 0 8px;font-size:14px;color:var(--pg-fg)}
+.box ul{margin:0;padding-left:18px}.box li+li{margin-top:5px}
+.box b{color:var(--pg-fg)}
+
+/* ── 폰 공통 ── */
+.phone{position:relative;width:360px;max-width:100%;height:780px;border-radius:36px;overflow:hidden;background:var(--color-bg-page);color:var(--color-fg-primary);box-shadow:0 0 0 1px var(--pg-line),0 16px 40px rgb(0 0 0 / .12);isolation:isolate}
+.phone.shot{background:#F8F9F6 0 0/360px 780px no-repeat}
+.phone .page{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;background:linear-gradient(var(--color-bg-subtle),var(--color-bg-page) 200px)}
+.phone .page::-webkit-scrollbar{display:none}
+.topbar{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;height:64px;padding:20px var(--layout-gutter) 0;background:linear-gradient(var(--color-bg-subtle) 70%,transparent)}
+.ib{display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;border-radius:22px;background:none;color:var(--color-fg-secondary);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ib svg{width:24px;height:24px;fill:currentColor}
+.topbar .ib:first-child{margin-left:-10px}
+.tb-text{height:44px;padding:0 4px;border:0;background:none;color:var(--color-fg-secondary);font:500 14px/1 var(--font-sans);cursor:pointer}
+.tb-text:disabled{color:var(--color-border-strong);cursor:default}
+.leaf-chip{display:flex;align-items:center;gap:6px;height:44px;padding:0 6px;margin-right:-6px;border:0;background:none;color:var(--color-fg-secondary);font:600 14px/1 var(--font-sans);font-variant-numeric:tabular-nums;cursor:pointer}
+.leaf-chip svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.ptitle{margin:4px var(--layout-gutter) 0;font:400 26px/1.45 var(--font-serif)}
+.psub{margin:6px var(--layout-gutter) 0;font:400 13px/1.6 var(--font-sans);color:var(--color-fg-secondary);word-break:keep-all}
+.ai{display:inline-block;flex:none;width:20px;height:20px;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;color:var(--color-fg-secondary)}
+
+/* 칩 */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{height:36px;padding:0 14px;border:0;border-radius:18px;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-default);color:var(--color-fg-primary);font:500 14px/1 var(--font-sans);white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color 160ms var(--ease-out),box-shadow 160ms var(--ease-out),color 160ms var(--ease-out),transform 120ms var(--ease-out)}
+.chip:active{transform:scale(.96)}
+.chip[aria-pressed="true"]{background:var(--color-bg-accent-soft);box-shadow:inset 0 0 0 1.5px var(--color-border-accent);color:var(--color-fg-accent-strong);font-weight:600}
+.chip:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:2px}
+/* 스위치 */
+.sw{position:relative;flex:none;width:48px;height:28px;border:0;border-radius:14px;background:var(--color-bg-control);cursor:pointer;transition:background-color 200ms var(--ease-out)}
+.sw::after{content:"";position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:var(--white);box-shadow:0 1px 3px rgb(0 0 0 / .18);transition:transform 200ms var(--ease-out)}
+.sw[aria-checked="true"]{background:var(--color-fg-accent)}
+.sw[aria-checked="true"]::after{transform:translateX(20px)}
+.sw:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:2px}
+/* 범위 막대 */
+.range{position:relative;height:36px;margin:0 2px;transition:opacity 200ms var(--ease-out)}
+.range.is-off{opacity:.35;pointer-events:none}
+.range .track{position:absolute;left:0;right:0;top:16px;height:4px;border-radius:2px;background:var(--color-bg-control)}
+.range .fill{position:absolute;top:16px;height:4px;border-radius:2px;background:var(--color-fg-accent)}
+.range input{position:absolute;inset:0;width:100%;margin:0;background:none;pointer-events:none;-webkit-appearance:none;appearance:none}
+.range input::-webkit-slider-thumb{-webkit-appearance:none;pointer-events:auto;width:26px;height:26px;border-radius:50%;background:var(--white);box-shadow:0 0 0 1px var(--color-border-default),0 2px 6px rgb(30 50 70 / .18);cursor:grab}
+.range input::-moz-range-thumb{pointer-events:auto;width:26px;height:26px;border:0;border-radius:50%;background:var(--white);box-shadow:0 0 0 1px var(--color-border-default),0 2px 6px rgb(30 50 70 / .18);cursor:grab}
+.range input::-webkit-slider-runnable-track{background:none}
+.range input:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 2px var(--color-border-focus),0 2px 6px rgb(30 50 70 / .18)}
+.range-ends{display:flex;justify-content:space-between;margin-top:2px;font:400 11px/1 var(--font-sans);color:var(--color-fg-muted)}
+
+/* 큰 버튼 */
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:52px;border:0;border-radius:14px;background:var(--color-bg-accent);color:var(--color-fg-inverse);font:600 16px/1 var(--font-sans);cursor:pointer;transition:background-color 160ms var(--ease-out),transform 120ms var(--ease-out)}
+.btn:active{transform:scale(.98)}
+.btn:disabled{background:var(--color-bg-control);color:var(--color-fg-muted);cursor:default;transform:none}
+.btn.ghost{background:var(--color-bg-muted);color:var(--color-fg-primary)}
+.btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.btn .badge{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:color-mix(in srgb,var(--white) 24%,transparent);font:600 12px/1 var(--font-sans)}
+.dock{position:absolute;left:0;right:0;bottom:0;z-index:6;padding:16px var(--layout-gutter) 28px;background:linear-gradient(transparent,var(--color-bg-page) 28%)}
+
+/* 시트 */
+.layer{position:absolute;inset:0;z-index:30;pointer-events:none}
+.layer.on{pointer-events:auto}
+.dim{position:absolute;inset:0;background:var(--photo-sheet-dim);opacity:0;transition:opacity 240ms var(--ease-out)}
+.layer.on .dim{opacity:1;transition-duration:300ms}
+.sheet:focus{outline:none}
+.sheet{position:absolute;left:0;right:0;bottom:0;max-height:calc(100% - 48px);display:flex;flex-direction:column;border-radius:24px 24px 0 0;background:var(--color-bg-surface);transform:translateY(100%);transition:transform 240ms var(--ease-out)}
+.layer.on .sheet{transform:none;transition:transform 300ms var(--ease-drawer)}
+.handle{display:block;flex:none;width:36px;height:4px;margin:8px auto 12px;border-radius:2px;background:var(--color-bg-control)}
+.sheet-body{overflow-y:auto;padding:0 var(--layout-gutter) 28px;scrollbar-width:none}
+.sheet-body::-webkit-scrollbar{display:none}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
+.sheet-head b{font:600 18px/1.4 var(--font-sans)}
+.sheet-head .link{height:44px;margin-right:-4px;padding:0 4px;border:0;background:none;color:var(--color-fg-accent);font:500 14px/1 var(--font-sans);display:flex;align-items:center;gap:2px;cursor:pointer}
+.sheet-head .link svg{width:16px;height:16px;fill:currentColor}
+.row{display:flex;align-items:center;gap:12px;width:calc(100% + 16px);min-height:var(--photo-sheet-row);margin:0 -8px;padding:12px 8px;border:0;border-radius:12px;background:none;color:var(--color-fg-primary);text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.row:active{background:var(--color-bg-muted)}
+@media(hover:hover) and (pointer:fine){.row:hover{background:var(--color-bg-muted)}}
+.row .ai{width:24px;height:24px}
+.row>span{flex:1;min-width:0}
+.row b{display:block;font:500 15px/1.4 var(--font-sans)}
+.row small{display:block;margin-top:2px;font:400 12px/1.5 var(--font-sans);color:var(--color-fg-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .val{flex:none;font:400 14px/1.4 var(--font-sans);color:var(--color-fg-muted)}
+.row .chev{flex:none;width:20px;height:20px;fill:var(--color-fg-chevron,var(--color-fg-muted))}
+.hr{height:1px;margin:8px 0;background:var(--color-border-default)}
+
+/* 섹션 (취향 설정) */
+.sec{margin:28px var(--layout-gutter) 0}
+.sec-h{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.sec-h b{font:600 15px/1.4 var(--font-sans)}
+.sec-h .v{margin-left:auto;font:600 14px/1 var(--font-sans);color:var(--color-fg-accent);font-variant-numeric:tabular-nums}
+.sec-h .v.muted{color:var(--color-fg-muted);font-weight:400}
+.group-label{margin:36px var(--layout-gutter) -14px;font:600 12px/1 var(--font-sans);letter-spacing:.4px;color:var(--color-fg-muted)}
+.swrow{display:flex;align-items:center;gap:12px;margin-top:12px}
+.swrow span{flex:1;font:400 14px/1.5 var(--font-sans);color:var(--color-fg-secondary)}
+.swrow span small{display:block;font-size:12px;color:var(--color-fg-muted)}
+.endcard{display:flex;align-items:center;gap:12px;margin:32px var(--layout-gutter) 0;padding:14px 16px;border:0;border-radius:16px;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-default);width:calc(100% - var(--layout-gutter) * 2);text-align:left;cursor:pointer}
+.endcard .ai{width:28px;height:28px;color:var(--color-fg-love,#B26073)}
+.endcard span{flex:1}.endcard b{display:block;font:600 14px/1.4 var(--font-sans)}.endcard small{font-size:12px;color:var(--color-fg-muted)}
+.endcard .chev{width:20px;height:20px;fill:var(--color-fg-muted)}
+.list{margin:20px var(--layout-gutter) 0;padding:4px 16px;border-radius:18px;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-default)}
+.list .row{width:calc(100% + 16px)}
+.list-label{margin:28px calc(var(--layout-gutter) + 4px) 8px;font:600 12px/1 var(--font-sans);letter-spacing:.4px;color:var(--color-fg-muted)}
+
+/* 맞춤 인연 추천 */
+.status{display:flex;align-items:center;gap:10px;margin:20px var(--layout-gutter) 0;padding:12px 14px;border-radius:14px;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-default)}
+.status .tix{display:flex;gap:4px}
+.status .tix i{width:8px;height:8px;border-radius:4px;background:var(--color-fg-accent);transition:background-color 220ms var(--ease-out)}
+.status .tix i.used{background:var(--color-bg-control)}
+.status b{font:600 14px/1 var(--font-sans)}
+.status small{margin-left:auto;font:400 12px/1 var(--font-sans);color:var(--color-fg-muted)}
+.how{display:inline-flex;align-items:center;gap:4px;height:44px;margin:-4px 0 -12px var(--layout-gutter);padding:0;border:0;background:none;color:var(--color-fg-accent);font:500 13px/1 var(--font-sans);cursor:pointer}
+.how svg{width:16px;height:16px;fill:currentColor}
+.deck{display:flex;gap:12px;margin-top:16px;padding:0 var(--layout-gutter) 4px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 var(--layout-gutter);scrollbar-width:none}
+.deck::-webkit-scrollbar{display:none}
+.cc{flex:none;width:292px;scroll-snap-align:start;border-radius:24px;overflow:hidden;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-default),0 8px 24px rgb(30 50 70 / .06)}
+.cc .ph{position:relative;height:236px;overflow:hidden;background:var(--color-bg-subtle)}
+.cc .ph img{position:absolute;inset:-24px;width:calc(100% + 48px);height:calc(100% + 48px);object-fit:cover;filter:blur(18px) saturate(110%);transform:scale(1.05);transition:filter 600ms var(--ease-out)}
+.cc.is-open .ph img{filter:none}
+.cc .ph .tag{position:absolute;left:12px;top:12px;padding:5px 10px;border-radius:12px;background:color-mix(in srgb,var(--color-bg-page) 88%,transparent);font:600 11px/1 var(--font-sans);color:var(--color-fg-secondary)}
+.cc .ph .who{position:absolute;left:16px;bottom:14px;color:var(--white);font:600 18px/1.3 var(--font-sans);text-shadow:0 1px 8px rgb(0 0 0 / .3);opacity:0;transform:translateY(6px);transition:opacity 300ms var(--ease-out) 200ms,transform 300ms var(--ease-out) 200ms}
+.cc.is-open .ph .who{opacity:1;transform:none}
+.cc .bd{padding:16px 16px 16px}
+.cc .lbl{font:600 12px/1 var(--font-sans);color:var(--color-fg-muted)}
+.cc ul{margin:10px 0 16px;padding:0;list-style:none;display:grid;gap:10px}
+.cc li{display:flex;align-items:flex-start;gap:8px;font:400 13px/1.45 var(--font-sans);color:var(--color-fg-secondary)}
+.cc li .ai{width:18px;height:18px;margin-top:1px}
+.cc li strong{display:block;font:600 15px/1.4 var(--font-sans);color:var(--color-fg-primary)}
+.cc .fine{margin:8px 0 0;text-align:center;font:400 11px/1.4 var(--font-sans);color:var(--color-fg-muted)}
+.pager{display:flex;align-items:center;justify-content:center;gap:12px;height:56px}
+.pager .ib svg{width:20px;height:20px}
+.pager .ib:disabled{color:var(--color-border-strong);cursor:default}
+.pager span{min-width:56px;text-align:center;font:400 16px/1 var(--font-sans);font-variant-numeric:tabular-nums;color:var(--color-fg-muted)}
+.pager span b{font-weight:600;color:var(--color-fg-primary)}
+.seen{margin:8px var(--layout-gutter) 32px}
+.seen h4{margin:0 0 8px;font:600 15px/1.4 var(--font-sans)}
+.seen .row img{flex:none;width:40px;height:40px;border-radius:12px;object-fit:cover}
+.done{margin:16px var(--layout-gutter) 0;padding:28px 20px 24px;border-radius:24px;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-default);text-align:center}
+.done .ai{width:56px;height:56px;color:#B26073}
+.done b{display:block;margin-top:8px;font:400 19px/1.5 var(--font-serif);word-break:keep-all}
+.done p{margin:6px 0 0;font-size:13px;color:var(--color-fg-secondary)}
+.done .clock{display:inline-block;margin-top:14px;padding:6px 12px;border-radius:14px;background:var(--color-bg-muted);font:600 12px/1.4 var(--font-sans);color:var(--color-fg-secondary);font-variant-numeric:tabular-nums}
+.explain li{display:flex;gap:12px;align-items:flex-start;margin-top:14px}
+.explain li .ai{width:24px;height:24px;margin-top:2px}
+.explain li b{display:block;font:600 15px/1.4 var(--font-sans)}
+.explain li small{display:block;font:400 13px/1.55 var(--font-sans);color:var(--color-fg-secondary)}
+.explain .fine{margin:18px 0 20px;padding:12px 14px;border-radius:12px;background:var(--color-bg-muted);font:400 12px/1.6 var(--font-sans);color:var(--color-fg-secondary)}
+.confirm b{display:block;font:600 18px/1.4 var(--font-sans)}
+.confirm p{margin:4px 0 16px;font:400 14px/1.6 var(--font-sans);color:var(--color-fg-secondary)}
+.confirm .bal{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:20px;padding:14px;border-radius:14px;background:var(--color-bg-muted);font:600 15px/1 var(--font-sans);font-variant-numeric:tabular-nums}
+.confirm .bal svg{width:18px;height:18px;fill:none;stroke:var(--color-fg-secondary);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.confirm .bal .to{color:var(--color-fg-muted);font-weight:400}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+.toast{position:absolute;left:50%;bottom:110px;z-index:40;transform:translate(-50%,6px);padding:8px 14px;border-radius:10px;background:var(--color-bg-inverse);color:var(--color-fg-inverse);font:500 12px/20px var(--font-sans);white-space:nowrap;opacity:0;transition:opacity 180ms var(--ease-out),transform 180ms var(--ease-out);pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){
+  .sheet,.layer.on .sheet{transform:none;opacity:0;transition:opacity 200ms ease}.layer.on .sheet{opacity:1}
+  .chip:active,.btn:active{transform:none}
+  .cc .ph img{transition:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">인연 홈 · 추천 설정</p>
+  <h1 class="title">필터는 모달로, 두 페이지는 새로</h1>
+  <p class="intro">인연 홈 오른쪽 위 추천 설정을 누르면 카드 위에 뜨던 드롭다운을 시트(모달)로 바꾸고, 그 안에서 가는 취향 설정 · 맞춤 인연 추천 페이지도 다시 그렸어요. 아이콘은 모두 Figma 앱 아이콘(Filter · Person · Location · Religion · Smoking · Drinking · Talk · Cert Check · Heart Sketch · Wallet Leaf)이에요. 모든 폰은 직접 눌러 볼 수 있어요.</p>
+  <nav class="toc"><a href="#p1">① 추천 설정 모달</a><a href="#p2">② 취향 설정</a><a href="#p3">③ 맞춤 인연 추천</a></nav>
+
+  <section class="part" id="p1">
+    <h2>① 추천 설정 모달</h2>
+    <p>지금은 카드 위에 흰 상자가 떠서 카드를 가리고, 아이콘도 글자 기호(☷ ✧)예요. 두 안 모두 사진 관리 시트 · 더보기 시트와 같은 틀(덮개 · 손잡이 · 300ms로 올라옴)이에요.</p>
+    <div class="phones">
+      <div class="col"><h3><b class="now">지금</b>드롭다운</h3><p>카드 윗부분을 가리는 흰 상자에 두 줄. 어디를 눌러야 닫히는지 안 보이고, 지금 내 조건이 무엇인지도 보이지 않아요.</p><div class="phone shot" style="background-image:url(now1.jpg)"></div></div>
+      <div class="col"><h3><b>A</b>메뉴 시트</h3><p>지금처럼 두 갈래로 나누되, 각 줄 아래에 지금 값을 보여 줘요(“24–34세 · 30km · 그 외 상관없음”, “오늘 3명 · 한 명당 10리프”). 가장 적게 바뀌어요.</p><div class="phone" id="f-a"></div><button class="again" data-again="f-a">시트 다시 열기</button></div>
+      <div class="col"><h3><b>B</b>바로 조절 시트<em>추천</em></h3><p>가장 자주 바꾸는 나이 · 거리를 시트 안에서 바로 바꾸고 “적용하기”. 나머지 조건은 “전체 조건”으로, 맞춤 인연 추천은 아래 줄로 이어져요. 한 번에 끝나서 단계가 하나 줄어요.</p><div class="phone" id="f-b"></div><button class="again" data-again="f-b">시트 다시 열기</button></div>
+    </div>
+  </section>
+
+  <section class="part" id="p2">
+    <h2>② 취향 설정</h2>
+    <p>지금은 숫자 칸 두 개와 선택창 여섯 개가 길게 이어지고, 저장 버튼이 맨 아래에 숨어 있어요. 메뉴 이름(취향 설정)과 페이지 제목(소개 조건)도 달라요. 아래 탭이 마이페이지로 켜져 있는 것도 고쳐요(세부 페이지에서는 아래 탭 대신 저장 버튼).</p>
+    <div class="phones">
+      <div class="col"><h3><b class="now">지금</b>소개 조건</h3><p>나이는 숫자를 직접 치고, 나머지는 모두 선택창을 열어야 값이 보여요. 저장하면 마이페이지로 넘어가요.</p><div class="phone shot" style="background-image:url(now2.jpg)"></div></div>
+      <div class="col"><h3><b>A</b>한 화면에서 고르기<em>추천</em></h3><p>나이는 양끝을 끄는 막대, 거리 · 종교 · 흡연 · 음주 · 정치 성향은 칩으로 펼쳐서 한눈에. 바뀐 게 있을 때만 아래 “저장하기”가 켜지고 몇 개 바뀌었는지 보여요. 저장하면 인연 홈으로 돌아가요.</p><div class="phone" id="p-a"></div></div>
+      <div class="col"><h3><b>B</b>목록형</h3><p>항목마다 한 줄 + 지금 값. 누르면 그 항목만 시트로 열려 고르고 바로 저장돼요. 조건이 더 늘어나도 화면이 길어지지 않아요. 줄을 눌러 보세요.</p><div class="phone" id="p-b"></div></div>
+    </div>
+  </section>
+
+  <section class="part" id="p3">
+    <h2>③ 맞춤 인연 추천</h2>
+    <p>카드가 사진을 가린 채 “당신을 위한 추천”만 크게 쓰여 있어서 왜 추천됐는지가 작게 묻혀 있어요. 카드 위 둥근 화살표, “옆으로 넘겨 보세요” 안내, 접기 상자 설명도 정리해요.</p>
+    <div class="phones">
+      <div class="col"><h3><b class="now">지금</b>당신을 위한 인연</h3><p>오늘 열어본 수 · 리프 잔액이 따로 놀고, 카드 사진 위에 화살표 버튼이 얹혀 있어요. 설명은 맨 아래 접기 상자예요.</p><div class="phone shot" style="background-image:url(now5.jpg)"></div></div>
+      <div class="col"><h3><b>새 안</b>닮은 점이 주인공</h3><p>카드 아래쪽을 “닮은 점”으로 채우고, 다음 카드가 옆에 살짝 보여요. 남은 기회는 점 세 개로. “10리프로 열기”를 누르면 잔액을 보여 주는 확인 시트 → 열면 사진이 걷혀요. “어떻게 추천하나요?”도 눌러 보세요.</p><div class="phone" id="c-main"></div></div>
+      <div class="col"><h3><b>새 안</b>세 명을 다 만난 뒤</h3><p>빈 상자 대신 다음에 채워지는 시간과 열어본 인연 목록을 보여 줘요. 열어본 인연은 다시 볼 때 리프가 들지 않아요.</p><div class="phone" id="c-done"></div></div>
+    </div>
+  </section>
+
+  <section class="part">
+    <h2>공통으로 바뀌는 것 · Mobbin에서 가져온 원칙</h2>
+    <div class="notes">
+      <div class="box"><h4>공통 규칙</h4><ul>
+        <li>시트는 사진 관리 · 더보기 시트와 같은 틀(덮개 32%, 올라옴 300ms · 내려감 240ms, 바깥 · Esc로 닫힘, 닫히면 추천 설정 버튼으로 포커스).</li>
+        <li>칩 높이 36 · 모서리 18, 고르면 <code>--color-bg-accent-soft</code> 바탕 + <code>--color-border-accent</code> 테두리. 누르면 96%.</li>
+        <li>세부 페이지(취향 설정 · 맞춤 추천)는 아래 탭을 숨기고, 뒤로 가기는 인연 홈으로.</li>
+        <li>메뉴 · 제목 이름을 “취향 설정”으로 통일해요(지금 페이지 제목 “소개 조건”).</li>
+        <li>나이 범위는 지금 저장 값(최소 · 최대 · 상관없음)을 그대로 쓰고, 칩은 지금처럼 하나만 골라요.</li>
+      </ul></div>
+      <div class="box"><h4>Mobbin 간단 벤치마킹 (8개 화면)</h4><ul>
+        <li>필터는 모두 지금 화면 위 덮개로 열리고, 나이 · 거리가 맨 위 · 범위 막대 · 값은 오른쪽 숫자.</li>
+        <li>선택지가 적으면 칩으로 펼치고, 적용 버튼은 아래 고정 · 바뀐 수를 보여 줘요.</li>
+        <li>하루 한정 추천은 다음 카드가 옆으로 살짝 보이고, 설명은 제목 옆 “더 알아보기” 시트.</li>
+        <li>다 본 뒤에는 다음에 채워지는 때를 알려 줘요.</li>
+      </ul><p style="margin:8px 0 0;font-size:12px;color:var(--pg-fg3)">원칙: design-references/preferences/principles.md</p></div>
+      <div class="box"><h4>고르실 것</h4><ul>
+        <li><b>① 모달:</b> A 메뉴 시트 / B 바로 조절 시트(추천)</li>
+        <li><b>② 취향 설정:</b> A 한 화면에서 고르기(추천) / B 목록형</li>
+        <li><b>③ 맞춤 인연 추천:</b> 새 안 하나(바꿀 점이 있으면 말씀해 주세요)</li>
+      </ul></div>
+    </div>
+  </section>
+</div>
+
+<script>
+/* ── 아이콘 (Figma 앱 아이콘 · viewBox 48, 선 굵기는 원본 그대로) ── */
+const AP={
+ filter:['M8 14H18M26 14H40M8 34H26M34 34H40M22 8V20M30 28V40',3.2],
+ leaf:['M10 38C2 14 24 6 42 6C42 28 30 42 14 34M8 42L32 18',3],
+ person:['M8 44C8 22 40 22 40 44M16 14C16 16.1217 16.8429 18.1566 18.3431 19.6569C19.8434 21.1571 21.8783 22 24 22C26.1217 22 28.1566 21.1571 29.6569 19.6569C31.1571 18.1566 32 16.1217 32 14C32 11.8783 31.1571 9.84344 29.6569 8.34315C28.1566 6.84285 26.1217 6 24 6C21.8783 6 19.8434 6.84285 18.3431 8.34315C16.8429 9.84344 16 11.8783 16 14Z',2.8],
+ location:['M6 21L24 6L42 21M11 18V40H21V28H27V40H37V18',3],
+ religion:['M24 6V42M12 18H36',3],
+ smoking:['M32 26V36M14 6C10 10 10 13.3333 14 16M24 6C20 10 20 13.3333 24 16M6 26H42V36H6V26Z',3],
+ drinking:['M24 26C26.6522 26 29.1957 24.9464 31.0711 23.0711C32.9464 21.1957 34 18.6522 34 16V6H14V16C14 18.6522 15.0536 21.1957 16.9289 23.0711C18.8043 24.9464 21.3478 26 24 26ZM24 26V42M16 42H32',3],
+ talk:['M16 20H32M16 26H26M8 12C18.6667 9.33333 29.3333 9.99999 40 14V32L26 34L14 42V34L8 32V12Z',2.7],
+ heart:['M8.00003 24C1.00003 10 17 5.00001 23 19C30 1.33514e-05 46 8.00001 37 23C31.6667 29.6667 23.3334 35.3333 12 40C20 32.6667 30.3334 29.3333 43 30',2.4],
+ mood:['M14 38C14 27.3333 17.3333 22 24 22C32 22 36 27.3333 36 38M10 40C19.3333 37.3333 29.3333 37.3333 40 40M24 6V12M8 14L12 18M40 14L36 18',2.7],
+};
+const ai=(k,cls='ai',style='')=>`<svg class="${cls}" viewBox="0 0 48 48" aria-hidden="true" style="stroke-width:${AP[k][1]};${style}"><path d="${AP[k][0]}"/></svg>`;
+const cert=(s=24)=>`<svg class="ai" viewBox="0 0 48 48" aria-hidden="true" style="width:${s}px;height:${s}px"><path d="M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z" fill="var(--color-fg-accent)" stroke="var(--color-fg-accent)" stroke-width="3.6"/><path d="M14 24L20 30L34 16" stroke="#fff" stroke-width="4"/></svg>`;
+const CL='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.293 5.28896C14.6835 4.89851 15.3165 4.89859 15.7071 5.28896C16.0975 5.6794 16.0975 6.31246 15.7071 6.70302L10.4131 11.9979L15.7071 17.2899C16.0976 17.6804 16.0975 18.3134 15.7071 18.704C15.3166 19.0945 14.6836 19.0944 14.293 18.704L8.29303 12.706C7.90262 12.3155 7.90268 11.6824 8.29303 11.2919L14.293 5.28896Z"/></svg>';
+const CHL='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.293 7.29096C13.6834 6.90047 14.3165 6.90051 14.707 7.29096C15.0975 7.68144 15.0975 8.31448 14.707 8.70502L11.4131 11.998L14.707 15.2919C15.0975 15.6825 15.0975 16.3155 14.707 16.706C14.3165 17.0965 13.6835 17.0965 13.293 16.706L9.29297 12.706C8.90249 12.3155 8.90253 11.6825 9.29297 11.2919L13.293 7.29096Z"/></svg>';
+const CHR='<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.29301 7.29096C9.68355 6.90051 10.3166 6.90047 10.7071 7.29096L14.7071 11.2919C15.0975 11.6825 15.0976 12.3155 14.7071 12.706L10.7071 16.706C10.3165 17.0965 9.68353 17.0965 9.29301 16.706C8.9025 16.3155 8.90249 15.6825 9.29301 15.2919L12.586 11.998L9.29301 8.70502C8.90256 8.31448 8.90252 7.68144 9.29301 7.29096Z"/></svg>';
+const CHR_PLAIN=CHR.replace(' class="chev"','');
+const INFO='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.999 11.999C19.999 7.57931 16.4187 3.99902 11.999 3.99902C7.57931 3.99902 3.99902 7.57931 3.99902 11.999C3.99902 16.4141 7.57967 19.999 11.999 19.999C16.4184 19.999 19.999 16.4141 19.999 11.999ZM10.999 15.999V11C10.999 10.4477 11.4467 10 11.999 10C12.5513 10 12.999 10.4477 12.999 11V15.999C12.999 16.5513 12.5513 16.999 11.999 16.999C11.4467 16.999 10.999 16.5513 10.999 15.999ZM12.0078 6.99805C12.5601 6.99805 13.0078 7.44576 13.0078 7.99805C13.0078 8.55032 12.5601 8.99805 12.0078 8.99805H11.999C11.4467 8.99805 10.999 8.55032 10.999 7.99805C10.999 7.44576 11.4467 6.99805 11.999 6.99805H12.0078ZM21.999 11.999C21.999 17.5179 17.5237 21.999 11.999 21.999C6.47438 21.999 1.99902 17.5179 1.99902 11.999C1.99902 6.47474 6.47474 1.99902 11.999 1.99902C17.5233 1.99902 21.999 6.47474 21.999 11.999Z"/></svg>';
+
+/* ── 공통 동작 ── */
+function toast(phone,text){let t=phone.querySelector('.toast');if(!t){t=document.createElement('div');t.className='toast';t.setAttribute('role','status');phone.append(t);}t.textContent=text;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),1800);}
+function sheet(phone,html,{onClose}={}){phone.querySelector('.layer')?.remove();const L=document.createElement('div');L.className='layer';L.innerHTML=`<div class="dim"></div><div class="sheet" role="dialog" aria-modal="true"><span class="handle" aria-hidden="true"></span><div class="sheet-body">${html}</div></div>`;phone.append(L);requestAnimationFrame(()=>requestAnimationFrame(()=>L.classList.add('on')));
+  const close=()=>{L.classList.remove('on');setTimeout(()=>{L.remove();onClose?.();},260);};L.querySelector('.dim').onclick=close;L.addEventListener('keydown',e=>{if(e.key==='Escape')close();});L._close=close;L.querySelector('.sheet').tabIndex=-1;setTimeout(()=>L.querySelector('.sheet').focus({preventScroll:true}),320);return L;}
+function chips(name,opts,cur){return `<div class="chips" role="radiogroup" data-name="${name}">${opts.map(o=>`<button type="button" class="chip" role="radio" aria-pressed="${o===cur}" aria-checked="${o===cur}" data-v="${o}">${o}</button>`).join('')}</div>`;}
+document.addEventListener('click',e=>{const c=e.target.closest('.chip');if(!c)return;const g=c.closest('.chips');g.querySelectorAll('.chip').forEach(x=>{x.setAttribute('aria-pressed',x===c);x.setAttribute('aria-checked',x===c);});g.dispatchEvent(new CustomEvent('pick',{bubbles:true,detail:{name:g.dataset.name,v:c.dataset.v}}));});
+document.addEventListener('click',e=>{const s=e.target.closest('.sw');if(!s)return;s.setAttribute('aria-checked',s.getAttribute('aria-checked')!=='true');s.dispatchEvent(new CustomEvent('flip',{bubbles:true}));});
+function range(min,max,lo,hi){return `<div class="range" data-min="${min}" data-max="${max}"><span class="track"></span><span class="fill"></span><input type="range" min="${min}" max="${max}" value="${lo}" aria-label="최소 나이"><input type="range" min="${min}" max="${max}" value="${hi}" aria-label="최대 나이"></div><div class="range-ends"><span>${min}세</span><span>${max}세 이상</span></div>`;}
+function wireRange(root,onChange){root.querySelectorAll('.range').forEach(r=>{const [a,b]=r.querySelectorAll('input'),fill=r.querySelector('.fill'),min=+r.dataset.min,max=+r.dataset.max;
+  const upd=(src)=>{let lo=+a.value,hi=+b.value;if(lo>hi-1){if(src===a){a.value=hi-1;lo=hi-1;}else{b.value=lo+1;hi=lo+1;}}const p=v=>(v-min)/(max-min)*100;fill.style.left=`calc(${p(lo)}% + ${13-p(lo)*0.26}px)`;fill.style.right=`calc(${100-p(hi)}% - ${13-p(hi)*0.26}px)`;onChange?.(lo,hi);};
+  a.oninput=()=>upd(a);b.oninput=()=>upd(b);upd();});}
+const ageText=(lo,hi,any)=>any?'상관없음':`${lo}–${hi>=50?'50+':hi}세`;
+
+/* 지금 조건 (시연) */
+const P={lo:24,hi:34,any:false,distance:'30km',religion:'상관없음',smoke:'상관없음',drink:'상관없음',politics:'상관없음',cert:false};
+const OPT={distance:['상관없음','10km','30km','50km','100km'],religion:['상관없음','무교','기독교','천주교','불교','기타'],smoke:['상관없음','비흡연','가끔','흡연','전자담배'],drink:['상관없음','마시지 않아요','가끔','즐기는 편이에요'],politics:['상관없음','중도','진보','보수','무관심']};
+const LAB={distance:'거리',religion:'종교',smoke:'흡연',drink:'음주',politics:'정치 성향'};
+const ICO={distance:'location',religion:'religion',smoke:'smoking',drink:'drinking',politics:'talk'};
+const restText=()=>{const r=['religion','smoke','drink','politics'].filter(k=>P[k]!=='상관없음').map(k=>P[k]);return r.length?r.join(' · '):'그 외 상관없음';};
+
+/* ① 홈 위 시트 */
+function homeBg(phone){phone.classList.add('shot');phone.style.backgroundImage='url(home.jpg)';}
+function openFA(){const ph=document.getElementById('f-a');homeBg(ph);
+  sheet(ph,`<button class="row" data-go="prefs">${ai('filter')}<span><b>취향 설정</b><small>${ageText(P.lo,P.hi,P.any)} · ${P.distance==='상관없음'?'거리 상관없음':P.distance} · ${restText()}</small></span>${CHR}</button>
+  <button class="row" data-go="cur">${ai('heart','ai','color:#B26073')}<span><b>맞춤 인연 추천</b><small>자기소개가 닮은 사람 · 오늘 3명 · 한 명당 10리프</small></span>${CHR}</button>`);
+  ph.querySelector('.layer').addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){ph.querySelector('.layer')._close();toast(ph,g.dataset.go==='prefs'?'취향 설정으로 가요':'맞춤 인연 추천으로 가요');}});}
+function openFB(){const ph=document.getElementById('f-b');homeBg(ph);let lo=P.lo,hi=P.hi,dist=P.distance,dirty=0;
+  const L=sheet(ph,`<div class="sheet-head"><b>취향 설정</b><button class="link" data-go="all">전체 조건 ${CHR_PLAIN}</button></div>
+   <div class="sec" style="margin:12px 0 0"><div class="sec-h">${ai('person')}<b>나이</b><span class="v" data-age>${ageText(lo,hi)}</span></div>${range(19,50,lo,hi)}</div>
+   <div class="sec" style="margin:24px 0 0"><div class="sec-h">${ai('location')}<b>거리</b></div>${chips('distance',OPT.distance,dist)}</div>
+   <div class="hr" style="margin:24px 0 8px"></div>
+   <button class="row" data-go="all">${ai('filter')}<span><b>생활 방식 · 인증</b><small>종교 · 흡연 · 음주 · 정치 성향 · ${restText()}</small></span>${CHR}</button>
+   <button class="row" data-go="cur">${ai('heart','ai','color:#B26073')}<span><b>맞춤 인연 추천</b><small>자기소개가 닮은 사람 · 오늘 3명</small></span>${CHR}</button>
+   <div style="margin-top:16px"><button class="btn" data-apply disabled>적용하기</button></div>`);
+  const btn=L.querySelector('[data-apply]'),mark=()=>{dirty=(lo!==P.lo||hi!==P.hi?1:0)+(dist!==P.distance?1:0);btn.disabled=!dirty;btn.innerHTML='적용하기'+(dirty?` <span class="badge">${dirty}</span>`:'');};
+  wireRange(L,(a,b)=>{lo=a;hi=b;L.querySelector('[data-age]').textContent=ageText(a,b);mark();});
+  L.addEventListener('pick',e=>{dist=e.detail.v;mark();});
+  L.addEventListener('click',e=>{if(e.target.closest('[data-apply]')&&dirty){P.lo=lo;P.hi=hi;P.distance=dist;L._close();toast(ph,'다음 소개부터 참고할게요');return;}const g=e.target.closest('[data-go]');if(g){L._close();toast(ph,g.dataset.go==='all'?'취향 설정 페이지로 가요':'맞춤 인연 추천으로 가요');}});}
+
+/* ② 취향 설정 A */
+function buildPA(){const ph=document.getElementById('p-a');const S={...P};let saved={...P};
+  const sec=(k)=>`<div class="sec"><div class="sec-h">${ai(ICO[k])}<b>${LAB[k]}</b></div>${chips(k,OPT[k],S[k])}</div>`;
+  ph.innerHTML=`<div class="page" style="padding-bottom:110px"><div class="topbar"><button class="ib" aria-label="인연 홈으로">${CL}</button><button class="tb-text" data-reset disabled>초기화</button></div>
+   <h2 class="ptitle">취향 설정</h2><p class="psub">저장한 조건은 다음 소개부터 참고해요. 조건을 넓게 둘수록 더 많은 인연을 만날 수 있어요.</p>
+   <div class="sec"><div class="sec-h">${ai('person')}<b>나이</b><span class="v" data-age>${ageText(S.lo,S.hi,S.any)}</span></div>${range(19,50,S.lo,S.hi)}
+     <div class="swrow"><span>나이는 상관없어요</span><button type="button" class="sw" role="switch" aria-checked="${S.any}" aria-label="나이는 상관없어요" data-k="any"></button></div></div>
+   ${sec('distance')}
+   <p class="group-label">생활 방식</p>
+   ${sec('religion')}${sec('smoke')}${sec('drink')}${sec('politics')}
+   <p class="group-label">믿음</p>
+   <div class="sec"><div class="swrow" style="margin-top:0">${cert(24)}<span><b style="display:block;font:600 15px/1.4 var(--font-sans);color:var(--color-fg-primary)">인증한 인연 먼저 보기</b><small>학교 · 직장 등을 인증한 사람을 앞에 소개해요</small></span><button type="button" class="sw" role="switch" aria-checked="${S.cert}" aria-label="인증한 인연 먼저 보기" data-k="cert"></button></div></div>
+   <button class="endcard" type="button">${ai('heart','ai')}<span><b>맞춤 인연 추천</b><small>자기소개가 닮은 사람을 하루 세 명 골라 드려요</small></span>${CHR}</button>
+   <div style="height:20px"></div></div>
+   <div class="dock"><button class="btn" data-save disabled>저장하기</button></div>`;
+  const page=ph.querySelector('.page'),btn=ph.querySelector('[data-save]'),reset=ph.querySelector('[data-reset]'),rg=ph.querySelector('.range');
+  const DEF={lo:20,hi:40,any:false,distance:'상관없음',religion:'상관없음',smoke:'상관없음',drink:'상관없음',politics:'상관없음',cert:false};const diff=()=>['any','distance','religion','smoke','drink','politics','cert'].filter(k=>S[k]!==saved[k]).length+((S.lo!==saved.lo||S.hi!==saved.hi)?1:0);
+  const mark=()=>{const n=diff();btn.disabled=!n;btn.innerHTML='저장하기'+(n?` <span class="badge">${n}</span>`:'');reset.disabled=Object.keys(DEF).every(k=>S[k]===DEF[k]);rg.classList.toggle('is-off',S.any);ph.querySelector('[data-age]').textContent=ageText(S.lo,S.hi,S.any);ph.querySelector('[data-age]').classList.toggle('muted',S.any);};
+  wireRange(ph,(a,b)=>{S.lo=a;S.hi=b;mark();});
+  ph.addEventListener('pick',e=>{S[e.detail.name]=e.detail.v;mark();});
+  ph.addEventListener('flip',e=>{const k=e.target.dataset.k;S[k]=e.target.getAttribute('aria-checked')==='true';mark();});
+  btn.onclick=()=>{saved={...S};mark();toast(ph,'다음 소개부터 취향을 참고할게요');};
+  reset.onclick=()=>{Object.assign(S,DEF);buildState();};
+  const buildState=()=>{ph.querySelectorAll('.chips').forEach(g=>g.querySelectorAll('.chip').forEach(c=>{const on=c.dataset.v===S[g.dataset.name];c.setAttribute('aria-pressed',on);c.setAttribute('aria-checked',on);}));ph.querySelectorAll('.sw').forEach(s=>s.setAttribute('aria-checked',S[s.dataset.k]));const [a,b]=rg.querySelectorAll('input');a.value=S.lo;b.value=S.hi;a.dispatchEvent(new Event('input'));mark();};
+  ph.querySelector('.endcard').onclick=()=>toast(ph,'맞춤 인연 추천으로 가요');mark();}
+
+/* ② 취향 설정 B */
+function buildPB(){const ph=document.getElementById('p-b');
+  const row=k=>`<button class="row" data-k="${k}">${ai(ICO[k])}<span><b>${LAB[k]}</b></span><span class="val">${P[k]}</span>${CHR}</button>`;
+  const draw=()=>{ph.innerHTML=`<div class="page"><div class="topbar"><button class="ib" aria-label="인연 홈으로">${CL}</button><span></span></div>
+   <h2 class="ptitle">취향 설정</h2><p class="psub">고르는 대로 바로 저장돼요. 다음 소개부터 참고해요.</p>
+   <p class="list-label">기본</p><div class="list"><button class="row" data-k="age">${ai('person')}<span><b>나이</b></span><span class="val">${ageText(P.lo,P.hi,P.any)}</span>${CHR}</button>${row('distance')}</div>
+   <p class="list-label">생활 방식</p><div class="list">${row('religion')}${row('smoke')}${row('drink')}${row('politics')}</div>
+   <p class="list-label">믿음</p><div class="list"><div class="row" style="cursor:default">${cert(24)}<span><b>인증한 인연 먼저 보기</b><small>학교 · 직장 등을 인증한 사람을 앞에</small></span><button type="button" class="sw" role="switch" aria-checked="${P.cert}" aria-label="인증한 인연 먼저 보기"></button></div></div>
+   <button class="endcard" type="button" style="margin-bottom:32px">${ai('heart','ai')}<span><b>맞춤 인연 추천</b><small>자기소개가 닮은 사람을 하루 세 명</small></span>${CHR}</button></div>`;};
+  draw();
+  ph.addEventListener('click',e=>{const r=e.target.closest('.page .row[data-k]');if(!r)return;const k=r.dataset.k;
+    if(k==='age'){let lo=P.lo,hi=P.hi;const L=sheet(ph,`<div class="sheet-head"><b>나이</b><span class="sec-h" style="margin:0"><span class="v" data-age>${ageText(lo,hi)}</span></span></div><div style="margin:12px 0 8px">${range(19,50,lo,hi)}</div><div style="margin-top:20px"><button class="btn" data-ok>적용하기</button></div>`,{onClose:draw});
+      wireRange(L,(a,b)=>{lo=a;hi=b;L.querySelector('[data-age]').textContent=ageText(a,b);});L.querySelector('[data-ok]').onclick=()=>{P.lo=lo;P.hi=hi;P.any=false;L._close();toast(ph,'나이를 바꿨어요');};return;}
+    const L=sheet(ph,`<div class="sheet-head"><b>${LAB[k]}</b></div><p class="psub" style="margin:0 0 16px">하나를 고르면 바로 저장돼요.</p>${chips(k,OPT[k],P[k])}`,{onClose:draw});
+    L.addEventListener('pick',ev=>{P[k]=ev.detail.v;setTimeout(()=>{L._close();toast(ph,LAB[k]+' · '+ev.detail.v);},180);});});}
+
+/* ③ 맞춤 인연 추천 */
+const CARDS=[
+ {img:'p2.jpg',who:'느린오후 · 29',r:[['heart','함께 좋아하는','산책 · 다정한 대화'],['talk','같은 이야기 주제','주말 아침의 작은 습관'],['mood','같은 관심 태그','#독서취향 #카페탐방러']]},
+ {img:'p3.jpg',who:'여름산책 · 27',r:[['heart','함께 좋아하는','전시 · 바다'],['talk','비슷한 관계 성향','천천히 알아가고 싶어요'],['mood','같은 관심 태그','#도자기취미']]},
+ {img:'p4.jpg',who:'푸른밤 · 26',r:[['heart','함께 좋아하는','필름 사진 · 책방'],['talk','같은 이야기 주제','혼자 걷기 좋은 동네'],['mood','같은 관심 태그','#필름감성 #책방투어']]}];
+function buildCur(){const ph=document.getElementById('c-main');let bal=100,left=3,idx=0;const open=new Set();
+  ph.innerHTML=`<div class="page"><div class="topbar"><button class="ib" aria-label="인연 홈으로">${CL}</button><button class="leaf-chip" aria-label="보유 리프">${'<svg viewBox="0 0 48 48" aria-hidden="true"><path d="'+AP.leaf[0]+'"/></svg>'}<span data-bal>${bal}</span></button></div>
+   <h2 class="ptitle">당신을 위한 인연</h2><p class="psub">자기소개와 취향이 닮은 사람을 하루 세 명 골라 드려요.</p>
+   <button class="how" data-how>${INFO}어떻게 추천하나요?</button>
+   <div class="status"><span class="tix" aria-hidden="true"><i></i><i></i><i></i></span><b data-left>오늘 3명 열 수 있어요</b><small>자정에 다시 채워져요</small></div>
+   <div class="deck" tabindex="0" aria-label="추천 인연 카드, 좌우로 넘기기">${CARDS.map((c,i)=>`<article class="cc" data-i="${i}"><div class="ph"><img src="${c.img}" alt=""><span class="tag">추천 ${i+1}</span><span class="who">${c.who}</span></div><div class="bd"><span class="lbl">닮은 점</span><ul>${c.r.map(([ic,l,s])=>`<li>${ai(ic,'ai',ic==='heart'?'color:#B26073':'')}<span>${l}<strong>${s}</strong></span></li>`).join('')}</ul><button class="btn" data-open="${i}"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="${AP.leaf[0]}"/></svg>10리프로 열기</button><p class="fine">한 번 연 인연은 다시 볼 때 리프가 들지 않아요</p></div></article>`).join('')}</div>
+   <div class="pager"><button class="ib" data-d="-1" aria-label="이전 추천">${CHL}</button><span aria-live="polite"><b data-n>1</b> / 3</span><button class="ib" data-d="1" aria-label="다음 추천">${CHR_PLAIN}</button></div>
+   <div style="height:24px"></div></div>`;
+  const deck=ph.querySelector('.deck'),pg=ph.querySelector('.pager'),step=304;
+  const syncPager=()=>{pg.querySelector('[data-n]').textContent=idx+1;const [p,n]=pg.querySelectorAll('.ib');p.disabled=idx===0;n.disabled=idx===2;};
+  deck.addEventListener('scroll',()=>{const n=Math.round(deck.scrollLeft/step);if(n!==idx){idx=n;syncPager();}});
+  pg.addEventListener('click',e=>{const b=e.target.closest('[data-d]');if(!b||b.disabled)return;idx=Math.max(0,Math.min(2,idx+ +b.dataset.d));deck.scrollTo({left:idx*step,behavior:'smooth'});syncPager();});
+  syncPager();
+  ph.addEventListener('click',e=>{
+    if(e.target.closest('[data-how]')){sheet(ph,explainHTML());ph.querySelector('.layer').addEventListener('click',ev=>{if(ev.target.closest('[data-ok]'))ph.querySelector('.layer')._close();});return;}
+    const o=e.target.closest('[data-open]');if(!o)return;const i=+o.dataset.open;
+    if(open.has(i)){toast(ph,'프로필로 가요');return;}
+    const L=sheet(ph,`<div class="confirm"><b>10리프로 열까요?</b><p>사진과 프로필을 볼 수 있어요. 오늘 ${left-1}명 더 열 수 있게 돼요.</p><div class="bal"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="${AP.leaf[0]}"/></svg>${bal} <span class="to">→</span> ${bal-10}리프</div><div class="pair"><button class="btn ghost" data-no>취소</button><button class="btn" data-yes>열기</button></div></div>`);
+    L.addEventListener('click',ev=>{if(ev.target.closest('[data-no]'))return L._close();if(ev.target.closest('[data-yes]')){L._close();bal-=10;left-=1;open.add(i);
+      ph.querySelector('[data-bal]').textContent=bal;ph.querySelectorAll('.tix i').forEach((t,k)=>t.classList.toggle('used',k>=left));ph.querySelector('[data-left]').textContent=left?`오늘 ${left}명 더 열 수 있어요`:'오늘 세 명을 모두 만났어요';
+      const card=ph.querySelector(`.cc[data-i="${i}"]`);setTimeout(()=>{card.classList.add('is-open');const b=card.querySelector('[data-open]');b.innerHTML='프로필 보기';b.classList.add('ghost');card.querySelector('.fine').textContent='다시 볼 때는 리프가 들지 않아요';},280);}});});}
+function explainHTML(){return `<div class="explain"><div class="sheet-head"><b>어떻게 추천하나요?</b></div><ul style="list-style:none;margin:0;padding:0">
+  <li>${ai('talk')}<span><b>자기소개 주제</b><small>서로 고른 이야기 주제와 답에서 겹치는 것을 찾아요.</small></span></li>
+  <li>${ai('heart','ai','color:#B26073')}<span><b>관계 성향</b><small>천천히 · 자주 연락 같은 만남의 속도가 비슷한지 봐요.</small></span></li>
+  <li>${ai('mood')}<span><b>관심 태그</b><small>같은 해시태그를 고른 사람을 앞에 둬요.</small></span></li></ul>
+  <p class="fine">MBTI는 보조 정보이고 궁합 점수가 아니에요. 정확한 거리처럼 없는 정보로는 판단하지 않아요. 한국 시간 자정에 세 명이 다시 채워져요.</p>
+  <button class="btn" data-ok>알겠어요</button></div>`;}
+function buildDone(){const ph=document.getElementById('c-done');
+  ph.innerHTML=`<div class="page"><div class="topbar"><button class="ib" aria-label="인연 홈으로">${CL}</button><button class="leaf-chip" aria-label="보유 리프"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="${AP.leaf[0]}"/></svg><span>70</span></button></div>
+   <h2 class="ptitle">당신을 위한 인연</h2><p class="psub">자기소개와 취향이 닮은 사람을 하루 세 명 골라 드려요.</p>
+   <button class="how" data-how>${INFO}어떻게 추천하나요?</button>
+   <div class="status"><span class="tix" aria-hidden="true"><i class="used"></i><i class="used"></i><i class="used"></i></span><b>오늘 세 명을 모두 만났어요</b></div>
+   <div class="done">${ai('heart','ai')}<b>내일 새로운 세 사람을 골라 드릴게요</b><p>그동안 열어본 인연에게 마음을 전해 보세요.</p><span class="clock">새로 고르기까지 3시간 12분</span></div>
+   <div class="seen" style="margin-top:28px"><h4>열어본 인연</h4>${CARDS.map(c=>`<button class="row"><img src="${c.img}" alt=""><span><b>${c.who.split(' · ')[0]}</b><small>${c.r[0][2]}</small></span><span class="val" style="font-size:13px;color:var(--color-fg-accent)">다시 보기</span>${CHR}</button>`).join('')}</div></div>`;
+  ph.addEventListener('click',e=>{if(e.target.closest('[data-how]')){sheet(ph,explainHTML());ph.querySelector('.layer').addEventListener('click',ev=>{if(ev.target.closest('[data-ok]'))ph.querySelector('.layer')._close();});}else if(e.target.closest('.seen .row'))toast(ph,'프로필로 가요 · 리프 차감 없음');});}
+
+openFA();openFB();buildPA();buildPB();buildCur();buildDone();
+document.querySelectorAll('[data-again]').forEach(b=>b.onclick=()=>({'f-a':openFA,'f-b':openFB})[b.dataset.again]());
+</script>
+</body>
+</html>

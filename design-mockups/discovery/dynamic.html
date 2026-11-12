@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>인연 열기 모션 비교</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="tokens.css">
+<style>
+/* 레이아웃: 위에 공통 조절(속도 · 전체 다시 보기), 아래 카드 일곱 장을 격자로. 카드를 누르면 그 모션이 다시 재생 */
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398;--pg-accent-soft:#E3EFF7}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-accent-soft:#1D3747;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-accent-soft:#1D3747;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button,input{font:inherit;color:inherit}
+.wrap{max-width:1320px;margin:0 auto;padding-block:36px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif);text-wrap:balance}
+.intro{max-width:70ch;margin:10px 0 0;color:var(--pg-fg2)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin-top:24px;padding:16px 20px;border-radius:18px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.bar label{font-size:13px;color:var(--pg-fg2)}
+.bar input[type=range]{width:200px;max-width:100%;accent-color:var(--pg-accent)}
+.bar output{min-width:44px;font-size:13px;font-variant-numeric:tabular-nums}
+.tool{height:44px;padding:0 16px;border:0;border-radius:12px;background:var(--pg-accent);color:#fff;font-weight:600;cursor:pointer}
+.tool:focus-visible,.rc:focus-visible{outline:2px solid var(--pg-accent);outline-offset:3px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:28px 20px;margin-top:28px}
+.item{min-width:0;display:flex;flex-direction:column;gap:10px}
+.item h2{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.item h2 b{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--pg-accent);color:#fff;font:600 12px var(--font-sans)}
+.item.now h2 b{background:var(--pg-fg3)}
+.item p{margin:0;font-size:13px;color:var(--pg-fg2)}
+.item .feel{font-size:12px;color:var(--pg-fg3)}
+
+/* ───────── 카드 (앱 토큰) ───────── */
+.rc{position:relative;width:100%;max-width:320px;aspect-ratio:300/440;border:0;padding:0;border-radius:22px;overflow:hidden;isolation:isolate;background:var(--color-bg-notice);cursor:pointer;color:var(--white);text-align:left;display:block}
+.rc .ph,.rc .cov{position:absolute;inset:-28px;background:url('img/a.jpg') 50% 38%/cover;will-change:transform,filter}
+.rc .cov{z-index:1;filter:blur(14px)}
+.rc .ph{z-index:0;filter:blur(14px)}
+.rc .blobs{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.36}
+.rc .blob{position:absolute;width:82%;aspect-ratio:1;border-radius:50%;filter:blur(28px)}
+.rc .blob.b1{left:-22%;top:-12%;background:radial-gradient(circle,color-mix(in srgb,var(--sky-300) 85%,transparent),transparent 66%);animation:d1 11s ease-in-out infinite alternate}
+.rc .blob.b2{right:-26%;top:18%;background:radial-gradient(circle,color-mix(in srgb,var(--rose-300) 85%,transparent),transparent 66%);animation:d2 14.3s ease-in-out infinite alternate}
+.rc .blob.b3{left:-10%;bottom:-18%;background:radial-gradient(circle,color-mix(in srgb,var(--gold-200) 90%,transparent),transparent 66%);animation:d3 9.4s ease-in-out infinite alternate}
+.rc .blob.b4{right:-18%;bottom:-8%;background:radial-gradient(circle,color-mix(in srgb,var(--sage-300) 85%,transparent),transparent 66%);animation:d4 12.6s ease-in-out infinite alternate}
+@keyframes d1{to{transform:translate(34%,22%) scale(1.18)}}@keyframes d2{to{transform:translate(-30%,26%) scale(.92)}}@keyframes d3{to{transform:translate(28%,-30%) scale(1.15)}}@keyframes d4{to{transform:translate(-26%,-24%) scale(.9)}}
+.rc .fx{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0}
+.rc .flash{background:radial-gradient(circle at 50% 80%,#fff,color-mix(in srgb,#fff 70%,transparent) 40%,transparent 80%)}
+.rc .leak{inset:-10% -60%;background:linear-gradient(100deg,transparent 30%,color-mix(in srgb,var(--rose-300) 70%,transparent) 42%,color-mix(in srgb,var(--gold-200) 85%,transparent) 50%,color-mix(in srgb,#fff 60%,transparent) 54%,transparent 66%);mix-blend-mode:screen}
+.rc .seam{inset:auto 0;top:calc(50% - 1px);height:2px;background:#fff;box-shadow:0 0 18px 6px color-mix(in srgb,#fff 70%,transparent)}
+.rc .scrim{position:absolute;inset:auto 0 0 0;height:60%;z-index:4;background:linear-gradient(transparent,color-mix(in srgb,var(--cool-neutral-950) 60%,transparent));opacity:.55;pointer-events:none}
+.rc .ready,.rc .open{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;justify-content:flex-end;padding:0 16px 16px;pointer-events:none}
+.rc .arr{position:absolute;top:16px;left:0;right:0;text-align:center;font-size:11px;font-weight:500;text-shadow:0 1px 6px rgb(0 0 0 / .3)}
+.rc .ready small{font-size:11px;opacity:.85}
+.rc .ready p{margin:2px 0 0;font-size:13px;line-height:1.55;font-weight:500;word-break:keep-all}
+.rc .btn{display:flex;align-items:center;justify-content:center;gap:4px;height:44px;margin-top:12px;border-radius:14px;background:color-mix(in srgb,var(--white) 92%,transparent);color:var(--color-fg-primary);font-size:14px;font-weight:600;box-shadow:0 6px 18px rgb(0 0 0 / .18)}
+.rc .btn i{width:16px;height:16px;background:currentColor;-webkit-mask:var(--ic-chevron-right) center/contain no-repeat;mask:var(--ic-chevron-right) center/contain no-repeat}
+.rc .open{opacity:1}
+.rc .open>.nm,.rc .open>.mt,.rc .open>.tg{opacity:0}
+.rc .nm{font:600 21px/1.35 var(--font-sans);letter-spacing:-.3px}
+.rc .mt{font-size:13px;color:color-mix(in srgb,#fff 90%,transparent)}
+.rc .tg{display:flex;gap:8px;margin-top:6px;font-size:12px;color:color-mix(in srgb,#fff 90%,transparent)}
+.rc .ring{position:absolute;z-index:3;left:50%;bottom:38px;width:24px;height:24px;margin-left:-12px;border-radius:50%;border:2px solid #fff;opacity:0;pointer-events:none}
+@media (prefers-reduced-motion:reduce){.rc .blob{animation:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">YAHWA · 인연 홈 · 열기 모션 2차</p>
+  <h1 class="title">조금 더 역동적으로 열리는 인연</h1>
+  <p class="intro">지금 적용된 모션(0번)과, 더 힘 있게 열리는 여섯 가지를 나란히 놓았어요. 카드를 누르면 그 모션이 다시 재생돼요. 공개된 인연은 하루 네 번만 열리는 순간이라, 평소 화면보다 조금 더 극적이어도 괜찮은 자리예요.</p>
+  <div class="bar">
+    <label for="spd">속도 배율</label><input type="range" id="spd" min="0.5" max="2" step="0.1" value="1"><output id="o-spd" for="spd">1.0배</output>
+    <button type="button" class="tool" id="all">전체 다시 보기</button>
+  </div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<template id="tpl">
+  <button type="button" class="rc" aria-label="인연 열어보기 · 모션 다시 보기">
+    <div class="ph"></div>
+    <div class="blobs" aria-hidden="true"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i><i class="blob b4"></i></div>
+    <div class="fx flash"></div><div class="fx leak"></div><div class="fx seam"></div><span class="ring"></span>
+    <div class="scrim"></div>
+    <div class="ready"><span class="arr">12:00에 도착한 인연</span><small>이 사람의 한 장면</small><p>주말 아침에는 커피 한 잔을 들고 동네를 걷거나 작은 서점에 들러요.</p><span class="btn">인연 열어보기<i aria-hidden="true"></i></span></div>
+    <div class="open" aria-hidden="true"><span class="nm">봄빛, 26</span><span class="mt">서울 마포구</span><span class="tg"><span>#산책메이트</span><span>#독서취향</span></span></div>
+  </button>
+</template>
+
+<script>
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let K=1; /* 속도 배율: 클수록 느리게 */
+const T=ms=>ms*K;
+const OUT='cubic-bezier(0.23, 1, 0.32, 1)',INOUT='cubic-bezier(0.77, 0, 0.175, 1)';
+/* 스프링 곡선: 감쇠 진동을 linear()로 근사. 지원 안 하면 살짝 넘치는 cubic-bezier */
+function spring(bounce){
+  if(!CSS.supports('animation-timing-function','linear(0, 1)'))return 'cubic-bezier(0.34, 1.56, 0.64, 1)';
+  const z=Math.max(.05,1-bounce),w=9,wd=w*Math.sqrt(1-z*z),pts=[];
+  for(let i=0;i<=48;i++){const t=i/48;const x=1-Math.exp(-z*w*t)*(Math.cos(wd*t)+(z*w/wd)*Math.sin(wd*t));pts.push(x.toFixed(4));}
+  pts[pts.length-1]='1';return `linear(${pts.join(',')})`;
+}
+const SP_SOFT=spring(.2),SP_POP=spring(.35);
+
+function infoIn(c,start,gap=60,easing=SP_SOFT,dy=14){
+  [...c.querySelectorAll('.open>*')].forEach((e,i)=>e.animate([{opacity:0,transform:`translateY(${dy}px)`},{opacity:1,transform:'none'}],{duration:T(620),delay:T(start+i*gap),easing,fill:'both'}));
+}
+function readyOut(c,d=180){
+  c.querySelector('.ready').animate([{opacity:1,transform:'none'},{opacity:0,transform:'translateY(8px)'}],{duration:T(d),easing:'ease-out',fill:'forwards'});
+  c.querySelector('.btn').animate([{transform:'scale(1)'},{transform:'scale(.95)'}],{duration:T(100),easing:'ease-out',fill:'forwards'});
+}
+function scrimTo(c,d,delay=0){c.querySelector('.scrim').animate([{opacity:.55},{opacity:1}],{duration:T(d),delay:T(delay),easing:OUT,fill:'forwards'});}
+function blobsOut(c,d,delay=0){c.querySelector('.blobs').animate([{opacity:.36},{opacity:0}],{duration:T(d),delay:T(delay),easing:OUT,fill:'forwards'});}
+
+const V=[
+ {key:'now',name:'지금 적용된 모션',desc:'흐림이 1.2초 동안 걷히며 사진이 천천히 다가오고, 정보가 차례로 올라와요.',feel:'잔잔함 · 여운',
+  play(c,ph){readyOut(c,200);
+   ph.animate([{filter:'blur(14px) saturate(.94) brightness(1.06)',transform:'scale(.888)'},{filter:'blur(0) saturate(1) brightness(1)',transform:'scale(1)'}],{duration:T(1850),delay:T(120),easing:OUT,fill:'both'});
+   ph.animate([{filter:'blur(14px) saturate(.94) brightness(1.06)'},{filter:'blur(0) saturate(1) brightness(1)'}],{duration:T(1200),delay:T(120),easing:OUT,fill:'both',composite:'replace'});
+   blobsOut(c,1000,120);scrimTo(c,1200,120);infoIn(c,650,70,OUT,10);}},
+ {key:'flash',name:'노출 플래시',desc:'필름 카메라 플래시처럼 한 번 하얗게 번쩍인 뒤, 크게 보이던 사진이 통통 튀며 제자리로 들어와요.',feel:'경쾌함 · 찰칵',
+  play(c,ph){readyOut(c,140);
+   c.querySelector('.flash').animate([{opacity:0},{opacity:.85,offset:.25},{opacity:0}],{duration:T(520),delay:T(80),easing:'ease-out',fill:'both'});
+   ph.animate([{filter:'blur(14px) brightness(1)'},{filter:'blur(4px) brightness(1.7)',offset:.25},{filter:'blur(0) brightness(1)'}],{duration:T(640),delay:T(80),easing:'ease-out',fill:'both'});
+   ph.animate([{transform:'scale(1.16)'},{transform:'scale(1)'}],{duration:T(900),delay:T(80),easing:SP_POP,fill:'both'});
+   blobsOut(c,300,80);scrimTo(c,600,200);infoIn(c,380,60,SP_POP,18);}},
+ {key:'circle',name:'원으로 열림',desc:'버튼 자리에서 선명한 사진이 동그랗게 퍼져 나가며 흐린 화면을 밀어내요. 퍼지는 가장자리에 빛 고리가 따라가요.',feel:'시원함 · 퍼짐',
+  setup(c){const cov=document.createElement('div');cov.className='cov';c.prepend(cov);c.querySelector('.ph').style.filter='none';c.querySelector('.ph').style.clipPath='circle(0% at 50% 88%)';},
+  play(c,ph){readyOut(c,140);const cov=c.querySelector('.cov');
+   ph.animate([{clipPath:'circle(0% at 50% 88%)'},{clipPath:'circle(140% at 50% 88%)'}],{duration:T(820),delay:T(60),easing:OUT,fill:'both'});
+   ph.animate([{transform:'scale(1.12)'},{transform:'scale(1)'}],{duration:T(1100),delay:T(60),easing:SP_SOFT,fill:'both'});
+   c.querySelector('.ring').animate([{opacity:.9,transform:'scale(1)'},{opacity:0,transform:'scale(34)'}],{duration:T(820),delay:T(60),easing:OUT,fill:'both'});
+   cov.animate([{transform:'scale(1)',opacity:1},{transform:'scale(1.08)',opacity:0}],{duration:T(700),delay:T(260),easing:OUT,fill:'forwards'});
+   blobsOut(c,500,60);scrimTo(c,700,200);infoIn(c,500,60,SP_SOFT,14);}},
+ {key:'scatter',name:'빛이 흩어짐',desc:'카드 위를 떠다니던 파스텔 빛이 사방으로 확 흩어지면서 흐림이 걷히고, 사진이 살짝 기울었다 바로 서요.',feel:'설렘 · 터짐',
+  play(c,ph){readyOut(c,140);
+   const dir=[[-1,-1],[1,-.6],[-.8,1],[1,1]];
+   c.querySelectorAll('.blob').forEach((b,i)=>b.animate([{translate:'0 0',scale:'1',opacity:1},{translate:`${dir[i][0]*90}% ${dir[i][1]*90}%`,scale:'2.6',opacity:0}],{duration:T(760),delay:T(60),easing:OUT,fill:'both'}));
+   c.querySelector('.blobs').animate([{opacity:.36},{opacity:.9,offset:.2},{opacity:0}],{duration:T(800),delay:T(60),easing:'ease-out',fill:'both'});
+   ph.animate([{filter:'blur(14px)'},{filter:'blur(0)'}],{duration:T(700),delay:T(60),easing:OUT,fill:'both'});
+   ph.animate([{transform:'scale(1.14) rotate(-2deg)'},{transform:'scale(1) rotate(0)'}],{duration:T(1000),delay:T(60),easing:SP_POP,fill:'both'});
+   scrimTo(c,700,160);infoIn(c,420,60,SP_POP,16);}},
+ {key:'shutter',name:'셔터 열림',desc:'흐린 화면이 위아래 두 장으로 갈라져 빠르게 열리고, 갈라지는 틈에 빛이 번져요. 안쪽 사진은 살짝 당겨지며 자리 잡아요.',feel:'또렷함 · 극장',
+  setup(c){['top','bot'].forEach(s=>{const cov=document.createElement('div');cov.className='cov '+s;cov.style.clipPath=s==='top'?'inset(0 0 50% 0)':'inset(50% 0 0 0)';c.querySelector('.ph').after(cov);});c.querySelector('.ph').style.filter='none';},
+  play(c,ph){readyOut(c,120);
+   c.querySelector('.seam').animate([{opacity:0,transform:'scaleX(.2)'},{opacity:1,transform:'scaleX(1)',offset:.35},{opacity:0,transform:'scaleX(1)'}],{duration:T(620),delay:T(40),easing:'ease-out',fill:'both'});
+   c.querySelector('.cov.top').animate([{transform:'translateY(0)'},{transform:'translateY(-62%)'}],{duration:T(640),delay:T(140),easing:INOUT,fill:'both'});
+   c.querySelector('.cov.bot').animate([{transform:'translateY(0)'},{transform:'translateY(62%)'}],{duration:T(640),delay:T(140),easing:INOUT,fill:'both'});
+   ph.animate([{transform:'scale(1.1)'},{transform:'scale(1)'}],{duration:T(1100),delay:T(140),easing:SP_SOFT,fill:'both'});
+   blobsOut(c,400,140);scrimTo(c,600,400);infoIn(c,600,60,SP_SOFT,14);}},
+ {key:'pop',name:'카드가 통통',desc:'누르는 순간 카드가 쏙 들어갔다가 튀어 오르며 열리고, 사진과 이름도 탄력 있게 자리 잡아요.',feel:'귀여움 · 탄력',
+  play(c,ph){readyOut(c,120);
+   c.animate([{transform:'scale(1)'},{transform:'scale(.94)',offset:.18},{transform:'scale(1)'}],{duration:T(760),easing:SP_POP,fill:'none'});
+   ph.animate([{filter:'blur(14px)'},{filter:'blur(0)'}],{duration:T(520),delay:T(120),easing:OUT,fill:'both'});
+   ph.animate([{transform:'scale(1.22)'},{transform:'scale(1)'}],{duration:T(950),delay:T(120),easing:SP_POP,fill:'both'});
+   blobsOut(c,400,120);scrimTo(c,500,200);infoIn(c,360,70,SP_POP,22);}},
+ {key:'leak',name:'필름 빛샘',desc:'오래된 필름에 빛이 새듯 로즈 · 골드 빛줄기가 카드를 가로질러 지나가고, 그 뒤로 사진이 선명해져요.',feel:'감성 · 야화다움',
+  play(c,ph){readyOut(c,160);
+   c.querySelector('.leak').animate([{opacity:0,transform:'translateX(-55%)'},{opacity:1,transform:'translateX(-10%)',offset:.35},{opacity:0,transform:'translateX(55%)'}],{duration:T(1000),delay:T(60),easing:'cubic-bezier(0.45, 0, 0.25, 1)',fill:'both'});
+   ph.animate([{filter:'blur(14px) brightness(1)'},{filter:'blur(6px) brightness(1.25)',offset:.4},{filter:'blur(0) brightness(1)'}],{duration:T(1000),delay:T(60),easing:'ease-out',fill:'both'});
+   ph.animate([{transform:'scale(1.1)'},{transform:'scale(1)'}],{duration:T(1300),delay:T(60),easing:SP_SOFT,fill:'both'});
+   blobsOut(c,600,60);scrimTo(c,800,300);infoIn(c,640,70,SP_SOFT,14);}},
+];
+
+const grid=document.getElementById('grid'),tpl=document.getElementById('tpl');
+const cards=[];
+V.forEach((v,i)=>{
+  const item=document.createElement('article');item.className='item'+(i===0?' now':'');
+  item.innerHTML=`<h2><b>${i}</b>${v.name}</h2>`;
+  const c=tpl.content.firstElementChild.cloneNode(true);c.dataset.v=i;item.append(c);
+  item.insertAdjacentHTML('beforeend',`<p>${v.desc}</p><span class="feel">느낌 · ${v.feel}</span>`);
+  grid.append(item);cards.push(c);
+  c.addEventListener('click',()=>run(c,true));
+});
+function reset(c){
+  c.getAnimations({subtree:true}).forEach(a=>{if(a.effect&&isFinite(a.effect.getTiming().iterations))a.cancel();});
+  c.querySelectorAll('.cov').forEach(e=>e.remove());
+  const ph=c.querySelector('.ph');ph.style.filter='';ph.style.clipPath='';ph.style.transform='';
+  const v=V[c.dataset.v];if(v.setup)v.setup(c);
+}
+function run(c,now){
+  reset(c);const v=V[c.dataset.v],ph=c.querySelector('.ph');
+  if(reduce){ph.animate([{filter:'blur(14px)'},{filter:'blur(0)'}],{duration:300,fill:'both'});c.querySelector('.ready').animate([{opacity:1},{opacity:0}],{duration:200,fill:'forwards'});[...c.querySelectorAll('.open>*,.cov')].forEach(e=>e.animate([{opacity:e.classList.contains('cov')?1:0},{opacity:e.classList.contains('cov')?0:1}],{duration:300,delay:150,fill:'both'}));return;}
+  requestAnimationFrame(()=>v.play(c,ph));
+}
+document.getElementById('all').addEventListener('click',()=>cards.forEach(c=>run(c)));
+const spd=document.getElementById('spd'),o=document.getElementById('o-spd');
+spd.addEventListener('input',()=>{K=+spd.value;o.textContent=K.toFixed(1)+'배';});
+cards.forEach(reset);
+</script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>호감 칩 자리 벌어짐</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398;--pg-on:#fff;--k:1}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button,select{font:inherit;color:inherit}
+.wrap{max-width:1300px;margin:0 auto;padding:36px 16px 64px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:82ch;margin:10px 0 0;color:var(--pg-fg2)}
+.layout{display:flex;flex-wrap:wrap;gap:28px;margin-top:24px;align-items:flex-start}
+.phones{display:flex;flex-wrap:wrap;gap:24px}
+.col{display:flex;flex-direction:column;gap:10px;width:360px;max-width:100%}
+.col h2{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.col h2 b{display:grid;place-items:center;min-width:26px;height:26px;padding:0 8px;border-radius:13px;background:var(--pg-accent);color:var(--pg-on);font:600 12px var(--font-sans)}
+.col h2 b.now{background:var(--pg-line);color:var(--pg-fg2)}
+.col>p{margin:0;min-height:66px;font-size:13px;color:var(--pg-fg2)}
+.panel{position:sticky;top:16px;flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:16px;padding:18px;border-radius:18px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.panel h3{margin:0;font-size:14px}
+.ctl{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;font-size:13px}
+.ctl input[type=range],.ctl select{grid-column:1/-1;width:100%;accent-color:var(--pg-accent)}
+.ctl select{height:36px;padding:0 8px;border-radius:8px;border:1px solid var(--pg-line);background:var(--pg-surface)}
+.ctl output{font-variant-numeric:tabular-nums;color:var(--pg-fg2)}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+.btns button{height:40px;padding:0 14px;border:0;border-radius:10px;background:var(--pg-accent);color:var(--pg-on);font-weight:600;cursor:pointer}
+.btns button.ghost{background:none;color:var(--pg-fg);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.chk{display:flex;align-items:center;gap:8px;font-size:13px}
+.note{margin:0;font-size:12px;color:var(--pg-fg3)}
+table{width:100%;border-collapse:collapse;font-size:12px;line-height:1.6}
+th,td{padding:7px 6px;text-align:left;vertical-align:top;border-top:1px solid var(--pg-line)}
+th{width:72px;color:var(--pg-fg3);font-weight:600;white-space:nowrap}
+
+/* 폰: 칩 위 · 아래를 실제 앱 화면 두 조각으로, 칩 자리만 HTML */
+.phone{position:relative;width:360px;max-width:100%;height:780px;border-radius:36px;overflow:hidden;background:#F8F9F6;box-shadow:0 0 0 1px var(--pg-line),0 16px 40px rgb(0 0 0 / .12);isolation:isolate}
+.flow img{display:block;width:360px}
+.slot{overflow:hidden;padding:0 20px;background:#F8F9F6}
+.slot.collapsed{height:0}
+.pv-love{display:flex;align-items:center;gap:4px;width:fit-content;height:28px;margin:12px 0 0;padding:0 12px 0 8px;border-radius:14px;background:var(--color-bg-muted);color:var(--color-fg-secondary);font:600 12px/16px var(--font-sans)}
+.pv-love svg{flex:none;width:14px;height:14px;fill:currentColor}
+.gnb{position:absolute;left:0;right:0;bottom:0;height:90px;background:url(gnb.jpg) 0 0/360px 90px no-repeat;pointer-events:none}
+.act{position:absolute;top:628px;display:grid;place-items:center;width:56px;height:56px;border:0;border-radius:28px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.act.heart{left:20px;background:var(--action-love-bg);color:#fff;box-shadow:var(--action-love-shadow)}
+.act.heart.off{background:var(--action-off-bg);color:var(--action-off-ink);box-shadow:none;cursor:default;transition:background-color 260ms ease,box-shadow 260ms ease,color 260ms ease}
+.act.mail{right:20px;background:var(--action-letter-bg);color:#fff;box-shadow:var(--action-letter-shadow);cursor:default}
+.act svg{width:26px;height:26px}
+.act .h path{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linejoin:round}
+.act.filled .h path{fill:currentColor;stroke:none}
+.act .m path{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linejoin:round}
+.hint{position:absolute;left:20px;top:592px;padding:4px 10px;border-radius:10px;background:rgb(0 0 0 / .55);color:#fff;font:600 11px/1.5 var(--font-sans);pointer-events:none;transition:opacity 200ms ease}
+.phone.sent .hint{opacity:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">상대 프로필 · 보낸 호감 칩</p>
+  <h1 class="title">자리부터 부드럽게, 칩은 그다음에</h1>
+  <p class="intro">왼쪽은 지금 앱, 오른쪽은 1번 안이에요. 하트가 내려앉으면 칩 자리(위 여백 12 + 칩 28 = 40px)가 먼저 벌어지면서 아래 내용이 미끄러지듯 내려가고, 거의 다 벌어질 즈음 칩이 위로 살짝 떠오르며 나타나요. 사진 · 이름 · 정보 카드는 실제 앱 화면 그대로예요. 각 폰의 하트를 누르거나 오른쪽 “같이 보내기”로 비교해 보세요.</p>
+
+  <div class="layout">
+    <div class="phones">
+      <div class="col"><h2><b class="now">지금</b>한 번에 밀림</h2><p>하트가 내려앉은 뒤 칩 자리 40px이 한 프레임에 생겨서 아래 해시태그 · 정보 카드가 툭 내려가요. 칩만 220ms로 떠오르며 나타나요.</p><div class="phone" id="now"></div></div>
+      <div class="col"><h2><b>1번 안</b>자리 벌어짐</h2><p>자리가 먼저 벌어지고(기본 260ms, 강한 감속) 아래 내용이 따라 내려가요. 칩은 벌어지는 시간의 60% 지점부터 200ms 동안 4px 아래에서 떠올라요.</p><div class="phone" id="new"></div></div>
+    </div>
+
+    <aside class="panel" aria-label="값 조정">
+      <h3>1번 안 값 조정</h3>
+      <label class="ctl">자리가 벌어지는 시간 <output id="o-d">260ms</output><input id="d" type="range" min="160" max="480" step="20" value="260"></label>
+      <label class="ctl">곡선 <output></output><select id="e"><option value="cubic-bezier(0.23, 1, 0.32, 1)" selected>강한 감속 (앱 기본 ease-out)</option><option value="cubic-bezier(0.32, 0.72, 0, 1)">시트 곡선 (drawer)</option><option value="cubic-bezier(0.77, 0, 0.175, 1)">천천히 시작 · 끝 (ease-in-out)</option></select></label>
+      <label class="ctl">칩이 나타나는 시점 <output id="o-a">60%</output><input id="a" type="range" min="0" max="100" step="10" value="60"></label>
+      <label class="ctl">칩이 떠오르는 거리 <output id="o-y">4px</output><input id="y" type="range" min="0" max="10" step="1" value="4"></label>
+      <label class="ctl">칩 나타나는 시간 <output id="o-f">200ms</output><input id="f" type="range" min="120" max="360" step="20" value="200"></label>
+      <label class="chk"><input id="slow" type="checkbox"> 4배 느리게 보기</label>
+      <div class="btns"><button type="button" id="both">같이 보내기</button><button type="button" class="ghost" id="reset">되돌리기</button><button type="button" class="ghost" id="def">기본값으로</button></div>
+      <table>
+        <tr><th>순서</th><td>하트 눌림 → 튀어 오름(220) → 내려앉음(560) → 260ms 뒤 회색 버튼 → <b>자리 벌어짐</b> → 칩 등장. 하트 모션은 지금과 같아요.</td></tr>
+        <tr><th>왜 이 값</th><td>40px을 움직이는 일이라 260ms면 눈으로 따라갈 수 있으면서 느리지 않아요. 칩이 자리보다 늦게 나와야 “자리가 생기고 → 들어온다”로 읽혀요.</td></tr>
+        <tr><th>움직임 줄이기</th><td>자리는 바로 생기고 칩은 흐려졌다 나타나기만 해요.</td></tr>
+        <tr><th>다른 칩</th><td>받은 호감 · 서로 호감 칩도 처음 생길 때 같은 방식으로 벌어지게 맞출게요. 글자만 바뀔 때(받은 호감 → 서로 호감)는 자리가 그대로라 지금처럼 떠오르기만 해요.</td></tr>
+      </table>
+      <p class="note">앱 코드는 like-pop.js의 칩 넣는 부분(chip)만 바뀌어요. 높이는 이 한 번만 움직이고, 칩은 transform · opacity로만 움직여요.</p>
+    </aside>
+  </div>
+</div>
+
+<script>
+const HEART='M16 26C12 23 4.5 17.5 5 11.3C5.4 5.5 12.2 5.5 15.6 12.2C18.1 5.2 25.8 4.9 27 10.8C28.1 16.1 21.6 23.1 16 26Z';
+const HEART_FILL='M16 27C12 24 3.6 18 4 11.2C4.4 4.5 12.1 4.3 15.6 10.2C18.3 3.9 26.8 3.8 28 10.6C29.1 16.5 22 24 16 27Z';
+const SMALL=`<svg viewBox="0 0 32 32" aria-hidden="true"><path d="${HEART_FILL}"/></svg>`;
+const MAIL='M3 6Q12 5 21 6V19H3Z M3 7L12 14L21 7 M3 19L9 13 M21 19L15 13';
+const k=()=>+getComputedStyle(document.documentElement).getPropertyValue('--k')||1;
+const reduce=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $=id=>document.getElementById(id);
+const V=()=>({d:+$('d').value,e:$('e').value,a:+$('a').value/100,y:+$('y').value,f:+$('f').value});
+const EO='cubic-bezier(0.23, 1, 0.32, 1)';
+
+function build(ph){ph.classList.remove('sent');ph.innerHTML=`<div class="flow"><img src="top.jpg" alt=""><div class="slot collapsed"></div><img src="bottom.jpg" alt=""></div><div class="gnb"></div>
+ <button class="act heart" aria-label="관심 보내기"><svg class="h" viewBox="0 0 32 32" aria-hidden="true"><path d="${HEART}"/></svg></button>
+ <button class="act mail" aria-label="편지 보내기" tabindex="-1"><svg class="m" viewBox="0 0 24 24" aria-hidden="true"><path d="${MAIL}"/></svg></button><span class="hint">눌러 보세요</span>`;
+ ph.querySelector('.heart').onclick=()=>send(ph);}
+
+/* 하트 모션 (앱 like-pop.js를 줄인 흉내): 눌림 → 튀어 오름 220 → 내려앉음 560 → 260 뒤 회색 */
+function send(ph){if(ph.classList.contains('sent'))return;ph.classList.add('sent');const btn=ph.querySelector('.heart'),ico=btn.querySelector('svg'),K=k();
+ if(reduce()){btn.classList.add('filled','off');setTimeout(()=>chipIn(ph),200*K);return;}
+ btn.animate([{transform:'scale(1)'},{transform:'scale(.85)'},{transform:'scale(1)'}],{duration:160*K,easing:EO});
+ const peak='translateY(-20px) scale(1.45) rotate(-14deg)';
+ ico.animate([{transform:'none'},{transform:peak}],{duration:220*K,easing:'cubic-bezier(0.2, 0.9, 0.3, 1)',fill:'forwards'}).finished.then(()=>{btn.classList.add('filled');
+  ico.animate([{transform:peak},{transform:'none'}],{duration:560*K,easing:'cubic-bezier(0.34, 1.4, 0.64, 1)',fill:'forwards'});
+  setTimeout(()=>{btn.classList.add('off');chipIn(ph);},(560+260)*K);});}
+
+function chipIn(ph){const slot=ph.querySelector('.slot'),K=k();slot.innerHTML=`<p class="pv-love">${SMALL}<span>봄빛 님에게 호감을 보냈어요</span></p>`;const chip=slot.firstElementChild;
+ if(ph.id==='now'){slot.classList.remove('collapsed');chip.animate([{opacity:0,transform:'translateY(4px)'},{opacity:1,transform:'none'}],{duration:220*K,easing:EO});return;}
+ const v=V();
+ if(reduce()){slot.classList.remove('collapsed');chip.animate([{opacity:0},{opacity:1}],{duration:200*K});return;}
+ slot.classList.remove('collapsed');const h=slot.offsetHeight;
+ slot.animate([{height:'0px'},{height:h+'px'}],{duration:v.d*K,easing:v.e});
+ chip.animate([{opacity:0,transform:`translateY(${v.y}px)`},{opacity:1,transform:'none'}],{duration:v.f*K,delay:v.d*v.a*K,easing:EO,fill:'backwards'});}
+
+function resetAll(){build($('now'));build($('new'));}
+resetAll();
+$('both').onclick=()=>{resetAll();requestAnimationFrame(()=>{send($('now'));send($('new'));});};
+$('reset').onclick=resetAll;
+$('def').onclick=()=>{$('d').value=260;$('e').selectedIndex=0;$('a').value=60;$('y').value=4;$('f').value=200;sync();};
+const sync=()=>{$('o-d').textContent=$('d').value+'ms';$('o-a').textContent=$('a').value+'%';$('o-y').textContent=$('y').value+'px';$('o-f').textContent=$('f').value+'ms';};
+['d','a','y','f'].forEach(id=>$(id).oninput=sync);sync();
+$('slow').onchange=e=>document.documentElement.style.setProperty('--k',e.target.checked?4:1);
+</script>
+</body>
+</html>

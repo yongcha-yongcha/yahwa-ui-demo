@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>프로필 수정 톤 다듬기</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398;--pg-on:#fff;--ease-out:cubic-bezier(0.23, 1, 0.32, 1)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.wrap{max-width:1640px;margin:0 auto;padding:36px 16px 80px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:88ch;margin:10px 0 0;color:var(--pg-fg2)}
+section.part{margin-top:44px}
+section.part>h2{margin:0;font:400 23px/1.4 var(--font-serif)}
+section.part>p{max-width:88ch;margin:6px 0 0;color:var(--pg-fg2);font-size:13px}
+.row{display:flex;flex-wrap:wrap;gap:24px;margin-top:18px}
+.col{display:flex;flex-direction:column;gap:10px;width:360px;max-width:100%}
+.col h3{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.col h3 b{display:grid;place-items:center;min-width:26px;height:26px;padding:0 8px;border-radius:13px;background:var(--pg-accent);color:var(--pg-on);font:600 12px var(--font-sans)}
+.col h3 b.now{background:var(--pg-line);color:var(--pg-fg2)}
+.col h3 em{font:600 11px/1 var(--font-sans);font-style:normal;padding:4px 8px;border-radius:10px;background:var(--sky-100);color:var(--color-fg-accent-strong)}
+.col>p{margin:0;min-height:66px;font-size:13px;color:var(--pg-fg2)}
+.shot{display:block;width:360px;max-width:100%;border-radius:28px;box-shadow:0 0 0 1px var(--pg-line),0 12px 32px rgb(0 0 0 / .1)}
+.swatch{font:500 11px/1.4 ui-monospace,Menlo,monospace;color:var(--pg-fg3)}
+.tog{height:36px;padding:0 14px;border:0;border-radius:18px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);color:var(--pg-fg);font:600 12px var(--font-sans);cursor:pointer;margin-top:14px}
+.ic{display:inline-block;flex:none;width:var(--ic-size,20px);height:var(--ic-size,20px);background:currentColor;-webkit-mask:var(--ic) center/contain no-repeat;mask:var(--ic) center/contain no-repeat;vertical-align:middle}
+.ic-chevron-left{--ic:var(--ic-chevron-left)}.ic-chevron-right{--ic:var(--ic-chevron-right)}.ic-plus{--ic:var(--ic-plus)}.ic-check{--ic:var(--ic-check)}
+
+/* ---------- 헤더 폰 ---------- */
+.phone{position:relative;width:360px;max-width:100%;height:700px;border-radius:28px;overflow:hidden;background:var(--paper);color:var(--color-fg-primary);box-shadow:0 0 0 1px var(--pg-line),0 12px 32px rgb(0 0 0 / .1);isolation:isolate}
+.phone::before{content:"";position:absolute;inset:0 0 auto;height:200px;background:linear-gradient(var(--sky-50),var(--paper));z-index:-1}
+.scroller{position:absolute;inset:0;overflow-y:auto;padding:72px 20px 40px;scrollbar-width:none}
+.scroller::-webkit-scrollbar{display:none}
+.hd{position:absolute;left:0;right:0;top:0;z-index:5;height:72px;padding:20px 20px 0;display:flex;align-items:center}
+.hd .back{display:grid;place-items:center;width:44px;height:44px;border:0;background:none;color:var(--color-fg-secondary);padding:0;cursor:pointer}
+.hd .back .ic{--ic-size:24px}
+.hd::before{content:"";position:absolute;z-index:-1;left:0;right:0;top:0;height:100px;pointer-events:none;opacity:0;transition:opacity 200ms ease-out;background:linear-gradient(color-mix(in srgb,var(--sky-50) 82%,transparent) 0%,color-mix(in srgb,var(--paper) 62%,transparent) 60%,color-mix(in srgb,var(--paper) 0%,transparent) 100%);-webkit-backdrop-filter:blur(10px) saturate(140%);backdrop-filter:blur(10px) saturate(140%);-webkit-mask-image:linear-gradient(#000 55%,transparent);mask-image:linear-gradient(#000 55%,transparent)}
+.hd.is-scrolled::before{opacity:1}
+.ph-h1{display:flex;align-items:center;justify-content:space-between;margin:0}
+.ph-h1 b{font:400 26px/1.45 var(--font-serif)}
+.ph-h1 span{font:600 14px/1 var(--font-sans);color:var(--color-fg-accent)}
+.sh{display:flex;justify-content:space-between;align-items:center;min-height:44px;margin-top:24px;font:600 13px/1 var(--font-sans);color:var(--color-fg-muted)}
+.sh span{font-weight:400}
+.photos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.photos i{display:block;aspect-ratio:1;border-radius:12px;background:var(--color-bg-subtle) center/cover}
+.photos i.e{display:grid;place-items:center;border:1.5px dashed var(--color-border-strong);color:var(--color-fg-accent)}
+.card{padding:0 16px;border-radius:16px;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-default)}
+.fr{display:flex;align-items:center;gap:12px;min-height:52px}
+.fr+.fr{box-shadow:0 -1px 0 var(--color-border-default)}
+.fr .k{font:400 15px/1.4 var(--font-sans)}
+.fr .v{flex:1;text-align:right;font:400 14px/1.4 var(--font-sans);color:var(--color-fg-secondary)}
+.fr .ic{color:var(--color-fg-muted)}
+
+/* ---------- 채움 카드 ---------- */
+.strip{color:var(--color-fg-primary);width:360px;max-width:100%;padding:20px;border-radius:24px;background:var(--paper);box-shadow:0 0 0 1px var(--pg-line)}
+.done{display:flex;align-items:center;gap:14px;padding:16px;border-radius:16px}
+.ring{position:relative;flex:none;width:48px;height:48px}
+.ring svg{width:48px;height:48px;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:4}
+.ring .bg{stroke:color-mix(in srgb,var(--color-fg-accent) 18%,transparent)}
+.ring .fg{stroke:var(--color-fg-accent);stroke-linecap:round;transition:stroke-dashoffset 420ms var(--ease-out)}
+.ring span{position:absolute;inset:0;display:grid;place-items:center;font:600 12px/1 var(--font-sans);color:var(--color-fg-accent-strong);font-variant-numeric:tabular-nums}
+.done .tx{flex:1;min-width:0}
+.done .tx b{display:block;font:600 14px/1.4 var(--font-sans);color:var(--color-fg-primary)}
+.done .tx small{display:block;margin-top:2px;font:400 12px/1.5 var(--font-sans);color:var(--color-fg-secondary)}
+.done .go{flex:none;height:36px;padding:0 14px;border:0;border-radius:18px;background:var(--color-bg-accent);color:var(--color-fg-inverse);font:600 13px/1 var(--font-sans)}
+.done.full .go{display:none}
+.d0{background:color-mix(in srgb,var(--sky-300) 55%,var(--color-bg-surface))}
+.d1{background:var(--sky-50)}
+.d2{background:color-mix(in srgb,var(--sky-100) 70%,var(--color-bg-surface))}
+.d3{background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-default)}
+.d3 .go{background:var(--sky-50);color:var(--color-fg-accent-strong)}
+.done.full{background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-default)}
+
+/* ---------- 칩 ---------- */
+.sheet{color:var(--color-fg-primary);width:360px;max-width:100%;padding:8px 20px 24px;border-radius:24px;background:var(--color-bg-surface);box-shadow:0 0 0 1px var(--pg-line),0 12px 32px rgb(0 0 0 / .08)}
+.sheet .hdl{display:block;width:36px;height:4px;margin:0 auto 16px;border-radius:2px;background:var(--color-bg-control)}
+.sheet b.t{display:block;font:400 20px/1.4 var(--font-serif)}
+.sheet small{display:block;margin-top:4px;font:400 13px/1.5 var(--font-sans);color:var(--color-fg-muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chip{display:inline-flex;align-items:center;gap:4px;height:36px;padding:0 14px;border:0;border-radius:18px;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-default);color:var(--color-fg-primary);font:500 14px/1 var(--font-sans);cursor:pointer;transition:background-color 160ms ease,box-shadow 160ms ease,color 160ms ease}
+.chip .ic{--ic-size:16px;display:none}
+.save{display:block;width:100%;height:52px;margin-top:24px;border:0;border-radius:14px;background:var(--color-bg-accent);color:var(--color-fg-inverse);font:600 15px/1 var(--font-sans)}
+.c0 .chip[aria-checked="true"]{background:var(--sky-300);box-shadow:inset 0 0 0 1.5px var(--sky-500);color:var(--color-fg-accent-strong);font-weight:600}
+.c1 .chip[aria-checked="true"]{background:var(--sky-50);box-shadow:inset 0 0 0 1.5px var(--sky-500);color:var(--color-fg-accent-strong);font-weight:600}
+.c2 .chip[aria-checked="true"]{background:var(--sky-100);box-shadow:inset 0 0 0 1.5px var(--sky-400);color:var(--color-fg-accent-strong);font-weight:600}
+.c3 .chip[aria-checked="true"]{background:var(--color-bg-surface);box-shadow:inset 0 0 0 1.5px var(--sky-500);color:var(--color-fg-accent-strong);font-weight:600;padding-left:10px}
+.c3 .chip[aria-checked="true"] .ic{display:inline-block}
+.box{max-width:1180px;margin-top:40px;padding:16px 18px;border-radius:16px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);font-size:13px;color:var(--pg-fg2)}
+.box h4{margin:0 0 8px;font-size:14px;color:var(--pg-fg)}.box ul{margin:0;padding-left:18px}.box li+li{margin-top:5px}.box b{color:var(--pg-fg)}
+@media (prefers-reduced-transparency:reduce){.hd::before{-webkit-backdrop-filter:none;backdrop-filter:none;background:linear-gradient(var(--sky-50) 0%,var(--paper) 60%,transparent)}}
+@media (prefers-reduced-motion:reduce){.ring .fg,.hd::before{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="eyebrow">YAHWA · 프로필 수정</p>
+<h1 class="title">프로필 수정 톤 다듬기</h1>
+<p class="intro">세 군데를 다듬어요. 위쪽 헤더는 스크롤하면 흐려지며 빠지게 하고, 채움 카드와 시트의 선택된 칩은 더 연한 바탕으로 바꿔요. 지금 둘 다 <b>sky-300</b>(#92C0DF)을 써서 글자가 묻혀 보여요.</p>
+
+<section class="part">
+<h2>1. 상단 헤더</h2>
+<p>지금은 내용이 헤더 아래에서 딱 잘려요. 상대 프로필 화면에서 이미 쓰는 방식(하늘 50 → 종이색, 흐림 10, 아래로 사라지는 마스크)을 그대로 가져와요. 스크롤을 내리면 나타나고 맨 위에서는 사라져요. 오른쪽 폰을 직접 스크롤해 보세요.</p>
+<div class="row">
+  <div class="col"><h3><b class="now">지금</b>딱 잘림</h3><p>뒤로 버튼 아래 띠에서 목록이 끊겨요.</p><img class="shot" src="now-head.jpg" alt="지금 헤더"></div>
+  <div class="col"><h3><b>H</b>흐려지며 빠짐<em>추천</em></h3><p>상대 프로필과 같은 헤더예요. 프로필 수정뿐 아니라 뒤로 버튼이 있는 기능 화면(취향 설정, 편지, 글 상세 등)에 함께 적용하는 걸 추천해요.</p>
+    <div class="phone"><div class="hd" id="hd"><button class="back" aria-label="뒤로"><i class="ic ic-chevron-left"></i></button></div>
+      <div class="scroller" id="sc">
+        <div class="ph-h1"><b>프로필 수정</b><span>미리보기</span></div>
+        <div class="done d1" style="margin-top:12px"><div class="ring"><svg viewBox="0 0 48 48"><circle class="bg" cx="24" cy="24" r="20"/><circle class="fg" cx="24" cy="24" r="20" stroke-dasharray="125.66" stroke-dashoffset="35.9"/></svg><span>5/7</span></div><div class="tx"><b>소개를 거의 다 채웠어요</b><small>해시태그를 고르면 나다운 모습이 보여요.</small></div><button class="go">추가</button></div>
+        <div class="sh">사진<span>4 / 6</span></div>
+        <div class="photos"><i style="background-image:url(v1.jpg)"></i><i style="background-image:url(v2.jpg)"></i><i style="background-image:url(v3.jpg)"></i><i style="background-image:url(v4.jpg)"></i><i class="e"><span class="ic ic-plus" style="--ic-size:24px"></span></i><i class="e"><span class="ic ic-plus" style="--ic-size:24px"></span></i></div>
+        <div class="sh">기본 정보</div>
+        <div class="card"><div class="fr"><span class="k">이름</span><span class="v">지우</span><i class="ic ic-chevron-right"></i></div><div class="fr"><span class="k">성별 · 나이</span><span class="v">남성 · 만 29세</span></div><div class="fr"><span class="k">사는 곳</span><span class="v">서울 종로구</span><i class="ic ic-chevron-right"></i></div></div>
+        <div class="sh">일상</div>
+        <div class="card"><div class="fr"><span class="k">하는 일</span><span class="v">직장인</span><i class="ic ic-chevron-right"></i></div><div class="fr"><span class="k">키</span><span class="v">178cm</span><i class="ic ic-chevron-right"></i></div><div class="fr"><span class="k">MBTI</span><span class="v">INFJ</span><i class="ic ic-chevron-right"></i></div><div class="fr"><span class="k">학력</span><span class="v">대학교 졸업</span><i class="ic ic-chevron-right"></i></div><div class="fr"><span class="k">종교</span><span class="v">무교</span><i class="ic ic-chevron-right"></i></div><div class="fr"><span class="k">흡연</span><span class="v">비흡연</span><i class="ic ic-chevron-right"></i></div><div class="fr"><span class="k">음주</span><span class="v">가끔</span><i class="ic ic-chevron-right"></i></div></div>
+      </div></div>
+  </div>
+</div>
+</section>
+
+<section class="part">
+<h2>2. 채움 카드 바탕</h2>
+<p>링과 “추가” 버튼만 강조색으로 남기고 바탕은 물러나게 해요. 어느 안이든 다 채우면 흰 카드로 바뀌는 건 같아요.</p>
+<button class="tog" id="fullTog">다 채운 상태 보기</button>
+<div class="row" id="doneRow">
+  <div class="col"><h3><b class="now">지금</b>sky-300 55%</h3><p>바탕이 진해서 설명 글(12px)이 묻혀요.</p><div class="strip"><div class="done d0" data-d></div></div><span class="swatch">≈ #BCD9EC</span></div>
+  <div class="col"><h3><b>D1</b>가장 연한 하늘<em>추천</em></h3><p>sky-50(#ECF5FC) 바탕. 화면 위쪽 하늘빛과 같은 결이라 붕 뜨지 않고, 링과 버튼이 또렷해요.</p><div class="strip"><div class="done d1" data-d></div></div><span class="swatch">--sky-50 · #ECF5FC</span></div>
+  <div class="col"><h3><b>D2</b>조금 더 하늘</h3><p>sky-100 70%. 카드라는 게 D1보다 잘 보이고 여전히 글자가 잘 읽혀요.</p><div class="strip"><div class="done d2" data-d></div></div><span class="swatch">--sky-100 70% · ≈ #E2F0FA</span></div>
+  <div class="col"><h3><b>D3</b>흰 카드</h3><p>아래 항목 카드와 같은 흰 바탕 + 1px 테두리. “추가” 버튼도 연하게. 가장 차분하지만 눈길은 가장 약해요.</p><div class="strip"><div class="done d3" data-d></div></div><span class="swatch">--color-bg-surface + border/default</span></div>
+</div>
+</section>
+
+<section class="part">
+<h2>3. 시트의 선택된 칩</h2>
+<p>이 칩은 추천 설정 시트, 취향 설정 화면과 같은 공용 칩(<code>.yh-chip</code>)이라, 고르면 세 곳이 함께 바뀌어요. 칩을 눌러 보세요.</p>
+<div class="row">
+  <div class="col"><h3><b class="now">지금</b>sky-300 바탕</h3><p>선택된 칩만 진하게 튀어서 글자가 무거워 보여요.</p><div class="sheet c0" data-s></div></div>
+  <div class="col"><h3><b>C1</b>연한 바탕 + 테두리<em>추천</em></h3><p>sky-50 바탕 + sky-500 1.5 테두리 + 진한 파랑 글자. 고른 게 테두리로 분명하고 바탕은 가벼워요.</p><div class="sheet c1" data-s></div></div>
+  <div class="col"><h3><b>C2</b>조금 더 하늘</h3><p>sky-100 바탕 + sky-400 테두리. C1보다 고른 칩이 면으로 보여요.</p><div class="sheet c2" data-s></div></div>
+  <div class="col"><h3><b>C3</b>흰 바탕 + 체크</h3><p>바탕은 흰색 그대로, 테두리와 체크 아이콘으로만 표시해요. 가장 가볍지만 칩이 많으면 덜 눈에 띄어요.</p><div class="sheet c3" data-s></div></div>
+</div>
+</section>
+
+<div class="box">
+  <h4>정리</h4>
+  <ul>
+    <li><b>헤더 H</b>는 상대 프로필에서 이미 쓰는 값이라 새 값이 없어요. 기능 화면 전체에 넣을지, 프로필 수정에만 넣을지 정해 주세요.</li>
+    <li><b>채움 카드</b>는 토큰 <code>--pe-done-bg</code>를 새로 두고 고른 값을 넣어요.</li>
+    <li><b>칩</b>은 기존 토큰 <code>--chip-on-bg</code>와 <code>--chip-on-border</code>만 바꾸면 세 곳이 함께 바뀌어요.</li>
+  </ul>
+</div>
+</div>
+<script>
+const sc=document.getElementById('sc'),hd=document.getElementById('hd');
+sc.addEventListener('scroll',()=>hd.classList.toggle('is-scrolled',sc.scrollTop>2),{passive:true});
+requestAnimationFrame(()=>{sc.scrollTop=230;hd.classList.add('is-scrolled');});
+const C=125.66;let FULL=false;
+function doneHTML(){return '<div class="ring"><svg viewBox="0 0 48 48" aria-hidden="true"><circle class="bg" cx="24" cy="24" r="20"/><circle class="fg" cx="24" cy="24" r="20" stroke-dasharray="'+C+'" stroke-dashoffset="'+(FULL?0:C*(2/7))+'"/></svg><span>'+(FULL?'<i class="ic ic-check"></i>':'5/7')+'</span></div><div class="tx"><b>'+(FULL?'소개를 모두 채웠어요':'소개를 거의 다 채웠어요')+'</b><small>'+(FULL?'고친 내용은 바로 상대에게 보여요.':'해시태그를 고르면 나다운 모습이 보여요.')+'</small></div><button class="go">추가</button>';}
+function drawDone(){document.querySelectorAll('[data-d]').forEach(d=>{d.classList.toggle('full',FULL);d.innerHTML=doneHTML();});}
+drawDone();
+document.getElementById('fullTog').onclick=e=>{FULL=!FULL;drawDone();e.currentTarget.textContent=FULL?'채우는 중 상태 보기':'다 채운 상태 보기';};
+const OPTS=['직장인','자영업','프리랜서','전문직','학생','기타'];
+document.querySelectorAll('[data-s]').forEach(s=>{s.innerHTML='<span class="hdl"></span><b class="t">하는 일</b><small>상대에게는 직업 분류만 보여요.</small><div class="chips" role="radiogroup">'+OPTS.map((o,i)=>'<button class="chip" role="radio" aria-checked="'+(i===0)+'"><i class="ic ic-check" aria-hidden="true"></i>'+o+'</button>').join('')+'</div><button class="save">저장</button>';
+ s.addEventListener('click',e=>{const c=e.target.closest('.chip');if(!c)return;s.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-checked',x===c));});});
+</script>
+</body>
+</html>

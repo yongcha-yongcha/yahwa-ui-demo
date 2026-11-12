@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>프로필 수정 헤더</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398;--pg-on:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.wrap{max-width:1640px;margin:0 auto;padding:36px 16px 80px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:88ch;margin:10px 0 0;color:var(--pg-fg2)}
+.row{display:flex;flex-wrap:wrap;gap:24px;margin-top:28px}
+.col{display:flex;flex-direction:column;gap:10px;width:360px;max-width:100%}
+.col h3{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.col h3 b{display:grid;place-items:center;min-width:26px;height:26px;padding:0 8px;border-radius:13px;background:var(--pg-accent);color:var(--pg-on);font:600 12px var(--font-sans)}
+.col h3 b.ref{background:var(--pg-line);color:var(--pg-fg2)}
+.col h3 em{font:600 11px/1 var(--font-sans);font-style:normal;padding:4px 8px;border-radius:10px;background:var(--sky-100);color:var(--color-fg-accent-strong)}
+.col h3 small{font:400 12px var(--font-sans);color:var(--pg-fg3)}
+.col>p{margin:0;min-height:88px;font-size:13px;color:var(--pg-fg2)}
+.ic{display:inline-block;flex:none;width:var(--ic-size,20px);height:var(--ic-size,20px);background:currentColor;-webkit-mask:var(--ic) center/contain no-repeat;mask:var(--ic) center/contain no-repeat;vertical-align:middle}
+.ic-chevron-left{--ic:var(--ic-chevron-left)}.ic-chevron-right{--ic:var(--ic-chevron-right)}.ic-plus{--ic:var(--ic-plus)}.ic-more{--ic:var(--ic-more-horizontal)}
+
+.phone{position:relative;width:360px;max-width:100%;height:640px;border-radius:28px;overflow:hidden;background:var(--paper);color:var(--color-fg-primary);box-shadow:0 0 0 1px var(--pg-line),0 12px 32px rgb(0 0 0 / .1);isolation:isolate}
+.phone::before{content:"";position:absolute;inset:0 0 auto;height:200px;background:linear-gradient(var(--sky-50),var(--paper));z-index:-1}
+.scroller{position:absolute;inset:0;overflow-y:auto;padding:76px 20px 40px;scrollbar-width:none}
+.scroller::-webkit-scrollbar{display:none}
+/* 머리: 위 여백 20 + 줄 44. 터치영역 44를 여백선에 맞춤 */
+.hd{position:absolute;left:0;right:0;top:0;z-index:5;height:64px;padding:20px 20px 0;display:flex;align-items:center;gap:4px}
+.hd .back,.hd .more{display:grid;place-items:center;flex:none;width:44px;height:44px;border:0;background:none;color:var(--color-fg-secondary);padding:0;cursor:pointer}
+.hd .back .ic,.hd .more .ic{--ic-size:24px}
+.hd .ttl{flex:1;min-width:0;font:600 16px/1.3 var(--font-sans);color:var(--color-fg-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hd .pv{flex:none;height:44px;padding:0 0 0 12px;border:0;background:none;color:var(--color-fg-accent);font:600 14px/1 var(--font-sans);cursor:pointer}
+.hd.center .ttl{position:absolute;left:50%;top:20px;height:44px;display:flex;align-items:center;transform:translateX(-50%);max-width:180px}
+.hd.center .pv{margin-left:auto}
+.hd .who{display:flex;align-items:center;gap:8px;flex:1;min-width:0;opacity:0;transform:translateY(6px);transition:opacity 200ms cubic-bezier(.23,1,.32,1),transform 200ms cubic-bezier(.23,1,.32,1)}
+.hd.show-who .who{opacity:1;transform:none}
+.hd .who i{width:28px;height:28px;flex:none;border-radius:50%;background:url(v1.jpg) center 30%/cover;box-shadow:0 0 0 1px var(--color-border-default)}
+.hd .who b{font:600 16px/1.3 var(--font-sans)}
+.hd::before{content:"";position:absolute;z-index:-1;left:0;right:0;top:0;height:96px;pointer-events:none;opacity:0;transition:opacity 200ms ease-out;background:linear-gradient(color-mix(in srgb,var(--sky-50) 82%,transparent) 0%,color-mix(in srgb,var(--paper) 62%,transparent) 60%,color-mix(in srgb,var(--paper) 0%,transparent) 100%);-webkit-backdrop-filter:blur(10px) saturate(140%);backdrop-filter:blur(10px) saturate(140%);-webkit-mask-image:linear-gradient(#000 55%,transparent);mask-image:linear-gradient(#000 55%,transparent)}
+.hd.is-scrolled::before{opacity:1}
+/* 본문 (적용한 D1 채움 카드) */
+.done{display:flex;align-items:center;gap:14px;padding:16px;border-radius:16px;background:var(--sky-50)}
+.ring{position:relative;flex:none;width:48px;height:48px}
+.ring svg{width:48px;height:48px;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:4}
+.ring .bg{stroke:color-mix(in srgb,var(--color-fg-accent) 18%,transparent)}
+.ring .fg{stroke:var(--color-fg-accent);stroke-linecap:round}
+.ring span{position:absolute;inset:0;display:grid;place-items:center;font:600 12px/1 var(--font-sans);color:var(--color-fg-accent-strong)}
+.done .tx{flex:1;min-width:0}.done .tx b{display:block;font:600 14px/1.4 var(--font-sans)}.done .tx small{display:block;margin-top:2px;font:400 12px/1.5 var(--font-sans);color:var(--color-fg-secondary)}
+.done .go{flex:none;height:36px;padding:0 14px;border:0;border-radius:18px;background:var(--color-bg-accent);color:var(--color-fg-inverse);font:600 13px/1 var(--font-sans)}
+.sh{display:flex;justify-content:space-between;align-items:center;min-height:44px;margin-top:24px;font:600 13px/1 var(--font-sans);color:var(--color-fg-muted)}
+.sh span{font-weight:400}
+.photos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.photos i{display:block;aspect-ratio:1;border-radius:12px;background:var(--color-bg-subtle) center/cover}
+.photos i.e{display:grid;place-items:center;border:1.5px dashed var(--color-border-strong);color:var(--color-fg-accent)}
+.card{padding:0 16px;border-radius:16px;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-default)}
+.fr{display:flex;align-items:center;gap:12px;min-height:52px}
+.fr+.fr{box-shadow:0 -1px 0 var(--color-border-default)}
+.fr .k{font:400 15px/1.4 var(--font-sans)}.fr .v{flex:1;text-align:right;font:400 14px/1.4 var(--font-sans);color:var(--color-fg-secondary)}.fr .ic{color:var(--color-fg-muted)}
+.hero{aspect-ratio:4/5;border-radius:16px;background:url(v2.jpg) center/cover;margin-top:-56px}
+.pname{margin:16px 0 0;font:400 26px/1.4 var(--font-serif)}
+.pmeta{margin:2px 0 0;font:400 13px/1.5 var(--font-sans);color:var(--color-fg-muted)}
+.box{max-width:1180px;margin-top:32px;padding:16px 18px;border-radius:16px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);font-size:13px;color:var(--pg-fg2)}
+.box h4{margin:0 0 8px;font-size:14px;color:var(--pg-fg)}.box ul{margin:0;padding-left:18px}.box li+li{margin-top:5px}.box b{color:var(--pg-fg)}
+@media (prefers-reduced-transparency:reduce){.hd::before{-webkit-backdrop-filter:none;backdrop-filter:none;background:linear-gradient(var(--sky-50) 0%,var(--paper) 60%,transparent)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="eyebrow">YAHWA · 프로필 수정</p>
+<h1 class="title">프로필 수정 헤더</h1>
+<p class="intro">상대 프로필 헤더처럼 머리 줄 안에 제목(16 굵게)을 두고, 오른쪽에 “미리보기”를 둬요. 본문의 큰 제목 “프로필 수정”은 없애고 채움 카드부터 바로 시작해요. 스크롤하면 머리 뒤가 흐려지며 내용이 자연스럽게 빠져요. 두 안 모두 아래 폰을 직접 스크롤해 보세요. 채움 카드는 고르신 D1 연한 하늘이에요.</p>
+
+<div class="row">
+  <div class="col"><h3><b>L</b>왼쪽 정렬<em>추천</em></h3><p>뒤로 버튼 바로 옆에 제목. 상대 프로필(사진 + 이름이 뒤로 옆에 떠오름)과 같은 자리라, 앱 안에서 머리 줄 모양이 하나로 맞아요. 제목이 길어져도 미리보기와 부딪히지 않아요.</p><div class="phone" data-al="left"></div></div>
+  <div class="col"><h3><b>C</b>가운데 정렬</h3><p>제목이 화면 가운데. iOS 설정 화면처럼 익숙하고 대칭이라 단정해 보여요. 대신 상대 프로필(왼쪽)과 머리 줄 모양이 달라지고, 긴 제목은 미리보기 쪽에서 잘릴 수 있어요.</p><div class="phone" data-al="center"></div></div>
+  <div class="col"><h3><b class="ref">참고</b>상대 프로필 <small>지금 앱</small></h3><p>맨 위에서는 뒤로 · 더보기만, 이름이 머리 밑으로 지나가면 작은 사진 + 이름이 떠올라요. 흐림 헤더 값은 이 화면 것을 그대로 썼어요.</p><div class="phone" data-al="ref"></div></div>
+</div>
+
+<div class="box">
+  <h4>공통</h4>
+  <ul>
+    <li><b>머리 줄</b>: 위 여백 20 + 줄 높이 44. 뒤로 · 미리보기 모두 터치영역 44를 여백선(20)에 맞췄어요.</li>
+    <li><b>제목</b>: 16 SemiBold, 상대 프로필 이름과 같은 크기. 본문 큰 제목(26 고운바탕)은 없어져요.</li>
+    <li><b>흐림</b>: 스크롤이 2px을 넘으면 하늘 50 → 종이색 + 흐림 10 + 아래로 사라지는 마스크가 나타나요. 맨 위로 올리면 다시 사라져요.</li>
+  </ul>
+</div>
+</div>
+<script>
+const body='<div class="done"><div class="ring"><svg viewBox="0 0 48 48"><circle class="bg" cx="24" cy="24" r="20"/><circle class="fg" cx="24" cy="24" r="20" stroke-dasharray="125.66" stroke-dashoffset="35.9"/></svg><span>5/7</span></div><div class="tx"><b>소개를 거의 다 채웠어요</b><small>해시태그를 고르면 나다운 모습이 보여요.</small></div><button class="go">추가</button></div>'
++'<div class="sh">사진<span>4 / 6</span></div><div class="photos"><i style="background-image:url(v1.jpg)"></i><i style="background-image:url(v2.jpg)"></i><i style="background-image:url(v3.jpg)"></i><i style="background-image:url(v4.jpg)"></i><i class="e"><span class="ic ic-plus" style="--ic-size:24px"></span></i><i class="e"><span class="ic ic-plus" style="--ic-size:24px"></span></i></div>'
++'<div class="sh">기본 정보</div><div class="card"><div class="fr"><span class="k">이름</span><span class="v">지우</span><i class="ic ic-chevron-right"></i></div><div class="fr"><span class="k">성별 · 나이</span><span class="v">남성 · 만 29세</span></div><div class="fr"><span class="k">사는 곳</span><span class="v">서울 종로구</span><i class="ic ic-chevron-right"></i></div></div>'
++'<div class="sh">일상</div><div class="card">'+[['하는 일','직장인'],['키','178cm'],['MBTI','INFJ'],['학력','대학교 졸업'],['종교','무교'],['흡연','비흡연'],['음주','가끔']].map(([k,v])=>'<div class="fr"><span class="k">'+k+'</span><span class="v">'+v+'</span><i class="ic ic-chevron-right"></i></div>').join('')+'</div>';
+const ref='<div class="hero"></div><h2 class="pname" id="pn">하늘조각</h2><p class="pmeta">28세 · 서울 마포구 · 여성</p><div class="sh">나의 정보</div><div class="card">'+[['하는 일','디자이너'],['키','163cm'],['성격','INFP'],['담배','비흡연'],['술','가끔'],['종교','무교'],['학력','대학교 졸업']].map(([k,v])=>'<div class="fr"><span class="k">'+k+'</span><span class="v">'+v+'</span></div>').join('')+'</div>';
+document.querySelectorAll('.phone').forEach(ph=>{const al=ph.dataset.al;
+ const hd=al==='ref'?'<div class="hd"><button class="back" aria-label="뒤로"><i class="ic ic-chevron-left"></i></button><div class="who"><i></i><b>하늘조각</b></div><button class="more" aria-label="더보기"><i class="ic ic-more"></i></button></div>'
+  :'<div class="hd'+(al==='center'?' center':'')+'"><button class="back" aria-label="뒤로"><i class="ic ic-chevron-left"></i></button><span class="ttl">프로필 수정</span><button class="pv">미리보기</button></div>';
+ ph.innerHTML=hd+'<div class="scroller">'+(al==='ref'?ref:body)+'</div>';
+ const sc=ph.querySelector('.scroller'),h=ph.querySelector('.hd');
+ const sync=()=>{h.classList.toggle('is-scrolled',sc.scrollTop>2);if(al==='ref'){const n=ph.querySelector('#pn');h.classList.toggle('show-who',n.getBoundingClientRect().bottom<h.getBoundingClientRect().bottom+4);}};
+ sc.addEventListener('scroll',sync,{passive:true});requestAnimationFrame(()=>{sc.scrollTop=al==='ref'?560:200;sync();});});
+</script>
+</body>
+</html>

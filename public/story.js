@@ -49,9 +49,9 @@ function renderMain(){
   storyBody.innerHTML=`<h1>당신을 알아가는<br>작은 이야기</h1><p class="st-count">이야기 <b>${n}</b> / 3장 · ${COUNT[n]}</p><div class="st-note" role="group" aria-label="내 이야기 노트">${entry(0,'기본 소개 · 필수',1)}${slots}${extra}</div>${more}`;
   justFilled=-1;
   root.classList.remove('is-writing');
-  hint.hidden=false;hint.textContent=passed()?'이야기는 나중에 내 프로필에서도 고칠 수 있어요.':`이야기 ${3-n}장을 더 담으면 넘어갈 수 있어요.`;
+  hint.hidden=!passed();hint.textContent='이야기는 나중에 내 프로필에서도 고칠 수 있어요.';
   swapBtn.hidden=true;
-  next.textContent='다음 · 나의 해시태그';next.disabled=!passed();next.onclick=()=>{if(passed())show('hashtags');};
+  next.textContent=passed()?'다음':`이야기 ${3-n}장을 더 담아 주세요`;next.disabled=!passed();next.onclick=()=>{if(passed())show('hashtags');};
   fitScroll();
 }
 
@@ -149,6 +149,14 @@ function openSheet(replacing){
 }
 
 /* 이벤트 */
+/* 노트 항목 눌림: 손가락이 닿자마자 작아지고(nov08.css .is-pressed), 끌어서 10px 넘게 움직이면 풀려요 */
+let pressEl=null,pressX=0,pressY=0;
+const unpress=()=>{pressEl?.classList.remove('is-pressed');pressEl=null;};
+storyBody.addEventListener('pointerdown',e=>{if(e.button)return;const el=e.target.closest('.st-entry');if(!el)return;unpress();pressEl=el;pressX=e.clientX;pressY=e.clientY;el.classList.add('is-pressed');});
+storyBody.addEventListener('pointermove',e=>{if(pressEl&&Math.hypot(e.clientX-pressX,e.clientY-pressY)>10)unpress();});
+['pointerup','pointercancel','pointerleave'].forEach(t=>storyBody.addEventListener(t,unpress));
+storyBody.addEventListener('keydown',e=>{const el=e.target.closest?.('.st-entry');if(el&&e.key===' '&&!e.repeat)el.classList.add('is-pressed');});
+storyBody.addEventListener('keyup',e=>{if(e.key===' ')e.target.closest?.('.st-entry')?.classList.remove('is-pressed');});
 storyBody.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||!root.contains(b))return;const a=b.dataset.act;
   if(a==='write')return openWrite(+b.dataset.id);
   if(a==='sheet')return openSheet();

@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>소개 화면 하나로</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.wrap{max-width:1200px;margin:0 auto;padding:36px 16px 64px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:80ch;margin:10px 0 0;color:var(--pg-fg2)}
+.opts{display:grid;gap:12px;margin-top:20px;max-width:880px}
+.opt{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.opt>span{min-width:120px;font-size:13px;font-weight:600;color:var(--pg-fg2)}
+.seg{display:inline-flex;gap:4px;padding:4px;border-radius:12px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.seg button{height:36px;padding:0 12px;border:0;border-radius:9px;background:none;font-size:13px;color:var(--pg-fg2)}
+.seg button[aria-pressed=true]{background:var(--pg-accent);color:#fff}
+.seg button:focus-visible{outline:2px solid var(--pg-accent);outline-offset:2px}
+.opt small{flex-basis:100%;margin-left:132px;font-size:12px;color:var(--pg-fg3)}
+.sync{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--pg-fg2)}
+.pair{display:flex;flex-wrap:wrap;gap:28px 32px;margin-top:28px}
+.col{flex:0 1 360px;min-width:0;display:flex;flex-direction:column;gap:10px}
+.col h2{margin:0;font:400 18px/1.4 var(--font-serif)}
+.col h2 b{display:inline-grid;place-items:center;min-width:26px;height:26px;margin-right:8px;padding:0 8px;border-radius:13px;background:var(--pg-accent);color:#fff;font:600 12px var(--font-sans);vertical-align:2px}
+.col>p{margin:0;font-size:13px;color:var(--pg-fg2)}
+.tw{overflow-x:auto;margin-top:40px}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:13px}
+th,td{padding:10px 12px;border-bottom:1px solid var(--pg-line);text-align:left;vertical-align:top}
+th{font-weight:600;color:var(--pg-fg2);white-space:nowrap}
+td.same{color:var(--pg-accent);font-weight:600}
+
+/* ───── 휴대폰 (360 × 780, 앱 수치) ───── */
+.phone{position:relative;width:360px;max-width:100%;height:780px;border-radius:32px;overflow:hidden;background:var(--color-bg-page);color:var(--color-fg-primary);box-shadow:0 0 0 1px var(--pg-line),0 16px 40px rgb(0 0 0 / .12);display:flex;flex-direction:column}
+.ic{display:inline-block;flex:none;width:var(--s,20px);height:var(--s,20px);background:currentColor;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat}
+.top{flex:none;height:52px;margin-top:16px;padding:0 20px;display:flex;align-items:center;justify-content:space-between}
+.back{width:44px;height:44px;margin-left:-10px;border:0;background:none;display:grid;place-items:center}
+.back .ic{--m:var(--ic-chevron-left-large);--s:24px;transform:translateX(-8px)}
+.cnt{font-size:12px;color:var(--color-fg-accent-strong);font-variant-numeric:tabular-nums}
+.more{width:44px;height:44px;margin-right:-10px;border:0;background:none;display:grid;place-items:center;font:700 16px/1 var(--font-sans);letter-spacing:1px;color:var(--color-fg-primary)}
+.gauge{flex:none;height:3px;margin:0 20px;border-radius:3px;background:var(--color-bg-button-primary)}
+.body{flex:1;min-height:0;overflow-y:auto;padding:24px 20px 32px;scrollbar-width:none}
+.body::-webkit-scrollbar{display:none}
+.hd{margin:0;font:400 28px/1.45 var(--font-serif);letter-spacing:-.5px}
+.lead{margin:12px 0 28px;font-size:13px;line-height:1.7;color:var(--color-fg-tertiary)}
+.lead small{display:block;font-size:11px;color:var(--color-fg-subtle)}
+/* 공통 소개 본문 */
+.photo{position:relative;height:330px;border-radius:90px 90px 18px 18px;overflow:hidden;background:var(--color-bg-notice)}
+.photo .track{display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.photo .track::-webkit-scrollbar{display:none}
+.photo img{flex:0 0 100%;width:100%;height:100%;object-fit:cover;scroll-snap-align:center}
+.dots{position:absolute;left:0;right:0;bottom:14px;display:flex;justify-content:center;gap:var(--photo-dot-gap,6px)}
+.photo .dots::after{content:none!important;display:none!important}
+.dots i{width:var(--photo-dot,6px);height:var(--photo-dot,6px);border-radius:3px;background:var(--photo-dot-off,rgb(255 255 255 / .55));box-shadow:var(--photo-dot-shadow,0 0 2px rgb(0 0 0 / .25));transition:width 200ms cubic-bezier(.23,1,.32,1)}
+.dots i.on{width:var(--photo-dot-on-w,16px);background:var(--photo-dot-on,#fff)}
+.recent{position:absolute;left:12px;bottom:12px;height:28px;padding:0 10px;border-radius:14px;background:color-mix(in srgb,var(--white) 88%,transparent);font:600 12px/28px var(--font-sans);color:var(--sage-700,#3D6B4F);display:flex;align-items:center;gap:6px}
+.photo.rc-top .recent{left:50%;top:20px;bottom:auto;transform:translateX(-50%)}
+.rc-name{position:static;height:24px;padding:0 8px;border-radius:12px;background:var(--color-bg-sage-soft,#E6F0EA);font:600 11px/24px var(--font-sans);margin-left:2px}
+.recent::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--sage-500,#5E9A74)}
+.nrow{display:flex;align-items:center;gap:6px;margin-top:var(--fact-photo-gap-top,32px)}
+.name{margin:0;font:400 var(--fact-name-size,30px)/1.3 var(--font-serif);letter-spacing:-.5px}
+.name em{font-style:normal;font-size:.8em;color:var(--color-fg-secondary)}
+.cert{width:22px;height:22px;flex:none}
+.cert.b{color:var(--sky-500)}.cert.s{color:var(--sage-600,#4F8566)}
+.cert svg{width:100%;height:100%;fill:currentColor}
+.job{margin:6px 0 0;font-size:15px;font-weight:600;color:var(--color-fg-primary)}
+.meta{display:flex;align-items:center;gap:4px;margin:8px 0 0;font-size:14px;color:var(--color-fg-secondary)}
+.meta .pin{width:16px;height:16px;flex:none}
+.meta i{width:2px;height:2px;margin:0 4px;border-radius:50%;background:var(--color-fg-subtle)}
+.tags{display:flex;flex-wrap:wrap;gap:4px 12px;margin:12px 0 0;padding:0;list-style:none;font-size:var(--fact-tag-size,14px);color:var(--color-fg-accent-strong)}
+.key{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;margin-top:32px;padding:20px 0;border-radius:20px;background:var(--color-bg-surface)}
+.key>div{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;padding:0 4px;min-width:0}
+.key .fi{color:var(--color-fg-accent);margin-bottom:4px}
+.key b{font-size:17px;font-weight:600;line-height:1.35;word-break:keep-all}
+.key b.long{font-size:15px}
+.key small{font-size:11px;color:var(--color-fg-subtle)}
+.key svg.v{width:6px;height:auto;align-self:stretch;fill:none;stroke:var(--color-border-default);stroke-width:1.4;stroke-linecap:round}
+.fi{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.lf{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0 0;padding:0;list-style:none}
+.lf li{position:relative;isolation:isolate;display:flex;align-items:center;gap:12px;height:56px;padding:0 16px;color:var(--ink,var(--color-fg-primary))}
+.lf li .fi{color:var(--ink)}
+.lf span{display:flex;flex-direction:column;line-height:1.35}
+.lf small{font-size:11px;opacity:.75}
+.lf b{font-size:14px;font-weight:500}
+svg.hzs{position:absolute;left:0;top:0;z-index:-1;overflow:visible;pointer-events:none}
+.qa{margin-top:var(--fact-qa-gap,48px)}
+.qa h3{margin:0 0 8px;font:400 19px/1.7 var(--font-serif);color:var(--color-fg-accent-strong)}
+.qa p{margin:0;font-size:14px;line-height:2;color:var(--color-fg-secondary)}
+.story{margin:32px 0 0;height:240px;border-radius:18px;overflow:hidden}
+.story img{width:100%;height:100%;object-fit:cover;display:block}
+.foot{margin:32px 0 0;font-size:11px;color:var(--color-fg-subtle);text-align:center}
+.bottom{flex:none;padding:12px 20px 20px;background:var(--color-bg-page);box-shadow:0 -1px 0 var(--color-border-default)}
+.cta{width:100%;height:52px;border:0;border-radius:14px;background:var(--color-bg-button-primary);color:var(--white);font-size:15px;font-weight:600}
+.two{display:grid;grid-template-columns:1fr 1.15fr;gap:10px}
+.demo{margin:10px 0 0;text-align:center;font-size:11px;color:var(--color-fg-muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">YAHWA · 내 소개 미리보기 = 상대 프로필</p>
+  <h1 class="title">소개 화면을 하나로</h1>
+  <p class="intro">"내 소개 미리보기"는 다른 사람에게 내가 이렇게 보인다는 걸 보여 주는 화면이라, 상대 프로필과 똑같아야 해요. 두 휴대폰의 가운데 소개 본문(사진 → 이름 → 해시태그 → 나의 정보 → 생활 → 이야기)은 같은 코드 하나로 그렸어요. 위쪽 머리와 아래 버튼만 화면마다 달라요. 아래에서 고르면 두 화면이 함께 바뀌어요.</p>
+  <div class="opts">
+    <div class="opt"><span>나이</span><div class="seg" data-o="age"><button type="button" data-v="name" aria-pressed="false">이름 옆 · 봄빛, 26</button><button type="button" data-v="meta" aria-pressed="true">위치 줄 · 26세 · 서울</button><button type="button" data-v="none" aria-pressed="false">숨김</button></div><small>지금 내 미리보기에는 나이가 없어요. 상대에게는 보이니 미리보기에도 넣어야 해요. 인연 홈 카드(봄빛, 26세)와 같은 "이름 옆"을 추천해요.</small></div>
+    <div class="opt"><span>직업</span><div class="seg" data-o="job"><button type="button" data-v="key" aria-pressed="true">나의 정보 상자에 직업명</button><button type="button" data-v="line" aria-pressed="false">이름 아래 직업명 + 상자엔 분류</button></div><small>지금 내 쪽은 "직장인"(분류), 상대 쪽은 "출판 편집자"(직업명)라 달라요. 상자 하나에 직업명을 쓰면 정보가 한곳에 모여요.</small></div>
+    <div class="opt"><span>이야기 사이 사진</span><div class="seg" data-o="story"><button type="button" data-v="on" aria-pressed="true">넣기</button><button type="button" data-v="off" aria-pressed="false">빼기</button></div><small>상대 프로필은 이야기 사이에 일상 사진이 나오는데 내 미리보기엔 없어요. 같은 규칙으로 맞춰요.</small></div>
+    <div class="opt"><span>최근활동 위치</span><div class="seg" data-o="recent"><button type="button" data-v="bl" aria-pressed="true">사진 아래 왼쪽</button><button type="button" data-v="top" aria-pressed="false">사진 위 가운데</button><button type="button" data-v="name" aria-pressed="false">이름 옆</button></div><small>위쪽이 크게 둥근 액자라 왼쪽 위 칩은 곡선에 밀려 떠 보여요. 아래 모서리(18)는 거의 직각이라 같은 12px 여백으로 반듯하게 붙어요. 넘김 점과는 가운데 · 왼쪽으로 나뉘어 겹치지 않아요.</small></div>
+    <label class="sync"><input type="checkbox" id="sync" checked> 두 화면 같이 스크롤</label>
+  </div>
+  <div class="pair">
+    <section class="col"><h2><b>내 쪽</b>내 소개 미리보기</h2><div class="phone" id="me"></div><p>가입 5/5 단계 · 머리는 단계 게이지와 안내, 아래는 "이 소개로 완성하기".</p></section>
+    <section class="col"><h2><b>상대 쪽</b>상대 프로필</h2><div class="phone" id="her"></div><p>인연 홈에서 열기 · 머리는 뒤로가기와 더보기, 아래는 관심 · 편지 버튼. 최근활동은 사진 아래 왼쪽.</p></section>
+  </div>
+  <div class="tw"><table>
+    <tr><th>부분</th><th>내 소개 미리보기</th><th>상대 프로필</th></tr>
+    <tr><td>머리</td><td>뒤로 · 5 / 5 · 게이지 · "당신의 첫 소개, 이렇게 보여요."</td><td>뒤로 · 더보기(···)</td></tr>
+    <tr><td>사진</td><td class="same" colspan="2">같음 · 위가 둥근 액자, 넘김 점, 화살표 없음 (상대만 최근활동 칩)</td></tr>
+    <tr><td>이름 · 배지 · 나이</td><td class="same" colspan="2">같음 · 이름 30 명조, 인증 배지, 나이</td></tr>
+    <tr><td>위치 · 성별 · 해시태그</td><td class="same" colspan="2">같음 · 채운 위치 아이콘, 해시태그 14</td></tr>
+    <tr><td>나의 정보 · 생활</td><td class="same" colspan="2">같음 · 흰 상자(하는 일 · 키 · 성격) + 색연필 칸 4개</td></tr>
+    <tr><td>이야기</td><td class="same" colspan="2">같음 · 구분선 없이 48 간격, 이야기 사이 사진</td></tr>
+    <tr><td>아래</td><td>이 소개로 완성하기</td><td>나도 관심 있어요 · 편지 확인하기</td></tr>
+  </table></div>
+</div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="pencil" x="-5%" y="-10%" width="110%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.8" xChannelSelector="R" yChannelSelector="G" result="d"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.6 1.25" result="g"/><feComposite in="d" in2="g" operator="in"/></filter></svg>
+<script>
+const PIN='<svg class="pin" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.96498 19.9C7.15898 18.21 5.61195 16.2 4.73695 13.92C4.25295 12.69 4.00697 11.37 4.00197 10C3.99797 7.9 4.84193 5.84997 6.34193 4.33997C7.84293 2.83997 9.87798 2.02002 11.999 2.02002C14.124 2.02002 16.159 2.83997 17.655 4.33997C19.16 5.84997 20.004 7.9 20 10C20 13.88 17.8099 17.35 15.0369 19.9C14.2609 20.63 13.4309 21.27 12.5549 21.86C12.2179 22.09 11.78 22.09 11.447 21.86C10.566 21.27 9.73598 20.63 8.96498 19.9ZM9.23396 7.85999C8.59096 9.35999 9.30695 11.14 10.8309 11.78C12.3589 12.42 14.12 11.6901 14.763 10.1801C15.406 8.68005 14.694 6.90001 13.166 6.26001C11.643 5.62001 9.88196 6.30999 9.23396 7.85999Z" style="fill:var(--color-fg-tertiary)"/></svg>';
+const CERT_B='<span class="cert b" title="나이 · 전화번호 인증"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.21 8.53C22.59 10.18 22.59 13.81 20.21 15.47C20.83 18.26 18.25 20.83 15.47 20.22C13.81 22.59 10.18 22.59 8.53 20.22C5.74 20.83 3.16 18.26 3.78 15.47C1.41 13.81 1.41 10.18 3.78 8.53C3.16 5.75 5.74 3.17 8.53 3.78C10.18 1.41 13.81 1.41 15.47 3.78C18.25 3.17 20.83 5.75 20.21 8.53ZM11 12.59L9.7 11.29C9.32 10.9 8.68 10.9 8.29 11.29C7.9 11.68 7.9 12.32 8.29 12.71L10.29 14.71C10.68 15.1 11.31 15.1 11.71 14.71L15.71 10.71C16.1 10.32 16.1 9.68 15.71 9.29C15.32 8.9 14.68 8.9 14.29 9.29Z"/></svg></span>';
+const CERT_S='<span class="cert s" title="학력 · 직장 인증"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.1 6.99C7.57 4.66 9.63 2.98 12 2.98C14.38 2.98 16.43 4.66 16.9 6.99H19C20.66 6.99 22 8.31 22 10V17.98C22 19.62 20.66 20.99 19 20.99H5C3.34 20.99 2 19.62 2 17.98V10C2 8.31 3.34 6.99 5 6.99ZM9.17 6.99H14.83C14.41 5.8 13.27 4.98 12 4.98C10.73 4.98 9.59 5.8 9.17 6.99Z"/></svg></span>';
+const VL='<svg class="v" viewBox="0 0 6 60" preserveAspectRatio="none" aria-hidden="true"><path d="M3 4q-1.6 13 .2 26t-.4 26"/></svg>';
+const I={job:'<path d="M4 8h16v11H4ZM9 8V5h6v3M4 13h16"/>',h:'<path d="M7 3h10v18H7ZM7 7h4M7 11h6M7 15h4"/>',mbti:'<path d="M4 5h16v12H9l-5 4ZM8 9h8M8 13h5"/>',smoke:'<path d="M3 13h18v5H3ZM16 13v5M7 3q-3 3 0 5M12 3q-3 3 0 5"/>',drink:'<path d="M7 3h10v5a5 5 0 0 1-10 0ZM12 13v8M8 21h8"/>',rel:'<path d="M12 3v18M6 9h12"/>',edu:'<path d="m2 8 10-5 10 5-10 5ZM6 11v6q6 5 12 0v-6"/>'};
+const fi=k=>`<svg class="fi" viewBox="0 0 24 24" aria-hidden="true">${I[k]}</svg>`;
+const P={
+ me:{name:'지우',age:29,city:'서울',gender:'남성',job:'서비스 기획자',jobCat:'직장인',h:'178cm',mbti:'INFJ',life:['비흡연','가끔','무교','대학교 졸업'],tags:['필름감성','산책메이트','다정한사람','에겐남','디저트좋아'],photos:['img/me.jpg','img/me2.jpg'],story:'img/me2.jpg',recent:false,certs:CERT_B,
+  qa:[['간단한 자기소개를 들려주세요','서비스를 기획하는 지우예요. 쉬는 날에는 필름카메라를 들고 익숙한 골목의 새로운 장면을 찾아요.'],['이런 사람에게 마음이 가요','작은 것에도 고맙다고 말할 줄 아는 사람에게 마음이 가요. 같이 걷다가 좋아하는 가게를 알려 주는 사람이면 더 좋아요.']]},
+ her:{name:'봄빛',age:26,city:'서울 마포구',gender:'여성',job:'출판 편집자',jobCat:'직장인',h:'163cm',mbti:'INFP',life:['비흡연','가끔','무교','대학교 졸업'],tags:['산책메이트','독서취향','다정한사람'],photos:['img/her.jpg','img/her2.jpg'],story:'img/her2.jpg',recent:true,certs:CERT_B+CERT_S,
+  qa:[['간단한 자기소개를 들려주세요','출판사에서 책을 만드는 일을 해요. 주말 아침에는 커피 한 잔을 들고 동네를 걷거나 작은 서점에 들러요.'],['이런 사람에게 마음이 가요','말을 끝까지 들어주고 작은 약속도 소중하게 지키는 사람에게 마음이 가요. 서로의 일상을 편하게 나누고 싶어요.']]},
+};
+let O={age:'meta',job:'key',story:'on',recent:'bl'};
+/* ── 공통 소개 본문: 두 화면이 이 함수 하나를 써요 ── */
+function profileBody(p){
+  const jobInKey=O.job==='key'?p.job:p.jobCat;
+  const ageName=O.age==='name'?`<em>, ${p.age}</em>`:'';
+  const ageMeta=O.age==='meta'?`${p.age}세<i></i>`:'';
+  const LIFE=[['smoke','담배'],['drink','술'],['rel','종교'],['edu','학력']];
+  const q=p.qa.map(([h,a],i)=>`<section class="qa"><h3>“${h}”</h3><p>${a}</p></section>${O.story==='on'&&i===0?`<figure class="story"><img src="${p.story}" alt="${p.name}의 일상 사진"></figure>`:''}`).join('');
+  const rc=p.recent&&O.recent!=='name'?'<span class="recent">최근활동</span>':'';
+  return `<div class="photo${O.recent==='top'?' rc-top':''}"><div class="track">${p.photos.map((s,i)=>`<img src="${s}" alt="${p.name}의 사진 ${i+1}">`).join('')}</div>${rc}<div class="dots" aria-label="프로필 사진 1 / ${p.photos.length}">${p.photos.map((_,i)=>`<i class="${i?'':'on'}"></i>`).join('')}</div></div>
+  <div class="nrow"><h2 class="name">${p.name}${ageName}</h2>${p.certs}${p.recent&&O.recent==='name'?'<span class="recent rc-name">최근활동</span>':''}</div>
+  ${O.job==='line'?`<p class="job">${p.job}</p>`:''}
+  <p class="meta">${PIN}${ageMeta}${p.city}<i></i>${p.gender}</p>
+  <ul class="tags" aria-label="해시태그">${p.tags.map(t=>`<li>#${t}</li>`).join('')}</ul>
+  <div class="key" role="list" aria-label="나에 대해"><div role="listitem">${fi('job')}<b class="${jobInKey.length>4?'long':''}">${jobInKey}</b><small>하는 일</small></div>${VL}<div role="listitem">${fi('h')}<b>${p.h}</b><small>키</small></div>${VL}<div role="listitem">${fi('mbti')}<b>${p.mbti}</b><small>성격</small></div></div>
+  <ul class="lf" aria-label="생활" data-hz>${LIFE.map(([k,l],i)=>`<li>${fi(k)}<span><small>${l}</small><b>${p.life[i]}</b></span></li>`).join('')}</ul>
+  ${q}`;
+}
+function render(){
+  const me=document.getElementById('me'),her=document.getElementById('her');
+  const keep=[me,her].map(ph=>ph.querySelector('.body')?.scrollTop||0);
+  me.innerHTML=`<div class="top"><button type="button" class="back" aria-label="이전 화면"><i class="ic" aria-hidden="true"></i></button><span class="cnt">5 / 5</span></div><div class="gauge"></div>
+   <div class="body"><h3 class="hd">당신의 첫 소개,<br>이렇게 보여요.</h3><p class="lead">상대방에게 보여줄 첫 소개예요.<small>가상 정보와 예시 사진을 사용한 시연용 프로필 · 사진을 옆으로 넘겨보세요</small></p>${profileBody(P.me)}</div>
+   <div class="bottom"><button type="button" class="cta">이 소개로 완성하기</button><p class="demo">UI 시연 · 입력 내용은 새로고침하면 초기화돼요</p></div>`;
+  her.innerHTML=`<div class="top"><button type="button" class="back" aria-label="오늘의 인연으로 돌아가기"><i class="ic" aria-hidden="true"></i></button><button type="button" class="more" aria-label="프로필 더보기">···</button></div>
+   <div class="body">${profileBody(P.her)}<p class="foot">가상의 소개 정보와 AI로 만든 시연용 사진입니다.</p></div>
+   <div class="bottom"><div class="two"><button type="button" class="cta">나도 관심 있어요</button><button type="button" class="cta">편지 확인하기</button></div><p class="demo">UI 시연 · 실제 관심은 전송되지 않아요</p></div>`;
+  [me,her].forEach((ph,i)=>{ph.querySelector('.body').scrollTop=keep[i];wire(ph);});
+  wireSync();
+  (document.fonts?.ready||Promise.resolve()).then(()=>requestAnimationFrame(draw));
+}
+/* 사진 넘김 점 */
+function wire(ph){const tr=ph.querySelector('.track'),dots=[...ph.querySelectorAll('.dots i')],box=ph.querySelector('.dots');
+  tr.addEventListener('scroll',()=>{const k=Math.round(tr.scrollLeft/tr.clientWidth);dots.forEach((d,i)=>d.classList.toggle('on',i===k));box.setAttribute('aria-label',`프로필 사진 ${k+1} / ${dots.length}`);},{passive:true});}
+/* 같이 스크롤: 위쪽 머리 높이 차이를 빼고 소개 본문 시작점을 맞춰요 */
+let lock=false;
+function wireSync(){const [a,b]=['me','her'].map(id=>document.getElementById(id).querySelector('.body'));
+  const off=()=>a.querySelector('.photo').offsetTop-b.querySelector('.photo').offsetTop;
+  a.onscroll=()=>{if(!sync.checked||lock)return;lock=true;b.scrollTop=a.scrollTop-off();requestAnimationFrame(()=>lock=false);};
+  b.onscroll=()=>{if(!sync.checked||lock)return;lock=true;a.scrollTop=b.scrollTop+off();requestAnimationFrame(()=>lock=false);};}
+const sync=document.getElementById('sync');
+document.querySelectorAll('.seg').forEach(seg=>seg.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;O[seg.dataset.o]=b.dataset.v;seg.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));render();}));
+
+/* 색연필 칸 (앱 H9과 같은 그리기) */
+const NS='http://www.w3.org/2000/svg';
+const TONE={sky:['#92C0DF','#245D7E'],rose:['#DDAFB7','#7D3749'],gold:['#D1BF9A','#6C582C'],sage:['#9FC4B7','#3C6555']},ORDER=['sky','rose','gold','sage'];
+const HZ={angle:58,gap:3.6,w:1.8,op:[.35,.75],trim:5,jit:1.2,pad:0,rad:16},SOFT=.68;
+function rng(seed){let s=(seed*2654435761)>>>0||1;return()=>{s=(s*1664525+1013904223)>>>0;return s/4294967296;};}
+function lines(x0,y0,x1,y1,a,gap,r){const rad=a*Math.PI/180,dx=Math.cos(rad),dy=-Math.sin(rad),nx=-dy,ny=dx;const ts=[[x0,y0],[x1,y0],[x0,y1],[x1,y1]].map(([x,y])=>x*nx+y*ny);const out=[];
+  for(let t=Math.min(...ts)+gap*r();t<Math.max(...ts);t+=gap*(.7+.6*r())){let s0=-1e9,s1=1e9,ok=true;for(const [p,q,lo,hi] of [[nx*t,dx,x0,x1],[ny*t,dy,y0,y1]]){if(Math.abs(q)<1e-9){if(p<lo||p>hi)ok=false;continue;}let a1=(lo-p)/q,a2=(hi-p)/q;if(a1>a2)[a1,a2]=[a2,a1];s0=Math.max(s0,a1);s1=Math.min(s1,a2);}if(ok&&s1-s0>2)out.push([nx*t+dx*s0,ny*t+dy*s0,nx*t+dx*s1,ny*t+dy*s1]);}return out;}
+function draw(){document.querySelectorAll('[data-hz]').forEach(list=>{list.querySelectorAll(':scope>li').forEach((el,i)=>{el.querySelector('svg.hzs')?.remove();const w=el.offsetWidth,h=el.offsetHeight,r=rng(i+1),tone=TONE[ORDER[i%4]];el.style.setProperty('--ink',tone[1]);
+  const s=document.createElementNS(NS,'svg');s.setAttribute('class','hzs');s.setAttribute('width',w);s.setAttribute('height',h);s.setAttribute('aria-hidden','true');const cid='c'+Math.random().toString(36).slice(2,8);
+  const c=document.createElementNS(NS,'clipPath');c.id=cid;const q=document.createElementNS(NS,'rect');q.setAttribute('width',w);q.setAttribute('height',h);q.setAttribute('rx',HZ.rad);c.append(q);s.append(c);
+  const g=document.createElementNS(NS,'g');g.setAttribute('filter','url(#pencil)');g.setAttribute('clip-path',`url(#${cid})`);s.append(g);
+  lines(0,0,w,h,HZ.angle,HZ.gap,r).forEach(([ax,ay,bx,by])=>{const L=Math.hypot(bx-ax,by-ay),ux=(bx-ax)/L,uy=(by-ay)/L,t0=r()*HZ.trim,t1=r()*HZ.trim;const sx=ax+ux*t0+(r()-.5)*HZ.jit,sy=ay+uy*t0+(r()-.5)*HZ.jit,ex=bx-ux*t1+(r()-.5)*HZ.jit,ey=by-uy*t1+(r()-.5)*HZ.jit,mx=(sx+ex)/2+(r()-.5)*1.6,my=(sy+ey)/2+(r()-.5)*1.6;
+    const p=document.createElementNS(NS,'path');p.setAttribute('d',`M${sx.toFixed(1)} ${sy.toFixed(1)}Q${mx.toFixed(1)} ${my.toFixed(1)} ${ex.toFixed(1)} ${ey.toFixed(1)}`);p.setAttribute('stroke',tone[0]);p.setAttribute('stroke-width',(HZ.w*(.8+.4*r())).toFixed(2));p.setAttribute('stroke-opacity',((HZ.op[0]+(HZ.op[1]-HZ.op[0])*r())*SOFT).toFixed(2));p.setAttribute('fill','none');p.setAttribute('stroke-linecap','round');g.append(p);});
+  el.prepend(s);});});}
+render();
+</script>
+</body>
+</html>

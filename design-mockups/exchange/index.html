@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>이야기에서 시작한 인연</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398;--pg-on:#fff;--ease-out:cubic-bezier(0.23, 1, 0.32, 1);--drawer:cubic-bezier(0.32, 0.72, 0, 1)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.wrap{max-width:1640px;margin:0 auto;padding:36px 16px 80px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:96ch;margin:10px 0 0;color:var(--pg-fg2)}
+.row{display:flex;flex-wrap:wrap;gap:24px;margin-top:24px}
+.col{display:flex;flex-direction:column;gap:10px;width:360px;max-width:100%}
+.col h3{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.col h3 b{display:grid;place-items:center;min-width:26px;height:26px;padding:0 8px;border-radius:13px;background:var(--pg-accent);color:var(--pg-on);font:600 12px var(--font-sans)}
+.col h3 b.now{background:var(--pg-line);color:var(--pg-fg2)}
+.col h3 em{font:600 11px/1 var(--font-sans);font-style:normal;padding:4px 8px;border-radius:10px;background:var(--sky-100);color:var(--color-fg-accent-strong)}
+.col>p{margin:0;min-height:108px;font-size:13px;color:var(--pg-fg2)}
+.nowimg{display:block;width:360px;max-width:100%;height:780px;object-fit:cover;object-position:top;border-radius:36px;box-shadow:0 0 0 1px var(--pg-line),0 16px 40px rgb(0 0 0 / .12)}
+.box{max-width:1180px;margin-top:32px;padding:16px 18px;border-radius:16px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);font-size:13px;color:var(--pg-fg2)}
+.box h4{margin:0 0 8px;font-size:14px;color:var(--pg-fg)}.box ul{margin:0;padding-left:18px}.box li+li{margin-top:5px}.box b{color:var(--pg-fg)}
+
+.phone{position:relative;width:360px;max-width:100%;height:780px;border-radius:36px;overflow:hidden;background:linear-gradient(var(--sky-50),var(--paper) 220px);color:var(--color-fg-primary);box-shadow:0 0 0 1px var(--pg-line),0 16px 40px rgb(0 0 0 / .12);isolation:isolate}
+.page{position:absolute;inset:0;overflow-y:auto;padding:80px 20px 120px;scrollbar-width:none}.page::-webkit-scrollbar{display:none}
+/* 공용 Page Header */
+.hd{position:absolute;left:0;right:0;top:0;z-index:5;height:68px;padding:24px 20px 0;display:flex;align-items:center}
+.hd .back{display:grid;place-items:center;width:44px;height:44px;border:0;background:none;color:var(--color-fg-secondary);padding:0}
+.hd .back i{width:24px;height:24px;background:currentColor;-webkit-mask:var(--ic-chevron-left-large) center/contain no-repeat;mask:var(--ic-chevron-left-large) center/contain no-repeat}
+.hd strong{position:absolute;left:50%;top:24px;height:44px;display:flex;align-items:center;transform:translateX(-50%);font:600 16px/1.3 var(--font-sans);white-space:nowrap}
+.hd .act{margin-left:auto;display:grid;place-items:center;width:44px;height:44px;border:0;background:none;color:var(--color-fg-secondary);cursor:pointer}
+.hd .act svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round}
+/* 밑줄 탭 (마음함과 같은 결) */
+.tabs{display:flex;box-shadow:inset 0 -1px 0 var(--color-border-default)}
+.tabs button{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;height:44px;border:0;background:none;color:var(--color-fg-secondary);font:500 14px/1 var(--font-sans);cursor:pointer}
+.tabs button small{display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--color-bg-muted);color:var(--color-fg-muted);font:600 11px/1 var(--font-sans)}
+.tabs button[aria-pressed="true"]{color:var(--color-fg-accent-strong);font-weight:600;box-shadow:inset 0 -2px 0 var(--color-fg-accent)}
+.tabs button[aria-pressed="true"] small{background:var(--sky-100);color:var(--color-fg-accent-strong)}
+.cap{display:flex;align-items:center;gap:6px;margin:12px 0 0;font:400 12px/1.5 var(--font-sans);color:var(--color-fg-muted)}
+.cap svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.anon{flex:none;position:relative;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--color-bg-love-soft);color:var(--color-fg-love-strong)}
+.anon svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.anon .new{position:absolute;right:0;top:0;width:9px;height:9px;border-radius:50%;background:var(--color-fg-accent);box-shadow:0 0 0 2px var(--paper)}
+.who{display:flex;align-items:center;gap:6px;font:600 14px/1.4 var(--font-sans)}
+.who .g{height:20px;padding:0 6px;border-radius:10px;background:var(--color-bg-love-soft);color:var(--color-fg-love-strong);font:500 11px/20px var(--font-sans)}
+.who time{margin-left:auto;font:400 11px/1 var(--font-sans);color:var(--color-fg-muted)}
+.msg{margin:4px 0 0;font:400 14px/1.55 var(--font-sans);color:var(--color-fg-primary);word-break:keep-all}
+.from{display:inline-flex;align-items:center;gap:2px;margin-top:6px;height:24px;padding:0;border:0;background:none;color:var(--color-fg-accent);font:500 12px/1 var(--font-sans);cursor:pointer}
+.from i{width:14px;height:14px;background:currentColor;-webkit-mask:var(--ic-chevron-right) center/contain no-repeat;mask:var(--ic-chevron-right) center/contain no-repeat}
+.acts{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}
+.pill{height:36px;padding:0 16px;border:0;border-radius:18px;font:600 13px/1 var(--font-sans);cursor:pointer;transition:transform 120ms var(--ease-out)}
+.pill:active{transform:scale(.97)}
+.pill.pri{background:var(--color-bg-accent);color:var(--color-fg-inverse)}
+.pill.ghost{background:none;color:var(--color-fg-muted)}
+.empty{margin:48px 0 0;text-align:center;font:400 13px/1.6 var(--font-sans);color:var(--color-fg-muted)}
+.empty b{display:block;font:500 15px/1.5 var(--font-sans);color:var(--color-fg-secondary)}
+/* X1 컴팩트 목록 */
+.x1 .list{margin-top:8px}
+.x1 .it{display:flex;gap:12px;padding:16px 0}
+.x1 .it+.it{box-shadow:0 -1px 0 var(--color-border-default)}
+.x1 .bd{flex:1;min-width:0}
+/* X2 쪽지 카드 */
+.x2 .note{margin-top:12px;padding:16px;border-radius:4px 16px 4px 4px;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-default),0 4px 14px rgb(30 50 70 / .03)}
+.x2 .note .msg{margin:10px 0 0;font:15px/1.8 var(--font-serif)}
+.x2 .note .src{display:block;margin-top:10px;padding:8px 10px;border-radius:10px;background:var(--color-bg-subtle);font:400 12px/1.5 var(--font-sans);color:var(--color-fg-secondary)}
+.x2 .note .src b{color:var(--color-fg-accent);font-weight:600}
+.x2 .acts{justify-content:stretch}.x2 .acts .pill{flex:1}
+.x2 .acts .pill.ghost{background:var(--color-bg-muted);color:var(--color-fg-secondary)}
+/* X3 한 줄 + 시트 */
+.x3 .list{margin-top:12px;padding:0 16px;border-radius:16px;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-default)}
+.x3 .it{display:flex;align-items:center;gap:12px;width:100%;min-height:68px;padding:12px 0;border:0;background:none;text-align:left;cursor:pointer}
+.x3 .it+.it{box-shadow:0 -1px 0 var(--color-border-default)}
+.x3 .bd{flex:1;min-width:0}.x3 .msg{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;font-size:13px;color:var(--color-fg-secondary)}
+.x3 .chev{flex:none;width:20px;height:20px;color:var(--color-fg-muted);background:currentColor;-webkit-mask:var(--ic-chevron-right) center/contain no-repeat;mask:var(--ic-chevron-right) center/contain no-repeat}
+.layer{position:absolute;inset:0;z-index:30;pointer-events:none}.layer.on{pointer-events:auto}
+.dim{position:absolute;inset:0;background:var(--photo-sheet-dim,rgb(20 30 40 / .32));opacity:0;transition:opacity 240ms var(--ease-out)}.layer.on .dim{opacity:1;transition-duration:300ms}
+.sheet{position:absolute;left:0;right:0;bottom:0;padding:8px 20px 28px;border-radius:24px 24px 0 0;background:var(--color-bg-surface);transform:translateY(100%);transition:transform 240ms var(--ease-out)}
+.layer.on .sheet{transform:none;transition:transform 300ms var(--drawer)}
+.hdl{display:block;width:36px;height:4px;margin:0 auto 16px;border-radius:2px;background:var(--color-bg-control)}
+.sheet .q{display:block;margin-top:16px;font:400 16px/1.8 var(--font-serif)}
+.sheet .src{display:block;margin-top:12px;padding:10px 12px;border-radius:12px;background:var(--color-bg-subtle);font:400 12px/1.5 var(--font-sans);color:var(--color-fg-secondary)}
+.sheet .info{margin:14px 0 20px;font:400 13px/1.6 var(--font-sans);color:var(--color-fg-secondary);word-break:keep-all}
+.sheet .pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sheet .pair button{height:52px;border:0;border-radius:14px;font:600 15px/1 var(--font-sans);cursor:pointer}
+.sheet .ghost{background:var(--color-bg-muted);color:var(--color-fg-primary)}.sheet .prim{background:var(--color-bg-accent);color:var(--color-fg-inverse)}
+.gnb{position:absolute;left:20px;right:20px;bottom:20px;z-index:6;height:64px;border-radius:32px;background:color-mix(in srgb,var(--paper) 70%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 6px 24px rgb(30 50 70 / .08),inset 0 0 0 1px rgb(255 255 255 / .6);display:flex;align-items:center;justify-content:space-around;padding:0 6px}
+.gnb span{width:22px;height:22px;border-radius:6px;background:var(--color-bg-control)}.gnb span.on{width:60px;height:52px;border-radius:26px;background:var(--sky-100)}
+.toast{position:absolute;left:50%;bottom:100px;z-index:40;transform:translate(-50%,6px);padding:8px 14px;border-radius:10px;background:var(--color-bg-inverse);color:var(--color-fg-inverse);font:500 12px/1.5 var(--font-sans);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 200ms ease,transform 200ms var(--ease-out)}.toast.on{opacity:1;transform:translate(-50%,0)}
+.out{animation:out 240ms var(--ease-out) forwards}@keyframes out{to{opacity:0;transform:translateX(-12px)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="eyebrow">YAHWA · 커뮤니티</p>
+<h1 class="title">이야기에서 시작한 인연</h1>
+<p class="intro">“요청이 와 있어요”를 누르면 나오는 프로필 교환 화면이에요. 지금은 큰 제목 · 안내 상자 · 알약 탭 · 요청마다 큰 카드(“받은 요청” 라벨, 큰 익명 이름, 넓은 수락 · 거절 버튼)가 겹겹이라, 요청 두 개만으로 화면이 꽉 차요. 세 안 모두 머리를 공용 Page Header로 바꾸고, 안내 상자는 한 줄로, 탭은 마음함과 같은 밑줄 탭(개수 포함)으로 줄였어요. 요청을 눌러 보세요.</p>
+
+<div class="row">
+  <div class="col"><h3><b class="now">지금</b>현재 화면</h3><p>요청 하나가 약 200px. 카드 안 “받은 요청” 라벨은 탭과 같은 말이 반복되고, 수락 · 거절이 같은 무게라 무엇이 주된 행동인지 흐려요.</p><img class="nowimg" src="now.jpg" alt="지금 화면"></div>
+  <div class="col"><h3><b>X1</b>컴팩트 목록<em>추천</em></h3><p>카드를 없애고 구분선 목록으로. 익명 얼굴 40 + “익명 · 여성 · 방금” + 한마디 + “함께 이야기한 글 ›”, 오른쪽 아래에 작은 “수락”(파랑)과 “거절”(글자). 요청 하나가 약 120px로 한 화면에 4~5개가 보여요.</p><div class="phone x1" data-v="x1"></div></div>
+  <div class="col"><h3><b>X2</b>쪽지 카드</h3><p>한마디를 편지지처럼(고운바탕, 모서리 4 · 16 · 4 · 4) 보여 주고 어떤 글에서 왔는지 작은 띠로. 감성은 가장 좋지만 카드가 남아 X1보다 길어요.</p><div class="phone x2" data-v="x2"></div></div>
+  <div class="col"><h3><b>X3</b>한 줄 + 시트</h3><p>목록은 한 줄 요약만(새 요청은 파란 점), 누르면 아래 시트에서 전체 한마디 · 함께 이야기한 글 · 수락하면 공개되는 것을 읽고 결정해요. 가장 짧고 실수로 누를 일이 없지만 한 번 더 눌러야 해요.</p><div class="phone x3" data-v="x3"></div></div>
+</div>
+
+<div class="box">
+  <h4>세 안 공통</h4>
+  <ul>
+    <li><b>머리</b>: 공용 Page Header — 뒤로 · 가운데 “이야기에서 시작한 인연” · 오른쪽 안내(i) 아이콘. 안내를 누르면 “요청 10리프 · 수락 무료 · 연락처는 공개되지 않아요 · 교환 해제” 시트. 본문 큰 제목은 없어요.</li>
+    <li><b>탭</b>: 받은 요청 · 보낸 요청 · 교환 기록 밑줄 탭, 받은 요청에는 개수. 탭 아래 자물쇠 한 줄 “수락하면 서로의 인연 프로필만 공개돼요”.</li>
+    <li><b>수락</b>하면 줄이 왼쪽으로 살짝 빠지며 교환 기록으로 옮겨 가고 알림 “프로필을 교환했어요”. <b>거절</b>은 글자 버튼이라 수락보다 가볍게 보여요.</li>
+  </ul>
+</div>
+</div>
+<script>
+const R=[{id:1,g:'여성',t:'방금',m:'산책 이야기가 반가웠어요.',src:'주말 아침 동네 산책 코스 추천해요'},{id:2,g:'여성',t:'1시간 전',m:'전시 취향이 비슷한 것 같아요. 최근에 본 사진전 이야기도 나누고 싶어요.',src:'요즘 본 전시 중에 제일 좋았던 것'}];
+const ANON='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0M4 21c0-9 16-9 16 0"/></svg>';
+const LOCK='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 11h12v9H6z M8.5 11V8a3.5 3.5 0 0 1 7 0v3"/></svg>';
+const INFO='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>';
+const hd='<div class="hd"><button class="back" aria-label="뒤로"><i></i></button><strong>이야기에서 시작한 인연</strong><button class="act" data-a="info" aria-label="안내">'+INFO+'</button></div>';
+const tabs=n=>'<div class="tabs"><button aria-pressed="true">받은 요청 <small>'+n+'</small></button><button aria-pressed="false">보낸 요청</button><button aria-pressed="false">교환 기록</button></div><p class="cap">'+LOCK+'수락하면 서로의 인연 프로필만 공개돼요</p>';
+const who=r=>'<div class="who">익명<span class="g">'+r.g+'</span><time>'+r.t+'</time></div>';
+const V={
+ x1:rs=>hd+'<div class="page">'+tabs(rs.length)+'<div class="list">'+rs.map(r=>'<div class="it" data-id="'+r.id+'"><span class="anon">'+ANON+'<span class="new"></span></span><div class="bd">'+who(r)+'<p class="msg">'+r.m+'</p><button class="from" data-a="post">함께 이야기한 글<i></i></button><div class="acts"><button class="pill ghost" data-a="no">거절</button><button class="pill pri" data-a="ok">수락</button></div></div></div>').join('')+'</div>'+(rs.length?'':'<p class="empty"><b>받은 요청이 없어요</b>이야기를 나누다 마음이 가면 요청이 도착해요.</p>')+'</div>',
+ x2:rs=>hd+'<div class="page">'+tabs(rs.length)+rs.map(r=>'<div class="note" data-id="'+r.id+'"><div style="display:flex;gap:10px;align-items:center"><span class="anon" style="width:32px;height:32px">'+ANON+'</span><div style="flex:1">'+who(r)+'</div></div><p class="msg">'+r.m+'</p><span class="src">함께 이야기한 글 · <b>'+r.src+'</b></span><div class="acts"><button class="pill ghost" data-a="no">거절</button><button class="pill pri" data-a="ok">수락</button></div></div>').join('')+(rs.length?'':'<p class="empty"><b>받은 요청이 없어요</b></p>')+'</div>',
+ x3:rs=>hd+'<div class="page">'+tabs(rs.length)+(rs.length?'<div class="list">'+rs.map(r=>'<button class="it" data-id="'+r.id+'" data-a="open"><span class="anon">'+ANON+'<span class="new"></span></span><span class="bd">'+who(r)+'<span class="msg" style="display:block">'+r.m+'</span></span><span class="chev"></span></button>').join('')+'</div>':'<p class="empty"><b>받은 요청이 없어요</b></p>')+'</div>'
+};
+document.querySelectorAll('[data-v]').forEach(ph=>{let rs=R.map(r=>({...r}));const k=ph.dataset.v;
+ const draw=()=>{ph.innerHTML=V[k](rs)+'<div class="gnb"><span></span><span></span><span></span><span class="on"></span><span></span></div><div class="layer"><div class="dim"></div><div class="sheet"></div></div><div class="toast" role="status"></div>';};draw();
+ const toast=t=>{const e=ph.querySelector('.toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),1600);};
+ const remove=(id,msg)=>{const el=ph.querySelector('[data-id="'+id+'"]');el?.classList.add('out');setTimeout(()=>{rs=rs.filter(r=>r.id!==id);draw();toast(msg);},240);};
+ const sheet=html=>{const L=ph.querySelector('.layer');L.querySelector('.sheet').innerHTML='<span class="hdl"></span>'+html;requestAnimationFrame(()=>L.classList.add('on'));};
+ ph.addEventListener('click',e=>{if(e.target.closest('.dim')){ph.querySelector('.layer').classList.remove('on');return;}const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,id=+(b.closest('[data-id]')?.dataset.id||ph.querySelector('.layer')._id||0);
+  if(a==='info')return sheet('<b style="display:block;font:600 17px/1.4 var(--font-sans)">프로필 교환 안내</b><p class="info">요청은 10리프, 수락은 무료예요. 수락하면 서로의 인연 프로필만 공개되고 연락처는 공개되지 않아요. 교환 기록에서 언제든 해제할 수 있어요.</p><div class="pair"><button class="ghost" data-a="close" style="grid-column:1/-1">확인</button></div>');
+  if(a==='close'){ph.querySelector('.layer').classList.remove('on');return;}
+  if(a==='post')return toast('함께 이야기한 글로 넘어가요');
+  if(a==='ok')return remove(id,'프로필을 교환했어요 · 교환 기록에서 볼 수 있어요');
+  if(a==='no')return remove(id,'요청을 정중히 거절했어요');
+  if(a==='open'){const r=rs.find(x=>x.id===id);ph.querySelector('.layer')._id=id;return sheet('<div style="display:flex;gap:12px;align-items:center"><span class="anon">'+ANON+'</span><div style="flex:1">'+who(r)+'</div></div><span class="q">'+r.m+'</span><span class="src">함께 이야기한 글 · '+r.src+'</span><p class="info">수락하면 서로의 인연 프로필만 공개돼요. 연락처는 공개되지 않아요.</p><div class="pair"><button class="ghost" data-a="sno">거절</button><button class="prim" data-a="sok">수락</button></div>');}
+  if(a==='sok'||a==='sno'){const L=ph.querySelector('.layer');L.classList.remove('on');const sid=L._id;setTimeout(()=>remove(sid,a==='sok'?'프로필을 교환했어요 · 교환 기록에서 볼 수 있어요':'요청을 정중히 거절했어요'),240);}
+ });});
+</script>
+</body>
+</html>

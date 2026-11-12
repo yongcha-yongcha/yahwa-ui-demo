@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>긴 직업 처리</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+input{font:inherit;color:inherit}
+.wrap{max-width:1500px;margin:0 auto;padding:36px 16px 64px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:80ch;margin:10px 0 0;color:var(--pg-fg2)}
+.try{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-top:20px}
+.try label{font-size:13px;font-weight:600;color:var(--pg-fg2)}
+.try input{width:260px;max-width:100%;height:44px;padding:0 14px;border:0;border-radius:12px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.try input:focus{outline:2px solid var(--pg-accent);outline-offset:1px}
+.try small{font-size:12px;color:var(--pg-fg3)}
+.row{margin-top:36px}
+.row h2{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.row h2 b{display:grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:13px;background:var(--pg-accent);color:#fff;font:600 12px var(--font-sans)}
+.row.now h2 b{background:var(--pg-fg3)}
+.row>p{max-width:90ch;margin:6px 0 0;font-size:13px;color:var(--pg-fg2)}
+.cards{display:flex;gap:16px;margin-top:14px;overflow-x:auto;padding-bottom:8px}
+/* 휴대폰 한 조각: 이름 · 위치 · 나의 정보 상자 (앱 수치, 폭 360 안의 320) */
+.card{flex:0 0 360px;padding:20px;border-radius:24px;background:var(--color-bg-page);color:var(--color-fg-primary);box-shadow:0 0 0 1px var(--pg-line)}
+.cap{margin:0 0 10px;font-size:11px;color:var(--color-fg-tertiary)}
+.nm{margin:0;font:400 30px/1.3 var(--font-serif);letter-spacing:-.5px}
+.jobline{margin:6px 0 0;font:600 15px/1.4 var(--font-sans);color:var(--color-fg-primary)}
+.mt{display:flex;align-items:center;gap:4px;margin:8px 0 0;font-size:14px;line-height:20px;color:var(--color-fg-secondary)}
+.mt i{width:2px;height:2px;margin:0 4px;border-radius:50%;background:var(--color-fg-subtle)}
+.mt svg{width:16px;height:16px;flex:none}
+.key{display:flex;align-items:stretch;margin-top:24px;padding:20px 0;border-radius:var(--fact-key-radius);background:var(--fact-key-bg)}
+.key>.vl{width:6px;height:auto;align-self:stretch;fill:none;stroke:var(--fact-divider);stroke-width:1.4;stroke-linecap:round}
+.key>div{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0;padding:0 4px;text-align:center}
+.key .ic{width:18px;height:18px;flex:none;margin-bottom:4px;fill:none;stroke:var(--fact-key-icon);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.key b{font-size:17px;font-weight:600;line-height:1.35;word-break:keep-all;overflow-wrap:anywhere}
+.key small{font-size:11px;line-height:16px;color:var(--fact-key-label)}
+/* A · C: 한 줄에 안 들어가면 15px */
+.key b.fit{font-size:15px}
+/* B · C: 값 영역 높이를 세 칸이 같게 → 라벨이 늘 같은 줄 */
+.key.align b{display:flex;align-items:center;justify-content:center}
+/* E: 하는 일 칸을 넓게(1.6 : 1 : 1) */
+.key.wide>div:first-child{flex:1.6}
+.flag{display:inline-block;margin-top:10px;padding:2px 8px;border-radius:10px;font-size:11px}
+.flag.ok{background:#E7F3EC;color:#2F6E4E}
+.flag.bad{background:#FBECEE;color:#9B3A4E}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">YAHWA · 소개 본문 · 나의 정보 상자</p>
+  <h1 class="title">긴 직업이 들어왔을 때</h1>
+  <p class="intro">하는 일 값은 17px 600, 한 칸에 글자가 들어갈 자리는 95px라 한글 7자 안팎이 한 줄의 한계예요. 지금은 더 길면 두 줄로 꺾이면서 그 칸의 "하는 일" 라벨만 아래로 밀려요. 다섯 가지 방법을 같은 직업 네 개로 비교했어요. 아래 칸에 직접 직업을 쳐 보면 모든 줄의 첫 카드가 바뀌어요.</p>
+  <div class="try"><label for="job">직접 넣어 보기</label><input id="job" value="소프트웨어 개발자" maxlength="20" autocomplete="off"><small>입력하면 각 줄 첫 카드에 반영돼요</small></div>
+  <div id="rows"></div>
+</div>
+<script>
+const PIN='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.96 19.9C7.16 18.21 5.61 16.2 4.74 13.92C4.25 12.69 4 11.37 4 10C4 7.9 4.84 5.85 6.34 4.34C7.84 2.84 9.88 2.02 12 2.02C14.12 2.02 16.16 2.84 17.66 4.34C19.16 5.85 20 7.9 20 10C20 13.88 17.81 17.35 15.04 19.9C14.26 20.63 13.43 21.27 12.55 21.86C12.22 22.09 11.78 22.09 11.45 21.86C10.57 21.27 9.74 20.63 8.96 19.9ZM9.23 7.86C8.59 9.36 9.31 11.14 10.83 11.78C12.36 12.42 14.12 11.69 14.76 10.18C15.41 8.68 14.69 6.9 13.17 6.26C11.64 5.62 9.88 6.31 9.23 7.86Z" style="fill:var(--color-fg-tertiary)"/></svg>';
+const VL='<svg class="vl" viewBox="0 0 6 60" preserveAspectRatio="none" aria-hidden="true"><path d="M3 4q-1.6 13 .2 26t-.4 26"/></svg>';
+const IC={job:'M4 8h16v11H4ZM9 8V5h6v3M4 13h16',h:'M7 3h10v18H7ZM7 7h4M7 11h6M7 15h4',m:'M4 5h16v12H9l-5 4ZM8 9h8M8 13h5'};
+const ic=k=>`<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="${IC[k]}"/></svg>`;
+const JOBS=['소프트웨어 개발자','제품 디자이너','브랜드 마케팅 매니저','UX/UI 디자이너'];
+const V=[
+ {k:'now',tag:'지금',name:'17px 그대로, 길면 두 줄',desc:'긴 직업은 두 줄로 꺾이고, 그 칸만 "하는 일" 라벨이 23px 아래로 밀려 옆 칸 "키 · 성격"과 줄이 어긋나요.',fit:false,align:false},
+ {k:'a',tag:'A',name:'길면 15px로 줄이기',desc:'한 줄에 안 들어가면 15px로 줄여요. 그런데 칸이 좁아서(글자 자리 95px) "소프트웨어 개발자"도 15px에서 여전히 두 줄이고 라벨도 어긋나요. 줄이기만으로는 해결이 안 돼요.',fit:true,align:false},
+ {k:'b',tag:'B',name:'두 줄이어도 라벨 줄 맞추기',desc:'17px은 그대로 두고, 세 칸의 값 영역 높이를 가장 긴 칸에 맞춰요. 키 · 성격 값은 그 높이 가운데에 오고, 세 라벨이 늘 같은 줄이에요.',fit:false,align:true},
+ {k:'c',tag:'C',name:'A + B',desc:'15px로 줄이고 라벨 줄도 맞춰요. 정렬은 맞지만 글자만 작아지고 두 줄은 그대로라, B보다 나은 점이 거의 없어요.',fit:true,align:true},
+ {k:'e',tag:'E',name:'하는 일 칸만 넓게 + 라벨 줄 맞추기 (추천)',desc:'하는 일 칸을 1.6배로 넓히고(키 · 성격은 짧아서 좁아도 충분), B처럼 라벨 줄을 맞춰요. 시연 데이터의 직업은 모두 17px 한 줄에 들어가고, 아주 긴 직업만 두 줄이 돼도 정렬이 깨지지 않아요.',align:true,wide:true},
+ {k:'d',tag:'D',name:'직업은 상자 밖 한 줄로',desc:'직업을 이름 아래 한 줄(15px 600)로 빼고, 상자에는 키 · 성격 두 칸만 둬요. 직업 길이에 상관없이 넓게 쓰지만, 앞서 고른 "상자에 직업명" 방향과 달라지고 상자가 비어 보여요.',out:true},
+];
+function card(v,job,live){
+  const keyCells=v.out?[['h','168cm','키'],['m','INFP','성격']]:[['job',job,'하는 일'],['h','168cm','키'],['m','INFP','성격']];
+  return `<article class="card"${live?' data-live':''}><p class="cap">${live?'직접 넣은 직업':'예시'} · ${job.length}자</p><h3 class="nm">봄빛</h3>${v.out?`<p class="jobline">${job}</p>`:''}<p class="mt">${PIN}26세<i></i>서울 마포구<i></i>여성</p><div class="key${v.align?' align':''}${v.wide?' wide':''}" role="list" aria-label="나에 대해">${keyCells.map(([k,val,l])=>`<div role="listitem">${ic(k)}<b data-k="${k}">${val}</b><small>${l}</small></div>`).join(VL)}</div><span class="flag"></span></article>`;
+}
+const rows=document.getElementById('rows');
+V.forEach(v=>{const r=document.createElement('section');r.className='row'+(v.k==='now'?' now':'');r.dataset.v=v.k;
+  r.innerHTML=`<h2><b>${v.tag}</b>${v.name}</h2><p>${v.desc}</p><div class="cards">${card(v,document.getElementById('job').value,true)}${JOBS.slice(1).map(j=>card(v,j)).join('')}</div>`;rows.append(r);});
+function layout(){
+  document.querySelectorAll('.row').forEach(r=>{const v=V.find(x=>x.k===r.dataset.v);
+    r.querySelectorAll('.card').forEach(c=>{const bs=[...c.querySelectorAll('.key b')];
+      bs.forEach(b=>{b.classList.remove('fit');b.style.minHeight='';});
+      /* 한 줄에 들어가는지: 줄바꿈 없이 잰 폭 > 칸 폭이면 */
+      if(v.fit)bs.forEach(b=>{const w=b.parentElement.clientWidth-8;b.style.whiteSpace='nowrap';const need=b.scrollWidth;b.style.whiteSpace='';if(need>w)b.classList.add('fit');});
+      if(v.align){const h=Math.max(...bs.map(b=>b.offsetHeight));bs.forEach(b=>b.style.minHeight=h+'px');}
+      const labels=[...c.querySelectorAll('.key small')].map(s=>Math.round(s.getBoundingClientRect().top));
+      const jb=c.querySelector('.key b[data-k=job]');const lines=jb?Math.round(jb.offsetHeight/parseFloat(getComputedStyle(jb).lineHeight)):1;
+      const same=labels.every(t=>t===labels[0]);const f=c.querySelector('.flag');
+      f.className='flag '+(same?'ok':'bad');f.textContent=(v.out?'직업은 상자 밖':`하는 일 ${jb.classList.contains('fit')?'15px':'17px'} · ${lines}줄`)+' · 라벨 '+(same?'같은 줄':'어긋남');});});
+}
+document.getElementById('job').addEventListener('input',e=>{const val=e.target.value.trim()||'직장인';document.querySelectorAll('.card[data-live]').forEach(c=>{const b=c.querySelector('.key b[data-k=job]')||c.querySelector('.jobline');b.textContent=val;c.querySelector('.cap').textContent='직접 넣은 직업 · '+val.length+'자';});layout();});
+(document.fonts?.ready||Promise.resolve()).then(layout);addEventListener('resize',layout);
+</script>
+</body>
+</html>

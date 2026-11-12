@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>인연 열기 스펙 v1</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="tokens.css">
+<style>
+/* 레이아웃: 위에 스펙 요약, 아래 왼쪽 스펙 v1 카드 · 오른쪽 지금 앱 모션 카드, 그 밑에 구간 타임라인 */
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398;--pg-accent-soft:#E3EFF7;--pg-mark:#B26073}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-accent-soft:#1D3747;--pg-mark:#DDAFB7;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-accent-soft:#1D3747;--pg-mark:#DDAFB7;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button,input{font:inherit;color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding-block:36px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:70ch;margin:10px 0 0;color:var(--pg-fg2)}
+.spec{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px 24px;margin:20px 0 0;padding:20px;border-radius:18px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.spec div{min-width:0}
+.spec dt{font-size:12px;color:var(--pg-fg3)}
+.spec dd{margin:0;font-size:13px;font-variant-numeric:tabular-nums}
+.bar{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin-top:20px}
+.bar label{font-size:13px;color:var(--pg-fg2)}
+.bar input[type=range]{width:180px;max-width:100%;accent-color:var(--pg-accent)}
+.bar output{min-width:44px;font-size:13px;font-variant-numeric:tabular-nums}
+.tool{height:44px;padding:0 16px;border:0;border-radius:12px;background:var(--pg-accent);color:#fff;font-weight:600;cursor:pointer}
+.tool.ghost{background:var(--pg-surface);color:var(--pg-fg);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.tool:focus-visible,.rc:focus-visible{outline:2px solid var(--pg-accent);outline-offset:3px}
+.cards{display:flex;flex-wrap:wrap;gap:28px;margin-top:24px}
+.item{flex:0 1 340px;min-width:0;display:flex;flex-direction:column;gap:10px}
+.item h2{margin:0;font:400 18px/1.4 var(--font-serif)}
+.item p{margin:0;font-size:13px;color:var(--pg-fg2)}
+.tl{margin-top:28px;padding:20px;border-radius:18px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.tl h2{margin:0 0 12px;font-size:14px;font-weight:600}
+.track{position:relative;height:auto;display:grid;gap:8px}
+.lane{position:relative;height:24px;border-radius:6px;background:color-mix(in srgb,var(--pg-line) 50%,transparent)}
+.lane span{position:absolute;top:0;bottom:0;border-radius:6px;background:var(--pg-accent-soft);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--pg-accent) 40%,transparent);font-size:11px;line-height:24px;padding:0 8px;color:var(--pg-accent);white-space:nowrap;overflow:hidden}
+.lane em{position:absolute;left:-2px;top:-18px;font-style:normal;font-size:11px;color:var(--pg-fg3)}
+.lane-name{font-size:12px;color:var(--pg-fg2)}
+.row{display:grid;grid-template-columns:96px minmax(0,1fr);align-items:center;gap:12px}
+.ticks{position:relative;height:18px;margin-left:108px;font-size:11px;color:var(--pg-fg3);font-variant-numeric:tabular-nums}
+.ticks i{position:absolute;transform:translateX(-50%);font-style:normal}
+.head{position:absolute;top:0;bottom:0;left:108px;width:2px;background:var(--pg-mark);opacity:0;pointer-events:none}
+.tlwrap{position:relative}
+
+/* ───────── 카드 (앱 토큰) ───────── */
+.rc{position:relative;width:100%;max-width:340px;aspect-ratio:320/470;border:0;padding:0;border-radius:22px;overflow:hidden;isolation:isolate;background:var(--color-bg-notice);cursor:pointer;color:var(--white);text-align:left;display:block;touch-action:manipulation}
+.rc .ph,.rc .cov{position:absolute;inset:-36px;background:url('img/a.jpg') 50% 38%/cover;will-change:transform}
+.rc .ph{z-index:0}
+.rc .cov{z-index:1;filter:blur(30px) saturate(.72) brightness(1.07)}
+.rc.now .cov{display:none}
+.rc.now .ph{filter:blur(14px)}
+@property --r{syntax:'<length>';inherits:false;initial-value:0px}
+.rc .cov.masked{-webkit-mask-image:radial-gradient(circle at var(--ox) var(--oy),transparent var(--r),#000 calc(var(--r) + var(--soft)));mask-image:radial-gradient(circle at var(--ox) var(--oy),transparent var(--r),#000 calc(var(--r) + var(--soft)))}
+.rc .scrim{position:absolute;inset:auto 0 0 0;height:60%;z-index:3;background:linear-gradient(transparent,color-mix(in srgb,var(--cool-neutral-950) 60%,transparent));opacity:.55;pointer-events:none}
+.rc .lock{position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;justify-content:flex-end;padding:0 18px 18px;pointer-events:none;transform-origin:50% 60%}
+.rc .arr{position:absolute;top:18px;left:0;right:0;text-align:center;font-size:12px;font-weight:500;text-shadow:0 1px 6px rgb(0 0 0 / .3)}
+.rc .lock small{font-size:12px;opacity:.85}
+.rc .lock p{margin:2px 0 0;font-size:14px;line-height:1.55;font-weight:500;word-break:keep-all}
+.rc .btn{display:flex;align-items:center;justify-content:center;gap:4px;height:48px;margin-top:14px;border-radius:15px;background:color-mix(in srgb,var(--white) 92%,transparent);color:var(--color-fg-primary);font-size:15px;font-weight:600;box-shadow:0 6px 18px rgb(0 0 0 / .18)}
+.rc .btn i{width:16px;height:16px;background:currentColor;-webkit-mask:var(--ic-chevron-right) center/contain no-repeat;mask:var(--ic-chevron-right) center/contain no-repeat}
+.rc .open{position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;justify-content:flex-end;padding:0 20px 22px;pointer-events:none}
+.rc .open>*{opacity:0}
+.rc .nm{font:600 22px/1.35 var(--font-sans);letter-spacing:-.3px}
+.rc .mt{font-size:13px;color:color-mix(in srgb,#fff 90%,transparent)}
+.rc .sc{margin:8px 0 0;font-size:13px;line-height:1.55;color:color-mix(in srgb,#fff 92%,transparent);word-break:keep-all}
+.rc .tap{position:absolute;z-index:5;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:2px solid #fff;opacity:0;pointer-events:none}
+@media (max-width:420px){.row{grid-template-columns:72px minmax(0,1fr)}.ticks{margin-left:84px}.head{left:84px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">YAHWA · 인연 홈 · 받은 스펙 확인</p>
+  <h1 class="title">인연 열기 · 블러 해제 스펙 v1</h1>
+  <p class="intro">보내주신 스펙 값을 그대로 넣었어요. 카드의 아무 곳이나 누르면 그 자리부터 원형으로 흐림이 걷혀요. 오른쪽은 지금 앱에 들어간 모션이에요. 아래 타임라인은 재생 중인 위치를 따라 움직여요.</p>
+  <dl class="spec">
+    <div><dt>방식</dt><dd>탭한 지점부터 원형으로 퍼짐 · 경계 부드러움 카드 너비 40%</dd></div>
+    <div><dt>곡선</dt><dd>Spring 1.30s · bounce 0.08 (감쇠 0.92 · 강성 23.4)</dd></div>
+    <div><dt>블러</dt><dd>30px → 0 · 가림막을 마스크로 걷고 끝부분에서 페이드아웃</dd></div>
+    <div><dt>확대</dt><dd>1.08 → 1.00 (살짝 줌 아웃)</dd></div>
+    <div><dt>톤</dt><dd>채도 0.72 · 밝기 1.07 → 원본</dd></div>
+    <div><dt>잠금 UI</dt><dd>처음 22% 구간에서 페이드아웃 + 0.94배</dd></div>
+    <div><dt>텍스트</dt><dd>35% 시점부터 줄마다 70ms · 12px 위로 · 560ms · cubic-bezier(0.2, 0.8, 0.2, 1)</dd></div>
+    <div><dt>햅틱 · 동작 줄이기</dt><dd>탭 순간 light impact · 동작 줄이기면 240ms 크로스페이드</dd></div>
+  </dl>
+  <div class="bar">
+    <label for="spd">속도 배율</label><input type="range" id="spd" min="0.5" max="3" step="0.1" value="1"><output id="o-spd" for="spd">1.0배</output>
+    <button type="button" class="tool" id="both">둘 다 다시 보기</button>
+    <button type="button" class="tool ghost" id="reset">처음 상태로</button>
+  </div>
+  <div class="cards">
+    <div class="item"><h2>스펙 v1</h2><button type="button" class="rc spec-card" id="cSpec" aria-label="인연 열어보기 · 스펙 v1 재생"></button><p>누른 자리에서 시작해요. 버튼을 누르면 버튼 자리부터 퍼져요.</p></div>
+    <div class="item"><h2>지금 앱 모션</h2><button type="button" class="rc now" id="cNow" aria-label="인연 열어보기 · 지금 모션 재생"></button><p>흐림 14px이 1.2초 동안 한 번에 걷히고, 사진이 1.01→1.06 비율로 다가와요.</p></div>
+  </div>
+  <section class="tl" aria-label="스펙 v1 구간">
+    <h2>스펙 v1 구간 (1.30초 기준)</h2>
+    <div class="tlwrap">
+      <div class="ticks" id="ticks"></div>
+      <div class="track" id="track"></div>
+      <span class="head" id="head"></span>
+    </div>
+  </section>
+</div>
+
+<template id="tpl">
+  <div class="ph"></div><div class="cov masked"></div><div class="scrim"></div>
+  <div class="lock"><span class="arr">12:00에 도착한 인연</span><small>이 사람의 한 장면</small><p>주말 아침에는 커피 한 잔을 들고 동네를 걷거나 작은 서점에 들러요.</p><span class="btn">인연 열어보기<i aria-hidden="true"></i></span></div>
+  <div class="open" aria-hidden="true"><span class="nm">봄빛, 26</span><span class="mt">서울 마포구</span><p class="sc">주말 아침에는 커피 한 잔을 들고 동네를 걷거나 작은 서점에 들러요.</p></div>
+  <span class="tap"></span>
+</template>
+
+<script>
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let K=1;const T=ms=>ms*K;
+const D=1300,BOUNCE=.08;
+/* SwiftUI spring(duration, bounce) → 강성 (2π/d)², 감쇠비 1-bounce. 다 가라앉는 시간까지 linear()로 샘플링 */
+const W=2*Math.PI/(D/1000),Z=1-BOUNCE,WD=W*Math.sqrt(1-Z*Z);
+const SETTLE=Math.ceil(-Math.log(.001)/(Z*W)*1000); /* 0.1%까지 가라앉는 시간(ms) */
+function springAt(tMs){const t=tMs/1000;return 1-Math.exp(-Z*W*t)*(Math.cos(WD*t)+(Z*W/WD)*Math.sin(WD*t));}
+const SPRING=(()=>{if(!CSS.supports('animation-timing-function','linear(0, 1)'))return 'cubic-bezier(0.25, 1, 0.3, 1)';const n=60,p=[];for(let i=0;i<=n;i++)p.push(springAt(SETTLE*i/n).toFixed(4));p[n]='1';return `linear(${p.join(',')})`;})();
+const TEXT_EASE='cubic-bezier(0.2, 0.8, 0.2, 1)',OUT='cubic-bezier(0.23, 1, 0.32, 1)';
+
+const tpl=document.getElementById('tpl');
+const cSpec=document.getElementById('cSpec'),cNow=document.getElementById('cNow');
+[cSpec,cNow].forEach(c=>c.append(tpl.content.cloneNode(true)));
+function stop(c){c.getAnimations({subtree:true}).forEach(a=>a.cancel());}
+function farthest(c,x,y){const w=c.clientWidth,h=c.clientHeight;return Math.max(...[[0,0],[w,0],[0,h],[w,h]].map(([a,b])=>Math.hypot(a-x,b-y)));}
+
+function playSpec(c,x,y){
+  stop(c);const cov=c.querySelector('.cov'),ph=c.querySelector('.ph'),lock=c.querySelector('.lock'),tap=c.querySelector('.tap');
+  const w=c.clientWidth,soft=w*.4,R=farthest(c,x,y)+soft;
+  cov.style.setProperty('--ox',(x+36)+'px');cov.style.setProperty('--oy',(y+36)+'px');cov.style.setProperty('--soft',soft+'px');
+  navigator.vibrate?.(10); /* light impact 대신 (iOS 웹에서는 동작 안 함) */
+  if(reduce){
+    cov.animate([{opacity:1},{opacity:0}],{duration:240,fill:'forwards'});lock.animate([{opacity:1},{opacity:0}],{duration:240,fill:'forwards'});
+    c.querySelectorAll('.open>*').forEach(e=>e.animate([{opacity:0},{opacity:1}],{duration:240,fill:'forwards'}));return;
+  }
+  tap.style.left=x+'px';tap.style.top=y+'px';
+  tap.animate([{opacity:.9,transform:'scale(.6)'},{opacity:0,transform:'scale(1.6)'}],{duration:T(420),easing:OUT,fill:'both'});
+  /* 가림막: 마스크로 걷히고 끝부분(75%~)에서 페이드아웃 */
+  cov.animate([{'--r':(-soft)+'px'},{'--r':R+'px'}],{duration:T(SETTLE),easing:SPRING,fill:'forwards'});
+  cov.animate([{opacity:1},{opacity:1,offset:.75},{opacity:0}],{duration:T(D),easing:'linear',fill:'forwards'});
+  /* 사진: 1.08 → 1, 톤 채도 0.72 · 밝기 1.07 → 원본 */
+  ph.animate([{transform:'scale(1.08)',filter:'saturate(.72) brightness(1.07)'},{transform:'scale(1)',filter:'saturate(1) brightness(1)'}],{duration:T(SETTLE),easing:SPRING,fill:'both'});
+  /* 잠금 UI: 처음 22%에서 페이드아웃 + 0.94배 */
+  lock.animate([{opacity:1,transform:'scale(1)'},{opacity:0,transform:'scale(.94)'}],{duration:T(D*.22),easing:OUT,fill:'forwards'});
+  c.querySelector('.scrim').animate([{opacity:.55},{opacity:1}],{duration:T(D),easing:OUT,fill:'forwards'});
+  /* 텍스트: 35%부터 줄마다 70ms */
+  c.querySelectorAll('.open>*').forEach((e,i)=>e.animate([{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{duration:T(560),delay:T(D*.35+i*70),easing:TEXT_EASE,fill:'both'}));
+  runHead();
+}
+function playNow(c){
+  stop(c);const ph=c.querySelector('.ph'),lock=c.querySelector('.lock');
+  if(reduce){ph.animate([{filter:'blur(14px)'},{filter:'blur(0)'}],{duration:300,fill:'both'});lock.animate([{opacity:1},{opacity:0}],{duration:200,fill:'forwards'});c.querySelectorAll('.open>*').forEach(e=>e.animate([{opacity:0},{opacity:1}],{duration:300,delay:150,fill:'both'}));return;}
+  lock.animate([{opacity:1,transform:'none'},{opacity:0,transform:'translateY(6px)'}],{duration:T(200),easing:'ease-out',fill:'forwards'});
+  ph.animate([{transform:'scale(.953)'},{transform:'scale(1)'}],{duration:T(1850),delay:T(120),easing:OUT,fill:'both'});
+  ph.animate([{filter:'blur(14px) saturate(.94) brightness(1.06)'},{filter:'blur(0) saturate(1) brightness(1)'}],{duration:T(1200),delay:T(120),easing:OUT,fill:'both'});
+  c.querySelector('.scrim').animate([{opacity:.55},{opacity:1}],{duration:T(1200),delay:T(120),easing:OUT,fill:'forwards'});
+  c.querySelectorAll('.open>*').forEach((e,i)=>e.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:T(420),delay:T(650+i*70),easing:OUT,fill:'both'}));
+}
+function btnPoint(c){const b=c.querySelector('.btn').getBoundingClientRect(),r=c.getBoundingClientRect();return [b.left-r.left+b.width/2,b.top-r.top+b.height/2];}
+cSpec.addEventListener('click',e=>{const r=cSpec.getBoundingClientRect();const x=e.clientX?e.clientX-r.left:btnPoint(cSpec)[0],y=e.clientY?e.clientY-r.top:btnPoint(cSpec)[1];playSpec(cSpec,x,y);});
+cNow.addEventListener('click',()=>playNow(cNow));
+document.getElementById('both').addEventListener('click',()=>{playSpec(cSpec,...btnPoint(cSpec));playNow(cNow);});
+document.getElementById('reset').addEventListener('click',()=>{[cSpec,cNow].forEach(stop);cSpec.querySelector('.cov').style.removeProperty('--ox');document.getElementById('head').style.opacity=0;});
+const spd=document.getElementById('spd'),o=document.getElementById('o-spd');spd.addEventListener('input',()=>{K=+spd.value;o.textContent=K.toFixed(1)+'배';});
+
+/* 타임라인: 0~SETTLE 구간을 그림. 1.30s 표시 */
+const total=Math.max(SETTLE,D*.35+2*70+560);
+const lanes=[
+  ['잠금 UI',0,D*.22,'페이드아웃 + 0.94배'],
+  ['가림막 마스크',0,SETTLE,'원형으로 퍼짐 (스프링)'],
+  ['가림막 투명도',D*.75,D,'끝부분 페이드아웃'],
+  ['사진 확대 · 톤',0,SETTLE,'1.08→1 · 채도/밝기 원본으로'],
+  ['텍스트 1줄',D*.35,D*.35+560,'560ms'],
+  ['텍스트 2줄',D*.35+70,D*.35+70+560,'+70ms'],
+  ['텍스트 3줄',D*.35+140,D*.35+140+560,'+140ms'],
+];
+const pct=v=>(v/total*100).toFixed(2)+'%';
+document.getElementById('track').innerHTML=lanes.map(([n,a,b,t])=>`<div class="row"><span class="lane-name">${n}</span><div class="lane"><span style="left:${pct(a)};width:calc(${pct(b-a)})" title="${Math.round(a)}–${Math.round(b)}ms">${t}</span></div></div>`).join('');
+document.getElementById('ticks').innerHTML=[0,286,455,975,1300,SETTLE].map(v=>`<i style="left:${pct(v)}">${v===SETTLE?'정지 '+v:v}ms</i>`).join('');
+const head=document.getElementById('head');let headAnim;
+function runHead(){headAnim?.cancel();head.style.opacity=1;const lane=document.querySelector('.lane');const w=lane.getBoundingClientRect().width;headAnim=head.animate([{transform:'translateX(0)'},{transform:`translateX(${w}px)`}],{duration:T(total),easing:'linear',fill:'forwards'});}
+</script>
+</body>
+</html>

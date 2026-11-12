@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>탭 전환 잔상</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398;--pg-on:#fff;--ease-out:cubic-bezier(0.23, 1, 0.32, 1)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.wrap{max-width:1640px;margin:0 auto;padding:36px 16px 80px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:96ch;margin:10px 0 0;color:var(--pg-fg2)}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:18px}
+.tools button{height:36px;padding:0 14px;border:0;border-radius:18px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);color:var(--pg-fg);font:600 12px var(--font-sans);cursor:pointer}
+.tools button[aria-pressed="true"]{box-shadow:inset 0 0 0 1.5px var(--pg-accent);color:var(--pg-accent)}
+.tools span{font:500 12px var(--font-sans);color:var(--pg-fg3)}
+.row{display:flex;flex-wrap:wrap;gap:24px;margin-top:22px}
+.col{display:flex;flex-direction:column;gap:10px;width:360px;max-width:100%}
+.col h3{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.col h3 b{display:grid;place-items:center;min-width:26px;height:26px;padding:0 8px;border-radius:13px;background:var(--pg-accent);color:var(--pg-on);font:600 12px var(--font-sans)}
+.col h3 b.now{background:var(--pg-line);color:var(--pg-fg2)}
+.col h3 em{font:600 11px/1 var(--font-sans);font-style:normal;padding:4px 8px;border-radius:10px;background:var(--sky-100);color:var(--color-fg-accent-strong)}
+.col>p{margin:0;min-height:88px;font-size:13px;color:var(--pg-fg2)}
+.spec{font:500 11px/1.5 ui-monospace,Menlo,monospace;color:var(--pg-fg3)}
+.box{max-width:1180px;margin-top:32px;padding:16px 18px;border-radius:16px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);font-size:13px;color:var(--pg-fg2)}
+.box h4{margin:0 0 8px;font-size:14px;color:var(--pg-fg)}.box ul{margin:0;padding-left:18px}.box li+li{margin-top:5px}.box b{color:var(--pg-fg)}
+
+.phone{position:relative;width:360px;max-width:100%;height:640px;border-radius:32px;overflow:hidden;background:linear-gradient(var(--sky-50),var(--paper) 220px);box-shadow:0 0 0 1px var(--pg-line),0 12px 32px rgb(0 0 0 / .1);isolation:isolate;color:var(--color-fg-primary)}
+.scr{position:absolute;inset:0;padding:30px 20px 0;background:linear-gradient(var(--sky-50),var(--paper) 220px)}
+.scr[hidden]{display:none}
+.scr h2{display:flex;align-items:center;justify-content:space-between;margin:0;font:400 26px/40px var(--font-serif)}
+.scr h2 small{font:600 14px/1 var(--font-sans);color:var(--color-fg-secondary)}
+.scr .sub{margin:6px 0 0;font:400 12px/20px var(--font-sans);color:var(--color-fg-muted)}
+.big{margin-top:24px;height:380px;border-radius:22px;background:center 35%/cover}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
+.grid i{display:block;aspect-ratio:4/5;border-radius:16px;background:center 35%/cover}
+.li{display:flex;align-items:center;gap:12px;padding:12px 0;box-shadow:0 1px 0 var(--color-border-default)}
+.li i{flex:none;width:48px;height:48px;border-radius:50%;background:center 30%/cover}
+.li b{display:block;font:600 15px/1.4 var(--font-sans)}.li small{font:400 12px/1.4 var(--font-sans);color:var(--color-fg-muted)}
+.post{margin-top:20px}.post p{margin:0 0 10px;font:400 14px/1.6 var(--font-sans)}.post i{display:block;height:200px;border-radius:16px;background:center/cover}
+.fab{position:absolute;right:20px;bottom:100px;height:40px;padding:0 16px;border-radius:20px;background:var(--color-bg-accent);color:var(--color-fg-inverse);font:600 13px/40px var(--font-sans)}
+.gnb{position:absolute;left:20px;right:20px;bottom:20px;z-index:10;height:64px;border-radius:32px;background:color-mix(in srgb,var(--paper) 70%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 6px 24px rgb(30 50 70 / .08),inset 0 0 0 1px rgb(255 255 255 / .6);display:flex;align-items:center;justify-content:space-around;padding:0 6px}
+.gnb button{position:relative;display:grid;place-items:center;width:56px;height:52px;border:0;border-radius:26px;background:none;cursor:pointer;font:600 11px/1 var(--font-sans);color:var(--color-fg-secondary)}
+.gnb button[aria-current="page"]{background:var(--sky-100);color:var(--color-fg-accent-strong)}
+.hint{position:absolute;left:0;right:0;top:8px;z-index:12;text-align:center;font:600 11px/1 var(--font-sans);color:var(--pg-accent);opacity:0;transition:opacity 160ms}
+.slow .hint{opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="eyebrow">YAHWA · 하단 메뉴</p>
+<h1 class="title">탭 전환 잔상</h1>
+<p class="intro">지금은 탭을 누르면 옛 화면이 불투명한 채로 남고, 그 위에서 새 화면이 0.17초 동안 서서히 나타나요. 처음 몇 프레임은 두 화면의 제목 · 사진 · 글쓰기 버튼이 겹쳐 보여요(잔상). 아래 폰의 하단 메뉴를 눌러 보거나, “느리게 보기”를 켜고 같은 전환을 비교해 보세요. 세 폰은 같은 순서로 함께 바뀌어요.</p>
+<div class="tools"><button id="play">자동으로 넘겨 보기</button><button id="slow" aria-pressed="false">느리게 보기(8배)</button><span>느리게 보기를 켜면 잔상이 분명히 보여요</span></div>
+
+<div class="row">
+  <div class="col"><h3><b class="now">지금</b>위에서 서서히</h3><p>옛 화면 100% 위에 새 화면이 0 → 100%(170ms). 처음 16ms에 새 화면 38%, 40ms에 75%라 두 화면이 겹쳐 보여요.</p><div class="phone" data-k="now"></div><span class="spec">old 100% · new 0→1 · 170ms</span></div>
+  <div class="col"><h3><b>T1</b>새 화면만 살짝 떠오르기<em>추천</em></h3><p>누르는 순간 옛 화면은 바로 숨기고, 새 화면만 60% → 100%(120ms). 다섯 탭 바탕이 같아서 겹치는 장면이 없고, 바뀐다는 느낌만 부드럽게 남아요.</p><div class="phone" data-k="t1"></div><span class="spec">old 즉시 숨김 · new .6→1 · 120ms · strong ease-out</span></div>
+  <div class="col"><h3><b>T2</b>애니메이션 없이 바로</h3><p>iOS 탭바처럼 즉시 바뀌어요. 하루에도 수십 번 누르는 곳이라 가장 빠르고 깔끔하지만, 바뀌는 순간이 조금 딱딱해요.</p><div class="phone" data-k="t2"></div><span class="spec">즉시 · 0ms</span></div>
+</div>
+
+<div class="box">
+  <h4>바뀌는 범위</h4>
+  <ul>
+    <li>하단 메뉴로 오가는 다섯 탭(인연 홈 · 마음함 · 편지함 · 커뮤니티 · 마이페이지) 사이 전환만 바꿔요. 하단 메뉴 캡슐이 옮겨 가는 움직임(260ms)과 아이콘 채움은 그대로예요.</li>
+    <li>상대 프로필 · 편지처럼 깊이 들어가는 화면의 “밀려 들어오기 / 나가기”는 겹침 문제가 없어서 그대로 둬요.</li>
+    <li>움직임 줄이기 설정이면 어느 안이든 바로 바뀌어요.</li>
+  </ul>
+</div>
+</div>
+<script>
+const S=[
+ ['home','인연 홈','<h2>오늘의 인연<small>104</small></h2><p class="sub">매일 12시 · 15시 · 18시 · 21시, 두 명씩</p><div class="big" style="background-image:url(person-02-2.jpg)"></div>'],
+ ['heart','마음함','<h2>마음함</h2><p class="sub">서로에게 조금 더 가까워지는 마음</p><div class="grid"><i style="background-image:url(person-07-3.jpg)"></i><i style="background-image:url(person-03-1.jpg)"></i><i style="background-image:url(person-02-2.jpg)"></i></div>'],
+ ['letter','편지함','<h2>편지함</h2><p class="sub">첫 편지에서 이어지는 우리 이야기</p><div style="margin-top:16px"><div class="li"><i style="background-image:url(person-03-1.jpg)"></i><span><b>한여름</b><small>사진 속 바다가 정말 좋았어요</small></span></div><div class="li"><i style="background-image:url(person-07-3.jpg)"></i><span><b>달빛편지</b><small>필름 산책 좋아하신다니 반가워요</small></span></div><div class="li"><i style="background-image:url(person-02-2.jpg)"></i><span><b>봄빛</b><small>답장을 기다리고 있어요</small></span></div></div>'],
+ ['comm','커뮤니티','<h2>익명 이야기</h2><p class="sub">이름 없이 나누는 이야기</p><div class="post"><p>카페에서 두 시간 수다 떨고 남은 사진은 커피 한 잔</p><i style="background-image:url(person-03-1.jpg)"></i></div><span class="fab">+ 글쓰기</span>'],
+ ['my','마이','<h2>마이페이지</h2><div class="li" style="box-shadow:none;margin-top:18px"><i style="width:72px;height:72px;background-image:url(v1.jpg)"></i><span><b style="font:400 22px/1.3 var(--font-serif)">지우</b><small>남성 · 만 29세 · 서울 종로구</small></span></div>']];
+let SLOW=1;
+const phones=[...document.querySelectorAll('[data-k]')];
+phones.forEach(ph=>{ph.innerHTML='<span class="hint">8배 느리게</span>'+S.map(([id,,h],i)=>'<section class="scr" data-id="'+id+'"'+(i?' hidden':'')+'>'+h+'</section>').join('')+'<nav class="gnb">'+S.map(([id,l],i)=>'<button data-to="'+id+'"'+(i?'':' aria-current="page"')+'>'+l+'</button>').join('')+'</nav>';ph._cur='home';
+ ph.querySelector('.gnb').onclick=e=>{const b=e.target.closest('[data-to]');if(b)phones.forEach(p=>go(p,b.dataset.to));};});
+function go(ph,to){if(ph._cur===to)return;const k=ph.dataset.k,old=ph.querySelector('[data-id="'+ph._cur+'"]'),nx=ph.querySelector('[data-id="'+to+'"]');
+ ph.querySelectorAll('.gnb button').forEach(b=>b.toggleAttribute('aria-current',b.dataset.to===to));if(ph.querySelector('.gnb [aria-current]'))ph.querySelector('.gnb [aria-current]').setAttribute('aria-current','page');
+ ph._anim?.finish?.();ph.querySelectorAll('.scr').forEach(s=>{s.style.zIndex='';});
+ if(k==='now'){old.hidden=false;nx.hidden=false;nx.style.zIndex=2;old.style.zIndex=1;const a=nx.animate([{opacity:0},{opacity:1}],{duration:170*SLOW,easing:'cubic-bezier(.23,1,.32,1)'});ph._anim=a;a.onfinish=()=>{old.hidden=true;};}
+ else if(k==='t1'){old.hidden=true;nx.hidden=false;ph._anim=nx.animate([{opacity:.6},{opacity:1}],{duration:120*SLOW,easing:'cubic-bezier(.23,1,.32,1)'});}
+ else{old.hidden=true;nx.hidden=false;}
+ ph._cur=to;}
+document.getElementById('slow').onclick=e=>{const on=e.currentTarget.getAttribute('aria-pressed')!=='true';e.currentTarget.setAttribute('aria-pressed',on);SLOW=on?8:1;document.body.classList.toggle('slow',on);};
+let busy=false;
+document.getElementById('play').onclick=async()=>{if(busy)return;busy=true;const order=['heart','letter','comm','home','my','home'];for(const t of order){phones.forEach(p=>go(p,t));await new Promise(r=>setTimeout(r,(SLOW>1?1700:700)));}busy=false;};
+</script>
+</body>
+</html>

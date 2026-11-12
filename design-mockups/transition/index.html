@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>사진 등록 넘어가기</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="tokens.css">
+<style>
+/* 레이아웃: 위 설명과 공통 버튼, 아래 휴대폰 네 대를 나란히. 각 휴대폰의 "첫 소개 완성하기"를 누르면 그 전환이 재생 */
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button,input{font:inherit;color:inherit}
+.wrap{max-width:1600px;margin:0 auto;padding-block:36px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:72ch;margin:10px 0 0;color:var(--pg-fg2)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin-top:20px}
+.bar label{font-size:13px;color:var(--pg-fg2)}
+.bar input[type=range]{width:180px;max-width:100%;accent-color:var(--pg-accent)}
+.bar output{min-width:44px;font-size:13px;font-variant-numeric:tabular-nums}
+.tool{height:44px;padding:0 16px;border:0;border-radius:12px;background:var(--pg-accent);color:#fff;font-weight:600;cursor:pointer}
+.tool.ghost{background:var(--pg-surface);color:var(--pg-fg);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.tool:focus-visible{outline:2px solid var(--pg-accent);outline-offset:3px}
+.grid{display:flex;flex-wrap:wrap;gap:28px 24px;margin-top:24px}
+.item{flex:0 1 360px;min-width:0;display:flex;flex-direction:column;gap:10px}
+.item h2{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.item h2 b{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--pg-accent);color:#fff;font:600 12px var(--font-sans)}
+.item.now h2 b{background:var(--pg-fg3)}
+.item>p{margin:0;font-size:13px;color:var(--pg-fg2)}
+.item .feel{font-size:12px;color:var(--pg-fg3)}
+
+/* ───────── 휴대폰 (앱 토큰, 360 × 780) ───────── */
+.phone{position:relative;width:360px;max-width:100%;height:780px;border-radius:32px;overflow:hidden;background:var(--color-bg-page);box-shadow:0 0 0 1px var(--pg-line),0 16px 40px rgb(0 0 0 / .12);color:var(--color-fg-primary);isolation:isolate}
+.scr{position:absolute;inset:0;padding:24px 20px 0;background:var(--color-bg-page)}
+.scr[hidden]{display:none}
+.top{display:flex;align-items:center;justify-content:space-between;height:44px}
+.top i{width:24px;height:24px;margin-left:-2px;background:currentColor;-webkit-mask:var(--ic-chevron-left-large) center/contain no-repeat;mask:var(--ic-chevron-left-large) center/contain no-repeat}
+.top span{font-size:11px;color:var(--color-fg-accent);font-variant-numeric:tabular-nums}
+.prog{position:relative;height:3px;margin:16px 0 0;background:var(--color-bg-notice);border-radius:3px;overflow:visible}
+.prog>i{display:block;height:100%;border-radius:3px;background:var(--color-bg-button-primary)}
+.prog .done{position:absolute;right:-9px;top:-8px;width:18px;height:18px;border-radius:50%;background:var(--color-bg-button-primary);opacity:0;display:grid;place-items:center}
+.prog .done::after{content:"";width:12px;height:12px;background:#fff;-webkit-mask:var(--ic-check) center/contain no-repeat;mask:var(--ic-check) center/contain no-repeat}
+.body{padding-top:38px}
+.body.ph{padding-top:20px}
+.doodle{display:block;width:56px;height:38px;margin:0 0 16px;color:var(--sky-400)}
+.doodle g{fill:none;stroke:currentColor;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
+h3.h{margin:0 0 14px;font:400 26px/1.5 var(--font-serif);letter-spacing:-.8px}
+.lead{margin:0 0 26px;font-size:12px;line-height:1.8;color:var(--color-fg-tertiary)}
+.fl{display:block;margin:18px 0 8px;font-size:12px}
+.inp{height:50px;border:1px solid var(--color-border-control);border-radius:12px;background:var(--color-bg-surface);padding:0 14px;display:flex;align-items:center;justify-content:space-between;font-size:15px}
+.inp i{width:16px;height:16px;background:var(--color-fg-accent);-webkit-mask:var(--ic-chevron-down) center/contain no-repeat;mask:var(--ic-chevron-down) center/contain no-repeat}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ch{height:66px;border:1px solid var(--color-border-control);border-radius:12px;background:var(--color-bg-surface);display:flex;align-items:center;justify-content:center;gap:12px;font-size:13px}
+.ch.on{background:var(--color-bg-notice);border-color:var(--color-fg-accent)}
+.ch svg{width:36px;height:40px;color:var(--color-fg-accent-strong)}
+.ch .rd{width:15px;height:15px;border-radius:50%;border:1.5px solid var(--color-border-control)}
+.ch.on .rd{border:4px solid var(--color-bg-button-primary)}
+.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.slot{aspect-ratio:3/4;border-radius:12px;background:var(--color-bg-surface) center/cover;box-shadow:inset 0 0 0 1px var(--color-border-control);position:relative;display:grid;place-items:center}
+.slot.f{box-shadow:none}
+.slot .cv{position:absolute;left:8px;top:8px;padding:2px 8px;border-radius:10px;background:var(--color-bg-button-primary);color:#fff;font-size:10px;font-weight:600}
+.slot .pl{width:18px;height:18px;background:var(--color-fg-tertiary);-webkit-mask:var(--ic-plus) center/contain no-repeat;mask:var(--ic-plus) center/contain no-repeat}
+.help{margin:10px 0 0;font-size:11px;color:var(--color-fg-tertiary)}
+.bot{position:absolute;left:20px;right:20px;bottom:26px}
+.cta{width:100%;height:52px;border:0;border-radius:14px;background:var(--color-bg-button-primary);color:#fff;font:500 15px var(--font-sans);display:flex;align-items:center;justify-content:center;gap:4px;cursor:pointer}
+.cta:active{transform:scale(.98)}
+.cta:focus-visible{outline:2px solid var(--color-fg-accent);outline-offset:3px}
+.cta i{width:18px;height:18px;background:currentColor;-webkit-mask:var(--ic-chevron-right) center/contain no-repeat;mask:var(--ic-chevron-right) center/contain no-repeat}
+.demo{margin:10px 0 0;font-size:10px;color:var(--color-fg-muted);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">YAHWA · 가입 흐름 · 화면 전환</p>
+  <h1 class="title">기본 프로필에서 사진 등록으로</h1>
+  <p class="intro">지금은 기본 프로필(가입 3단계 끝)에서 사진 등록(소개 1/5)으로 갈 때만 화면 전체가 오른쪽에서 밀려 들어와요. 앞뒤 화면은 모두 내용만 아래에서 떠오르는데 이 한 번만 방식이 달라서 끊겨 보여요. 또 가득 찬 진행바가 갑자기 20%짜리 새 진행바로 바뀌어요. 각 휴대폰의 "첫 소개 완성하기"를 눌러 비교해 보세요.</p>
+  <div class="bar">
+    <label for="spd">속도 배율</label><input type="range" id="spd" min="0.5" max="3" step="0.1" value="1"><output id="o-spd" for="spd">1.0배</output>
+    <button type="button" class="tool" id="all">전체 다시 보기</button>
+    <button type="button" class="tool ghost" id="reset">처음 화면으로</button>
+  </div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<template id="tpl">
+  <div class="phone">
+    <section class="scr s1" aria-label="기본 프로필">
+      <div class="top"><i aria-hidden="true"></i><span></span></div>
+      <div class="prog"><i style="width:100%"></i><span class="done" aria-hidden="true"></span></div>
+      <div class="body">
+        <h3 class="h">당신의 이야기를<br>조금 들려주세요.</h3>
+        <p class="lead">처음엔 간단한 소개면 충분해요.<br>사진과 자세한 이야기는 다음에 더해요.</p>
+        <span class="fl">어떤 이름으로 불러드릴까요?</span>
+        <div class="inp">지우</div>
+        <span class="fl">성별</span>
+        <div class="choices"><span class="ch"><svg class="gender-art" viewBox="0 0 64 70" aria-hidden="true"><path fill="var(--color-bg-gold-muted)" stroke="none" d="M8 67Q7 49 23 45L31 54L40 45Q55 50 57 67Z"/><g fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"><path d="M17 35Q7 23 17 11Q27 0 42 8M41 10Q37 25 19 25M44 12Q50 18 48 32L47 39Q40 41 33 34M40 14Q34 34 18 34Q12 33 13 27M17 37Q11 42 20 45M29 34L24 44M35 40L38 46M9 65Q6 51 21 46M40 47Q53 49 56 65M23 49Q29 66 39 50M18 56L16 67M45 56L47 67"/></g></svg><span class="rd"></span>여성</span><span class="ch on"><svg class="gender-art" viewBox="0 0 64 70" aria-hidden="true"><path fill="var(--color-fg-inverse-muted)" stroke="none" d="M7 67Q9 49 24 45Q32 56 40 45Q54 50 57 67Z"/><g fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"><path d="M16 23Q12 9 28 6Q46 1 49 21M18 20Q19 9 32 10M25 16Q34 14 39 22L48 25Q52 27 47 32M18 26Q17 41 30 45Q41 46 46 33M28 17Q35 29 44 28M24 44L22 49M39 44L42 49M8 66Q8 51 21 48M43 48Q55 52 57 66M23 52Q32 60 42 52M18 57L17 67M47 57L49 67"/></g></svg><span class="rd"></span>남성</span></div>
+        <span class="fl">주로 생활하는 지역</span>
+        <div class="inp">서울<i aria-hidden="true"></i></div>
+      </div>
+      <div class="bot"><button type="button" class="cta go">첫 소개 완성하기</button><p class="demo">UI 시연 · 입력 정보는 저장하거나 전송하지 않아요</p></div>
+    </section>
+    <section class="scr s2" aria-label="사진 등록" hidden>
+      <div class="top"><i aria-hidden="true"></i><span>1 / 5</span></div>
+      <div class="prog"><i style="width:20%"></i></div>
+      <div class="body ph">
+        <svg class="doodle" viewBox="0 0 70 48" aria-hidden="true"><g><path d="M10 34L8 10L46 7L49 36L12 39M17 28Q25 17 30 25L37 18L42 27M52 10L58 5M55 18L64 17"/><circle cx="20" cy="17" r="3"/></g></svg>
+        <h3 class="h">당신다운<br>첫 장면을 담아요.</h3>
+        <p class="lead">얼굴이 잘 나온 대표 사진 1장은 꼭 필요해요.<br>모든 사진에 본인이 나오게 올려 주세요.</p>
+        <div class="slots"><span class="slot f" style="background-image:url(img/p1.jpg)"><b class="cv">대표</b></span><span class="slot f" style="background-image:url(img/p2.jpg)"></span><span class="slot f" style="background-image:url(img/p3.jpg)"></span><span class="slot f" style="background-image:url(img/p4.jpg)"></span><span class="slot"><i class="pl"></i></span><span class="slot"><i class="pl"></i></span></div>
+        <p class="help">사진을 꾹 누른 채 옮기면 순서를 바꿀 수 있어요.</p>
+      </div>
+      <div class="bot"><button type="button" class="cta">다음 · 상세 정보<i aria-hidden="true"></i></button><p class="demo">UI 시연 · 입력 내용은 새로고침하면 초기화돼요</p></div>
+    </section>
+  </div>
+</template>
+
+<script>
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let K=1;const T=ms=>ms*K;
+const DRAWER='cubic-bezier(.32,.72,0,1)',OUT='cubic-bezier(.23,1,.32,1)';
+/* 앱의 전환 값 그대로 (transitions.js STEP_MOTION) */
+const M={rise:30,duration:800,stagger:50,exit:100,cap:3};
+const SPRING='linear('+Array.from({length:41},(_,i)=>{const t=i/40;return i===40?1:+(1-Math.exp(-9*t)*(1+9*t)).toFixed(4)}).join(',')+')';
+const items=s=>[...s.querySelector('.body').children];
+function riseIn(next,startDelay){
+  items(next).forEach((c,i)=>{const d=startDelay+Math.min(i,M.cap)*M.stagger;
+    c.animate([{transform:`translateY(${M.rise}px)`},{transform:'none'}],{duration:T(M.duration),delay:T(d),easing:SPRING,fill:'backwards'});
+    c.animate([{opacity:0},{opacity:1}],{duration:T(M.duration/2),delay:T(d),easing:OUT,fill:'backwards'});});
+  next.querySelector('.bot').animate([{opacity:0},{opacity:1}],{duration:T(240),delay:T(startDelay),easing:OUT,fill:'backwards'});
+}
+function fadeOutBody(old,delay=0){
+  return [...items(old),old.querySelector('.bot')].map(c=>c.animate([{opacity:1},{opacity:0}],{duration:T(M.exit),delay:T(delay),easing:'ease-out',fill:'forwards'}));
+}
+const V=[
+ {name:'지금 · 밀려 들어옴',desc:'새 화면 전체가 오른쪽에서 밀려 들어오고, 지금 화면은 왼쪽으로 살짝 밀리며 흐려져요(300ms). 진행바도 같이 밀려가요.',feel:'여기만 다른 방식 · 끊김',
+  play(p,a,b){b.hidden=false;b.style.zIndex=2;a.style.zIndex=1;
+   b.animate([{transform:'translateX(100%)'},{transform:'none'}],{duration:T(300),easing:DRAWER});
+   const o=a.animate([{transform:'none',opacity:1},{transform:'translateX(-24%)',opacity:.72}],{duration:T(300),easing:DRAWER});
+   o.finished.then(()=>{a.hidden=true;});}},
+ {name:'이어서 떠오르기 · 진행바 줄어듦',desc:'앞뒤 화면과 같은 방식으로 내용만 사라졌다 아래에서 떠올라요. 가득 찬 진행바는 그 자리에서 20%로 줄어들며 새 단계(1/5)로 이어져요.',feel:'한 흐름 · 가장 가벼움',
+  play(p,a,b){const out=fadeOutBody(a);
+   a.querySelector('.top span').textContent='';
+   out[0].finished.then(()=>{a.hidden=true;b.hidden=false;
+     b.querySelector('.prog i').animate([{width:'100%'},{width:'20%'}],{duration:T(360),easing:DRAWER});
+     b.querySelector('.top span').animate([{opacity:0},{opacity:1}],{duration:T(240),easing:OUT,fill:'backwards'});
+     riseIn(b,0);});}},
+ {name:'이어서 떠오르기 · 진행바 새로 채움',desc:'내용이 떠오르는 방식은 같고, 진행바만 새 장이 시작된 것처럼 빈 막대에서 20%까지 다시 채워져요. "1 / 5"가 함께 나타나요.',feel:'새 장의 시작 · 또렷함',
+  play(p,a,b){const out=fadeOutBody(a);a.querySelector('.prog').animate([{opacity:1},{opacity:0}],{duration:T(M.exit),fill:'forwards'});
+   out[0].finished.then(()=>{a.hidden=true;b.hidden=false;
+     b.querySelector('.prog i').animate([{width:'0%'},{width:'20%'}],{duration:T(520),delay:T(180),easing:DRAWER,fill:'backwards'});
+     b.querySelector('.prog').animate([{opacity:0},{opacity:1}],{duration:T(200),easing:OUT,fill:'backwards'});
+     b.querySelector('.top span').animate([{opacity:0,transform:'translateY(4px)'},{opacity:1,transform:'none'}],{duration:T(280),delay:T(120),easing:OUT,fill:'backwards'});
+     riseIn(b,0);});}},
+ {name:'완료 표시 후 떠오르기',desc:'누르면 가득 찬 진행바 끝에 체크가 톡 하고 맺힌 뒤(약 0.3초), 내용이 떠오르며 사진 등록이 시작돼요. 진행바는 새로 채워져요.',feel:'작은 성취감 · 한 박자 쉼',
+  play(p,a,b){const done=a.querySelector('.prog .done');
+   done.animate([{opacity:0,transform:'scale(.4)'},{opacity:1,transform:'scale(1)'}],{duration:T(320),easing:'linear(0,0.24,0.62,0.93,1.09,1.12,1.07,1.02,0.99,0.99,1)',fill:'forwards'});
+   a.querySelector('.prog i').animate([{filter:'brightness(1)'},{filter:'brightness(1.25)'},{filter:'brightness(1)'}],{duration:T(320),easing:'ease-out'});
+   const out=fadeOutBody(a,300);a.querySelector('.prog').animate([{opacity:1},{opacity:0}],{duration:T(M.exit),delay:T(300),fill:'forwards'});
+   out[0].finished.then(()=>{a.hidden=true;b.hidden=false;
+     b.querySelector('.prog i').animate([{width:'0%'},{width:'20%'}],{duration:T(520),delay:T(160),easing:DRAWER,fill:'backwards'});
+     b.querySelector('.prog').animate([{opacity:0},{opacity:1}],{duration:T(200),easing:OUT,fill:'backwards'});
+     b.querySelector('.top span').animate([{opacity:0},{opacity:1}],{duration:T(240),delay:T(100),easing:OUT,fill:'backwards'});
+     riseIn(b,0);});}},
+];
+const grid=document.getElementById('grid'),tpl=document.getElementById('tpl');
+const phones=[];
+V.forEach((v,i)=>{
+  const it=document.createElement('article');it.className='item'+(i===0?' now':'');
+  it.innerHTML=`<h2><b>${i===0?'지금':String.fromCharCode(64+i)}</b>${v.name}</h2>`;
+  const ph=tpl.content.firstElementChild.cloneNode(true);ph.dataset.v=i;it.append(ph);
+  it.insertAdjacentHTML('beforeend',`<p>${v.desc}</p><span class="feel">느낌 · ${v.feel}</span>`);
+  grid.append(it);phones.push(ph);
+  ph.querySelector('.go').addEventListener('click',()=>play(ph));
+});
+function reset(ph){ph.getAnimations({subtree:true}).forEach(a=>a.cancel());const [a,b]=ph.querySelectorAll('.scr');a.hidden=false;b.hidden=true;a.style.zIndex=b.style.zIndex='';}
+function play(ph){reset(ph);const [a,b]=ph.querySelectorAll('.scr');
+  if(reduce){a.animate([{opacity:1},{opacity:0}],{duration:200,fill:'forwards'}).finished.then(()=>{a.hidden=true;b.hidden=false;b.animate([{opacity:0},{opacity:1}],{duration:200});});return;}
+  V[ph.dataset.v].play(ph,a,b);}
+document.getElementById('all').addEventListener('click',()=>phones.forEach(play));
+document.getElementById('reset').addEventListener('click',()=>phones.forEach(reset));
+const spd=document.getElementById('spd'),o=document.getElementById('o-spd');spd.addEventListener('input',()=>{K=+spd.value;o.textContent=K.toFixed(1)+'배';});
+</script>
+</body>
+</html>

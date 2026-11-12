@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>가입 단계 버튼 문구</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1960px;margin:0 auto;padding:36px 16px 64px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:78ch;margin:10px 0 0;color:var(--pg-fg2)}
+.row{margin-top:40px}
+.row h2{margin:0;display:flex;align-items:center;gap:8px;font:400 20px/1.4 var(--font-serif)}
+.row h2 b{display:grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:13px;background:var(--pg-accent);color:#fff;font:600 12px var(--font-sans)}
+.row.now h2 b{background:var(--pg-fg3)}
+.row>p{max-width:90ch;margin:6px 0 0;font-size:13px;color:var(--pg-fg2)}
+.row .why{font-size:12px;color:var(--pg-fg3)}
+.steps{display:flex;gap:16px;margin-top:14px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x mandatory}
+/* 휴대폰 아래쪽 일부 (360 폭, 앱 수치 그대로) */
+.card{flex:0 0 320px;scroll-snap-align:start;border-radius:24px;background:var(--color-bg-page);color:var(--color-fg-primary);box-shadow:0 0 0 1px var(--pg-line);padding:20px 20px 24px;display:flex;flex-direction:column}
+.card .top{display:flex;justify-content:space-between;align-items:center;height:24px;font-size:11px;color:var(--color-fg-accent)}
+.card .top em{font-style:normal;color:var(--color-fg-tertiary)}
+.gauge{height:3px;margin:10px 0 18px;border-radius:3px;background:var(--color-bg-notice)}
+.gauge i{display:block;height:100%;border-radius:3px;background:var(--color-bg-accent)}
+.card h3{margin:0;font:400 21px/1.45 var(--font-serif);letter-spacing:-.6px;min-height:61px}
+.card .state{margin:12px 0 0;font-size:11px;color:var(--color-fg-tertiary)}
+.bottom{margin-top:auto;padding-top:20px}
+.hint{margin:0 0 8px;text-align:center;font-size:12px;color:var(--color-fg-tertiary)}
+.hint b{font-weight:500;color:var(--color-fg-accent-strong)}
+.btn{width:100%;height:54px;border:0;border-radius:14px;background:var(--color-bg-button-primary);color:var(--color-fg-inverse);font:500 15px var(--font-sans);display:flex;align-items:center;justify-content:center;gap:6px}
+.btn.off{background:var(--color-bg-muted);color:var(--color-fg-muted)}
+.btn small{font-size:12px;font-weight:400;opacity:.78}
+.btn.two{flex-direction:column;gap:0;line-height:1.3}
+.demo{margin:12px 0 0;text-align:center;font-size:11px;color:var(--color-fg-muted)}
+.pair{display:flex;flex-direction:column;gap:10px}
+.pair span{display:block;margin-bottom:4px;font-size:11px;color:var(--color-fg-tertiary)}
+.table{margin-top:48px;border-collapse:collapse;width:100%;max-width:1100px;font-size:13px}
+.tw{overflow-x:auto}
+.table th,.table td{padding:10px 12px;border-bottom:1px solid var(--pg-line);text-align:left;vertical-align:top}
+.table th{font-weight:600;color:var(--pg-fg2);white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">YAHWA · 가입 흐름 · 소개 작성 1~5단계</p>
+  <h1 class="title">단계마다 버튼에 뭐라고 쓸까</h1>
+  <p class="intro">지금은 "다음 · 상세 정보"처럼 다음 화면 이름을 버튼에 붙여요. 그런데 위 게이지가 이미 몇 단계째인지 알려 주고, 버튼을 누르는 순간 사용자가 궁금한 건 다음 화면 이름보다 "지금 화면이 끝났는지"예요. 오른쪽 화살표는 이미 모두 뺐어요. 네 가지 안을 단계별로 나란히 놓았어요. 옆으로 넘겨 보세요.</p>
+  <div id="rows"></div>
+  <div class="tw"><table class="table" id="tbl"></table></div>
+</div>
+<script>
+const STEPS=[
+ {n:1,name:'사진',h:'당신다운<br>첫 장면을 담아요.'},
+ {n:2,name:'일상 정보',h:'일상의 모습을<br>조금 더 알려주세요.'},
+ {n:3,name:'나의 이야기',h:'마음이 향하는<br>순간은 언제인가요?'},
+ {n:4,name:'해시태그',h:'나를 담은 해시태그 #'},
+ {n:5,name:'미리보기',h:'당신의 첫 소개,<br>이렇게 보여요.'},
+];
+const DEMO=['UI 시연 · 입력 내용은 새로고침하면 초기화돼요','UI 시연 · 입력 내용은 새로고침하면 초기화돼요','UI 시연 · 입력 내용은 새로고침하면 초기화돼요','선택 사항 · 고르지 않아도 넘어갈 수 있어요','UI 시연 · 입력 내용은 새로고침하면 초기화돼요'];
+const b=(t,c='')=>`<div class="btn ${c}">${t}</div>`;
+const V=[
+ {tag:'지금',name:'다음 · 다음 화면 이름',now:true,
+  desc:'다음 화면 이름을 버튼에 붙여요. 화살표는 이번에 뺐어요.',
+  why:'아쉬운 점 · "상세 정보", "자기소개"가 실제 화면 제목(일상의 모습, 마음이 향하는 순간)과 이름이 달라 헷갈리고, 버튼 글자가 길어져요.',
+  cta:['다음 · 상세 정보','다음 · 자기소개','다음 · 나의 해시태그','내 소개 미리보기','이 소개로 완성하기'].map(t=>b(t))},
+ {tag:'A',name:'"다음"으로 통일',
+  desc:'1~3단계는 "다음" 한 단어로 통일해요. 다음 단계가 무엇인지는 위 게이지와 단계 글자(1 / 5)가 맡아요. 4·5단계처럼 성격이 바뀌는 순간에만 구체적으로 써요.',
+  why:'좋은 점 · 가장 익숙하고 빨리 읽혀요. 문구가 바뀌는 4·5단계가 오히려 눈에 띄어서 "이제 거의 끝"이라는 신호가 돼요. · 원칙: 같은 일은 같은 말로.',
+  cta:['다음','다음','다음','내 소개 미리보기','이 소개로 완성하기'].map(t=>b(t))},
+ {tag:'B',name:'"다음" + 버튼 위 예고 한 줄',
+  desc:'버튼은 "다음"만 두고, 바로 위에 작게 "다음은 나의 이야기 · 3 / 5"처럼 예고해요. 이름은 지금 화면들의 실제 제목에 맞췄어요.',
+  why:'좋은 점 · 버튼은 짧게 두면서 "얼마나 남았지?"에도 답해요. 마지막 두 단계는 예고 대신 남은 걸음을 말해요.',
+  hint:['다음은 <b>일상 정보</b> · 2 / 5','다음은 <b>나의 이야기</b> · 3 / 5','다음은 <b>해시태그</b> · 4 / 5','거의 다 왔어요 · <b>미리보기</b>만 남았어요','마지막 단계예요'],
+  cta:['다음','다음','다음','내 소개 미리보기','이 소개로 완성하기'].map(t=>b(t))},
+ {tag:'C',name:'내 목소리로 확정하기',
+  desc:'"다음"이라는 시스템 말 대신, 사용자가 스스로 고른 걸 확정하는 1인칭 문장으로 써요. 마지막 "이 소개로 완성하기"와 결이 이어져요.',
+  why:'관습을 하나 깼어요 · 보통 "다음"을 쓰지만, 야화는 "나를 소개하는 이야기"를 쓰는 흐름이라 매 단계를 "내가 정했다"로 끝내면 소개를 직접 만든다는 느낌이 커져요. 대신 글자가 조금 길어져요.',
+  cta:['이 사진들로 할게요','이대로 좋아요','이 이야기로 할게요','이 단어들로 미리보기','이 소개로 완성하기'].map(t=>b(t))},
+ {tag:'D',name:'상태에 맞춰 바뀌는 버튼',
+  desc:'입력 상태에 따라 버튼이 스스로 말을 바꿔요. 못 넘어갈 땐 회색 버튼에 이유를 쓰고, 건너뛸 수 있는 단계는 "건너뛰기"를 버튼이 직접 말해요.',
+  why:'좋은 점 · 눌러 보고 나서 오류를 보는 대신, 누르기 전에 무엇이 필요한지 알 수 있어요. 지금 사진 단계는 눌러야 "대표 사진을 1장 올려 주세요"가 나와요. · 문구는 상태마다 하나씩 정해 두고 바꿔요.',
+  pair:[
+   [['사진 0장',b('대표 사진을 1장 올려 주세요','off')],['사진 3장',b('사진 3장으로 계속하기')]],
+   [['아무것도 안 적었을 때',b('나중에 채우고 계속하기')],['하나라도 적었을 때',b('다음')]],
+   [['이야기 1장',b('이야기 2장을 더 담아 주세요','off')],['이야기 3장',b('다음')]],
+   [['태그 0개',b('건너뛰고 미리보기')],['태그 3개',b('태그 3개로 미리보기')]],
+   [['언제나',b('이 소개로 완성하기')]],
+  ]},
+];
+const rows=document.getElementById('rows');
+V.forEach(v=>{
+  const r=document.createElement('section');r.className='row'+(v.now?' now':'');
+  r.innerHTML=`<h2><b>${v.tag}</b>${v.name}</h2><p>${v.desc}</p><p class="why">${v.why}</p>`;
+  const st=document.createElement('div');st.className='steps';
+  STEPS.forEach((s,i)=>{
+    const bottom=v.pair?`<div class="pair">${v.pair[i].map(([l,h])=>`<div><span>${l}</span>${h}</div>`).join('')}</div>`:`${v.hint?`<p class="hint">${v.hint[i]}</p>`:''}${v.cta[i]}`;
+    st.insertAdjacentHTML('beforeend',`<article class="card" aria-label="${v.tag} · ${s.n}단계 ${s.name}"><div class="top"><span>${s.n} / 5</span><em>${s.name}</em></div><div class="gauge"><i style="width:${s.n*20}%"></i></div><h3>${s.h}</h3><div class="bottom">${bottom}<p class="demo">${DEMO[i]}</p></div></article>`);
+  });
+  r.append(st);rows.append(r);
+});
+const tbl=document.getElementById('tbl');
+tbl.innerHTML='<tr><th>단계</th>'+V.map(v=>`<th>${v.tag}</th>`).join('')+'</tr>'+STEPS.map((s,i)=>'<tr><td>'+s.n+' · '+s.name+'</td>'+V.map(v=>{
+  if(v.pair)return '<td>'+v.pair[i].map(([l,h])=>l+' → '+h.replace(/<[^>]+>/g,'')).join('<br>')+'</td>';
+  return '<td>'+(v.hint?v.hint[i].replace(/<[^>]+>/g,'')+'<br>':'')+'<b>'+v.cta[i].replace(/<[^>]+>/g,'')+'</b></td>';}).join('')+'</tr>').join('');
+</script>
+</body>
+</html>

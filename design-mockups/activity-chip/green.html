@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>최근활동 초록</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398;--pg-on:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.wrap{max-width:1640px;margin:0 auto;padding:36px 16px 80px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:96ch;margin:10px 0 0;color:var(--pg-fg2)}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:18px}
+.tools span{font:600 12px var(--font-sans);color:var(--pg-fg3);margin-right:4px}
+.tools button{height:36px;padding:0 14px;border:0;border-radius:18px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);color:var(--pg-fg);font:600 12px var(--font-sans);cursor:pointer}
+.tools button[aria-pressed="true"]{box-shadow:inset 0 0 0 1.5px var(--pg-accent);color:var(--pg-accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;margin-top:22px}
+.tile{padding:16px;border-radius:20px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.tile h3{margin:0;display:flex;align-items:center;gap:8px;font:400 17px/1.4 var(--font-serif)}
+.tile h3 b{display:grid;place-items:center;min-width:28px;height:24px;padding:0 8px;border-radius:12px;background:var(--pg-accent);color:var(--pg-on);font:600 11px var(--font-sans)}
+.tile h3 b.now{background:var(--pg-line);color:var(--pg-fg2)}
+.tile h3 em{font:600 11px/1 var(--font-sans);font-style:normal;padding:4px 8px;border-radius:10px;background:var(--sky-100);color:var(--color-fg-accent-strong)}
+.tile p{margin:6px 0 12px;min-height:44px;font-size:12px;line-height:1.6;color:var(--pg-fg2)}
+.sw{display:flex;gap:12px;margin:0 0 12px}
+.sw span{display:flex;align-items:center;gap:6px;font:500 11px/1.4 ui-monospace,Menlo,monospace;color:var(--pg-fg3)}
+.sw i{width:16px;height:16px;border-radius:50%;box-shadow:inset 0 0 0 1px rgb(0 0 0 / .08)}
+.big{display:flex;align-items:center;justify-content:center;height:72px;margin-bottom:10px;border-radius:14px;background:linear-gradient(135deg,#C9B79E,#7F8C86)}
+.big .chip{position:static;transform:scale(1.6)}
+.row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.ctx{position:relative;aspect-ratio:3/4;border-radius:14px;overflow:hidden;background:var(--color-bg-muted)}
+.ctx .ph{position:absolute;inset:0;background:center 35%/cover}
+.ctx.blur .ph{inset:-20px;filter:blur(12px) saturate(1.1)}
+.ctx.paper{background:var(--paper);box-shadow:inset 0 0 0 1px var(--color-border-default)}
+.ctx.paper .nm{position:absolute;left:10px;top:40px;font:400 18px/1.3 var(--font-serif);color:var(--color-fg-primary)}
+.ctx.paper .mt{position:absolute;left:10px;top:66px;font:400 10px/1.4 var(--font-sans);color:var(--color-fg-muted)}
+.ctx small.cap{position:absolute;left:0;right:0;bottom:6px;text-align:center;font:500 10px/1 var(--font-sans);color:#fff;text-shadow:0 1px 4px rgb(0 0 0 / .4)}
+.ctx.paper small.cap{color:var(--pg-fg3);text-shadow:none}
+.spec{display:block;margin-top:10px;font:500 11px/1.5 ui-monospace,Menlo,monospace;color:var(--pg-fg3)}
+
+/* 칩: 색은 타일마다 --dot / --txt / --soft, 바탕 모양은 body.base-* */
+.chip{position:absolute;left:8px;top:8px;display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 8px;border-radius:12px;font:500 12px/1 var(--font-sans);white-space:nowrap;color:var(--txt)}
+.chip i{position:relative;flex:none;width:5px;height:5px;border-radius:50%;background:var(--dot)}
+.base-solid .chip{background:var(--soft)}
+.base-glass .chip{background:rgb(255 255 255 / .58);-webkit-backdrop-filter:blur(12px) saturate(150%);backdrop-filter:blur(12px) saturate(150%);box-shadow:inset 0 0 0 1px rgb(255 255 255 / .5)}
+.base-tint .chip{background:color-mix(in srgb,var(--soft) 72%,transparent);-webkit-backdrop-filter:blur(8px) saturate(140%);backdrop-filter:blur(8px) saturate(140%)}
+.glow .chip i{box-shadow:0 0 0 2px color-mix(in srgb,var(--dot) 22%,transparent),0 0 6px color-mix(in srgb,var(--dot) 60%,transparent)}
+.pulse .chip i::after{content:"";position:absolute;inset:-3px;border-radius:50%;background:var(--dot);opacity:.5;animation:pulse 2.4s ease-out infinite}
+@keyframes pulse{0%{transform:scale(.6);opacity:.5}70%,100%{transform:scale(1.9);opacity:0}}
+@media (prefers-reduced-motion:reduce){.pulse .chip i::after{animation:none;opacity:0}}
+</style>
+</head>
+<body class="base-glass">
+<div class="wrap">
+<p class="eyebrow">YAHWA · Activity Chip</p>
+<h1 class="title">최근활동 초록</h1>
+<p class="intro">지금 초록(세이지 500 #659482)은 회색빛이 돌아서 “지금 활동 중”이라는 신호가 약해요. 점은 더 쨍하게, 글자는 같은 계열의 진한 색으로 맞춰 읽기 쉬움(흰 바탕 5:1 이상)을 지켰어요. 위에서 칩 바탕 모양을 바꿔 가며 보세요.</p>
+<div class="tools"><span>칩 바탕</span><button data-base="glass" aria-pressed="true">흰 유리 (O3)</button><button data-base="tint">초록 유리</button><button data-base="solid">꽉 찬 연한 초록 (지금)</button>
+<span style="margin-left:12px">점</span><button data-fx="glow" aria-pressed="false">은은한 빛</button><button data-fx="pulse" aria-pressed="false">숨 쉬기</button></div>
+<div class="grid" id="grid"></div>
+</div>
+<script>
+const G=[
+ ['now','지금','세이지',' #659482','#3C6555','#EAF2EE','회색빛 세이지. 차분하지만 사진 위에서 초록으로 잘 안 읽혀요.','6.6:1'],
+ ['G1','G1','민트 그린','#2FBF84','#16724D','#E4F7EE','맑은 민트. 하늘색 강조와 함께 있어도 부딪히지 않고 청량한 무드에 가장 잘 맞아요.','5.9:1',true],
+ ['G2','G2','에메랄드','#12B76A','#067647','#E3F8EC','가장 “온라인” 신호답게 또렷한 초록. 앱 안의 다른 색보다 한 단계 튀어요.','5.7:1'],
+ ['G3','G3','라임 그린','#3DD47A','#15803D','#E6FAEE','밝고 가벼운 연두 쪽 초록. 점이 가장 밝게 빛나지만, 흰 바탕에서는 점이 옅어 보여요.','5.0:1'],
+ ['G4','G4','청록 그린','#26C6A0','#0B7A66','#E0F7F1','하늘빛이 섞인 초록. 앱의 하늘색과 가장 가까워 하나의 팔레트처럼 보여요.','5.3:1'],
+ ['G5','G5','점만 쨍하게','#22C55E','#3C6555','#EAF2EE','글자는 지금 세이지 그대로, 점만 선명한 초록. 변화는 가장 작고 신호만 살아요.','6.6:1'],
+];
+const ctx=(cls,src,cap)=>'<div class="ctx '+cls+'">'+(src?'<span class="ph" style="background-image:url('+src+')"></span>':'<span class="nm">하늘조각</span><span class="mt">28세 · 서울 마포구</span>')+'<span class="chip"><i></i>최근활동</span><small class="cap">'+cap+'</small></div>';
+document.getElementById('grid').innerHTML=G.map(([id,tag,t,dot,txt,soft,d,cr,rec])=>'<div class="tile" style="--dot:'+dot.trim()+';--txt:'+txt+';--soft:'+soft+'"><h3><b class="'+(id==='now'?'now':'')+'">'+tag+'</b>'+t+(rec?'<em>추천</em>':'')+'</h3><p>'+d+'</p><div class="sw"><span><i style="background:'+dot.trim()+'"></i>점 '+dot.trim()+'</span><span><i style="background:'+txt+'"></i>글자 '+txt+'</span></div><div class="big"><span class="chip"><i></i>최근활동</span></div><div class="row">'+ctx('blur','person-07-3.jpg','공개 전 카드')+ctx('','p3.jpg','밝은 사진')+ctx('paper','','프로필 바탕')+'</div><span class="spec">글자 대비 흰 바탕 '+cr+' · 연한 바탕 '+soft+'</span></div>').join('');
+document.querySelectorAll('[data-base]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-base]').forEach(x=>x.setAttribute('aria-pressed',x===b));document.body.classList.remove('base-glass','base-tint','base-solid');document.body.classList.add('base-'+b.dataset.base);});
+document.querySelectorAll('[data-fx]').forEach(b=>b.onclick=()=>{const on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);document.body.classList.toggle(b.dataset.fx,on);});
+</script>
+</body>
+</html>

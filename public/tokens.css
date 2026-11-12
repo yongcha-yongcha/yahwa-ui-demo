@@ -89,6 +89,18 @@
   --sage-800:#2B4D40;
   --sage-900:#1C362C;
   --sage-950:#13261E;
+  /* Mint · 최근활동 (2026-11-13, 시안 “최근활동 초록” G4 청록 그린: 400 = 점, 700 = 글자) */
+  --mint-50:#DFFBF3;
+  --mint-100:#C1F3E4;
+  --mint-200:#99E8D0;
+  --mint-300:#67D8B8;
+  --mint-400:#26C6A0;
+  --mint-500:#09AB8A;
+  --mint-600:#029177;
+  --mint-700:#0B7A66;
+  --mint-800:#075D4E;
+  --mint-900:#074237;
+  --mint-950:#072D26;
 
   /* Orange */
   --orange-50:#FEF1E6;
@@ -168,8 +180,8 @@
   --color-fg-chevron:var(--cool-neutral-300);
   --color-fg-field-off:var(--cool-neutral-400);
   --color-fg-valid:var(--sage-600);
-  --color-fg-activity:var(--sage-700);
-  --color-fg-activity-dot:var(--sage-500);
+  --color-fg-activity:var(--mint-700);
+  --color-fg-activity-dot:var(--mint-400);
 
   /* 배경 */
   --color-bg-accent:var(--sky-500);
@@ -200,7 +212,7 @@
   --color-bg-icon:var(--cool-neutral-50);
   --color-bg-field-off:var(--cool-neutral-50);
   --color-bg-field-clear:var(--cool-neutral-300);
-  --color-bg-activity:var(--sage-50);
+  --color-bg-activity:var(--mint-50);
   --color-bg-surface:var(--white);
 
   /* 테두리 */
@@ -319,6 +331,31 @@
   --color-cert-work:var(--sage-600);
 
   /* Component · 인연 카드 */
+  /* Match Reveal · 인연 공개 전 · 열기 전 · 열기 모션 (reveal.js, 사용자 조정값 2026-11-11) */
+  --reveal-blob-speed:11s;
+  --reveal-blob-opacity:.6;
+  --reveal-lock-blur:17px;
+  --reveal-ready-blur:14px;
+  --reveal-breath-amp:6px;
+  --reveal-breath-speed:4s;
+  --reveal-clear-ms:1200;
+  --reveal-scale-from:1.01;
+  --reveal-scale-to:1.06;
+  --reveal-zoom-ms:1850;
+  --reveal-develop:.06;
+  --reveal-ease:cubic-bezier(0.23, 1, 0.32, 1);
+  --reveal-info-delay:650;
+  --reveal-info-gap:70;
+  --reveal-info-rise:16px;
+  --reveal-info-blur:6px;
+  --reveal-info-ms:900;
+  --reveal-blob-1:color-mix(in srgb,var(--sky-300) 85%,transparent);
+  --reveal-blob-2:color-mix(in srgb,var(--rose-300) 85%,transparent);
+  --reveal-blob-3:color-mix(in srgb,var(--gold-200) 90%,transparent);
+  --reveal-blob-4:color-mix(in srgb,var(--sage-300) 85%,transparent);
+  --reveal-btn-bg:color-mix(in srgb,var(--white) 92%,transparent);
+  --reveal-btn-fg:var(--color-fg-primary);
+  --reveal-btn-h:52px;
   --card-blur-size:40px;
   --card-blur-start:59%;
   --card-blur-length:30%;
@@ -339,8 +376,9 @@
   --gnb-saturate:170%;
   --gnb-shadow:0 8px 24px color-mix(in srgb,var(--cool-neutral-800) 14%,transparent);
   --gnb-selected-bg:color-mix(in srgb,var(--sky-100) 72%,transparent);
-  --gnb-selected-height:48px;
-  --gnb-selected-radius:24px;
+  --gnb-selected-height:54px;
+  --gnb-selected-radius:27px;
+  --gnb-inset:4px;
   --gnb-icon:var(--cool-neutral-800);
   --gnb-icon-size:24px;
   --gnb-icon-active:var(--sky-600);
@@ -353,6 +391,17 @@
   --gnb-badge-bg:var(--red-500);
   --gnb-badge-ring:1px;
   --gnb-clearance:calc(var(--gnb-height) + var(--gnb-margin-bottom) + var(--space-12));
+
+  /* Profile Action · 상대 프로필 좌우 동그라미 버튼 (왼쪽 관심 하트 · 오른쪽 편지) */
+  --action-size:56px;
+  --action-icon-size:26px;
+  --action-love-bg:var(--rose-400);
+  --action-love-fly:var(--rose-500);  /* 하트가 동그라미 밖으로 튀는 동안의 색 */
+  --action-letter-bg:var(--color-bg-button-primary);
+  --action-off-bg:var(--color-bg-muted);  /* 보낸 뒤 비활성처럼 */
+  --action-off-ink:var(--cool-neutral-400);
+  --action-love-shadow:0 6px 16px color-mix(in srgb,var(--rose-500) 30%,transparent);
+  --action-letter-shadow:0 6px 16px color-mix(in srgb,var(--sky-700) 26%,transparent);
 
   /* Spacing · 기본 4의 배수. 불가피할 때만 2의 배수 예외(*). 홀수는 쓰지 않습니다. */
   --space-0:0;
@@ -441,6 +490,12 @@
   --story-card-1:var(--sky-50);--story-card-2:var(--rose-50);--story-card-3:var(--gold-50);
   --story-card-w:196px;
   --story-card-h:220px;
+  /* 노트 항목 눌림 (시안 "이야기 노트 눌림" B 바탕 깔림): 누르는 동안 항목이 함께 작아지고 뒤에 옅은 바탕 */
+  --story-press-scale:.97;
+  --story-press-in:120ms;
+  --story-press-out:220ms;
+  --story-press-ease:cubic-bezier(0.23, 1, 0.32, 1);
+  --story-press-bg:var(--color-bg-muted);
   --story-rule:var(--sky-100);
   --story-draft-bg:var(--color-bg-gold-soft);
   --story-ex-chip-bg:var(--color-bg-muted);
@@ -463,6 +518,58 @@
   --toast-radius:10px;
   --toast-bg:var(--color-bg-inverse);
   --toast-fg:var(--color-fg-inverse);
+  /* Hashtags · 해시태그 고르기 (주제 탭 · 칩 한 종류 · 아래 개수) */
+  --tag-chip-h:36px;
+  --tag-chip-bg:var(--color-bg-surface);
+  --tag-chip-line:var(--color-border-control);
+  --tag-chip-fg:var(--color-fg-primary);
+  --tag-chip-on-bg:var(--sky-600);
+  --tag-chip-on-fg:var(--white);
+  --tag-tab-w:68px;
+  --tag-tile:40px;
+  --tag-tile-1:var(--color-bg-subtle);
+  --tag-tile-2:var(--color-bg-love-soft);
+  --tag-tile-3:var(--color-bg-gold-soft);
+  --tag-tile-icon:var(--color-fg-accent);
+  --tag-tile-rec:var(--sky-600);
+  --tag-tile-ring:var(--color-fg-primary);
+  --tag-badge-bg:var(--sky-600);
+  --tag-tab-fg:var(--color-fg-tertiary);
+  --tag-tab-on-fg:var(--color-fg-primary);
+  --tag-dot-off:var(--color-bg-muted);
+  --tag-dot-on:var(--sky-600);
+  /* Profile Facts · 소개 미리보기 나의 정보 (preview.js) */
+  --fact-name-size:30px;
+  --fact-tag-size:14px;
+  --fact-key-value-size:15px;
+  --fact-job-size:var(--fact-key-value-size);
+  --fact-qa-gap:48px;
+  --fact-photo-gap-top:32px;
+  --fact-photo-gap-bottom:40px;
+  --fact-key-bg:var(--color-bg-surface);
+  --fact-key-radius:20px;
+  --fact-key-icon:var(--color-fg-accent);
+  --fact-key-label:var(--color-fg-subtle);
+  --fact-divider:var(--color-border-default);
+  --fact-tile-h:56px;
+  --fact-tile-radius:16px;
+  --fact-pencil-soft:.68;
+  --photo-dot:6px;
+  --photo-dot-on-w:16px;
+  --photo-dot-gap:6px;
+  --photo-dot-on:var(--white);
+  --photo-dot-off:color-mix(in srgb,var(--white) 55%,transparent);
+  --photo-dot-shadow:0 0 4px color-mix(in srgb,var(--cool-neutral-900) 35%,transparent);
+  --fact-pencil-1:var(--sky-300);
+  --fact-pencil-1-fg:var(--sky-700);
+  --fact-pencil-2:var(--rose-300);
+  --fact-pencil-2-fg:var(--rose-700);
+  --fact-pencil-3:var(--gold-300);
+  --fact-pencil-3-fg:var(--gold-700);
+  --fact-pencil-4:var(--sage-300);
+  --fact-pencil-4-fg:var(--sage-700);
+  --ic-map-pin-fill:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8.96498 19.9C7.15898 18.21 5.61195 16.2 4.73695 13.92C4.25295 12.69 4.00697 11.37 4.00197 10C3.99797 7.9 4.84193 5.84997 6.34193 4.33997C7.84293 2.83997 9.87798 2.02002 11.999 2.02002C14.124 2.02002 16.159 2.83997 17.655 4.33997C19.16 5.84997 20.004 7.9 20 10C20 13.88 17.8099 17.35 15.0369 19.9C14.2609 20.63 13.4309 21.27 12.5549 21.86C12.2179 22.09 11.78 22.09 11.447 21.86C10.566 21.27 9.73598 20.63 8.96498 19.9ZM9.23396 7.85999C8.59096 9.35999 9.30695 11.14 10.8309 11.78C12.3589 12.42 14.12 11.6901 14.763 10.1801C15.406 8.68005 14.694 6.90001 13.166 6.26001C11.643 5.62001 9.88196 6.30999 9.23396 7.85999Z'/%3E%3C/svg%3E");
+  --ic-check:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-1 -3 16 16'%3E%3Cpath d='M 12.292866706848145 0.2928045690059662 C 12.683429718017578 -0.09756267070770264 13.316489160060883 -0.09764036536216736 13.706929206848145 0.2928045690059662 C 14.097296684980392 0.6833676695823669 14.097373902797699 1.3164264261722565 13.706929206848145 1.7068670988082886 L 5.7069292068481445 9.702960968017578 C 5.316394060850143 10.093300133943558 4.683326035737991 10.09336268901825 4.2928667068481445 9.702960968017578 L 0.2928665280342102 5.702960968017578 C -0.09763997793197632 5.312454879283905 -0.09760436415672302 4.6794271767139435 0.2928665280342102 4.288898468017578 C 0.6833907961845398 3.898374319076538 1.3164047002792358 3.898374319076538 1.7069289684295654 4.288898468017578 L 4.9998979568481445 7.581867218017578 L 12.292866706848145 0.2928045690059662 Z'/%3E%3C/svg%3E");
   /* Close Button · 시트 오른쪽 위 닫기 */
   --close-size:32px;
   --close-icon:20px;
@@ -475,6 +582,107 @@
   --photo-sheet-row:52px;
   --photo-sheet-thumb-w:42px;
   --photo-sheet-thumb-h:56px;
+  /* 상대 프로필 더보기 시트 (시안 "더보기를 페이지 대신 모달로" A): 사진 관리 시트 틀에 신고 사유 고르기만 더해요 */
+  --person-sheet-reason-row:48px;
+  --person-sheet-radio:20px;
+  --person-sheet-etc-h:76px;
+  /* 인연 홈 제목 줄 도구 (시안 "리프와 추천 설정을 제자리에" A): 리프 · 추천 설정을 제목 줄 오른쪽에 같은 모양으로 나란히 */
+  --home-tool-hit:44px;
+  --home-tool-top:28px;
+  --home-tool-fg:var(--color-fg-secondary);
+  --home-tool-icon:20px;
+  --home-tool-filter-icon:22px;
+  /* 인연 넘김 표시 (시안 "01 / 08을 조금 더 다정하게" A 숫자만 가볍게, 16px) */
+  --pager-label-size:16px;
+  --pager-label-fg:var(--color-fg-muted);
+  --pager-label-cur-fg:var(--color-fg-primary);
+  --pager-gap:12px;
+  --pager-count-w:56px;
+  --pager-arrow:20px;
+  /* 취향 설정 · 추천 설정 시트 · 맞춤 인연 추천 (시안 "필터는 모달로, 두 페이지는 새로") */
+  --chip-h:36px;
+  --chip-radius:18px;
+  --chip-on-bg:var(--color-bg-subtle);
+  --chip-on-border:var(--color-border-accent);
+  --chip-on-fg:var(--color-fg-accent-strong);
+  --range-thumb:26px;
+  --range-track:4px;
+  --pf-sec-gap:28px;
+  --cm-card-w:292px;
+  --cm-photo-h:236px;
+  --cm-photo-blur:18px;
+  /* 호감 칩이 처음 생길 때 (시안 "자리부터 부드럽게, 칩은 그다음에" 1번) */
+  --love-chip-grow:260ms;
+  --love-chip-ease:cubic-bezier(0.23, 1, 0.32, 1);
+  --love-chip-in:200ms;
+  --love-chip-in-at:.6;
+  --love-chip-rise:4px;
+  /* 커뮤니티 (시안 “공감은 아이콘으로, 부가 기능은 더보기로”: 목록 A · 상세 A · 글쓴이 M2 · 교환 요청 S2 → X3) */
+  --cx-icon:20px;
+  --cx-count:13px;
+  --cx-act-h:40px;
+  --cx-like-on:var(--color-fg-love);
+  --cx-body:15px;
+  --cx-body-lg:16px;
+  --cx-author-ring:var(--color-fg-accent);
+  --cx-feed-gap:16px;
+  --cx-meta-gap:6px;
+  /* 마음함 빈 화면 (시안 “비어 있을 때도 다음 걸음을” A 조용하게) */
+  --he-icon:44px;
+  --he-icon-fg:var(--color-border-strong);
+  --he-min-h:360px;
+  /* 편지 세부 (시안 “편지는 그대로, 둘레를 가볍게” L2) */
+  --lt-avatar:44px;
+  /* Notice · 알림 종 · 새로운 소식 (시안 “새로운 소식” 종 · 점 + N1) */
+  --nt-icon:40px;
+  --nt-unread-bg:color-mix(in srgb,var(--sky-50) 80%,transparent);
+  /* Dock · 아래 고정 버튼 영역 (시안 “하단 버튼 영역” D1 · F1) */
+  --btn-disabled-bg:var(--cool-neutral-100);
+  --btn-disabled-fg:var(--color-fg-muted);
+  --dock-fade:40px;
+  --dock-fade-lg:48px;
+  /* Exchange · 이야기에서 시작한 인연 (시안 X1 컴팩트 목록) */
+  --xc-avatar:40px;
+  --xc-row-pad:16px;
+  --xc-pill-h:36px;
+  /* Tab Title · 하단 메뉴 다섯 탭 제목 (인연 홈 기준: 고운바탕 26 / 줄 40, 가운데가 화면 위에서 50) */
+  --tab-title-size:26px;
+  --tab-title-lh:40px;
+  /* My Page · 마이페이지 (시안 M1 정돈된 목록) */
+  --mp-avatar:72px;
+  --mp-row-h:52px;
+  --mp-card-radius:16px;
+  --mp-sec-gap:24px;
+  /* Home Fit · 인연 홈 아래부터 맞춤 (시안 “인연 홈 화면 맞춤” F) */
+  --home-pager-gnb-gap:16px;
+  --home-card-pager-gap:12px;
+  --home-pager-h:16px;
+  --home-card-max-ratio:1.65;
+  --home-card-min-h:400px;
+  --home-deck-gap:20px;
+  /* 가려진 인연 다시 보기 시트 썸네일 흐림 */
+  --ro-thumb-blur:6px;
+  /* Sheet Row 상태 레이어 (시안 “시트 행 눌림 상태” P1) */
+  --sheet-row-radius:16px;
+  --sheet-row-layer-hover:var(--cool-neutral-50);
+  --sheet-row-layer-press:color-mix(in srgb,var(--cool-neutral-100) 70%,var(--cool-neutral-50));
+  --sheet-row-press-scale:.98;
+  /* Page Header · 기능 화면 공용 머리 (가운데 제목 · 스크롤하면 흐림, 상대 프로필 머리와 같은 흐림) */
+  --page-head-title-size:16px;
+  --page-head-side:88px;
+  --page-head-offset:80px;
+  --page-head-fade-h:100px;
+  --head-glass-blur:10px;
+  /* 프로필 수정 (시안 C 채워 가는 노트) */
+  --pe-ring:48px;
+  --pe-ring-stroke:4px;
+  --pe-done-radius:16px;
+  --pe-done-bg:var(--color-bg-subtle);
+  --pe-card-radius:16px;
+  --pe-row-h:52px;
+  --pe-slot-radius:12px;
+  --pe-photo-gap:8px;
+  --pe-sec-gap:24px;
   --ic-star:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1.97607C12.3793 1.97607 12.7264 2.19036 12.8955 2.52979L15.6612 8.08154L22.1416 9.01123C22.5168 9.06505 22.8299 9.32629 22.9492 9.68604C23.0685 10.046 22.974 10.4431 22.7051 10.7104L18.0703 15.3179L18.9864 20.8306C19.0479 21.2016 18.8965 21.5761 18.5938 21.7993C18.291 22.0225 17.888 22.0568 17.5518 21.8882L12 19.1011L6.44827 21.8882C6.11202 22.0568 5.70907 22.0225 5.40627 21.7993C5.10357 21.5761 4.95219 21.2016 5.0137 20.8306L5.92873 15.3179L1.29495 10.7104C1.02608 10.4431 0.931503 10.046 1.0508 9.68604C1.17019 9.32629 1.4832 9.06505 1.85842 9.01123L8.33791 8.08154L11.1045 2.52979L11.1768 2.40869C11.3616 2.14036 11.6683 1.97607 12 1.97607ZM9.89553 9.44287C9.74906 9.73684 9.46674 9.94019 9.14163 9.98682L4.12698 10.7056L7.7051 14.2642C7.93462 14.4924 8.03939 14.8179 7.98635 15.1372L7.30764 19.2183L11.5518 17.0894L11.6592 17.0425C11.9158 16.9495 12.2013 16.9655 12.4483 17.0894L16.6914 19.2183L16.0137 15.1372C15.9607 14.8179 16.0654 14.4924 16.2949 14.2642L19.8721 10.7056L14.8584 9.98682C14.5333 9.94019 14.251 9.73684 14.1045 9.44287L12 5.21924L9.89553 9.44287Z'/%3E%3C/svg%3E");
   --ic-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20.0029 17.4419L17.3027 14.7251L17.2363 14.6724C17.0725 14.5677 16.846 14.5854 16.7031 14.7251L15.709 15.7251L15.7061 15.728C14.7638 16.6668 13.2381 16.6668 12.2959 15.728L12.2939 15.7261L9.29492 12.7183C9.1332 12.5573 8.87072 12.5573 8.70898 12.7183L4.00293 17.4429V18.9897C4.00293 19.567 4.43874 19.9897 5.00098 19.9897H19.001C19.5651 19.9897 20.0029 19.5641 20.0029 18.9897V17.4419ZM15.2051 6.00049C16.2155 6.10459 17.0038 6.96835 17.0039 7.98975C17.0039 9.08295 16.1133 10.0004 15 10.0005C13.8802 10.0005 13.001 9.07643 13.001 7.98975C13.0011 6.90668 13.8867 5.98975 15 5.98975L15.2051 6.00049ZM20.0029 4.97998C20.0029 4.46552 19.5752 4.02004 19.001 4.02002H5.00098C4.42869 4.02002 4.00293 4.46261 4.00293 4.97998V14.6079L7.29395 11.3042L7.29688 11.3013C8.18014 10.4213 9.57608 10.3663 10.5234 11.1362L10.707 11.3013L10.709 11.3042L13.708 14.312L13.7725 14.3647C13.9333 14.4705 14.1524 14.4528 14.2939 14.312L15.2949 13.3052L15.3047 13.2954C16.1866 12.4327 17.5736 12.3784 18.5186 13.1333L18.7012 13.2954L18.7109 13.3052L20.0029 14.605V4.97998ZM22.0029 18.9897C22.0029 20.6954 20.6428 21.9897 19.001 21.9897H5.00098C3.35521 21.9897 2.00293 20.6925 2.00293 18.9897V4.97998C2.00293 3.31735 3.36526 2.02002 5.00098 2.02002H19.001C20.6327 2.02004 22.0029 3.31447 22.0029 4.97998V18.9897Z'/%3E%3C/svg%3E");
   --ic-trash:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M17 6.98682H7V18.9868C7 19.5357 7.45844 19.9937 8 19.9937H16C16.5483 19.9937 17 19.539 17 18.9868V6.98682ZM15 4.98291C14.9999 4.43084 14.5483 3.97607 14 3.97607H10C9.45844 3.97607 9.00007 4.43411 9 4.98291V4.98682H15V4.98291ZM17 4.98682H20C20.5522 4.98682 20.9999 5.43464 21 5.98682C21 6.5391 20.5523 6.98682 20 6.98682H19V18.9868C19 20.6247 17.6717 21.9937 16 21.9937H8C6.34156 21.9937 5 20.6279 5 18.9868V6.98682H4C3.44772 6.98682 3 6.5391 3 5.98682C3.00013 5.43464 3.4478 4.98682 4 4.98682H7V4.98291C7.00007 3.34182 8.34164 1.97607 10 1.97607H14C15.6716 1.97607 16.9999 3.34509 17 4.98291V4.98682Z'/%3E%3C/svg%3E");

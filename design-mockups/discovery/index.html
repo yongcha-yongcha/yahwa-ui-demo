@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>인연 공개 모션</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="tokens.css">
+<style>
+/* 레이아웃: 왼쪽 휴대폰(상태 탭 + 화면), 오른쪽 조절판. 좁은 화면에서는 위아래로 쌓임 */
+:root{
+  --pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398;--pg-accent-soft:#E3EFF7;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-accent-soft:#1D3747;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-accent-soft:#1D3747;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button,select,input{font:inherit;color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding-block:36px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif);text-wrap:balance}
+.intro{max-width:66ch;margin:10px 0 0;color:var(--pg-fg2)}
+.stage{display:flex;flex-wrap:wrap;gap:32px;margin-top:28px;align-items:flex-start}
+.left{flex:0 1 390px;min-width:0;display:flex;flex-direction:column;gap:12px}
+.seg{display:flex;padding:4px;border-radius:14px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.seg button{flex:1;height:40px;border:0;border-radius:10px;background:none;font-size:13px;font-weight:500;color:var(--pg-fg3);cursor:pointer}
+.seg button[aria-selected=true]{background:var(--pg-accent-soft);color:var(--pg-accent);font-weight:600}
+.seg button:focus-visible,.tool:focus-visible{outline:2px solid var(--pg-accent);outline-offset:2px}
+.note{margin:0;font-size:12px;color:var(--pg-fg3)}
+.panel{flex:1 1 360px;min-width:0;display:flex;flex-direction:column;gap:16px}
+.group{padding:20px;border-radius:18px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.group h2{margin:0 0 4px;font-size:14px;font-weight:600}
+.group p.sub{margin:0 0 12px;font-size:12px;color:var(--pg-fg3)}
+.row{display:grid;grid-template-columns:minmax(0,1fr) 72px;gap:4px 12px;align-items:center;padding:8px 0}
+.row label{font-size:13px;color:var(--pg-fg2)}
+.row output{font-size:12px;text-align:right;color:var(--pg-fg);font-variant-numeric:tabular-nums}
+.row input[type=range]{grid-column:1/-1;width:100%;accent-color:var(--pg-accent)}
+.row select{grid-column:1/-1;height:40px;padding:0 10px;border-radius:10px;border:1px solid var(--pg-line);background:var(--pg-surface)}
+.tools{display:flex;flex-wrap:wrap;gap:8px}
+.tool{height:44px;padding:0 16px;border:0;border-radius:12px;background:var(--pg-accent);color:#fff;font-weight:600;cursor:pointer}
+.tool.ghost{background:var(--pg-surface);color:var(--pg-fg);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.copied{font-size:12px;color:var(--pg-accent);align-self:center}
+
+/* ───────── 휴대폰 안 (앱 토큰) ───────── */
+.phone{position:relative;width:100%;max-width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--color-bg-page);box-shadow:0 0 0 1px var(--pg-line),0 16px 40px rgb(0 0 0 / .12);color:var(--color-fg-primary);isolation:isolate}
+.scr{position:absolute;inset:0;display:flex;flex-direction:column;padding:20px 20px 0;background:linear-gradient(180deg,color-mix(in srgb,var(--sky-50) 90%,transparent),var(--color-bg-page) 26%)}
+.hd{display:flex;align-items:flex-start;justify-content:space-between;padding-top:16px}
+.hd h2{margin:0;font:400 28px/1.3 var(--font-serif);letter-spacing:-.5px}
+.hd small{display:block;margin-top:6px;font-size:12px;color:var(--color-fg-tertiary)}
+.leaf{display:flex;align-items:center;gap:4px;height:44px;font-size:12px;color:var(--color-fg-tertiary)}
+.leaf svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+.card{position:relative;flex:none;height:540px;margin-top:20px;border-radius:22px;overflow:hidden;isolation:isolate;background:var(--color-bg-notice);cursor:default}
+.ph,.ph2{position:absolute;inset:-36px;background-size:cover;background-position:50% 38%;will-change:filter,transform}
+.ph{filter:blur(var(--b-now,0px)) saturate(var(--sat,1)) brightness(var(--bri,1))}
+.ph2{opacity:0;filter:blur(calc(var(--b-now,0px) + var(--breath-amp)));pointer-events:none}
+.card[data-state=ready] .ph2{animation:breathe calc(var(--breath-spd) * 1s) ease-in-out infinite alternate}
+@keyframes breathe{from{opacity:0}to{opacity:1}}
+.blobs{position:absolute;inset:0;pointer-events:none;opacity:var(--blob-op);transition:opacity 400ms ease}
+.card[data-state=ready] .blobs{opacity:calc(var(--blob-op) * .6)}
+.blob{position:absolute;width:82%;aspect-ratio:1;border-radius:50%;filter:blur(30px);will-change:transform}
+.blob.b1{left:-22%;top:-12%;background:radial-gradient(circle,color-mix(in srgb,var(--sky-300) 85%,transparent),transparent 66%);animation:d1 calc(var(--spd) * 1s) ease-in-out infinite alternate}
+.blob.b2{right:-26%;top:18%;background:radial-gradient(circle,color-mix(in srgb,var(--rose-300) 85%,transparent),transparent 66%);animation:d2 calc(var(--spd) * 1.3s) ease-in-out infinite alternate}
+.blob.b3{left:-10%;bottom:-18%;background:radial-gradient(circle,color-mix(in srgb,var(--gold-200) 90%,transparent),transparent 66%);animation:d3 calc(var(--spd) * .85s) ease-in-out infinite alternate}
+.blob.b4{right:-18%;bottom:-8%;background:radial-gradient(circle,color-mix(in srgb,var(--sage-300) 85%,transparent),transparent 66%);animation:d4 calc(var(--spd) * 1.15s) ease-in-out infinite alternate}
+@keyframes d1{from{transform:translate(0,0) scale(1)}to{transform:translate(34%,22%) scale(1.18)}}
+@keyframes d2{from{transform:translate(0,0) scale(1.1)}to{transform:translate(-30%,26%) scale(.92)}}
+@keyframes d3{from{transform:translate(0,0) scale(.95)}to{transform:translate(28%,-30%) scale(1.15)}}
+@keyframes d4{from{transform:translate(0,0) scale(1.05)}to{transform:translate(-26%,-24%) scale(.9)}}
+.scrim{position:absolute;inset:auto 0 0 0;height:58%;background:linear-gradient(transparent,color-mix(in srgb,var(--cool-neutral-950) 62%,transparent));opacity:0;pointer-events:none}
+.card[data-state=ready] .scrim{opacity:.55}
+.card[data-state=open] .scrim{opacity:1}
+.chip{position:absolute;z-index:3;left:16px;top:16px;display:flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:14px;background:color-mix(in srgb,var(--white) 88%,transparent);font-size:12px;font-weight:500;color:var(--sage-700)}
+.chip i{width:6px;height:6px;border-radius:50%;background:var(--sage-500)}
+
+.layer{position:absolute;inset:0;z-index:2;display:none;color:var(--white)}
+.card[data-state=locked] .lock,.card[data-state=ready] .ready,.card[data-state=open] .open{display:flex}
+/* 공개 전 */
+.lock{flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;text-shadow:0 1px 8px color-mix(in srgb,var(--cool-neutral-950) 25%,transparent)}
+.lock .t{font:600 34px/1.2 var(--font-sans);letter-spacing:.5px;font-variant-numeric:tabular-nums}
+.lock .s{font-size:15px;font-weight:500}
+.lock .r{margin-top:8px;padding:4px 12px;border-radius:12px;background:color-mix(in srgb,var(--white) 22%,transparent);font-size:12px;font-variant-numeric:tabular-nums}
+/* 열기 전 */
+.ready{flex-direction:column;justify-content:flex-end;padding:0 20px 20px}
+.ready .arr{position:absolute;top:22px;left:0;right:0;text-align:center;font-size:12px;font-weight:500;letter-spacing:.2px;text-shadow:0 1px 6px color-mix(in srgb,var(--cool-neutral-950) 30%,transparent)}
+.ready .scene small{display:block;font-size:12px;opacity:.85}
+.ready .scene p{margin:4px 0 0;font-size:15px;line-height:1.6;font-weight:500;word-break:keep-all}
+.openbtn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;height:52px;margin-top:16px;border:0;border-radius:16px;background:color-mix(in srgb,var(--white) 92%,transparent);color:var(--color-fg-primary);font-size:15px;font-weight:600;cursor:pointer;box-shadow:0 6px 20px color-mix(in srgb,var(--cool-neutral-950) 18%,transparent);transition:transform 120ms ease-out}
+.openbtn:active{transform:scale(.97)}
+.openbtn:focus-visible{outline:2px solid var(--white);outline-offset:3px}
+.openbtn .ic{width:18px;height:18px;background:currentColor;-webkit-mask:var(--ic-chevron-right) center/contain no-repeat;mask:var(--ic-chevron-right) center/contain no-repeat}
+/* 열린 뒤 */
+.open{flex-direction:column;justify-content:flex-end;padding:0 20px 24px}
+.open .nm{font:600 24px/1.35 var(--font-sans);letter-spacing:-.3px}
+.open .mt{margin-top:4px;font-size:14px;opacity:.88}
+.open .tg{display:flex;gap:10px;margin-top:8px;font-size:13px;opacity:.88}
+.open .sc{margin:12px 0 0;font-size:14px;line-height:1.6;opacity:.92;word-break:keep-all}
+.pager{display:flex;align-items:center;justify-content:center;gap:40px;height:64px;font:500 26px/1 var(--font-sans);color:var(--color-fg-secondary);font-variant-numeric:tabular-nums}
+.pager span{width:20px;height:20px;background:var(--color-fg-tertiary);-webkit-mask:var(--ic-chevron-right) center/contain no-repeat;mask:var(--ic-chevron-right) center/contain no-repeat}
+.pager span.l{transform:scaleX(-1);opacity:.4}
+.gnb{position:absolute;left:20px;right:20px;bottom:20px;height:64px;display:flex;align-items:center;justify-content:space-around;border-radius:32px;background:color-mix(in srgb,var(--white) 92%,transparent);box-shadow:0 4px 18px color-mix(in srgb,var(--cool-neutral-900) 8%,transparent)}
+.gnb svg{width:24px;height:24px;fill:none;stroke:var(--color-fg-secondary);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.gnb .on{display:grid;place-items:center;width:64px;height:44px;border-radius:22px;background:var(--color-bg-notice)}
+.gnb .on svg{fill:var(--color-fg-accent-strong);stroke:none}
+.gnb .me{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--sky-200),var(--rose-200))}
+
+@media (prefers-reduced-motion:reduce){
+  .blob,.card[data-state=ready] .ph2{animation:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">YAHWA · 인연 홈 · 모션 시안</p>
+  <h1 class="title">인연이 열리는 순간</h1>
+  <p class="intro">공개 전에는 흐린 사진 위로 파스텔 빛이 몽글몽글 흘러가고, 공개 시간이 되면 "인연 열어보기" 버튼이 생겨요. 버튼을 누르면 문처럼 넘어가던 지금 모션 대신, 흐림이 천천히 걷히면서 사진이 살짝 다가와요. 오른쪽 값을 움직이면 바로 반영되고, "열 때"는 다시 보기로 확인할 수 있어요.</p>
+
+  <div class="stage">
+    <div class="left">
+      <div class="seg" role="tablist" aria-label="카드 상태">
+        <button type="button" role="tab" id="t-locked" aria-selected="false" data-s="locked">공개 전</button>
+        <button type="button" role="tab" id="t-ready" aria-selected="true" data-s="ready">열기 전</button>
+        <button type="button" role="tab" id="t-open" aria-selected="false" data-s="open">열 때</button>
+      </div>
+      <div class="phone" id="phone">
+        <div class="scr">
+          <div class="hd"><div><h2>오늘의 인연</h2><small>매일 12시 · 15시 · 18시 · 21시, 두 명씩</small></div><span class="leaf"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19C1 7 12 3 21 3c0 11-6 18-14 14M4 21 16 9"/></svg>90</span></div>
+          <div class="card" id="card" data-state="ready">
+            <div class="ph" id="ph"></div>
+            <div class="ph2" id="ph2"></div>
+            <div class="blobs" id="blobs" aria-hidden="true"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i><i class="blob b4"></i></div>
+            <div class="scrim" id="scrim"></div>
+            <span class="chip"><i aria-hidden="true"></i>최근활동</span>
+            <div class="layer lock" role="group" aria-label="15시 공개 예정"><span class="t">15:00</span><span class="s">공개 예정</span><span class="r">2시간 14분 뒤에 만나요</span></div>
+            <div class="layer ready" id="readyLayer">
+              <span class="arr">12:00에 도착한 인연</span>
+              <div class="scene"><small>이 사람의 한 장면</small><p>주말 아침에는 커피 한 잔을 들고 동네를 걷거나 작은 서점에 들러요.</p></div>
+              <button type="button" class="openbtn" id="openbtn">인연 열어보기<i class="ic" aria-hidden="true"></i></button>
+            </div>
+            <div class="layer open" id="openLayer" aria-live="polite">
+              <span class="nm">봄빛, 26</span>
+              <span class="mt">서울 마포구</span>
+              <span class="tg"><span>#산책메이트</span><span>#독서취향</span><span>#다정한사람</span></span>
+              <p class="sc">주말 아침에는 커피 한 잔을 들고 동네를 걷거나 작은 서점에 들러요.</p>
+            </div>
+          </div>
+          <div class="pager" aria-hidden="true"><span class="l"></span>01 / 08<span></span></div>
+        </div>
+        <nav class="gnb" aria-hidden="true">
+          <span class="on"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="8" rx="2"/><rect x="14" y="3" width="7" height="8" rx="2"/><rect x="3" y="15" width="7" height="6" rx="2"/><rect x="14" y="15" width="7" height="6" rx="2"/></svg></span>
+          <svg viewBox="0 0 32 32"><path d="M16 26C12 23 4.5 17.5 5 11.3C5.4 5.5 12.2 5.5 15.6 12.2C18.1 5.2 25.8 4.9 27 10.8C28.1 16.1 21.6 23.1 16 26Z"/></svg>
+          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M5 4h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-5 3v-3H3V6a2 2 0 0 1 2-2Z"/><path d="M7 9h10M7 13h6"/></svg>
+          <span class="me"></span>
+        </nav>
+      </div>
+      <p class="note">휴대폰 안의 "인연 열어보기"를 눌러도 열려요. 움직임 줄이기 설정이면 흐림만 부드럽게 걷혀요.</p>
+    </div>
+
+    <aside class="panel" aria-label="모션 조절">
+      <section class="group">
+        <h2>공개 전 · 열기 전 분위기</h2>
+        <p class="sub">흐린 사진 위에 파스텔 빛 네 덩이가 천천히 떠다녀요. 열기 전에는 흐림이 숨 쉬듯 살짝 오가요.</p>
+        <div class="row"><label for="spd">몽글 속도 (한 번 흐르는 시간)</label><output for="spd" id="o-spd"></output><input type="range" id="spd" min="6" max="30" step="1"></div>
+        <div class="row"><label for="blob">몽글 진하기</label><output for="blob" id="o-blob"></output><input type="range" id="blob" min="0" max="100" step="5"></div>
+        <div class="row"><label for="lockB">사진 흐림 · 공개 전</label><output for="lockB" id="o-lockB"></output><input type="range" id="lockB" min="8" max="44" step="1"></div>
+        <div class="row"><label for="readyB">사진 흐림 · 열기 전</label><output for="readyB" id="o-readyB"></output><input type="range" id="readyB" min="4" max="32" step="1"></div>
+        <div class="row"><label for="bAmp">숨쉬는 흐림 폭</label><output for="bAmp" id="o-bAmp"></output><input type="range" id="bAmp" min="0" max="14" step="1"></div>
+        <div class="row"><label for="bSpd">숨쉬는 속도</label><output for="bSpd" id="o-bSpd"></output><input type="range" id="bSpd" min="2" max="8" step=".5"></div>
+      </section>
+      <section class="group">
+        <h2>열 때 모션</h2>
+        <p class="sub">버튼을 누르면 흐림이 걷히고 사진이 다가온 뒤, 이름과 정보가 아래에서 차례로 올라와요.</p>
+        <div class="row"><label for="dBlur">흐림 걷히는 시간</label><output for="dBlur" id="o-dBlur"></output><input type="range" id="dBlur" min="300" max="2400" step="50"></div>
+        <div class="row"><label for="s0">사진 시작 크기</label><output for="s0" id="o-s0"></output><input type="range" id="s0" min="0.9" max="1.2" step="0.01"></div>
+        <div class="row"><label for="s1">사진 끝 크기</label><output for="s1" id="o-s1"></output><input type="range" id="s1" min="0.9" max="1.2" step="0.01"></div>
+        <div class="row"><label for="dZoom">확대 시간</label><output for="dZoom" id="o-dZoom"></output><input type="range" id="dZoom" min="400" max="3200" step="50"></div>
+        <div class="row"><label for="dev">필름 현상 느낌 (처음 밝고 옅게)</label><output for="dev" id="o-dev"></output><input type="range" id="dev" min="0" max="40" step="2"></div>
+        <div class="row"><label for="ease">곡선</label><output></output>
+          <select id="ease">
+            <option value="cubic-bezier(0.23, 1, 0.32, 1)">부드러운 감속 (기본)</option>
+            <option value="cubic-bezier(0.32, 0.72, 0, 1)">서랍처럼</option>
+            <option value="cubic-bezier(0.77, 0, 0.175, 1)">천천히 시작 · 천천히 끝</option>
+            <option value="cubic-bezier(0.16, 1, 0.3, 1)">더 길게 감속</option>
+            <option value="linear">일정하게</option>
+          </select></div>
+        <div class="row"><label for="iDelay">정보 올라오기 시작</label><output for="iDelay" id="o-iDelay"></output><input type="range" id="iDelay" min="0" max="1600" step="50"></div>
+        <div class="row"><label for="iGap">정보 사이 간격</label><output for="iGap" id="o-iGap"></output><input type="range" id="iGap" min="0" max="160" step="10"></div>
+      </section>
+      <div class="tools">
+        <button type="button" class="tool" id="replay">다시 보기</button>
+        <button type="button" class="tool ghost" id="reset">기본값</button>
+        <button type="button" class="tool ghost" id="copy">값 복사</button>
+        <span class="copied" id="copied" role="status"></span>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+const DEF={spd:14,blob:70,lockB:28,readyB:16,bAmp:6,bSpd:4,dBlur:1100,s0:1.00,s1:1.06,dZoom:1600,dev:12,ease:'cubic-bezier(0.23, 1, 0.32, 1)',iDelay:600,iGap:70};
+const FMT={spd:v=>v+'초',blob:v=>v+'%',lockB:v=>v+'px',readyB:v=>v+'px',bAmp:v=>'±'+v+'px',bSpd:v=>v+'초',dBlur:v=>v+'ms',s0:v=>(+v).toFixed(2)+'배',s1:v=>(+v).toFixed(2)+'배',dZoom:v=>v+'ms',dev:v=>v+'%',iDelay:v=>v+'ms',iGap:v=>v+'ms'};
+let P={};try{P=JSON.parse(localStorage.getItem('yh-reveal')||'{}');}catch(e){}
+P={...DEF,...P};
+const $=id=>document.getElementById(id);
+const card=$('card'),ph=$('ph'),ph2=$('ph2'),blobs=$('blobs'),scrim=$('scrim'),readyLayer=$('readyLayer'),openLayer=$('openLayer');
+const IMG={locked:'img/b.jpg',ready:'img/a.jpg'};
+const reduce=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+let running=[];
+
+function save(){try{localStorage.setItem('yh-reveal',JSON.stringify(P));}catch(e){}}
+function apply(){
+  const s=card.style;
+  s.setProperty('--spd',P.spd);s.setProperty('--blob-op',P.blob/100);
+  s.setProperty('--breath-amp',P.bAmp+'px');s.setProperty('--breath-spd',P.bSpd);
+  if(card.dataset.state==='locked')s.setProperty('--b-now',P.lockB+'px');
+  if(card.dataset.state==='ready')s.setProperty('--b-now',P.readyB+'px');
+  Object.keys(FMT).forEach(k=>{const o=$('o-'+k);if(o)o.textContent=FMT[k](P[k]);});
+}
+function stop(){running.forEach(a=>a.cancel());running=[];}
+function base(state){
+  stop();
+  card.dataset.state=state==='open'?'ready':state;
+  const img=IMG[state==='locked'?'locked':'ready'];
+  ph.style.backgroundImage=ph2.style.backgroundImage=`url('${img}')`;
+  ph.style.transform='';card.style.removeProperty('--sat');card.style.removeProperty('--bri');
+  blobs.style.opacity='';scrim.style.opacity='';readyLayer.style.opacity='';
+  [...openLayer.children].forEach(c=>{c.style.opacity='';c.style.transform='';});
+  apply();
+}
+function setTab(state){document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-selected',b.dataset.s===state));}
+function reveal(){
+  base('ready');
+  const E=P.ease,dev=P.dev/100,B=P.readyB;
+  const go=()=>{
+    card.dataset.state='open';
+    if(reduce()){
+      running.push(ph.animate([{filter:`blur(${B}px)`},{filter:'blur(0px)'}],{duration:300,easing:'ease',fill:'forwards'}));
+      running.push(blobs.animate([{opacity:P.blob/100*.6},{opacity:0}],{duration:300,fill:'forwards'}));
+      [...openLayer.children].forEach(c=>running.push(c.animate([{opacity:0},{opacity:1}],{duration:200,delay:200,fill:'backwards'})));
+      return;
+    }
+    running.push(ph.animate([
+      {filter:`blur(${B}px) saturate(${1-dev}) brightness(${1+dev})`},
+      {filter:'blur(0px) saturate(1) brightness(1)'}],{duration:P.dBlur,easing:E,fill:'forwards'}));
+    running.push(ph.animate([{transform:`scale(${P.s0})`},{transform:`scale(${P.s1})`}],{duration:P.dZoom,easing:E,fill:'forwards',composite:'replace'}));
+    running.push(blobs.animate([{opacity:P.blob/100*.6},{opacity:0}],{duration:P.dBlur*.8,easing:E,fill:'forwards'}));
+    running.push(scrim.animate([{opacity:.55},{opacity:1}],{duration:P.dBlur,easing:E,fill:'forwards'}));
+    [...openLayer.children].forEach((c,i)=>running.push(c.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:420,delay:P.iDelay+i*P.iGap,easing:'cubic-bezier(0.23, 1, 0.32, 1)',fill:'backwards'})));
+  };
+  /* 버튼과 안내가 먼저 살짝 물러남 */
+  const out=readyLayer.animate([{opacity:1,transform:'none'},{opacity:0,transform:'translateY(6px)'}],{duration:reduce()?120:200,easing:'ease-out',fill:'forwards'});
+  running.push(out);
+  out.onfinish=go;
+}
+function setState(s){setTab(s);if(s==='open'){reveal();}else base(s);}
+
+/* 조절판 연결 */
+Object.keys(DEF).forEach(k=>{const el=$(k);if(!el)return;el.value=P[k];
+  el.addEventListener('input',()=>{P[k]=el.type==='range'?+el.value:el.value;save();apply();});
+  el.addEventListener('change',()=>{if(card.dataset.state==='open'||document.querySelector('#t-open[aria-selected=true]'))reveal();});
+});
+document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>setState(b.dataset.s)));
+$('openbtn').addEventListener('click',()=>setState('open'));
+$('replay').addEventListener('click',()=>setState('open'));
+$('reset').addEventListener('click',()=>{P={...DEF};save();Object.keys(DEF).forEach(k=>{const el=$(k);if(el)el.value=P[k];});setState(document.querySelector('.seg [aria-selected=true]').dataset.s);});
+$('copy').addEventListener('click',async()=>{
+  const txt=`공개 전·열기 전: 몽글 속도 ${P.spd}초 · 진하기 ${P.blob}% · 흐림 공개 전 ${P.lockB}px / 열기 전 ${P.readyB}px · 숨쉬기 ±${P.bAmp}px ${P.bSpd}초\n열 때: 흐림 걷힘 ${P.dBlur}ms · 크기 ${P.s0}→${P.s1} (${P.dZoom}ms) · 현상 ${P.dev}% · 곡선 ${P.ease} · 정보 ${P.iDelay}ms부터 ${P.iGap}ms 간격`;
+  try{await navigator.clipboard.writeText(txt);$('copied').textContent='복사했어요';}catch(e){$('copied').textContent=txt;}
+  setTimeout(()=>{$('copied').textContent='';},2400);
+});
+base('ready');
+</script>
+</body>
+</html>

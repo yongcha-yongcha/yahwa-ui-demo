@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>시트 행 눌림 상태</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398;--pg-on:#fff;--ease-out:cubic-bezier(0.23, 1, 0.32, 1);--slow:1}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.wrap{max-width:1640px;margin:0 auto;padding:36px 16px 80px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:92ch;margin:10px 0 0;color:var(--pg-fg2)}
+.terms{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;max-width:760px;margin:16px 0 0;padding:14px 16px;border-radius:14px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);font-size:13px;color:var(--pg-fg2)}
+.terms b{color:var(--pg-fg);white-space:nowrap}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.tools button{height:36px;padding:0 14px;border:0;border-radius:18px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);color:var(--pg-fg);font:600 12px var(--font-sans);cursor:pointer}
+.tools button[aria-pressed="true"]{box-shadow:inset 0 0 0 1.5px var(--pg-accent);color:var(--pg-accent)}
+.row{display:flex;flex-wrap:wrap;gap:24px;margin-top:20px}
+.col{display:flex;flex-direction:column;gap:10px;width:360px;max-width:100%}
+.col h3{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.col h3 b{display:grid;place-items:center;min-width:26px;height:26px;padding:0 8px;border-radius:13px;background:var(--pg-accent);color:var(--pg-on);font:600 12px var(--font-sans)}
+.col h3 b.now{background:var(--pg-line);color:var(--pg-fg2)}
+.col h3 em{font:600 11px/1 var(--font-sans);font-style:normal;padding:4px 8px;border-radius:10px;background:var(--sky-100);color:var(--color-fg-accent-strong)}
+.col>p{margin:0;min-height:88px;font-size:13px;color:var(--pg-fg2)}
+.spec{font:500 11px/1.5 ui-monospace,Menlo,monospace;color:var(--pg-fg3)}
+
+/* ---------- 시트 (앱 취향 설정 시트와 같은 모양) ---------- */
+.sheet{width:360px;max-width:100%;padding:8px 20px 28px;border-radius:24px;background:var(--color-bg-surface);color:var(--color-fg-primary);box-shadow:0 0 0 1px var(--pg-line),0 12px 32px rgb(0 0 0 / .08)}
+.hdl{display:block;width:36px;height:4px;margin:0 auto 12px;border-radius:2px;background:var(--color-bg-control)}
+.hp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.hp-head b{font:600 17px/1.4 var(--font-sans)}
+.hp-link{display:flex;align-items:center;gap:2px;height:44px;margin-right:-4px;padding:0 4px;border:0;background:none;color:var(--color-fg-accent);font:500 14px/1 var(--font-sans)}
+.sec-h{display:flex;align-items:center;gap:8px;margin:12px 0 12px;font:600 15px/1 var(--font-sans)}
+.yh-ai{display:block;flex:none;width:20px;height:20px;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;color:var(--color-fg-secondary)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{height:36px;padding:0 14px;border:0;border-radius:18px;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-default);font:500 14px/1 var(--font-sans);color:var(--color-fg-primary)}
+.chip.on{background:var(--color-bg-subtle);box-shadow:inset 0 0 0 1.5px var(--color-border-accent);color:var(--color-fg-accent-strong);font-weight:600}
+.hr{height:1px;margin:24px 0 8px;background:var(--color-border-default)}
+.chev{display:block;flex:none;width:20px;height:20px;fill:currentColor;color:var(--color-fg-muted)}
+.apply{display:block;width:100%;height:52px;margin-top:16px;border:0;border-radius:14px;background:var(--color-bg-accent);color:var(--color-fg-inverse);font:600 15px/1 var(--font-sans);opacity:.4}
+
+/* 행 공통 */
+.r{position:relative;isolation:isolate;display:flex;align-items:center;gap:12px;width:calc(100% + 16px);min-height:52px;margin:0 -8px;padding:12px 8px;border:0;background:none;text-align:left;color:var(--color-fg-primary);font:500 15px/1 var(--font-sans);cursor:pointer;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+.r>span{flex:1;min-width:0}
+.r small{display:block;margin-top:4px;font:400 12px/1.4 var(--font-sans);color:var(--color-fg-muted)}
+.r .yh-ai{width:24px;height:24px}
+.r::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:12px;pointer-events:none}
+
+/* 지금: 네모난 회색 */
+.s0 .r::before{border-radius:12px}
+.s0 .r:active::before,.s0 .r.is-press::before,.s0 .r.is-hover::before{background:var(--color-bg-muted)}
+@media (hover:hover) and (pointer:fine){.s0 .r:hover::before{background:var(--color-bg-muted)}}
+
+/* P1: 연한 회색 상태 레이어 · 모서리 16 · 눌리면 98% */
+.s1 .r{transition:transform calc(160ms * var(--slow)) var(--ease-out)}
+.s1 .r::before{border-radius:16px;background:var(--cool-neutral-50);opacity:0;transform:scale(.96);transition:opacity calc(160ms * var(--slow)) ease,transform calc(200ms * var(--slow)) var(--ease-out),background-color calc(120ms * var(--slow)) ease}
+.s1 .r.is-hover::before{opacity:1;transform:none}
+.s1 .r:active,.s1 .r.is-press{transform:scale(.98);transition-duration:calc(100ms * var(--slow))}
+.s1 .r:active::before,.s1 .r.is-press::before{opacity:1;transform:none;background:color-mix(in srgb,var(--cool-neutral-100) 70%,var(--cool-neutral-50))}
+@media (hover:hover) and (pointer:fine){.s1 .r:hover::before{opacity:1;transform:none}}
+
+/* P2: 연한 하늘 레이어 · 모서리 16 · 눌리면 98% */
+.s2 .r{transition:transform calc(160ms * var(--slow)) var(--ease-out)}
+.s2 .r::before{border-radius:16px;background:var(--sky-50);opacity:0;transform:scale(.96);transition:opacity calc(160ms * var(--slow)) ease,transform calc(200ms * var(--slow)) var(--ease-out),background-color calc(120ms * var(--slow)) ease}
+.s2 .r.is-hover::before{opacity:1;transform:none}
+.s2 .r:active,.s2 .r.is-press{transform:scale(.98);transition-duration:calc(100ms * var(--slow))}
+.s2 .r:active::before,.s2 .r.is-press::before{opacity:1;transform:none;background:var(--sky-100)}
+@media (hover:hover) and (pointer:fine){.s2 .r:hover::before{opacity:1;transform:none}}
+
+/* P3: 여백 안쪽 레이어 · 모서리 20 · 눌리면 97% */
+.s3 .r{transition:transform calc(160ms * var(--slow)) var(--ease-out)}
+.s3 .r::before{inset:2px 0;border-radius:20px;background:var(--cool-neutral-50);opacity:0;transition:opacity calc(160ms * var(--slow)) ease,background-color calc(120ms * var(--slow)) ease}
+.s3 .r.is-hover::before{opacity:1}
+.s3 .r:active,.s3 .r.is-press{transform:scale(.97);transition-duration:calc(100ms * var(--slow))}
+.s3 .r:active::before,.s3 .r.is-press::before{opacity:1;background:var(--cool-neutral-100)}
+@media (hover:hover) and (pointer:fine){.s3 .r:hover::before{opacity:1}}
+
+@media (prefers-reduced-motion:reduce){.r,.r::before{transition:background-color 120ms ease,opacity 120ms ease!important}.r:active,.r.is-press{transform:none!important}.r::before{transform:none!important}}
+.box{max-width:1180px;margin-top:36px;padding:16px 18px;border-radius:16px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);font-size:13px;color:var(--pg-fg2)}
+.box h4{margin:0 0 8px;font-size:14px;color:var(--pg-fg)}.box ul{margin:0;padding-left:18px}.box li+li{margin-top:5px}.box b{color:var(--pg-fg)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="eyebrow">YAHWA · 공용 시트</p>
+<h1 class="title">시트 행 눌림 상태</h1>
+<p class="intro">취향 설정 시트의 “생활 방식 · 인증”, “맞춤 인연 추천” 줄이에요. 지금은 마우스를 올리거나 누르면 회색(#E3E7EA) 바탕이 모서리 12로 깔려서 네모난 상자처럼 보이고, 크기는 그대로예요. 세 안 모두 바탕을 연하게, 모서리를 더 둥글게 하고, 누르는 순간 줄이 살짝 작아져요.</p>
+<div class="terms">
+  <b>이걸 부르는 말</b><span>통틀어 <b>인터랙션 상태(interaction state)</b>라고 해요. 마우스를 올렸을 때는 <b>호버 상태</b>, 누르는 동안은 <b>눌림 상태(pressed)</b>.</span>
+  <b>깔리는 바탕</b><span><b>상태 레이어(state layer)</b>. 내용 뒤에 연한 면 한 장을 깔아 “지금 이걸 가리키고 있어요”를 알려 줘요.</span>
+  <b>살짝 작아짐</b><span><b>눌림 축소(press scale)</b>. 손가락이 닿는 순간 98%쯤으로 줄었다 돌아와 “눌렸어요”를 바로 느끼게 해요. 앱의 칩 · 버튼에 이미 쓰고 있어요(96~98%).</span>
+</div>
+<div class="tools"><button id="play">자동으로 보여주기</button><button id="slow" aria-pressed="false">느리게 보기(4배)</button></div>
+
+<div class="row">
+  <div class="col"><h3><b class="now">지금</b>네모난 회색</h3><p>바탕이 진하고(cool-neutral 100) 모서리 12라, 두 줄짜리 행에서는 네모 상자로 보여요. 눌러도 크기 변화가 없어요.</p><div class="sheet s0" data-sheet></div><span class="spec">bg-muted #E3E7EA · r12 · 크기 그대로</span></div>
+  <div class="col"><h3><b>P1</b>연한 회색 레이어<em>추천</em></h3><p>올리면 아주 연한 회색 면(cool-neutral 50)이 96%에서 100%로 부드럽게 펴지며 나타나고, 누르면 줄이 98%로 작아지며 면이 한 단계 진해져요. 사진 시트 · 더보기 시트에도 그대로 어울려요.</p><div class="sheet s1" data-sheet></div><span class="spec">hover #F1F4F6 · press +한 단계 · r16 · 98% · 100ms/160ms</span></div>
+  <div class="col"><h3><b>P2</b>연한 하늘 레이어</h3><p>P1과 같은 움직임에 바탕만 하늘빛(sky-50 → 눌리면 sky-100). 화면 위쪽 하늘색과 이어져 따뜻하지만, 선택된 칩과 색이 비슷해서 “골라진 것”처럼 읽힐 수 있어요.</p><div class="sheet s2" data-sheet></div><span class="spec">hover sky-50 · press sky-100 · r16 · 98%</span></div>
+  <div class="col"><h3><b>P3</b>더 둥근 레이어</h3><p>면을 위아래 2px 안쪽으로 줄이고 모서리 20으로 더 둥글게. 누르면 97%로 조금 더 분명히 작아져요. 가장 말랑하지만 짧은 한 줄 행에서는 알약처럼 보일 수 있어요.</p><div class="sheet s3" data-sheet></div><span class="spec">hover #F1F4F6 · press #E3E7EA · r20 · 97%</span></div>
+</div>
+
+<div class="box">
+  <h4>적용 범위와 모션</h4>
+  <ul>
+    <li><b>공용 시트 행(<code>.photo-sheet-row</code>)</b> 하나만 바꾸면 취향 설정 시트, 상대 프로필 더보기 시트, 사진 관리 시트, 프로필 수정 사진 시트가 함께 바뀌어요.</li>
+    <li><b>호버</b>는 마우스가 있는 기기에서만(<code>hover:hover</code>), 터치 폰에서는 누르는 순간만 보여요.</li>
+    <li><b>시간</b>: 누를 때 100ms로 빠르게 작아지고, 뗄 때 160ms로 돌아와요(strong ease-out). 움직임 줄이기 설정이면 크기 변화 없이 바탕만 바뀌어요.</li>
+  </ul>
+</div>
+</div>
+<script>
+const ICON={filter:['M8 14H18M26 14H40M8 34H26M34 34H40M22 8V20M30 28V40',3.2],heart:['M8.00003 24C1.00003 10 17 5.00001 23 19C30 1.33514e-05 46 8.00001 37 23C31.6667 29.6667 23.3334 35.3333 12 40C20 32.6667 30.3334 29.3333 43 30',2.4],person:['M8 44C8 22 40 22 40 44M16 14C16 16.1217 16.8429 18.1566 18.3431 19.6569C19.8434 21.1571 21.8783 22 24 22C26.1217 22 28.1566 21.1571 29.6569 19.6569C31.1571 18.1566 32 16.1217 32 14C32 11.8783 31.1571 9.84344 29.6569 8.34315C28.1566 6.84285 26.1217 6 24 6C21.8783 6 19.8434 6.84285 18.3431 8.34315C16.8429 9.84344 16 11.8783 16 14Z',2.8],location:['M6 21L24 6L42 21M11 18V40H21V28H27V40H37V18',3]};
+const ai=k=>'<svg class="yh-ai" viewBox="0 0 48 48" aria-hidden="true" style="stroke-width:'+ICON[k][1]+'"><path d="'+ICON[k][0]+'"/></svg>';
+const CH='<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.29301 7.29096C9.68355 6.90051 10.3166 6.90047 10.7071 7.29096L14.7071 11.2919C15.0975 11.6825 15.0976 12.3155 14.7071 12.706L10.7071 16.706C10.3165 17.0965 9.68353 17.0965 9.29301 16.706C8.9025 16.3155 8.90249 15.6825 9.29301 15.2919L12.586 11.998L9.29301 8.70502C8.90256 8.31448 8.90252 7.68144 9.29301 7.29096Z"/></svg>';
+document.querySelectorAll('[data-sheet]').forEach(s=>{s.innerHTML='<span class="hdl"></span><div class="hp-head"><b>취향 설정</b><span class="hp-link">전체 조건 '+CH.replace('class="chev"','class="chev" style="color:currentColor"')+'</span></div>'
+ +'<div class="sec-h">'+ai('location')+'거리</div><div class="chips"><span class="chip">상관없음</span><span class="chip on">10km</span><span class="chip">30km</span><span class="chip">50km</span><span class="chip">100km</span></div>'
+ +'<div class="hr"></div>'
+ +'<button class="r">'+ai('filter')+'<span>생활 방식 · 인증<small>그 외 상관없음</small></span>'+CH+'</button>'
+ +'<button class="r">'+ai('heart')+'<span>맞춤 인연 추천<small>자기소개가 닮은 사람 · 하루 세 명</small></span>'+CH+'</button>'
+ +'<button class="apply" disabled>적용하기</button>';});
+const wait=ms=>new Promise(r=>setTimeout(r,ms*parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--slow'))));
+let busy=false;
+document.getElementById('play').onclick=async()=>{if(busy)return;busy=true;const rows=[...document.querySelectorAll('.r:first-of-type')];
+ for(let k=0;k<2;k++){rows.forEach(r=>r.classList.add('is-hover'));await wait(700);rows.forEach(r=>r.classList.add('is-press'));await wait(260);rows.forEach(r=>r.classList.remove('is-press'));await wait(500);rows.forEach(r=>r.classList.remove('is-hover'));await wait(600);}
+ busy=false;};
+document.getElementById('slow').onclick=e=>{const on=e.currentTarget.getAttribute('aria-pressed')!=='true';e.currentTarget.setAttribute('aria-pressed',on);document.documentElement.style.setProperty('--slow',on?4:1);};
+</script>
+</body>
+</html>

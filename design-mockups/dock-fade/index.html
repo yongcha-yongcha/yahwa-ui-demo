@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>하단 버튼 영역</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398;--pg-on:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.wrap{max-width:1640px;margin:0 auto;padding:36px 16px 80px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:96ch;margin:10px 0 0;color:var(--pg-fg2)}
+section.part{margin-top:40px}
+section.part>h2{margin:0;font:400 23px/1.4 var(--font-serif)}
+section.part>p{max-width:96ch;margin:6px 0 0;color:var(--pg-fg2);font-size:13px}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.tools button{height:36px;padding:0 14px;border:0;border-radius:18px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);color:var(--pg-fg);font:600 12px var(--font-sans);cursor:pointer}
+.tools button[aria-pressed="true"]{box-shadow:inset 0 0 0 1.5px var(--pg-accent);color:var(--pg-accent)}
+.row{display:flex;flex-wrap:wrap;gap:24px;margin-top:18px}
+.col{display:flex;flex-direction:column;gap:10px;width:360px;max-width:100%}
+.col h3{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.col h3 b{display:grid;place-items:center;min-width:26px;height:26px;padding:0 8px;border-radius:13px;background:var(--pg-accent);color:var(--pg-on);font:600 12px var(--font-sans)}
+.col h3 b.now{background:var(--pg-line);color:var(--pg-fg2)}
+.col h3 em{font:600 11px/1 var(--font-sans);font-style:normal;padding:4px 8px;border-radius:10px;background:var(--sky-100);color:var(--color-fg-accent-strong)}
+.col>p{margin:0;min-height:88px;font-size:13px;color:var(--pg-fg2)}
+.spec{font:500 11px/1.5 ui-monospace,Menlo,monospace;color:var(--pg-fg3)}
+.zoom{height:150px;border-radius:16px;overflow:hidden;position:relative;box-shadow:0 0 0 1px var(--pg-line)}
+.zoom .inner{position:absolute;left:-60px;top:-1000px;width:360px;transform:scale(1.5);transform-origin:0 0}
+.box{max-width:1180px;margin-top:32px;padding:16px 18px;border-radius:16px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);font-size:13px;color:var(--pg-fg2)}
+.box h4{margin:0 0 8px;font-size:14px;color:var(--pg-fg)}.box ul{margin:0;padding-left:18px}.box li+li{margin-top:5px}.box b{color:var(--pg-fg)}
+
+.phone{position:relative;width:360px;max-width:100%;height:640px;border-radius:32px;overflow:hidden;background:var(--paper);color:var(--color-fg-primary);box-shadow:0 0 0 1px var(--pg-line),0 12px 32px rgb(0 0 0 / .1);isolation:isolate}
+.sc{position:absolute;left:0;right:0;top:0;bottom:0;overflow-y:auto;padding:24px 20px 0;scrollbar-width:none}.sc::-webkit-scrollbar{display:none}
+.sec{display:flex;align-items:center;gap:8px;margin:24px 0 12px;font:600 15px/1 var(--font-sans)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{height:36px;padding:0 14px;border-radius:18px;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-default);font:500 14px/36px var(--font-sans)}
+.chip.on{background:var(--color-bg-subtle);box-shadow:inset 0 0 0 1.5px var(--color-border-accent);color:var(--color-fg-accent-strong);font-weight:600}
+.sw{display:flex;align-items:center;gap:12px;margin-top:20px}.sw span{flex:1}.sw b{display:block;font:600 15px/1.4 var(--font-sans)}.sw small{font:400 12px/1.5 var(--font-sans);color:var(--color-fg-muted)}
+.sw i{width:48px;height:28px;border-radius:14px;background:var(--color-bg-control)}
+.endcard{display:flex;align-items:center;gap:12px;margin-top:20px;padding:16px;border-radius:16px;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-default)}
+.endcard b{display:block;font:600 15px/1.4 var(--font-sans)}.endcard small{font:400 12px/1.5 var(--font-sans);color:var(--color-fg-muted)}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.fact{height:64px;padding:12px;border-radius:14px;font:400 11px/1.3 var(--font-sans)}
+.fact b{display:block;margin-top:4px;font:600 15px/1.3 var(--font-sans)}
+.fact.s{background:repeating-linear-gradient(-35deg,color-mix(in srgb,var(--sky-200) 55%,transparent) 0 2px,transparent 2px 5px),var(--sky-50);color:var(--sky-700)}
+.fact.r{background:repeating-linear-gradient(-35deg,color-mix(in srgb,var(--rose-200,#F2C4CF) 55%,transparent) 0 2px,transparent 2px 5px),var(--rose-50,#FCEFF2);color:var(--rose-700,#9B4459)}
+.para{margin:16px 0 0;font:15px/1.9 var(--font-serif)}
+.pad{height:150px}
+/* 아래 고정 영역 */
+.dock{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:16px 20px 28px}
+.btn{display:grid;place-items:center;width:100%;height:52px;border:0;border-radius:14px;font:600 16px/1 var(--font-sans)}
+.btn.on{background:var(--color-bg-accent);color:var(--color-fg-inverse)}
+/* 취향 설정 지금: 투명도 .45 꺼짐 + 짧은 그라데이션 */
+.p0 .dock{background:linear-gradient(transparent,var(--paper) 28%)}
+.p0 .btn.off{background:var(--color-bg-control);color:var(--color-fg-muted);opacity:.45}
+/* D1: 불투명 꺼짐 + 버튼 위 40 페이드 */
+.p1 .dock{padding-top:40px;background:linear-gradient(color-mix(in srgb,var(--paper) 0%,transparent) 0,var(--paper) 40px)}
+.p1 .btn.off{background:var(--cool-neutral-100);color:var(--color-fg-muted)}
+/* D2: D1 + 페이드 영역 흐림(머리 줄과 같은 유리) */
+.p2 .dock{padding-top:40px;background:linear-gradient(color-mix(in srgb,var(--paper) 0%,transparent) 0,color-mix(in srgb,var(--paper) 70%,transparent) 24px,var(--paper) 40px)}
+.p2 .dock::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:0 0 32px 32px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);-webkit-mask-image:linear-gradient(transparent,#000 40px);mask-image:linear-gradient(transparent,#000 40px)}
+.p2 .btn.off{background:var(--cool-neutral-100);color:var(--color-fg-muted)}
+/* 소개 미리보기 지금: 스크롤 영역이 버튼 위에서 딱 잘림 */
+.v0 .sc{bottom:108px}
+.v0 .dock{background:var(--paper)}
+/* F1: 스크롤은 끝까지, 버튼 위 48 페이드 */
+.v1 .dock{padding-top:48px;background:linear-gradient(color-mix(in srgb,var(--paper) 0%,transparent) 0,var(--paper) 48px)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="eyebrow">YAHWA · 하단 고정 버튼</p>
+<h1 class="title">하단 버튼 영역</h1>
+<p class="intro">두 군데 모두 아래 고정 버튼 위로 내용이 비치거나 잘려 보여요. 원인은 두 가지예요. ① 꺼진 버튼이 <b>투명도 45%</b>(<code>#features button:disabled{opacity:.45}</code>)라 버튼 뒤 내용이 그대로 비쳐요. ② 버튼 위 그라데이션이 16px로 짧아서, 바로 위를 지나는 글자가 다 지워지기 전에 버튼에 닿아요. 폰 안을 스크롤해서 내용이 버튼 뒤로 지나가게 해 보세요.</p>
+
+<section class="part">
+<h2>1. 취향 설정 · 저장하기</h2>
+<p>꺼진 버튼은 투명도 대신 <b>불투명한 연한 회색</b>으로, 버튼 위에는 <b>40px 페이드</b>를 둬서 내용이 버튼 근처에 오기 전에 완전히 사라지게 해요.</p>
+<div class="tools"><button data-tog="p" aria-pressed="false">버튼 켜진 상태 보기</button></div>
+<div class="row">
+  <div class="col"><h3><b class="now">지금</b>투명도 꺼짐 · 짧은 페이드</h3><p>버튼 자체가 45% 투명이라 뒤의 “인증한 인연 먼저 보기” 글자와 체크 아이콘이 버튼 위로 비쳐요. 위쪽 16px 페이드는 금방 끝나요.</p><div class="phone p0" data-ph="p"></div><span class="spec">opacity .45 · fade 16px → 28%</span></div>
+  <div class="col"><h3><b>D1</b>불투명 꺼짐 + 40 페이드<em>추천</em></h3><p>꺼진 버튼 = cool-neutral 100 꽉 찬 바탕 + 회색 글자(투명도 1). 버튼 위 40px에서 종이색으로 완전히 덮여, 내용은 버튼에 닿기 전에 사라져요.</p><div class="phone p1" data-ph="p"></div><span class="spec">disabled bg #E3E7EA · opacity 1 · fade 40px</span></div>
+  <div class="col"><h3><b>D2</b>D1 + 살짝 흐림</h3><p>페이드 구간에 흐림 8을 더해 지나가는 글자가 번지며 사라져요. 머리 줄 흐림과 같은 결이지만 차이는 작아요.</p><div class="phone p2" data-ph="p"></div><span class="spec">D1 + backdrop blur 8 (mask 40px)</span></div>
+</div>
+</section>
+
+<section class="part">
+<h2>2. 소개 미리보기 · 이 소개로 완성하기</h2>
+<p>지금은 스크롤 영역이 버튼 위 108px에서 끝나 내용이 칼로 자른 듯 끊겨요. 스크롤 영역을 화면 끝까지 늘리고, 버튼 위 48px 페이드로 내용이 자연스럽게 숨겨지게 해요. 마지막 내용은 버튼 위까지 올라올 수 있게 아래 여백을 둬요.</p>
+<div class="row">
+  <div class="col"><h3><b class="now">지금</b>딱 잘림</h3><p>“담배 · 술” 카드가 반쯤 잘린 채 멈춰 보여요.</p><div class="phone v0" data-ph="v"></div></div>
+  <div class="col"><h3><b>F1</b>끝까지 흐르고 48 페이드<em>추천</em></h3><p>내용이 버튼 뒤로 흘러가며 위에서부터 서서히 옅어져요. 버튼은 그대로이고, 끝까지 내리면 마지막 카드가 버튼 위에 온전히 보여요.</p><div class="phone v1" data-ph="v"></div></div>
+</div>
+</section>
+
+<div class="box">
+  <h4>적용 범위</h4>
+  <ul>
+    <li><b>꺼진 버튼</b>: 기능 화면의 꺼진 주요 버튼(취향 설정 저장, 시트 저장 · 적용, 편지 답장 등)을 투명도 없이 불투명 회색으로 맞춰요. 글자만 회색이라 “누를 수 없음”은 그대로 읽혀요.</li>
+    <li><b>페이드</b>: 아래 고정 버튼이 있는 화면(취향 설정 · 소개 미리보기 · 편지 · 글 상세 입력창)에 같은 토큰(페이드 40 · 48)을 써서 한 가지 모양으로 맞춰요.</li>
+  </ul>
+</div>
+</div>
+<script>
+const prefs='<div class="sec">흡연</div><div class="chips"><span class="chip on">상관없음</span><span class="chip">비흡연</span><span class="chip">가끔</span><span class="chip">흡연</span><span class="chip">전자담배</span></div><div class="sec">음주</div><div class="chips"><span class="chip on">상관없음</span><span class="chip">마시지 않아요</span><span class="chip">가끔</span><span class="chip">즐기는 편이에요</span></div><div class="sec">정치 성향</div><div class="chips"><span class="chip on">상관없음</span><span class="chip">중도</span><span class="chip">진보</span><span class="chip">보수</span><span class="chip">무관심</span></div><div class="sec" style="color:var(--color-fg-muted);font-size:13px">믿음</div><div class="sw"><span><b>인증한 인연 먼저 보기</b><small>학교 · 직장 등을 인증한 사람을 앞에 소개해요</small></span><i></i></div><div class="endcard"><span><b>맞춤 인연 추천</b><small>자기소개가 닮은 사람을 하루 세 명 골라 드려요</small></span></div><div class="pad"></div>';
+const prev='<div style="height:260px;border-radius:90px 90px 18px 18px;background:url(v1.jpg) center 30%/cover,var(--color-bg-muted)"></div><p style="margin:14px 0 0;font:400 24px/1.3 var(--font-serif)">지우</p><p style="margin:2px 0 0;font:400 13px var(--font-sans);color:var(--color-fg-muted)">29세 · 서울 종로구 · 남성</p><div class="facts"><div class="fact s">하는 일<b>직장인</b></div><div class="fact r">키<b>178cm</b></div><div class="fact s">담배<b>비흡연</b></div><div class="fact r">술<b>가끔</b></div></div><p class="para">주말엔 필름 카메라를 들고 오래 걷는 걸 좋아해요. 산책하다 들른 작은 카페에서 하루 이야기를 천천히 나눌 수 있는 사람이면 좋겠어요.</p><div class="facts"><div class="fact s">종교<b>무교</b></div><div class="fact r">학력<b>대학교 졸업</b></div></div><div class="pad"></div>';
+document.querySelectorAll('[data-ph]').forEach(ph=>{const p=ph.dataset.ph==='p';ph.innerHTML='<div class="sc">'+(p?prefs:prev)+'</div><div class="dock"><span class="btn '+(p?'off':'on')+'">'+(p?'저장하기':'이 소개로 완성하기')+'</span></div>';
+ const sc=ph.querySelector('.sc');requestAnimationFrame(()=>{/* 처음에는 내용이 버튼 뒤를 지나가는 자리에서 멈춰 둬요 */
+  if(p){const t=sc.querySelector('.sw');sc.scrollTop=t.offsetTop-(ph.clientHeight-28-52+8);}
+  else{const t=sc.querySelectorAll('.facts')[0];sc.scrollTop=t.offsetTop+t.offsetHeight-ph.clientHeight+90;}});});
+document.querySelector('[data-tog="p"]').onclick=e=>{const on=e.currentTarget.getAttribute('aria-pressed')!=='true';e.currentTarget.setAttribute('aria-pressed',on);document.querySelectorAll('[data-ph="p"] .btn').forEach(b=>{b.classList.toggle('off',!on);b.classList.toggle('on',on);});};
+</script>
+</body>
+</html>

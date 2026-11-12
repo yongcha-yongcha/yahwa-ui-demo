@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>프로필 더보기 모달</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398;--pg-on:#fff;
+  --ease-out:cubic-bezier(0.23, 1, 0.32, 1);--ease-drawer:cubic-bezier(0.32, 0.72, 0, 1);--k:1}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.wrap{max-width:1500px;margin:0 auto;padding:36px 16px 64px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:80ch;margin:10px 0 0;color:var(--pg-fg2)}
+.layout{display:flex;flex-wrap:wrap;gap:28px;margin-top:24px;align-items:flex-start}
+.phones{display:flex;flex-wrap:wrap;gap:24px}
+.col{display:flex;flex-direction:column;gap:10px;width:340px;max-width:100%}
+.col h2{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.col h2 b{display:grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:13px;background:var(--pg-accent);color:var(--pg-on);font:600 12px var(--font-sans)}
+.col h2 em{font:600 11px/1 var(--font-sans);font-style:normal;padding:4px 8px;border-radius:10px;background:var(--color-bg-accent-soft);color:var(--color-fg-accent-strong)}
+.col>p{margin:0;font-size:13px;color:var(--pg-fg2)}
+.panel{position:sticky;top:16px;flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:16px;padding:18px;border-radius:18px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.panel h3{margin:0;font-size:14px}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+.btns button{height:40px;padding:0 14px;border:0;border-radius:10px;background:var(--pg-accent);color:var(--pg-on);font-weight:600;cursor:pointer}
+.btns button.ghost{background:none;color:var(--pg-fg);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.btns button:focus-visible{outline:2px solid var(--pg-accent);outline-offset:2px}
+.chk{display:flex;align-items:center;gap:8px;font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:12px;line-height:1.6}
+th,td{padding:8px 6px;text-align:left;vertical-align:top;border-top:1px solid var(--pg-line)}
+th{width:84px;white-space:nowrap;color:var(--pg-fg3);font-weight:600}
+.note{margin:0;font-size:12px;color:var(--pg-fg3)}
+.icon-cmp{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.icon-cmp figure{margin:0;display:grid;justify-items:center;gap:6px;padding:12px 8px;border-radius:12px;box-shadow:inset 0 0 0 1px var(--pg-line);font-size:12px;color:var(--pg-fg2);text-align:center}
+.icon-cmp .box{position:relative;display:grid;place-items:center;width:88px;height:88px;border-radius:12px;background:var(--color-bg-page)}
+.icon-cmp .box i{position:absolute;inset:22px;border:1px dashed var(--pg-accent);border-radius:4px}
+.icon-cmp .txt{font-size:24px;color:var(--color-fg-secondary);line-height:1}
+.icon-cmp svg{width:24px;height:24px;fill:var(--color-fg-secondary)}
+
+/* 폰 */
+.phone{position:relative;width:340px;max-width:100%;height:680px;border-radius:32px;overflow:hidden;background:var(--color-bg-page);color:var(--color-fg-primary);box-shadow:0 0 0 1px var(--pg-line),0 16px 40px rgb(0 0 0 / .12);isolation:isolate}
+.top{position:absolute;left:0;right:0;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;height:44px;margin-top:12px;padding:0 6px}
+.icon-btn{display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;border-radius:22px;background:none;color:var(--color-fg-secondary);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.icon-btn svg{width:24px;height:24px;fill:currentColor;transition:transform 120ms var(--ease-out)}
+.icon-btn:active svg{transform:scale(.9)}
+.icon-btn:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:-4px}
+.icon-btn[aria-expanded="true"]{background:var(--color-bg-muted)}
+.scroller{position:absolute;inset:0;overflow:hidden;padding:64px 20px 40px}
+.photo{height:330px;border-radius:28px;background:url(spring.jpg) 50% 40%/cover;position:relative}
+.photo span{position:absolute;left:12px;bottom:12px;padding:4px 10px;border-radius:12px;background:rgb(255 255 255 / .88);font:600 11px/1.4 var(--font-sans);color:var(--color-fg-secondary)}
+.name{margin:20px 0 0;font:400 28px/1.3 var(--font-serif)}
+.meta{margin:6px 0 0;font-size:13px;color:var(--color-fg-secondary)}
+.tags{margin:8px 0 0;font-size:13px;color:var(--color-fg-accent)}
+.facts{margin-top:20px;height:110px;border-radius:20px;background:var(--color-bg-surface)}
+
+/* 공통 덮개 · 알림 */
+.layer{position:absolute;inset:0;z-index:20;pointer-events:none}
+.layer.on{pointer-events:auto}
+.dim{position:absolute;inset:0;background:var(--photo-sheet-dim);opacity:0;transition:opacity calc(240ms * var(--k)) var(--ease-out)}
+.layer.on .dim{opacity:1;transition-duration:calc(300ms * var(--k))}
+.toast{position:absolute;left:20px;right:20px;bottom:28px;z-index:30;display:flex;align-items:center;gap:12px;min-height:48px;padding:12px 16px;border-radius:14px;background:var(--color-fg-primary);color:var(--color-fg-inverse);font:500 13px/1.5 var(--font-sans);opacity:0;transform:translateY(8px);transition:opacity calc(200ms * var(--k)) var(--ease-out),transform calc(200ms * var(--k)) var(--ease-out);pointer-events:none}
+.toast.on{opacity:1;transform:none;pointer-events:auto}
+.toast span{flex:1}
+.toast button{flex:none;height:32px;margin:-4px -6px -4px 0;padding:0 10px;border:0;border-radius:8px;background:none;color:var(--color-fg-inverse);font-weight:600;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.hidden-card{position:absolute;inset:0;z-index:5;display:grid;place-content:center;gap:6px;padding:24px;background:var(--color-bg-page);text-align:center;opacity:0;pointer-events:none;transition:opacity calc(200ms * var(--k)) var(--ease-out)}
+.hidden-card.on{opacity:1}
+.hidden-card b{font:400 20px/1.5 var(--font-serif)}
+.hidden-card small{font-size:12px;color:var(--color-fg-tertiary)}
+
+/* 메뉴 내용 (세 안 공통) */
+.m-head{display:flex;align-items:center;gap:12px;padding-bottom:16px;border-bottom:1px solid var(--color-border-default)}
+.m-head img{flex:none;width:var(--photo-sheet-thumb-w);height:var(--photo-sheet-thumb-h);border-radius:8px;object-fit:cover;object-position:50% 30%}
+.m-head b{display:block;font:600 15px/1.4 var(--font-sans)}
+.m-head small{display:block;margin-top:2px;font:400 12px/1.5 var(--font-sans);color:var(--color-fg-muted)}
+.m-rows{display:grid;padding-top:8px}
+.m-row{display:flex;align-items:center;gap:12px;width:calc(100% + 16px);height:var(--photo-sheet-row);margin:0 -8px;padding:0 8px;border:0;border-radius:12px;background:none;color:var(--color-fg-primary);font:500 15px/1 var(--font-sans);text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.m-row svg{flex:none;width:24px;height:24px;fill:var(--color-fg-secondary)}
+.m-row span{flex:1}
+.m-row small{display:block;margin-top:4px;font:400 12px/1.4 var(--font-sans);color:var(--color-fg-muted)}
+.m-row:active{background:var(--color-bg-muted)}
+@media(hover:hover) and (pointer:fine){.m-row:hover{background:var(--color-bg-muted)}}
+.m-row.is-danger,.m-row.is-danger svg{color:var(--color-fg-danger);fill:var(--color-fg-danger)}
+.m-row:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:-2px}
+.m-rows hr{width:100%;margin:8px 0;border:0;border-top:1px solid var(--color-border-default)}
+.m-confirm b{display:block;font:600 17px/1.4 var(--font-sans)}
+.m-confirm p{margin:4px 0 20px;font:400 14px/1.6 var(--font-sans);color:var(--color-fg-secondary);word-break:keep-all}
+.m-pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.m-pair button{height:52px;border:0;border-radius:14px;font:600 15px/1 var(--font-sans);cursor:pointer}
+.m-pair button:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:2px}
+.m-ghost{background:var(--color-bg-muted);color:var(--color-fg-primary)}
+.m-danger{background:var(--color-bg-danger);color:var(--color-fg-inverse)}
+.m-danger:disabled{background:var(--color-bg-control);color:var(--color-fg-muted);cursor:default}
+.m-reasons{display:grid;margin:4px -8px 16px}
+.m-reason{display:flex;align-items:center;gap:12px;height:48px;padding:0 8px;border-radius:12px;font:500 15px/1 var(--font-sans);cursor:pointer}
+.m-reason input{appearance:none;flex:none;width:20px;height:20px;margin:0;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--color-border-strong);transition:box-shadow 120ms var(--ease-out)}
+.m-reason input:checked{box-shadow:inset 0 0 0 6px var(--color-fg-accent)}
+.m-reason input:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:2px}
+.m-reason:active{background:var(--color-bg-muted)}
+.m-etc{display:none;width:100%;height:76px;margin:-8px 0 16px;padding:10px 12px;border:1px solid var(--color-border-default);border-radius:12px;background:var(--color-bg-page);font:400 14px/1.5 var(--font-sans);color:var(--color-fg-primary);resize:none}
+.m-etc.on{display:block}
+.m-etc:focus{outline:2px solid var(--color-border-focus);outline-offset:-1px;border-color:transparent}
+.m-step{animation:stepIn calc(220ms * var(--k)) var(--ease-out) backwards}
+@keyframes stepIn{from{opacity:0;transform:translateY(6px)}}
+
+/* A 바텀시트 */
+.sheet{position:absolute;left:0;right:0;bottom:0;padding:8px 20px 32px;border-radius:24px 24px 0 0;background:var(--color-bg-surface);transform:translateY(100%);transition:transform calc(240ms * var(--k)) var(--ease-out),height calc(240ms * var(--k)) var(--ease-out);overflow:hidden}
+.layer.on .sheet{transform:none;transition-duration:calc(300ms * var(--k));transition-timing-function:var(--ease-drawer)}
+.handle{display:block;width:36px;height:4px;margin:0 auto 12px;border-radius:2px;background:var(--color-bg-control)}
+
+/* B 가운데 모달 */
+.dialog{position:absolute;left:24px;right:24px;top:50%;padding:20px 20px 16px;border-radius:24px;background:var(--color-bg-surface);box-shadow:0 20px 48px rgb(0 0 0 / .18);opacity:0;transform:translateY(-50%) scale(.96);transition:opacity calc(200ms * var(--k)) var(--ease-out),transform calc(200ms * var(--k)) var(--ease-out),height calc(220ms * var(--k)) var(--ease-out);overflow:hidden}
+.layer.on .dialog{opacity:1;transform:translateY(-50%) scale(1);transition-duration:calc(240ms * var(--k))}
+.dialog .m-head{padding-right:32px}
+.d-close{position:absolute;right:8px;top:8px;display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;background:none;cursor:pointer}
+.d-close::before{content:"";position:absolute;inset:6px;border-radius:50%;background:var(--close-bg);transition:background-color 120ms ease,transform 120ms ease}
+.d-close:active::before{background:var(--close-bg-press);transform:scale(.94)}
+.d-close svg{position:relative;width:20px;height:20px;fill:var(--close-fg)}
+.d-close:focus-visible{outline:none}.d-close:focus-visible::before{box-shadow:0 0 0 2px var(--color-border-focus)}
+
+/* C 작은 메뉴 (더보기 버튼에 붙어서) */
+.pop{position:absolute;right:14px;top:60px;width:216px;padding:6px;border-radius:16px;background:var(--color-bg-surface);box-shadow:0 0 0 1px var(--color-border-default),0 12px 32px rgb(0 0 0 / .14);opacity:0;transform:scale(.95);transform-origin:top right;transition:opacity calc(150ms * var(--k)) var(--ease-out),transform calc(150ms * var(--k)) var(--ease-out)}
+.layer.on .pop{opacity:1;transform:none;transition-duration:calc(180ms * var(--k))}
+.pop .m-row{width:100%;height:44px;margin:0;padding:0 12px;border-radius:10px;font-size:14px}
+.pop .m-row svg{width:20px;height:20px}
+.pop hr{margin:4px 6px;border:0;border-top:1px solid var(--color-border-default)}
+.layer.c-layer.is-pop .dim{background:transparent}
+.m-head+.m-body .m-confirm{padding-top:16px}
+
+@media (prefers-reduced-motion:reduce){
+  .sheet,.layer.on .sheet{transform:none;opacity:0;transition:opacity 200ms ease}
+  .layer.on .sheet{opacity:1}
+  .dialog,.layer.on .dialog{transform:translateY(-50%)}
+  .pop,.layer.on .pop{transform:none}
+  .m-step{animation-name:fadeIn}
+  .toast{transform:none}
+}
+@keyframes fadeIn{from{opacity:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">상대 프로필 · 오른쪽 위 더보기</p>
+  <h1 class="title">더보기를 페이지 대신 모달로</h1>
+  <p class="intro">지금은 더보기를 누르면 숨기기 · 차단 · 신고 세 줄만 있는 페이지로 넘어가고, 차단 확인과 신고도 또 다른 페이지예요. 세 안 모두 프로필 위에 그대로 열리고, 차단 확인 · 신고 사유 고르기까지 그 안에서 끝나요. 각 폰의 오른쪽 위 더보기를 눌러서 세 항목을 하나씩 눌러 보세요.</p>
+
+  <div class="layout">
+    <div class="phones" id="phones"></div>
+
+    <aside class="panel" aria-label="비교와 설명">
+      <h3>더보기 아이콘 확인</h3>
+      <div class="icon-cmp">
+        <figure><div class="box"><i></i><span class="txt">···</span></div>지금: 가운뎃점 글자 세 개<br>(24px, 우리 아이콘 아님)</figure>
+        <figure><div class="box"><i></i><svg viewBox="0 0 24 24" id="more-sample"></svg></div>바꿀 것: Figma<br><b>Line/System/more-horizontal</b> 24</figure>
+      </div>
+      <p class="note">점선은 눈에 보이는 24px 아이콘이에요. 누르는 영역은 44px이고, 그 오른쪽 끝을 여백선(20)에 맞춰요. 같은 아이콘이 이미 tokens.css에 <code>--ic-more-horizontal</code>로 들어와 있어요.</p>
+
+      <h3>함께 보기</h3>
+      <label class="chk"><input id="slow" type="checkbox"> 4배 느리게 보기</label>
+      <div class="btns"><button type="button" id="openAll">세 안 같이 열기</button><button type="button" class="ghost" id="closeAll">모두 닫기</button></div>
+
+      <table>
+        <tr><th>A 시트</th><td>아래에서 올라오는 시트. 사진 관리 시트와 같은 틀(손잡이 · 썸네일 머리 · 52 항목 · 시트 안 확인)이라 앱 안에서 한 가지 규칙으로 읽혀요. 엄지가 바로 닿고, 신고 사유처럼 길어지는 다음 단계도 높이만 늘려 담아요.</td></tr>
+        <tr><th>B 모달</th><td>화면 가운데 카드. 차단 · 신고가 조금 더 무겁게 느껴지고 오른쪽 위 닫기 버튼이 있어요. 대신 엄지에서 멀고, 신고 사유 목록이 길어지면 카드가 화면을 꽉 채워요.</td></tr>
+        <tr><th>C 작은 메뉴</th><td>더보기 버튼에서 바로 펼쳐지는 메뉴. 가장 가볍지만, 차단 · 신고를 고르면 결국 시트가 한 번 더 떠서 두 단계 모양이 달라요.</td></tr>
+      </table>
+      <p class="note"><b>추천은 A</b>예요. 이미 있는 사진 관리 시트와 같은 모양 · 같은 움직임(올라옴 300ms · 내려감 240ms)이라 새로 익힐 게 없고, 숨기기처럼 가벼운 일과 신고처럼 무거운 일을 같은 자리에서 단계만 바꿔 보여 줄 수 있어요.</p>
+      <p class="note">공통: 숨기기는 바로 하고 알림에 "되돌리기"를 둬요(다시 되돌릴 수 있는 일이라 묻지 않아요). 차단은 한 번 더 묻고, 신고는 사유를 골라야 접수 버튼이 켜져요. 어두운 바깥 · Esc로 닫히고, 닫히면 더보기 버튼으로 포커스가 돌아가요. 동작 줄이기 설정에서는 움직임 없이 흐려지기만 해요.</p>
+      <p class="note">덤으로 발견: 지금 메뉴 페이지로 넘어가면 아래 탭이 마이페이지로 바뀌어 있어요. 모달로 바꾸면 이 문제도 같이 없어져요.</p>
+    </aside>
+  </div>
+</div>
+
+<script>
+const ICON={
+  back:'M13.2931 7.29096C13.6836 6.90047 14.3166 6.90051 14.7071 7.29096C15.0976 7.68144 15.0976 8.31448 14.7071 8.70502L11.4132 11.998L14.7071 15.2919C15.0977 15.6825 15.0977 16.3155 14.7071 16.706C14.3166 17.0965 13.6836 17.0965 13.2931 16.706L9.29309 12.706C8.90261 12.3155 8.90265 11.6825 9.29309 11.2919L13.2931 7.29096Z',
+  more:'M6 9.95898C7.10808 9.95898 7.99997 10.8685 8 11.9619C8 13.0557 7.10879 13.9658 6 13.9658C4.87472 13.9658 4 13.0491 4 11.9619C4.00003 10.875 4.87543 9.95898 6 9.95898ZM12 9.95898C13.1081 9.95898 14 10.8685 14 11.9619C14 13.0557 13.1088 13.9658 12 13.9658C10.8912 13.9658 10 13.0557 10 11.9619C10 10.8685 10.8919 9.95898 12 9.95898ZM18 9.95898C19.1081 9.95898 20 10.8685 20 11.9619C20 13.0557 19.1088 13.9658 18 13.9658C16.8747 13.9658 16 13.0491 16 11.9619C16 10.875 16.8754 9.95898 18 9.95898Z',
+  eyeoff:'M1.29288 1.29288C1.68341 0.902383 2.31643 0.902367 2.70694 1.29288L7.67666 6.26358C7.69203 6.27773 7.70703 6.29231 7.72159 6.30752L11.6933 10.2802C11.6961 10.2829 11.6993 10.2852 11.7021 10.288C11.7052 10.2911 11.7078 10.2947 11.7108 10.2978L22.7069 21.2948C23.0974 21.6854 23.0974 22.3184 22.7069 22.7089C22.3164 23.0994 21.6834 23.0994 21.2929 22.7089L16.7958 18.2118C15.2747 18.8527 13.5034 19.0019 11.9999 19.0019C7.65647 19.0019 3.74139 16.3911 2.07608 12.3866C1.9739 12.1406 1.97453 11.8639 2.07706 11.6181C2.81801 9.84151 3.88707 8.08827 5.43741 6.85147L1.29288 2.70694C0.902383 2.31641 0.902367 1.68338 1.29288 1.29288ZM6.86319 8.27823C5.68773 9.14947 4.78043 10.4658 4.0917 11.996C5.52895 15.0393 8.60187 17.0019 11.9999 17.0019C13.124 17.0019 14.2482 16.9075 15.2255 16.6405L13.12 14.5351C12.8778 14.7741 12.5191 15.0009 11.9999 15.0009C10.3502 15.0009 8.99991 13.6617 8.99991 12.0028C8.99992 11.4825 9.22632 11.1228 9.46573 10.8808L6.86319 8.27823ZM11.9999 4.99991C16.3435 4.99991 20.2585 7.61047 21.9237 11.619C22.0263 11.866 22.0254 12.144 21.9218 12.3905C21.6463 13.045 21.3132 13.8774 20.8163 14.579C20.4971 15.0297 19.8725 15.1364 19.4218 14.8173C18.9711 14.4981 18.8643 13.8734 19.1835 13.4228C19.4615 13.0302 19.6755 12.5613 19.9091 12.0126C18.4724 8.96402 15.399 6.99991 11.9999 6.99991C11.4476 6.99991 10.9999 6.55219 10.9999 5.99991C10.9999 5.44762 11.4476 4.99991 11.9999 4.99991Z',
+  slash:'M20 11.999C20 7.58316 16.4176 3.99902 12 3.99902C10.1514 3.99902 8.44951 4.62714 7.09473 5.68066L18.3164 16.9043C19.37 15.5495 20 13.8487 20 11.999ZM4 11.999C4 16.4186 7.58214 19.999 12 19.999C13.8479 19.999 15.5479 19.3705 16.9023 18.3184L5.68164 7.0957C4.62858 8.45051 4 10.1514 4 11.999ZM22 11.999C22 17.5235 17.5221 21.999 12 21.999C6.47786 21.999 2 17.5235 2 11.999C2 6.47888 6.47757 1.99902 12 1.99902C17.5224 1.99902 22 6.47888 22 11.999Z',
+  siren:'M18.0009 17.9849L17.998 17.98H6.00383L6.0009 17.9849V19.9897L6.00383 19.9937H17.998L18.0009 19.9897V17.9849ZM3.2968 4.27393C3.68824 3.8847 4.32136 3.88657 4.71087 4.27783L6.70891 6.28467C7.09832 6.67609 7.09633 7.30917 6.70501 7.69873C6.31359 8.08819 5.68053 8.08714 5.29094 7.6958L3.2929 5.68896C2.90325 5.29756 2.9054 4.66357 3.2968 4.27393ZM19.2958 4.27686C19.6858 3.88591 20.3189 3.88505 20.7099 4.2749C21.1009 4.6649 21.1018 5.29794 20.7118 5.68896L18.7099 7.6958C18.3199 8.08681 17.6868 8.08779 17.2958 7.69775C16.9049 7.30771 16.9039 6.67468 17.2939 6.28369L19.2958 4.27686ZM11.0029 4.98291V2.97607C11.0029 2.42379 11.4506 1.97607 12.0029 1.97607C12.5551 1.97607 13.0029 2.42379 13.0029 2.97607V4.98291C13.0029 5.53519 12.5551 5.98291 12.0029 5.98291C11.4506 5.98291 11.0029 5.53519 11.0029 4.98291ZM15.0038 12.9663C15.0038 11.3361 13.6661 9.99756 12.0029 9.99756C10.3366 9.99756 9.00286 11.3351 9.00286 12.9663V15.98H11.0029V12.9663C11.0029 12.414 11.4506 11.9663 12.0029 11.9663C12.5551 11.9663 13.0029 12.414 13.0029 12.9663V15.98H15.0038V12.9663ZM17.0038 15.98H18.0019C19.1146 15.98 20.0008 16.8922 20.0009 17.9829V19.9897C20.0009 21.0808 19.1153 21.9937 18.0019 21.9937H5.99993C4.88658 21.9937 4.0009 21.0809 4.0009 19.9897V17.9829C4.00097 16.8921 4.88731 15.98 5.99993 15.98H7.00286V12.9663C7.00286 10.2175 9.24512 7.99756 12.0029 7.99756C14.7556 7.99756 17.0038 10.2165 17.0038 12.9663V15.98Z',
+  close:'M17.2929 5.29299C17.6834 4.90249 18.3164 4.90251 18.7069 5.29299C19.0974 5.68348 19.0974 6.31651 18.7069 6.70705L13.413 12.001L18.7069 17.2949C19.0974 17.6855 19.0974 18.3185 18.7069 18.709C18.3164 19.0995 17.6834 19.0995 17.2929 18.709L11.9999 13.4151L6.70693 18.709C6.31643 19.0995 5.68341 19.0995 5.29286 18.709C4.90239 18.3185 4.9024 17.6855 5.29286 17.2949L10.5858 12.001L5.29286 6.70705C4.90239 6.31651 4.90237 5.68348 5.29286 5.29299C5.6834 4.90251 6.31643 4.90249 6.70693 5.29299L11.9999 10.586L17.2929 5.29299Z'
+};
+const svg=(k)=>`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${ICON[k]}"/></svg>`;
+document.getElementById('more-sample').innerHTML=`<path d="${ICON.more}"/>`;
+
+const REASONS=['부적절한 사진','허위 프로필 · 사칭','욕설 · 불쾌한 표현','광고 · 금전 요구','기타'];
+const VARIANTS=[
+  {k:'a',label:'A',name:'바텀시트',tag:'추천',desc:'사진 관리 시트와 같은 틀로 아래에서 올라와요.'},
+  {k:'b',label:'B',name:'가운데 모달',desc:'화면 가운데 카드로 떠요. 닫기 버튼이 있어요.'},
+  {k:'c',label:'C',name:'작은 메뉴',desc:'더보기 버튼에서 펼쳐지고, 차단 · 신고는 시트로 이어져요.'}
+];
+const ctrls=[];
+const phones=document.getElementById('phones');
+const reduce=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+VARIANTS.forEach(v=>{
+  const col=document.createElement('div');col.className='col';
+  col.innerHTML=`<h2><b>${v.label}</b>${v.name}${v.tag?`<em>${v.tag}</em>`:''}</h2><p>${v.desc}</p>
+  <div class="phone ${v.k}">
+    <div class="top"><button class="icon-btn" aria-label="오늘의 인연으로 돌아가기">${svg('back')}</button><button class="icon-btn more" aria-label="프로필 더보기" aria-haspopup="dialog" aria-expanded="false">${svg('more')}</button></div>
+    <div class="scroller"><div class="photo"><span>최근 활동</span></div><p class="name">봄빛</p><p class="meta">26세 · 서울 마포구 · 여성</p><p class="tags">#산책메이트 &nbsp;#독서취향 &nbsp;#다정한사람</p><div class="facts"></div></div>
+    <div class="hidden-card"><b>다음 인연으로 넘어가요</b><small>숨긴 인연은 마이페이지 › 지인 · 사용자 차단에서 다시 볼 수 있어요.</small></div>
+    <div class="layer"><div class="dim"></div></div>
+    <div class="toast" role="status"><span></span><button type="button" hidden>되돌리기</button></div>
+  </div>`;
+  phones.append(col);
+  ctrls.push(makeMenu(col.querySelector('.phone'),v.k));
+});
+
+function makeMenu(phone,kind){
+  const layer=phone.querySelector('.layer'),dim=layer.querySelector('.dim'),more=phone.querySelector('.more'),toastEl=phone.querySelector('.toast'),hiddenCard=phone.querySelector('.hidden-card');
+  let box=null,step='menu',open=false,toastT=0,useSheet=kind==='a';
+  if(kind==='c')layer.classList.add('c-layer');
+
+  const head=`<div class="m-head"><img src="spring.jpg" alt=""><span><b>봄빛</b><small>26세 · 서울 마포구</small></span></div>`;
+  const rowsHTML=(compact)=>`<div class="m-rows m-step" role="menu">
+      <button class="m-row" role="menuitem" data-a="hide">${svg('eyeoff')}<span>오늘의 인연에서 숨기기${compact?'':'<small>다음 인연으로 넘어가요. 되돌릴 수 있어요.</small>'}</span></button>
+      <hr>
+      <button class="m-row is-danger" role="menuitem" data-a="block">${svg('slash')}<span>차단하기</span></button>
+      <button class="m-row is-danger" role="menuitem" data-a="report">${svg('siren')}<span>신고하기</span></button>
+    </div>`;
+  const blockHTML=`<div class="m-confirm m-step"><b>봄빛 님을 차단할까요?</b><p>서로의 프로필과 커뮤니티 글이 보이지 않아요. 차단은 마이페이지 › 지인 · 사용자 차단에서 풀 수 있어요.</p><div class="m-pair"><button class="m-ghost" data-a="back">취소</button><button class="m-danger" data-a="block-ok">차단하기</button></div></div>`;
+  const reportHTML=`<div class="m-confirm m-step"><b>어떤 점이 불편했나요?</b><p>신고한 내용은 봄빛 님에게 알리지 않아요.</p><div class="m-reasons" role="radiogroup" aria-label="신고 사유">${REASONS.map((r,i)=>`<label class="m-reason"><input type="radio" name="r-${kind}" value="${i}">${r}</label>`).join('')}</div><textarea class="m-etc" maxlength="500" placeholder="조금 더 알려 주세요 (선택)" aria-label="상세 내용"></textarea><div class="m-pair"><button class="m-ghost" data-a="back">이전</button><button class="m-danger" data-a="report-ok" disabled>신고하기</button></div></div>`;
+
+  function build(){
+    layer.querySelectorAll('.sheet,.dialog,.pop').forEach(n=>n.remove());
+    if(useSheet){box=document.createElement('div');box.className='sheet';box.innerHTML=`<span class="handle" aria-hidden="true"></span>${head}<div class="m-body"></div>`;}
+    else if(kind==='b'){box=document.createElement('div');box.className='dialog';box.innerHTML=`<button class="d-close" data-a="close" aria-label="닫기">${svg('close')}</button>${head}<div class="m-body"></div>`;}
+    else{box=document.createElement('div');box.className='pop';box.innerHTML=`<div class="m-body"></div>`;}
+    box.setAttribute('role','dialog');box.setAttribute('aria-modal','true');box.setAttribute('aria-label','봄빛 님 프로필 더보기');
+    layer.append(box);layer.classList.toggle('is-pop',box.classList.contains('pop'));
+  }
+  function render(next,animateHeight){
+    const body=box.querySelector('.m-body');
+    const before=animateHeight?box.getBoundingClientRect().height:0;
+    step=next;
+    body.innerHTML=next==='menu'?rowsHTML(kind==='c'&&!useSheet):next==='block'?blockHTML:reportHTML;
+    if(animateHeight&&!reduce()){box.style.height='auto';const after=box.getBoundingClientRect().height;box.style.height=before+'px';box.getBoundingClientRect();box.style.height=after+'px';
+      box.addEventListener('transitionend',function te(e){if(e.propertyName==='height'){box.style.height='';box.removeEventListener('transitionend',te);}});}
+    const radios=body.querySelectorAll('input[type=radio]'),etc=body.querySelector('.m-etc'),ok=body.querySelector('[data-a=report-ok]');
+    radios.forEach(r=>r.addEventListener('change',()=>{ok.disabled=false;const isEtc=r.value==String(REASONS.length-1);if(etc.classList.contains('on')!==isEtc){const b=box.getBoundingClientRect().height;etc.classList.toggle('on',isEtc);if(!reduce()){box.style.height='auto';const a=box.getBoundingClientRect().height;box.style.height=b+'px';box.getBoundingClientRect();box.style.height=a+'px';setTimeout(()=>box.style.height='',260*k());}}}));
+    (body.querySelector('button,input')||box).focus({preventScroll:true});
+  }
+  const k=()=>+getComputedStyle(document.documentElement).getPropertyValue('--k')||1;
+  function show(next='menu'){
+    build();render(next,false);
+    requestAnimationFrame(()=>{layer.classList.add('on');});
+    open=true;more.setAttribute('aria-expanded','true');
+  }
+  function close(focusBack=true){
+    if(!open)return;open=false;layer.classList.remove('on');more.setAttribute('aria-expanded','false');
+    const b=box;setTimeout(()=>{if(!open)b.remove();},300*k());
+    if(focusBack)more.focus({preventScroll:true});
+  }
+  function toast(text,undo){
+    clearTimeout(toastT);toastEl.querySelector('span').textContent=text;const u=toastEl.querySelector('button');u.hidden=!undo;u.onclick=()=>{undo();toastEl.classList.remove('on');};
+    toastEl.classList.add('on');toastT=setTimeout(()=>toastEl.classList.remove('on'),3200*k());
+  }
+  function act(a){
+    if(a==='close')return close();
+    if(a==='back')return render('menu',true);
+    if(a==='hide'){close();hiddenCard.classList.add('on');toast('오늘의 인연에서 숨겼어요.',()=>hiddenCard.classList.remove('on'));return;}
+    if(a==='block'||a==='report'){
+      if(kind==='c'&&!useSheet){ // 작은 메뉴는 닫고 시트로 이어서
+        layer.classList.remove('on');const old=box;setTimeout(()=>old.remove(),200*k());
+        useSheet=true;setTimeout(()=>{build();render(a,false);requestAnimationFrame(()=>layer.classList.add('on'));},140*k());return;}
+      return render(a,true);
+    }
+    if(a==='block-ok'){close();toast('봄빛 님을 차단했어요.');return;}
+    if(a==='report-ok'){close();toast('신고를 접수했어요. 확인하고 알려 드릴게요.');return;}
+  }
+  layer.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(t){act(t.dataset.a);return;}if(e.target===dim||e.target===layer)close();});
+  more.addEventListener('click',()=>{if(open)return close();hiddenCard.classList.remove('on');if(kind==='c')useSheet=false;show('menu');});
+  phone.addEventListener('keydown',e=>{
+    if(!open)return;
+    if(e.key==='Escape'){e.preventDefault();close();return;}
+    if(e.key==='Tab'){const f=[...box.querySelectorAll('button:not([disabled]),input,textarea.on')].filter(n=>n.offsetParent!==null);if(!f.length)return;const i=f.indexOf(document.activeElement);if(e.shiftKey&&i<=0){e.preventDefault();f[f.length-1].focus();}else if(!e.shiftKey&&i===f.length-1){e.preventDefault();f[0].focus();}}
+  });
+  return {open:()=>{if(!open){hiddenCard.classList.remove('on');if(kind==='c')useSheet=false;show('menu');}},close:()=>close(false)};
+}
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!e.target.closest?.('.phone'))ctrls.forEach(c=>c.close());});
+document.getElementById('openAll').onclick=()=>ctrls.forEach(c=>c.open());
+document.getElementById('closeAll').onclick=()=>ctrls.forEach(c=>c.close());
+document.getElementById('slow').onchange=e=>document.documentElement.style.setProperty('--k',e.target.checked?4:1);
+</script>
+</body>
+</html>

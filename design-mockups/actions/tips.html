@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>툴팁 간격</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding:16px 16px 64px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:80ch;margin:10px 0 0;color:var(--pg-fg2)}
+.layout{display:flex;flex-wrap:wrap;gap:28px;margin-top:0;align-items:flex-start}
+.phones{display:flex;flex-wrap:wrap;gap:24px}
+.col{display:flex;flex-direction:column;gap:10px;width:360px;max-width:100%}
+.col h2{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.col h2 b{display:grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:13px;background:var(--pg-accent);color:#fff;font:600 12px var(--font-sans)}
+.col>p{margin:0;font-size:13px;color:var(--pg-fg2)}
+.panel{position:sticky;top:16px;flex:1 1 360px;min-width:0;display:flex;flex-direction:column;gap:14px;padding:18px;border-radius:18px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.panel h3{margin:0;font-size:14px}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+.btns button{height:40px;padding:0 14px;border:0;border-radius:10px;background:var(--pg-accent);color:#fff;font-weight:600;cursor:pointer}
+.btns button.ghost{background:none;color:var(--pg-fg);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.btns button:focus-visible,.seg button:focus-visible{outline:2px solid var(--pg-accent);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px}
+.seg{display:inline-flex;gap:4px;padding:3px;border-radius:10px;background:var(--pg)}
+.seg button{height:32px;padding:0 10px;border:0;border-radius:8px;background:none;font-size:12px;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--pg-surface);box-shadow:0 0 0 1px var(--pg-line);font-weight:600}
+.chk{display:flex;align-items:center;gap:8px;font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:12px;line-height:1.6}
+th,td{padding:8px 6px;text-align:left;vertical-align:top;border-top:1px solid var(--pg-line)}
+th{width:72px;color:var(--pg-fg3);font-weight:600}
+thead th{border-top:0;color:var(--pg-fg)}
+.note{margin:0;font-size:12px;color:var(--pg-fg3)}
+
+/* ───── 휴대폰 (상대 프로필) ───── */
+.phone{position:relative;width:360px;max-width:100%;height:720px;border-radius:32px;overflow:hidden;background:var(--color-bg-page);color:var(--color-fg-primary);box-shadow:0 0 0 1px var(--pg-line),0 16px 40px rgb(0 0 0 / .12)}
+.scroller{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;padding:0 0 200px}
+.scroller::-webkit-scrollbar{display:none}
+.gal{position:relative;height:420px;background:url(img/story.jpg) 50% 35%/cover}
+.gal .dots{position:absolute;left:0;right:0;bottom:16px;display:flex;justify-content:center;gap:4px}
+.gal .dots i{width:6px;height:6px;border-radius:3px;background:rgb(255 255 255 / .55)}
+.gal .dots i:first-child{width:16px;background:var(--white)}
+.body{padding:0 20px}
+.who{margin-top:24px}
+.who h3{margin:0;font:400 var(--fact-name-size,26px)/1.3 var(--font-serif);letter-spacing:-.5px}
+.who p{margin:8px 0 0;font-size:14px;line-height:20px;color:var(--color-fg-secondary)}
+/* 받은 관심 칩 (B) */
+.love-chip{display:inline-flex;align-items:center;gap:4px;height:28px;margin-top:12px;padding:0 12px 0 8px;border-radius:14px;background:var(--color-bg-love-soft);color:var(--color-fg-love);font-size:12px;font-weight:600}
+.love-chip svg{width:14px;height:14px;fill:currentColor}
+.love-chip[hidden]{display:none}
+.tags{display:flex;flex-wrap:wrap;gap:4px 12px;margin:12px 0 0;padding:0;list-style:none;font-size:var(--fact-tag-size,14px);line-height:22px;color:var(--color-fg-accent-strong)}
+.key{display:flex;margin-top:28px;padding:20px 0;border-radius:var(--fact-key-radius,16px);background:var(--fact-key-bg,var(--color-bg-subtle))}
+.key div{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 4px;text-align:center}
+.key div+div{box-shadow:-1px 0 0 var(--fact-divider,var(--color-border-default))}
+.key b{font-size:15px;font-weight:600;line-height:1.35}
+.key small{font-size:11px;line-height:16px;color:var(--fact-key-label,var(--color-fg-tertiary))}
+.story{margin-top:36px}
+.story h4{margin:0 0 8px;font:400 19px/1.7 var(--font-serif);color:var(--color-fg-accent-strong)}
+.story p{margin:0;font-size:14px;line-height:2;color:var(--color-fg-secondary)}
+.story figure{margin:20px 0 0;height:240px;border-radius:12px;background:url(img/story.jpg) 50% 75%/cover}
+
+/* 좌우 동그라미 버튼 (앱과 같은 값) */
+.act{position:absolute;bottom:96px;z-index:3;display:grid;place-items:center;width:var(--action-size);height:var(--action-size);border:0;border-radius:28px;color:var(--white);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color 260ms ease,color 260ms ease,box-shadow 260ms ease}
+.act.heart{left:20px;background:var(--action-love-bg);box-shadow:var(--action-love-shadow)}
+.act.mail{right:20px;background:var(--action-letter-bg);box-shadow:var(--action-letter-shadow)}
+.act:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:3px}
+.act .ico{display:grid;place-items:center;width:var(--action-icon-size);height:var(--action-icon-size);will-change:transform}
+.act svg{grid-area:1/1;width:var(--action-icon-size);height:var(--action-icon-size);overflow:visible}
+.act .line{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.act .fill{fill:currentColor;stroke:none}
+.act .clip{transform:translateY(32px)}
+.act.is-done .clip{transform:none}
+/* 혼자 보냄: 회색 비활성 */
+.act.heart.is-off{background:var(--action-off-bg);color:var(--action-off-ink);box-shadow:none;cursor:default}
+/* 서로 호감 (B): 로즈 그대로 · 흰 하트 채움 */
+.act.heart.is-mutual{cursor:default}
+/* 받은 관심 뱃지 (B) */
+.badge{position:absolute;right:-2px;top:-2px;display:grid;place-items:center;width:20px;height:20px;border-radius:10px;background:var(--white);box-shadow:0 2px 6px color-mix(in srgb,var(--cool-neutral-900) 16%,transparent);color:var(--color-fg-love);pointer-events:none;transition:opacity 200ms ease,transform 200ms cubic-bezier(0.23, 1, 0.32, 1)}
+.badge[hidden]{display:none}
+.badge svg{width:12px;height:12px;fill:currentColor}
+.badge.is-gone{opacity:0;transform:scale(.6)}
+.spark{position:absolute;z-index:4;width:10px;height:10px;pointer-events:none;color:var(--action-love-bg)}
+.spark svg{display:block;width:100%;height:100%;fill:currentColor}
+/* 앱 하트 효과 */
+.loop-heart{display:inline-block;background:currentColor;-webkit-mask:url('img/heart-loop.png') center/190px 190px no-repeat;mask:url('img/heart-loop.png') center/190px 190px no-repeat;width:160px;height:100px}
+.bloom{position:absolute;z-index:4;left:50%;bottom:212px;pointer-events:none;display:flex;flex-direction:column;align-items:center;width:210px;padding:12px 10px 17px;border-radius:24px;background:color-mix(in srgb,var(--color-bg-page) 96%,transparent);box-shadow:0 8px 32px rgb(39 48 55 / .07);color:var(--color-fg-love);opacity:0;transform:translateX(-50%)}
+.bloom span:last-child{font:400 15px/1.4 var(--font-serif)}
+.bloom.is-playing{animation:appear 1.8s ease both}
+.bloom.is-playing .loop-heart{animation:beat .85s ease both}
+@keyframes appear{0%{opacity:0;translate:0 8px}15%,80%{opacity:1;translate:0 0}100%{opacity:0;translate:0 -5px}}
+@keyframes beat{0%{scale:.85}35%{scale:1.06}55%{scale:.97}75%{scale:1.03}100%{scale:1}}
+/* 리프 토스트 */
+.toast{position:absolute;z-index:5;left:0;right:0;bottom:164px;width:fit-content;max-width:calc(100% - 40px);min-height:var(--toast-h);margin-inline:auto;display:flex;align-items:center;padding:8px var(--toast-pad-x);border-radius:var(--toast-radius);background:var(--toast-bg);color:var(--toast-fg);font:500 12px/20px var(--font-sans);pointer-events:none}
+/* 툴팁 (앱 .yh-tip과 같은 모양) */
+.tip{position:absolute;z-index:6;display:flex;align-items:center;gap:6px;padding:10px 14px;border-radius:12px;background:var(--cool-neutral-900);color:var(--white);font:500 13px/1.45 var(--font-sans);white-space:nowrap;box-shadow:0 6px 18px color-mix(in srgb,var(--cool-neutral-950,#141A1E) 18%,transparent);transform-origin:var(--tip-ax,50%) 100%;pointer-events:none}
+.tip::after{content:"";position:absolute;left:var(--tip-ax,50%);bottom:-5px;width:10px;height:10px;margin-left:-5px;border-radius:0 0 2px 0;background:var(--cool-neutral-900);transform:rotate(45deg)}
+.nav{position:absolute;left:20px;right:20px;bottom:20px;height:64px;display:flex;align-items:center;padding:0 4px;border:1px solid var(--gnb-border);border-radius:32px;background:var(--gnb-bg);box-shadow:var(--gnb-shadow);-webkit-backdrop-filter:blur(var(--gnb-blur)) saturate(var(--gnb-saturate));backdrop-filter:blur(var(--gnb-blur)) saturate(var(--gnb-saturate))}
+.nav span{position:relative;flex:1;height:54px;display:grid;place-items:center;border-radius:27px;color:var(--gnb-icon)}
+.nav span.on{background:var(--gnb-selected-bg);color:var(--gnb-icon-active)}
+.nav svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.nav span.on svg{fill:currentColor;stroke:none}
+.nav img{width:32px;height:32px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1.5px var(--white)}
+@media (prefers-reduced-motion:reduce){.bloom.is-playing{animation:none;opacity:1}.bloom.is-playing .loop-heart{animation:none}.badge{transition:none}}
+/* 보낸 호감 칩 · 회색 (회색 하트와 한 세트) */
+.love-chip.is-neutral{background:var(--color-bg-muted);color:var(--color-fg-secondary)}
+.timer{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--pg-fg2);font-variant-numeric:tabular-nums}
+.timer i{flex:1;height:4px;border-radius:2px;background:var(--pg);overflow:hidden}
+.timer i b{display:block;height:100%;width:0;background:var(--pg-accent)}
+
+.phone{height:780px}
+/* 앱과 같은 툴팁 (곡선 꼭지 · 몸통과 꼭지에 함께 그림자) */
+.tip{box-shadow:none;filter:drop-shadow(0 6px 18px color-mix(in srgb,var(--cool-neutral-950,#141A1E) 18%,transparent))}
+.tip::after{top:calc(100% - 1px);bottom:auto;width:20px;height:9px;margin-left:-10px;border-radius:0;transform:none;background:var(--cool-neutral-900);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 9' preserveAspectRatio='none'%3E%3Cpath d='M0 0H20V1C16.5 1 14.6 2.6 12.6 5.2L11.3 7.4C10.7 8.3 9.3 8.3 8.7 7.4L7.4 5.2C5.4 2.6 3.5 1 0 1Z'/%3E%3C/svg%3E") center/100% 100% no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 9' preserveAspectRatio='none'%3E%3Cpath d='M0 0H20V1C16.5 1 14.6 2.6 12.6 5.2L11.3 7.4C10.7 8.3 9.3 8.3 8.7 7.4L7.4 5.2C5.4 2.6 3.5 1 0 1Z'/%3E%3C/svg%3E") center/100% 100% no-repeat}
+.tip.is-small{padding:6px 12px;border-radius:10px;font-size:12px;line-height:16px}
+.tip.is-small::after{width:14px;height:6px;margin-left:-7px}
+.tip-heart{flex:none;width:14px;height:14px;border-radius:50%;background:var(--rose-400);display:grid;place-items:center}
+.tip-heart::before{content:"";width:8px;height:8px;background:var(--white);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 27C12 24 3.6 18 4 11.2C4.4 4.5 12.1 4.3 15.6 10.2C18.3 3.9 26.8 3.8 28 10.6C29.1 16.5 22 24 16 27Z'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 27C12 24 3.6 18 4 11.2C4.4 4.5 12.1 4.3 15.6 10.2C18.3 3.9 26.8 3.8 28 10.6C29.1 16.5 22 24 16 27Z'/%3E%3C/svg%3E") center/contain no-repeat}
+/* 간격 표시 */
+.gd{position:absolute;z-index:8;pointer-events:none}
+.gd.v{width:0;border-left:1.5px solid #E5484D}
+.gd.v::before,.gd.v::after{content:"";position:absolute;left:-5px;width:9px;border-top:1.5px solid #E5484D}
+.gd.v::before{top:0}.gd.v::after{bottom:0}
+.gd.h{height:0;border-top:1.5px dashed #E5484D}
+.gd b{position:absolute;left:8px;top:50%;transform:translateY(-50%);padding:1px 5px;border-radius:4px;background:#E5484D;color:#fff;font:600 11px/16px var(--font-sans);white-space:nowrap}
+.gd.h b{left:50%;top:6px;transform:translateX(-50%)}
+.gd.box{border:1.5px dashed #E5484D;background:rgb(229 72 77 / .12)}
+.gd.box b{left:0;top:-20px;transform:none}
+.phone.no-guide .gd{display:none}
+.gal .dots::after,.gal .dots::before{content:none!important;display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="layout">
+    <div class="phones" id="phones"></div>
+    <section class="panel" aria-label="안내 바꾸기">
+  <p class="eyebrow">YAHWA · 상대 프로필 · 툴팁 간격</p>
+  <h1 class="title" style="font-size:24px;margin:0">툴팁 꼭지와 버튼 사이를 8px, 작은 툴팁은 버튼 사이로</h1>
+  <p class="intro" style="margin:0">왼쪽은 지금 앱, 오른쪽은 제안이에요. 숫자는 앱에서 잰 값과 같은 방법으로 계산했어요. 빨간 표시가 꼭지 끝과 대상 사이 간격, 빗금 상자는 툴팁이 다른 걸 덮는 자리예요. 오른쪽 패널에서 안내를 바꿔 보세요.</p>
+      <div class="row"><span>안내</span><span class="seg" id="which"><button type="button" data-v="profile" aria-pressed="true">프로필 안내</button><button type="button" data-v="hearts" aria-pressed="false">마음함 안내 (작게)</button><button type="button" data-v="letter" aria-pressed="false">편지 안내</button></span></div>
+      <label class="chk"><input type="checkbox" id="guide" checked> 간격 표시</label>
+      <table>
+        <thead><tr><th></th><th>지금</th><th>제안</th></tr></thead>
+        <tbody>
+          <tr><th>큰 툴팁</th><td>몸통이 버튼 위 10px, 꼭지가 8px 내려와 꼭지 끝과 버튼 사이 약 2px</td><td>몸통을 버튼 위 16px로 올려 꼭지 끝과 버튼 사이 8px</td></tr>
+          <tr><th>작은 툴팁</th><td>탭 위 4px에 붙어 꼭지가 메뉴에 1px 겹치고, 툴팁 왼쪽이 하트 버튼 아래 15px를 덮어요</td><td>꼭지 끝을 메뉴 위 4px에 두고, 가로는 두 버튼 사이(양쪽 8px 띄움)에 넣어요. 꼭지는 그대로 마음함 탭 가운데</td></tr>
+        </tbody>
+      </table>
+      <p class="note">작은 툴팁은 버튼과 메뉴 사이가 12px뿐이라 위아래로는 자리가 없어서, 두 버튼 사이 가로 192px 안(툴팁 177px)에 넣었어요.</p>
+    </section>
+  </div>
+</div>
+<script>
+const HEART='M16 26C12 23 4.5 17.5 5 11.3C5.4 5.5 12.2 5.5 15.6 12.2C18.1 5.2 25.8 4.9 27 10.8C28.1 16.1 21.6 23.1 16 26Z',HEART_FILL='M16 27C12 24 3.6 18 4 11.2C4.4 4.5 12.1 4.3 15.6 10.2C18.3 3.9 26.8 3.8 28 10.6C29.1 16.5 22 24 16 27Z',MAIL_PATH='M3 6Q12 5 21 6V19H3Z M3 7L12 14L21 7 M3 19L9 13 M21 19L15 13';
+const small=`<svg viewBox="0 0 32 32" aria-hidden="true"><path d="${HEART_FILL}"/></svg>`;
+const NAV=`<nav class="nav" aria-label="앱 메뉴"><span class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h7v8H3zM14 3h7v8h-7zM3 15h7v6H3zM14 15h7v6h-7z"/></svg></span><span data-tab="heartbox"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="${HEART}"/></svg></span><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${MAIL_PATH}"/></svg></span><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v12H9l-5 4V5M8 9h8M8 13h5"/></svg></span><span><img src="img/me.jpg" alt=""></span></nav>`;
+const BODY=`<div class="gal" role="img" aria-label="대표 사진"><span class="dots"><i></i><i></i><i></i></span></div><div class="body"><div class="who"><h3>서윤, 27</h3><p>서울 마포구 · 여성</p></div><ul class="tags"><li>#필름카메라</li><li>#동네산책</li><li>#여름밤</li></ul><div class="key"><div><b>164cm</b><small>키</small></div><div><b>그래픽 디자이너</b><small>하는 일</small></div><div><b>다정한</b><small>성격</small></div></div></div>`;
+const P=[{k:'now',tag:'지금',name:'지금 앱'},{k:'new',tag:'제안',name:'간격 8px · 버튼 사이'}];
+const wrapP=document.getElementById('phones'),phones=[];
+P.forEach(p=>{const c=document.createElement('section');c.className='col';
+  c.innerHTML=`<h2><b>${p.tag}</b>${p.name}</h2><div class="phone" data-k="${p.k}"><div class="scroller">${BODY}</div><button type="button" class="act heart" aria-label="관심 보내기"><span class="ico"><svg viewBox="0 0 32 32" aria-hidden="true"><path class="line" d="${HEART}"/></svg></span></button><button type="button" class="act mail" aria-label="편지 보내기"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="line" d="${MAIL_PATH}"/></svg></span></button>${NAV}</div>`;
+  wrapP.append(c);phones.push(c.querySelector('.phone'));});
+let which='profile';
+function rel(ph,el){const pr=ph.getBoundingClientRect(),r=el.getBoundingClientRect();return {l:r.left-pr.left,t:r.top-pr.top,r:r.right-pr.left,b:r.bottom-pr.top,w:r.width,h:r.height,cx:r.left-pr.left+r.width/2};}
+function guide(ph,cls,css,label){const g=document.createElement('div');g.className='gd '+cls;Object.assign(g.style,css);if(label)g.innerHTML=`<b>${label}</b>`;ph.append(g);}
+function render(ph){
+  ph.querySelectorAll('.tip,.gd').forEach(e=>e.remove());
+  const isNew=ph.dataset.k==='new',H=ph.clientHeight;
+  const heart=ph.querySelector('.heart'),mail=ph.querySelector('.mail'),nav=ph.querySelector('.nav'),tab=ph.querySelector('[data-tab=heartbox]');
+  const t=document.createElement('div');t.className='tip'+(which==='hearts'?' is-small':'');
+  t.innerHTML=which==='profile'?'마음이 가면 관심을 보내 보세요.':which==='letter'?'편지로 먼저 인사해 볼까요?':'<span class="tip-heart" aria-hidden="true"></span>보낸 관심은 마음함에 모여요';
+  ph.append(t);const w=t.offsetWidth,tailH=which==='hearts'?5:8;
+  const target=which==='letter'?mail:which==='profile'?heart:tab,tr=rel(ph,target),cx=tr.cx;
+  let left,bottom;
+  if(which!=='hearts'){left=Math.max(12,Math.min(ph.clientWidth-12-w,cx-w/2));bottom=H-tr.t+(isNew?16:10);}
+  else if(!isNew){left=Math.max(12,Math.min(ph.clientWidth-12-w,cx-w/2));bottom=H-tr.t+4;}
+  else{const hr=rel(ph,heart),mr=rel(ph,mail),nr=rel(ph,nav);left=Math.max(hr.r+8,Math.min(mr.l-8-w,cx-w/2));bottom=H-nr.t+4+tailH;}
+  t.style.left=left+'px';t.style.bottom=bottom+'px';t.style.setProperty('--tip-ax',(cx-left)+'px');
+  /* 간격 표시: 꼭지 끝 ↔ 대상(작은 툴팁 제안은 메뉴 위) */
+  const tipR=rel(ph,t),tailEnd=tipR.b+tailH,edge=which==='hearts'&&isNew?rel(ph,nav).t:tr.t,gap=edge-tailEnd;
+  if(gap>0.5)guide(ph,'v',{left:(cx+14)+'px',top:tailEnd+'px',height:gap+'px'},(Math.round(gap*10)/10)+'px');
+  else guide(ph,'h',{left:(cx-18)+'px',top:edge+'px',width:'36px'},gap<0?'겹침 '+Math.abs(Math.round(gap*10)/10)+'px':'닿음');
+  /* 덮는 자리 */
+  if(which==='hearts'){const hr=rel(ph,heart);const ox=Math.min(tipR.r,hr.r)-Math.max(tipR.l,hr.l),oy=Math.min(tipR.b,hr.b)-Math.max(tipR.t,hr.t);
+    if(ox>0&&oy>0)guide(ph,'box',{left:Math.max(tipR.l,hr.l)+'px',top:Math.max(tipR.t,hr.t)+'px',width:ox+'px',height:oy+'px'},'하트 버튼을 '+Math.round(oy)+'px 덮음');
+    if(isNew){const mr=rel(ph,mail);guide(ph,'h',{left:hr.r+'px',top:(tipR.t+tipR.h/2)+'px',width:(tipR.l-hr.r)+'px'},Math.round(tipR.l-hr.r)+'px');guide(ph,'h',{left:tipR.r+'px',top:(tipR.t+tipR.h/2+10)+'px',width:(mr.l-tipR.r)+'px'},Math.round(mr.l-tipR.r)+'px');}}
+}
+const all=()=>phones.forEach(render);
+document.querySelectorAll('#which button').forEach(x=>x.addEventListener('click',()=>{document.querySelectorAll('#which button').forEach(y=>y.setAttribute('aria-pressed',y===x));which=x.dataset.v;all();}));
+document.getElementById('guide').addEventListener('change',e=>phones.forEach(ph=>ph.classList.toggle('no-guide',!e.target.checked)));
+addEventListener('resize',all);document.fonts?.ready.then(all);all();
+</script>
+</body>
+</html>

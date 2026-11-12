@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>서로 호감 표시</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding:36px 16px 64px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:80ch;margin:10px 0 0;color:var(--pg-fg2)}
+.layout{display:flex;flex-wrap:wrap;gap:28px;margin-top:24px;align-items:flex-start}
+.phones{display:flex;flex-wrap:wrap;gap:24px}
+.col{display:flex;flex-direction:column;gap:10px;width:360px;max-width:100%}
+.col h2{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.col h2 b{display:grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:13px;background:var(--pg-accent);color:#fff;font:600 12px var(--font-sans)}
+.col>p{margin:0;font-size:13px;color:var(--pg-fg2)}
+.panel{position:sticky;top:16px;flex:1 1 360px;min-width:0;display:flex;flex-direction:column;gap:14px;padding:18px;border-radius:18px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.panel h3{margin:0;font-size:14px}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+.btns button{height:40px;padding:0 14px;border:0;border-radius:10px;background:var(--pg-accent);color:#fff;font-weight:600;cursor:pointer}
+.btns button.ghost{background:none;color:var(--pg-fg);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.btns button:focus-visible,.seg button:focus-visible{outline:2px solid var(--pg-accent);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px}
+.seg{display:inline-flex;gap:4px;padding:3px;border-radius:10px;background:var(--pg)}
+.seg button{height:32px;padding:0 10px;border:0;border-radius:8px;background:none;font-size:12px;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--pg-surface);box-shadow:0 0 0 1px var(--pg-line);font-weight:600}
+.chk{display:flex;align-items:center;gap:8px;font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:12px;line-height:1.6}
+th,td{padding:8px 6px;text-align:left;vertical-align:top;border-top:1px solid var(--pg-line)}
+th{width:72px;color:var(--pg-fg3);font-weight:600}
+thead th{border-top:0;color:var(--pg-fg)}
+.note{margin:0;font-size:12px;color:var(--pg-fg3)}
+
+/* ───── 휴대폰 (상대 프로필) ───── */
+.phone{position:relative;width:360px;max-width:100%;height:720px;border-radius:32px;overflow:hidden;background:var(--color-bg-page);color:var(--color-fg-primary);box-shadow:0 0 0 1px var(--pg-line),0 16px 40px rgb(0 0 0 / .12)}
+.scroller{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;padding:0 0 200px}
+.scroller::-webkit-scrollbar{display:none}
+.gal{position:relative;height:420px;background:url(img/story.jpg) 50% 35%/cover}
+.gal .dots{position:absolute;left:0;right:0;bottom:16px;display:flex;justify-content:center;gap:4px}
+.gal .dots i{width:6px;height:6px;border-radius:3px;background:rgb(255 255 255 / .55)}
+.gal .dots i:first-child{width:16px;background:var(--white)}
+.body{padding:0 20px}
+.who{margin-top:24px}
+.who h3{margin:0;font:400 var(--fact-name-size,26px)/1.3 var(--font-serif);letter-spacing:-.5px}
+.who p{margin:8px 0 0;font-size:14px;line-height:20px;color:var(--color-fg-secondary)}
+/* 받은 관심 칩 (B) */
+.love-chip{display:inline-flex;align-items:center;gap:4px;height:28px;margin-top:12px;padding:0 12px 0 8px;border-radius:14px;background:var(--color-bg-love-soft);color:var(--color-fg-love);font-size:12px;font-weight:600}
+.love-chip svg{width:14px;height:14px;fill:currentColor}
+.love-chip[hidden]{display:none}
+.tags{display:flex;flex-wrap:wrap;gap:4px 12px;margin:12px 0 0;padding:0;list-style:none;font-size:var(--fact-tag-size,14px);line-height:22px;color:var(--color-fg-accent-strong)}
+.key{display:flex;margin-top:28px;padding:20px 0;border-radius:var(--fact-key-radius,16px);background:var(--fact-key-bg,var(--color-bg-subtle))}
+.key div{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 4px;text-align:center}
+.key div+div{box-shadow:-1px 0 0 var(--fact-divider,var(--color-border-default))}
+.key b{font-size:15px;font-weight:600;line-height:1.35}
+.key small{font-size:11px;line-height:16px;color:var(--fact-key-label,var(--color-fg-tertiary))}
+.story{margin-top:36px}
+.story h4{margin:0 0 8px;font:400 19px/1.7 var(--font-serif);color:var(--color-fg-accent-strong)}
+.story p{margin:0;font-size:14px;line-height:2;color:var(--color-fg-secondary)}
+.story figure{margin:20px 0 0;height:240px;border-radius:12px;background:url(img/story.jpg) 50% 75%/cover}
+
+/* 좌우 동그라미 버튼 (앱과 같은 값) */
+.act{position:absolute;bottom:96px;z-index:3;display:grid;place-items:center;width:var(--action-size);height:var(--action-size);border:0;border-radius:28px;color:var(--white);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color 260ms ease,color 260ms ease,box-shadow 260ms ease}
+.act.heart{left:20px;background:var(--action-love-bg);box-shadow:var(--action-love-shadow)}
+.act.mail{right:20px;background:var(--action-letter-bg);box-shadow:var(--action-letter-shadow)}
+.act:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:3px}
+.act .ico{display:grid;place-items:center;width:var(--action-icon-size);height:var(--action-icon-size);will-change:transform}
+.act svg{grid-area:1/1;width:var(--action-icon-size);height:var(--action-icon-size);overflow:visible}
+.act .line{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.act .fill{fill:currentColor;stroke:none}
+.act .clip{transform:translateY(32px)}
+.act.is-done .clip{transform:none}
+/* 혼자 보냄: 회색 비활성 */
+.act.heart.is-off{background:var(--action-off-bg);color:var(--action-off-ink);box-shadow:none;cursor:default}
+/* 서로 호감 (B): 로즈 그대로 · 흰 하트 채움 */
+.act.heart.is-mutual{cursor:default}
+/* 받은 관심 뱃지 (B) */
+.badge{position:absolute;right:-2px;top:-2px;display:grid;place-items:center;width:20px;height:20px;border-radius:10px;background:var(--white);box-shadow:0 2px 6px color-mix(in srgb,var(--cool-neutral-900) 16%,transparent);color:var(--color-fg-love);pointer-events:none;transition:opacity 200ms ease,transform 200ms cubic-bezier(0.23, 1, 0.32, 1)}
+.badge[hidden]{display:none}
+.badge svg{width:12px;height:12px;fill:currentColor}
+.badge.is-gone{opacity:0;transform:scale(.6)}
+.spark{position:absolute;z-index:4;width:10px;height:10px;pointer-events:none;color:var(--action-love-bg)}
+.spark svg{display:block;width:100%;height:100%;fill:currentColor}
+/* 앱 하트 효과 */
+.loop-heart{display:inline-block;background:currentColor;-webkit-mask:url('img/heart-loop.png') center/190px 190px no-repeat;mask:url('img/heart-loop.png') center/190px 190px no-repeat;width:160px;height:100px}
+.bloom{position:absolute;z-index:4;left:50%;bottom:212px;pointer-events:none;display:flex;flex-direction:column;align-items:center;width:210px;padding:12px 10px 17px;border-radius:24px;background:color-mix(in srgb,var(--color-bg-page) 96%,transparent);box-shadow:0 8px 32px rgb(39 48 55 / .07);color:var(--color-fg-love);opacity:0;transform:translateX(-50%)}
+.bloom span:last-child{font:400 15px/1.4 var(--font-serif)}
+.bloom.is-playing{animation:appear 1.8s ease both}
+.bloom.is-playing .loop-heart{animation:beat .85s ease both}
+@keyframes appear{0%{opacity:0;translate:0 8px}15%,80%{opacity:1;translate:0 0}100%{opacity:0;translate:0 -5px}}
+@keyframes beat{0%{scale:.85}35%{scale:1.06}55%{scale:.97}75%{scale:1.03}100%{scale:1}}
+/* 리프 토스트 */
+.toast{position:absolute;z-index:5;left:0;right:0;bottom:164px;width:fit-content;max-width:calc(100% - 40px);min-height:var(--toast-h);margin-inline:auto;display:flex;align-items:center;padding:8px var(--toast-pad-x);border-radius:var(--toast-radius);background:var(--toast-bg);color:var(--toast-fg);font:500 12px/20px var(--font-sans);pointer-events:none}
+/* 툴팁 (앱 .yh-tip과 같은 모양) */
+.tip{position:absolute;z-index:6;display:flex;align-items:center;gap:6px;padding:10px 14px;border-radius:12px;background:var(--cool-neutral-900);color:var(--white);font:500 13px/1.45 var(--font-sans);white-space:nowrap;box-shadow:0 6px 18px color-mix(in srgb,var(--cool-neutral-950,#141A1E) 18%,transparent);transform-origin:var(--tip-ax,50%) 100%;pointer-events:none}
+.tip::after{content:"";position:absolute;left:var(--tip-ax,50%);bottom:-5px;width:10px;height:10px;margin-left:-5px;border-radius:0 0 2px 0;background:var(--cool-neutral-900);transform:rotate(45deg)}
+.nav{position:absolute;left:20px;right:20px;bottom:20px;height:64px;display:flex;align-items:center;padding:0 4px;border:1px solid var(--gnb-border);border-radius:32px;background:var(--gnb-bg);box-shadow:var(--gnb-shadow);-webkit-backdrop-filter:blur(var(--gnb-blur)) saturate(var(--gnb-saturate));backdrop-filter:blur(var(--gnb-blur)) saturate(var(--gnb-saturate))}
+.nav span{position:relative;flex:1;height:54px;display:grid;place-items:center;border-radius:27px;color:var(--gnb-icon)}
+.nav span.on{background:var(--gnb-selected-bg);color:var(--gnb-icon-active)}
+.nav svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.nav span.on svg{fill:currentColor;stroke:none}
+.nav img{width:32px;height:32px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1.5px var(--white)}
+@media (prefers-reduced-motion:reduce){.bloom.is-playing{animation:none;opacity:1}.bloom.is-playing .loop-heart{animation:none}.badge{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">YAHWA · 상대 프로필 · 서로 호감 표시</p>
+  <h1 class="title">글자 없는 하트 버튼에서 "서로 호감"을 어떻게 알려 줄까</h1>
+  <p class="intro">A는 지금 앱 그대로에 툴팁 하나만 더한 안, B는 누르기 전 · 누르는 순간 · 다시 열었을 때를 나눠서 알려 주는 안이에요. 기본은 "상대가 먼저 관심을 보낸" 상황이에요. 휴대폰 안 하트를 누르거나 오른쪽 버튼으로 두 휴대폰을 같이 재생해 보세요. 리프 토스트가 떠 있으면 툴팁은 앱 규칙대로 토스트가 사라진 뒤에 떠요.</p>
+  <div class="layout">
+    <div class="phones" id="phones"></div>
+    <section class="panel" aria-label="재생과 비교">
+      <div class="btns"><button type="button" id="play">두 휴대폰 같이 누르기</button><button type="button" class="ghost" id="reset">누르기 전으로</button><button type="button" class="ghost" id="revisit">다시 열었을 때</button></div>
+      <div class="row"><span>상황</span><span class="seg" id="scene"><button type="button" data-v="in" aria-pressed="true">상대가 먼저 보냄</button><button type="button" data-v="solo" aria-pressed="false">내가 먼저 보냄</button></span></div>
+      <label class="chk"><input type="checkbox" id="toastOn" checked> 리프 적립 토스트도 같이 (앱과 같게)</label>
+      <h3>한눈에 비교 (상대가 먼저 보냄)</h3>
+      <table>
+        <thead><tr><th></th><th>A 툴팁만</th><th>B 나눠서 알리기</th></tr></thead>
+        <tbody>
+          <tr><th>누르기 전</th><td>표시 없음. 상대가 먼저 보냈는지 알 수 없어요.</td><td>하트 버튼에 작은 하트 뱃지, 이름 아래 "나에게 관심을 보냈어요" 칩</td></tr>
+          <tr><th>누르는 순간</th><td>하트 효과 "마음이 한 걸음 가까이" → 토스트가 사라진 뒤(약 3.4초) 하트 위 툴팁 "서로 호감이 있어요"</td><td>하트 효과 문구가 바로 "서로 호감이 있어요" → 토스트가 사라진 뒤 편지 위 툴팁 "편지로 먼저 인사해 볼까요?"</td></tr>
+          <tr><th>다시 열었을 때</th><td>회색 하트. 혼자 보낸 것과 똑같아요.</td><td>로즈 바탕 그대로 · 흰 하트 채움, 칩 "서로 호감이 있어요". 혼자 보냈으면 회색.</td></tr>
+        </tbody>
+      </table>
+      <p class="note">하트 모션 값은 앱과 같아요 (눌림 0.85 · 20px · 1.45배 · 14° · 220ms / 560ms 튕김 0.38 · 15%부터 420ms 채움 · 260ms 뒤 상태 전환 · 작은 하트 6개).</p>
+    </section>
+  </div>
+</div>
+<script>
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const HEART='M16 26C12 23 4.5 17.5 5 11.3C5.4 5.5 12.2 5.5 15.6 12.2C18.1 5.2 25.8 4.9 27 10.8C28.1 16.1 21.6 23.1 16 26Z';
+const HEART_FILL='M16 27C12 24 3.6 18 4 11.2C4.4 4.5 12.1 4.3 15.6 10.2C18.3 3.9 26.8 3.8 28 10.6C29.1 16.5 22 24 16 27Z';
+const MAIL_PATH='M3 6Q12 5 21 6V19H3Z M3 7L12 14L21 7 M3 19L9 13 M21 19L15 13';
+const S={press:.85,rise:20,peak:1.45,tilt:14,up:220,down:560,bounce:.38,fillAt:15,fillMs:420,offDelay:260,sparkN:6};
+let uid=0;
+const heartIco=()=>{const id='hc'+(++uid);return `<span class="ico"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><clipPath id="${id}"><rect class="clip" x="0" y="0" width="32" height="32"/></clipPath></defs><path class="fill" d="${HEART_FILL}" clip-path="url(#${id})"/><path class="line" d="${HEART}"/></svg></span>`;};
+const smallHeart=`<svg viewBox="0 0 32 32" aria-hidden="true"><path d="${HEART_FILL}"/></svg>`;
+const NAV=`<nav class="nav" aria-label="앱 메뉴"><span class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h7v8H3zM14 3h7v8h-7zM3 15h7v6H3zM14 15h7v6h-7z"/></svg></span><span><svg viewBox="0 0 32 32" aria-hidden="true"><path d="${HEART}"/></svg></span><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${MAIL_PATH}"/></svg></span><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v12H9l-5 4V5M8 9h8M8 13h5"/></svg></span><span><img src="img/me.jpg" alt=""></span></nav>`;
+const BODY=`<div class="gal" role="img" aria-label="대표 사진"><span class="dots"><i></i><i></i><i></i></span></div>
+<div class="body"><div class="who"><h3>서윤, 27</h3><p>서울 마포구 · 여성</p><span class="love-chip" hidden>${smallHeart}<span></span></span></div>
+<ul class="tags"><li>#필름카메라</li><li>#동네산책</li><li>#여름밤</li><li>#카페투어</li></ul>
+<div class="key"><div><b>164cm</b><small>키</small></div><div><b>그래픽 디자이너</b><small>하는 일</small></div><div><b>다정한</b><small>성격</small></div></div>
+<section class="story"><h4>“이런 사람에게 마음이 가요”</h4><p>말을 끝까지 들어주고 작은 약속도 소중하게 지키는 사람에게 마음이 가요.</p><figure role="img" aria-label="일상 사진"></figure></section></div>`;
+let scene='in';
+const P=[{k:'a',tag:'A',name:'툴팁만',desc:'지금 앱에 툴팁 하나만 더해요. 서로 호감은 누른 뒤 하트 위 툴팁으로만 알려요.'},{k:'b',tag:'B',name:'나눠서 알리기',desc:'누르기 전엔 뱃지와 칩, 누르는 순간엔 하트 효과 문구, 다시 열면 로즈 하트와 칩. 툴팁은 다음 할 일(편지)을 가리켜요.'}];
+const wrapP=document.getElementById('phones'),phones=[];
+P.forEach(p=>{const c=document.createElement('section');c.className='col';
+  c.innerHTML=`<h2><b>${p.tag}</b>${p.name}</h2><div class="phone" data-k="${p.k}"><div class="scroller" tabindex="0" aria-label="상대 프로필 (스크롤)">${BODY}</div><button type="button" class="act heart">${heartIco()}<span class="badge" hidden>${smallHeart}</span></button><button type="button" class="act mail" aria-label="편지 보내기"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="line" d="${MAIL_PATH}"/></svg></span></button>${NAV}</div><p>${p.desc}</p>`;
+  wrapP.append(c);const ph=c.querySelector('.phone');phones.push(ph);
+  ph.querySelector('.heart').addEventListener('click',()=>press(ph));});
+const isB=ph=>ph.dataset.k==='b',incoming=()=>scene==='in';
+function chip(ph,text){const c=ph.querySelector('.love-chip');c.hidden=!text;c.querySelector('span').textContent=text||'';}
+function clearFx(ph){(ph._t||[]).forEach(clearTimeout);ph._t=[];ph.getAnimations({subtree:true}).forEach(a=>a.cancel());ph.querySelectorAll('.spark,.bloom,.toast,.tip').forEach(e=>e.remove());}
+const later=(ph,ms,fn)=>{ph._t=ph._t||[];ph._t.push(setTimeout(fn,ms));};
+/* 누르기 전 */
+function before(ph){clearFx(ph);ph.dataset.sent='';const h=ph.querySelector('.heart'),bd=h.querySelector('.badge');
+  h.classList.remove('is-off','is-mutual','is-done');h.removeAttribute('aria-disabled');
+  const show=isB(ph)&&incoming();bd.hidden=!show;bd.classList.remove('is-gone');chip(ph,show?'나에게 관심을 보냈어요':'');
+  h.setAttribute('aria-label',incoming()?'나도 관심 있어요':'관심 보내기');}
+/* 보낸 뒤 상태 (다시 열었을 때와 같음) */
+function settled(ph){const h=ph.querySelector('.heart'),mutual=isB(ph)&&incoming();
+  h.classList.add('is-done');h.classList.toggle('is-mutual',mutual);h.classList.toggle('is-off',!mutual);h.setAttribute('aria-disabled','true');
+  h.setAttribute('aria-label',incoming()?'서로 호감이 있어요':'관심을 보냈어요');h.querySelector('.badge').hidden=true;
+  if(isB(ph))chip(ph,incoming()?'서로 호감이 있어요':'');}
+function revisit(ph){before(ph);ph.dataset.sent='1';settled(ph);}
+function springEase(b){const n=40,pts=[];const z=Math.max(.05,1-b),w=2*Math.PI*1.1;for(let i=0;i<=n;i++){const t=i/n;let v;if(z>=1)v=1-Math.exp(-6*t)*(1+6*t);else{const wd=w*Math.sqrt(1-z*z);v=1-Math.exp(-z*w*t*4)*(Math.cos(wd*t*4)+z*w/wd*Math.sin(wd*t*4));}pts.push(i===n?1:+v.toFixed(4));}return 'linear('+pts.join(',')+')';}
+const EASE='cubic-bezier(0.23, 1, 0.32, 1)';
+function tip(ph,target,text){ph.querySelector('.tip')?.remove();const t=document.createElement('div');t.className='tip';t.setAttribute('role','status');t.textContent=text;ph.append(t);
+  const pr=ph.getBoundingClientRect(),tr=target.getBoundingClientRect(),w=t.offsetWidth,cx=tr.left-pr.left+tr.width/2,left=Math.max(12,Math.min(pr.width-12-w,cx-w/2));
+  t.style.left=left+'px';t.style.bottom=(pr.bottom-tr.top+10)+'px';t.style.setProperty('--tip-ax',(cx-left)+'px');
+  t.animate(reduce?[{opacity:0},{opacity:1}]:[{opacity:0,transform:'translateY(4px) scale(.96)'},{opacity:1,transform:'none'}],{duration:180,easing:EASE});
+  later(ph,3000,()=>{t.animate([{opacity:1},{opacity:0}],{duration:140}).onfinish=()=>t.remove();});}
+function press(ph){
+  if(ph.dataset.sent)return;ph.dataset.sent='1';
+  const h=ph.querySelector('.heart'),ico=h.querySelector('.ico'),clip=h.querySelector('.clip'),mutualB=isB(ph)&&incoming();
+  h.querySelector('.badge').classList.add('is-gone');
+  /* 하트 효과 (B는 서로일 때 문구가 바뀜) */
+  const b=document.createElement('div');b.className='bloom is-playing';b.setAttribute('aria-hidden','true');b.innerHTML=`<span class="loop-heart"></span><span>${mutualB?'서로 호감이 있어요':'마음이 한 걸음 가까이'}</span>`;ph.append(b);later(ph,1800,()=>b.remove());
+  /* 리프 토스트 */
+  const toastOn=document.getElementById('toastOn').checked;
+  if(toastOn){const t=document.createElement('div');t.className='toast';t.textContent='마음을 보냈어요 · 5리프 적립';ph.append(t);
+    t.animate([{opacity:0,transform:'translateY(7px) scale(.9)'},{opacity:1,transform:'none'}],{duration:460,easing:'cubic-bezier(.16,1,.3,1)'});
+    later(ph,2800,()=>{t.animate([{opacity:1},{opacity:0,transform:'translateY(4px)'}],{duration:380,easing:'cubic-bezier(.16,1,.3,1)',fill:'forwards'}).onfinish=()=>t.remove();});}
+  const settleAt=S.up+S.down+S.offDelay;
+  later(ph,settleAt,()=>{ph.getAnimations({subtree:true}).filter(a=>a.effect&&(a.effect.target===ico||a.effect.target===clip)).forEach(a=>a.cancel());settled(ph);});
+  /* 툴팁: 토스트가 있으면 사라진 뒤 200ms, 없으면 내려앉은 뒤 */
+  if(incoming())later(ph,toastOn?3380:settleAt+200,()=>{if(isB(ph))tip(ph,ph.querySelector('.mail'),'편지로 먼저 인사해 볼까요?');else tip(ph,h,'서로 호감이 있어요');});
+  if(reduce){clip.style.transform='none';return;}
+  h.animate([{transform:'scale(1)'},{transform:`scale(${S.press})`},{transform:'scale(1)'}],{duration:160,easing:EASE});
+  const peak=`translateY(${-S.rise}px) scale(${S.peak}) rotate(${-S.tilt}deg)`,rest='translateY(0) scale(1) rotate(0deg)';
+  const cs=getComputedStyle(document.documentElement),rose=cs.getPropertyValue('--action-love-fly').trim()||'#B26073',white=cs.getPropertyValue('--white').trim()||'#fff';
+  ico.animate([{color:white},{color:rose,offset:.35},{color:rose}],{duration:S.up,fill:'forwards'});
+  ico.animate([{transform:rest},{transform:peak}],{duration:S.up,easing:'cubic-bezier(0.2, 0.9, 0.3, 1)',fill:'forwards'}).finished.then(()=>{if(!ph.dataset.sent)return;
+    ico.animate([{transform:peak},{transform:rest}],{duration:S.down,easing:springEase(S.bounce),fill:'forwards'});
+    ico.animate([{color:rose},{color:rose,offset:.45},{color:white}],{duration:S.down,fill:'forwards'});
+    clip.animate([{transform:'translateY(32px)'},{transform:'translateY(0)'}],{duration:S.fillMs,delay:S.down*S.fillAt/100,easing:'cubic-bezier(0.33, 1, 0.68, 1)',fill:'both'});
+    sparks(ph,h);}).catch(()=>{});
+}
+function sparks(ph,b){const pr=ph.getBoundingClientRect(),br=b.getBoundingClientRect(),cx=br.left-pr.left+br.width/2,cy=br.top-pr.top+br.height/2-S.rise;
+  for(let i=0;i<S.sparkN;i++){const s=document.createElement('span');s.className='spark';s.innerHTML=smallHeart;s.style.left=(cx-5)+'px';s.style.top=(cy-5)+'px';ph.append(s);
+    const a=(-90+(i-(S.sparkN-1)/2)*(150/Math.max(1,S.sparkN-1)))*Math.PI/180,d=26+Math.random()*16,sz=.6+Math.random()*.6;
+    s.animate([{opacity:0,transform:'translate(0,0) scale(.3)'},{opacity:1,transform:`translate(${Math.cos(a)*d*.6}px,${Math.sin(a)*d*.6}px) scale(${sz})`,offset:.35},{opacity:0,transform:`translate(${Math.cos(a)*d}px,${Math.sin(a)*d+8}px) scale(${sz*.7})`}],{duration:620,easing:EASE}).onfinish=()=>s.remove();}}
+document.getElementById('play').addEventListener('click',()=>phones.forEach(ph=>{before(ph);press(ph);}));
+document.getElementById('reset').addEventListener('click',()=>phones.forEach(before));
+document.getElementById('revisit').addEventListener('click',()=>phones.forEach(revisit));
+document.querySelectorAll('#scene button').forEach(x=>x.addEventListener('click',()=>{document.querySelectorAll('#scene button').forEach(y=>y.setAttribute('aria-pressed',y===x));scene=x.dataset.v;phones.forEach(before);}));
+phones.forEach(before);
+</script>
+</body>
+</html>

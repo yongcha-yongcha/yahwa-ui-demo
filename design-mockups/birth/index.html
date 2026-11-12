@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>생년월일 받기</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button,input{font:inherit;color:inherit}
+.wrap{max-width:1600px;margin:0 auto;padding:36px 16px 64px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:80ch;margin:10px 0 0;color:var(--pg-fg2)}
+.grid{display:flex;flex-wrap:wrap;gap:32px 24px;margin-top:28px}
+.item{flex:0 1 360px;min-width:0;display:flex;flex-direction:column;gap:10px}
+.item h2{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.item h2 b{display:grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:13px;background:var(--pg-accent);color:#fff;font:600 12px var(--font-sans)}
+.item.now h2 b{background:var(--pg-fg3)}
+.item>p{margin:0;font-size:13px;color:var(--pg-fg2)}
+.item .feel{font-size:12px;color:var(--pg-fg3)}
+.out{padding:10px 14px;border-radius:12px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);font-size:12px;color:var(--pg-fg2)}
+.out b{display:block;margin-bottom:2px;font-size:11px;font-weight:600;color:var(--pg-fg3)}
+.out span{font-size:14px;color:var(--pg-fg)}
+
+/* ───── 휴대폰 (앱 기본 프로필 화면 수치) ───── */
+.phone{position:relative;width:360px;max-width:100%;height:780px;border-radius:32px;overflow:hidden;background:var(--color-bg-page);color:var(--color-fg-primary);box-shadow:0 0 0 1px var(--pg-line),0 16px 40px rgb(0 0 0 / .12);display:flex;flex-direction:column}
+.top{flex:none;height:44px;margin:24px 20px 0;display:flex;align-items:center}
+.top i{width:24px;height:24px;margin-left:2px;background:var(--color-fg-primary);-webkit-mask:var(--ic-chevron-left-large) center/contain no-repeat;mask:var(--ic-chevron-left-large) center/contain no-repeat}
+.gauge{flex:none;height:3px;margin:16px 20px 0;border-radius:3px;background:var(--color-bg-button-primary)}
+.body{flex:1;min-height:0;overflow-y:auto;padding:36px 20px 24px;scrollbar-width:none}
+.body::-webkit-scrollbar{display:none}
+.body h3{margin:0 0 15px;font:400 29px/1.5 var(--font-serif);letter-spacing:-1px}
+.lead{margin:0 0 24px;font-size:13px;line-height:1.8;color:var(--color-fg-tertiary)}
+.lbl{display:block;margin:20px 0 8px;font-size:12px;color:var(--color-fg-primary)}
+.lead+.lbl{margin-top:0}
+.help+.lbl{margin-top:16px}
+.tf{position:relative;display:flex;align-items:center;width:100%;height:54px;padding:0 16px;border:0;border-radius:12px;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-control);font:16px var(--font-sans);color:var(--color-fg-primary);text-align:left}
+.tf.btn{cursor:pointer;justify-content:space-between}
+.tf.btn i{width:20px;height:20px;background:var(--color-fg-tertiary);-webkit-mask:var(--ic-chevron-down) center/contain no-repeat;mask:var(--ic-chevron-down) center/contain no-repeat}
+.tf.ph{color:var(--color-fg-subtle)}
+input.tf{outline:none;letter-spacing:.5px;font-variant-numeric:tabular-nums}
+input.tf::placeholder{color:var(--color-fg-subtle);letter-spacing:0}
+.tf:focus,.tf:focus-visible{box-shadow:inset 0 0 0 1.5px var(--color-border-focus)}
+.tf.bad{box-shadow:inset 0 0 0 1.5px var(--color-border-error)}
+.help{margin:8px 2px 0;min-height:18px;font-size:12px;line-height:18px;color:var(--color-fg-tertiary)}
+.help b{font-weight:600;color:var(--color-fg-accent-strong)}
+.help.err{color:var(--color-fg-danger)}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.choices label{display:flex;align-items:center;justify-content:center;gap:12px;height:70px;padding:8px;border-radius:14px;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-control);cursor:pointer;font-size:14px}
+.choices label:has(input:checked){background:var(--color-bg-selected);box-shadow:inset 0 0 0 1px var(--color-border-accent)}
+.choices svg{width:40px;height:44px;color:var(--color-fg-secondary)}
+.choices input{appearance:none;width:20px;height:20px;margin:0;border-radius:50%;box-shadow:inset 0 0 0 2px var(--radio-off);display:grid;place-items:center}
+.choices input:checked{box-shadow:inset 0 0 0 2px var(--color-border-focus)}
+.choices input:checked::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--color-border-focus)}
+.choices span{display:flex;align-items:center;gap:8px}
+/* C 인증 정보 행 */
+.cert{display:flex;align-items:center;gap:12px;min-height:54px;padding:12px 16px;border-radius:12px;background:var(--color-bg-sage-soft);box-shadow:inset 0 0 0 1px var(--color-border-sage)}
+.cert .ck{width:24px;height:24px;flex:none;color:var(--color-fg-sage)}
+.cert strong{display:block;font-size:16px;font-weight:500;color:var(--color-fg-primary)}
+.cert small{display:block;font-size:12px;color:var(--color-fg-sage)}
+.cert em{margin-left:auto;font-style:normal;font-size:12px;color:var(--color-fg-tertiary)}
+.bottom{flex:none;padding:12px 20px 24px}
+.cta{width:100%;height:54px;border:0;border-radius:14px;background:var(--color-bg-button-primary);color:var(--color-fg-inverse);font:500 15px var(--font-sans);cursor:pointer}
+.cta:disabled{background:var(--color-bg-muted);color:var(--color-fg-muted);cursor:default}
+.demo{margin:12px 0 0;text-align:center;font-size:11px;color:var(--color-fg-muted)}
+/* 휠 시트 (앱 Wheel Picker와 같은 결 · 칸 48 × 5) */
+.dim{position:absolute;inset:0;z-index:5;background:rgb(20 28 34 / .36);opacity:0;pointer-events:none;transition:opacity 200ms ease-out}
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:6;padding:20px 20px 24px;border-radius:24px 24px 0 0;background:var(--color-bg-page);transform:translateY(100%);transition:transform 320ms cubic-bezier(.32,.72,0,1)}
+.phone.open .dim{opacity:1;pointer-events:auto}
+.phone.open .sheet{transform:none}
+.sheet h4{margin:0;font:600 18px/1.4 var(--font-sans)}
+.sheet p{margin:4px 0 16px;font-size:12px;color:var(--color-fg-tertiary)}
+.wheels{position:relative;display:grid;grid-template-columns:1.3fr 1fr 1fr;height:240px}
+.wheels::before{content:"";position:absolute;left:0;right:0;top:96px;height:48px;border-radius:12px;background:var(--color-bg-subtle);pointer-events:none}
+.wheel{position:relative;overflow-y:auto;scroll-snap-type:y mandatory;scrollbar-width:none;-webkit-mask:linear-gradient(transparent,#000 30%,#000 70%,transparent);mask:linear-gradient(transparent,#000 30%,#000 70%,transparent)}
+.wheel::-webkit-scrollbar{display:none}
+.wheel div{height:48px;display:grid;place-items:center;scroll-snap-align:center;font-size:17px;color:var(--color-fg-tertiary);font-variant-numeric:tabular-nums}
+.wheel div.on{color:var(--color-fg-primary);font-weight:600}
+.wheel .pad{pointer-events:none}
+.sheet .cta{margin-top:16px}
+@media (prefers-reduced-motion:reduce){.sheet,.dim{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">YAHWA · 가입 흐름 · 기본 프로필</p>
+  <h1 class="title">생년월일을 어떻게 받을까</h1>
+  <p class="intro">상대 프로필에는 "26세 · 서울 마포구 · 여성"처럼 나이가 나오는데, 가입할 때 나이를 받지 않아 내 미리보기에는 나이가 빠져 있어요. 기본 프로필(이름 · 성별 · 지역)에 생년월일을 더하는 세 가지 방법이에요. 각 휴대폰에서 직접 입력해 보면, 아래 "미리보기 위치 줄"이 바로 바뀌어요. 나이는 만 나이로 보여 주고, 만 19세 미만은 가입할 수 없어요.</p>
+  <div class="grid" id="grid"></div>
+</div>
+<script>
+const ART_F='<svg class="gender-art" viewBox="0 0 64 70" aria-hidden="true"><path fill="var(--color-bg-gold-muted)" stroke="none" d="M8 67Q7 49 23 45L31 54L40 45Q55 50 57 67Z"/><g fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"><path d="M17 35Q7 23 17 11Q27 0 42 8M41 10Q37 25 19 25M44 12Q50 18 48 32L47 39Q40 41 33 34M40 14Q34 34 18 34Q12 33 13 27M17 37Q11 42 20 45M29 34L24 44M35 40L38 46M9 65Q6 51 21 46M40 47Q53 49 56 65M23 49Q29 66 39 50M18 56L16 67M45 56L47 67"/></g></svg>';
+const ART_M='<svg class="gender-art" viewBox="0 0 64 70" aria-hidden="true"><path fill="var(--color-fg-inverse-muted)" stroke="none" d="M7 67Q9 49 24 45Q32 56 40 45Q54 50 57 67Z"/><g fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"><path d="M16 23Q12 9 28 6Q46 1 49 21M18 20Q19 9 32 10M25 16Q34 14 39 22L48 25Q52 27 47 32M18 26Q17 41 30 45Q41 46 46 33M28 17Q35 29 44 28M24 44L22 49M39 44L42 49M8 66Q8 51 21 48M43 48Q55 52 57 66M23 52Q32 60 42 52M18 57L17 67M47 57L49 67"/></g></svg>';
+const CHECK='<svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.21 8.53C22.59 10.18 22.59 13.81 20.21 15.47C20.83 18.26 18.25 20.83 15.47 20.22C13.81 22.59 10.18 22.59 8.53 20.22C5.74 20.83 3.16 18.26 3.78 15.47C1.41 13.81 1.41 10.18 3.78 8.53C3.16 5.75 5.74 3.17 8.53 3.78C10.18 1.41 13.81 1.41 15.47 3.78C18.25 3.17 20.83 5.75 20.21 8.53ZM11 12.59L9.7 11.29C9.32 10.9 8.68 10.9 8.29 11.29C7.9 11.68 7.9 12.32 8.29 12.71L10.29 14.71C10.68 15.1 11.31 15.1 11.71 14.71L15.71 10.71C16.1 10.32 16.1 9.68 15.71 9.29C15.32 8.9 14.68 8.9 14.29 9.29Z"/></svg>';
+const TODAY=new Date(2026,10,12);
+const age=(y,m,d)=>{let a=TODAY.getFullYear()-y;if(TODAY.getMonth()+1<m||(TODAY.getMonth()+1===m&&TODAY.getDate()<d))a--;return a;};
+const valid=(y,m,d)=>{const t=new Date(y,m-1,d);return t.getFullYear()===y&&t.getMonth()===m-1&&t.getDate()===d&&t<=TODAY&&y>=1940;};
+const fmt=(y,m,d)=>`${y}년 ${m}월 ${d}일`;
+let uid=0;
+const head=`<div class="top"><i aria-hidden="true"></i></div><div class="gauge"></div><div class="body"><h3>당신의 이야기를<br>조금 들려주세요.</h3><p class="lead">처음엔 간단한 소개면 충분해요.<br>사진과 자세한 이야기는 다음에 더해요.</p>`;
+const nameF=()=>`<label class="lbl" for="n${++uid}">어떤 이름으로 불러드릴까요?</label><input class="tf" id="n${uid}" value="지우" autocomplete="off">`;
+const gender=()=>`<span class="lbl">성별</span><div class="choices" role="radiogroup" aria-label="성별"><label>${ART_F}<span><input type="radio" name="g${++uid}" value="여성"> 여성</span></label><label>${ART_M}<span><input type="radio" name="g${uid}" value="남성" checked> 남성</span></label></div>`;
+const region=()=>`<span class="lbl">주로 생활하는 지역</span><button type="button" class="tf btn">서울<i aria-hidden="true"></i></button>`;
+const tail=`</div><div class="bottom"><button type="button" class="cta">첫 소개 완성하기</button><p class="demo">UI 시연 · 입력 정보는 저장하거나 전송하지 않아요</p></div>`;
+const V=[
+ {tag:'지금',name:'생년월일 없음',now:true,desc:'이름 · 성별 · 지역만 받아요. 상대 프로필에는 나이가 나오는데 내 미리보기에는 빠져요.',feel:'짧지만 미리보기와 어긋남',
+  body:()=>nameF()+gender()+region(),init(){},meta:()=>'서울 · 남성'},
+ {tag:'A',name:'휠로 고르기',desc:'칸을 누르면 아래에서 년 · 월 · 일 휠이 올라와요. 지역 고르기와 같은 휠이라 익숙하고, 잘못된 날짜를 고를 수 없어요. 처음 위치는 30년 전(1996년)이에요.',feel:'안전함 · 앱과 같은 방식',
+  body:()=>nameF()+`<span class="lbl">생년월일</span><button type="button" class="tf btn ph" data-open>생년월일을 골라 주세요<i aria-hidden="true"></i></button><p class="help" aria-live="polite">상대에게는 만 나이로만 보여요.</p>`+gender()+region(),
+  sheet:true},
+ {tag:'B',name:'숫자 8자리 바로 입력',desc:'숫자 키패드로 19970402처럼 8자리를 치면 "1997. 04. 02"로 저절로 나뉘고, 바로 아래에 만 나이를 알려 줘요. 가장 빠르지만 잘못 친 날짜는 안내로 막아요.',feel:'빠름 · 손이 덜 감',
+  body:()=>nameF()+`<label class="lbl" for="b${++uid}">생년월일</label><input class="tf" id="b${uid}" data-num inputmode="numeric" autocomplete="bday" placeholder="예: 1997. 04. 02" maxlength="14"><p class="help" aria-live="polite">숫자 8자리로 입력해 주세요. 상대에게는 만 나이로만 보여요.</p>`+gender()+region()},
+ {tag:'C',name:'본인인증 정보에서 가져오기',desc:'앞 단계 휴대폰 본인인증에서 확인한 생년월일을 그대로 써요. 입력할 게 없고 나이를 속일 수 없어서, 이름 옆 "나이 · 전화번호 인증" 배지와도 맞아요. 실제로는 통신사 본인인증(PASS 등)이 필요해요.',feel:'믿음 · 입력 없음',
+  body:()=>nameF()+`<span class="lbl">나이</span><div class="cert">${CHECK}<div><strong>만 29세</strong><small>휴대폰 본인인증으로 확인했어요</small></div><em>1997. 04. 02</em></div><p class="help">생년월일은 본인인증 정보라 직접 바꿀 수 없어요. 상대에게는 만 나이로만 보여요.</p>`+gender()+region(),
+  meta:()=>'29세 · 서울 · 남성'},
+];
+const grid=document.getElementById('grid');
+V.forEach(v=>{
+  const it=document.createElement('article');it.className='item'+(v.now?' now':'');
+  it.innerHTML=`<h2><b>${v.tag}</b>${v.name}</h2><div class="phone">${head}${v.body()}${tail}${v.sheet?sheetHTML():''}</div><div class="out" aria-live="polite"><b>미리보기 위치 줄</b><span>${v.meta?v.meta():'서울 · 남성'}</span></div><p>${v.desc}</p><span class="feel">느낌 · ${v.feel}</span>`;
+  grid.append(it);
+  const ph=it.querySelector('.phone'),out=it.querySelector('.out span');
+  const setMeta=a=>{out.textContent=''+(a!=null?a+'세 · ':'')+'서울 · 남성';};
+  if(v.sheet)wireSheet(ph,setMeta);
+  const num=ph.querySelector('[data-num]');if(num)wireNum(num,setMeta);
+});
+function sheetHTML(){
+  const ys=[];for(let y=1960;y<=2007;y++)ys.push(y);
+  const col=(arr,suf,cls)=>`<div class="wheel ${cls}" tabindex="0" role="listbox" aria-label="${suf==='년'?'년도':suf==='월'?'월':'일'}"><div class="pad"></div><div class="pad"></div>${arr.map(x=>`<div role="option" data-v="${x}">${x}${suf}</div>`).join('')}<div class="pad"></div><div class="pad"></div></div>`;
+  return `<div class="dim" data-close></div><div class="sheet" role="dialog" aria-label="생년월일 고르기"><h4>생년월일</h4><p>상대에게는 만 나이로만 보여요.</p><div class="wheels">${col(ys,'년','y')}${col([...Array(12)].map((_,i)=>i+1),'월','m')}${col([...Array(31)].map((_,i)=>i+1),'일','d')}</div><button type="button" class="cta" data-done>선택 완료</button></div>`;
+}
+function wireSheet(ph,setMeta){
+  const trig=ph.querySelector('[data-open]'),help=trig.nextElementSibling;
+  const W={y:ph.querySelector('.wheel.y'),m:ph.querySelector('.wheel.m'),d:ph.querySelector('.wheel.d')};
+  const cur=w=>{const i=Math.round(w.scrollTop/48);const items=[...w.querySelectorAll('[data-v]')];items.forEach((e,k)=>e.classList.toggle('on',k===i));return +(items[Math.min(i,items.length-1)].dataset.v);};
+  const go=(w,val)=>{const items=[...w.querySelectorAll('[data-v]')];const i=items.findIndex(e=>+e.dataset.v===val);w.scrollTop=Math.max(0,i)*48;cur(w);};
+  Object.values(W).forEach(w=>w.addEventListener('scroll',()=>{cur(w);/* 그 달에 없는 날은 마지막 날로 */const y=cur(W.y),m=cur(W.m),last=new Date(y,m,0).getDate();W.d.querySelectorAll('[data-v]').forEach(e=>e.style.opacity=+e.dataset.v>last?.3:'');},{passive:true}));
+  trig.addEventListener('click',()=>{ph.classList.add('open');requestAnimationFrame(()=>{go(W.y,trig.dataset.y?+trig.dataset.y:1996);go(W.m,trig.dataset.m?+trig.dataset.m:1);go(W.d,trig.dataset.d?+trig.dataset.d:1);});});
+  ph.querySelector('[data-close]').addEventListener('click',()=>ph.classList.remove('open'));
+  ph.querySelector('[data-done]').addEventListener('click',()=>{let y=cur(W.y),m=cur(W.m),d=cur(W.d);d=Math.min(d,new Date(y,m,0).getDate());
+    trig.dataset.y=y;trig.dataset.m=m;trig.dataset.d=d;trig.firstChild.textContent=fmt(y,m,d);trig.classList.remove('ph');
+    const a=age(y,m,d);if(a<19){help.className='help err';help.textContent='만 19세 이상만 가입할 수 있어요.';setMeta(null);}else{help.className='help';help.innerHTML=`<b>만 ${a}세</b>로 소개돼요.`;setMeta(a);}
+    ph.classList.remove('open');trig.focus();});
+}
+function wireNum(inp,setMeta){
+  const help=inp.nextElementSibling;
+  inp.addEventListener('input',()=>{const d=inp.value.replace(/\D/g,'').slice(0,8);inp.value=d.length>6?`${d.slice(0,4)}. ${d.slice(4,6)}. ${d.slice(6)}`:d.length>4?`${d.slice(0,4)}. ${d.slice(4)}`:d;
+    inp.classList.remove('bad');help.className='help';
+    if(d.length<8){help.textContent='숫자 8자리로 입력해 주세요. 상대에게는 만 나이로만 보여요.';setMeta(null);return;}
+    const y=+d.slice(0,4),m=+d.slice(4,6),dd=+d.slice(6);
+    if(!valid(y,m,dd)){inp.classList.add('bad');help.className='help err';help.textContent='날짜를 다시 확인해 주세요.';setMeta(null);return;}
+    const a=age(y,m,dd);if(a<19){inp.classList.add('bad');help.className='help err';help.textContent='만 19세 이상만 가입할 수 있어요.';setMeta(null);return;}
+    help.innerHTML=`<b>만 ${a}세</b>로 소개돼요.`;setMeta(a);});
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<title>소개 미리보기 2차 시안</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;600&display=swap">
+<style>
+/* 레이아웃: 위에 문제와 원칙 한 덩어리, 아래 지금 화면 + 시안 4개를 휴대폰 크기 카드로 나란히 */
+:root{
+  --bg:#F8F9F6;--surface:#FFFFFF;--line:#E3E7EA;--fg:#39444D;--fg2:#505C65;--fg3:#69757E;
+  --accent:#377398;--accent-soft:#ECF5FC;--gold:#856E3E;--gold-soft:#FAF7EF;--rose:#994A5D;--rose-soft:#FCF5F6;
+  --serif:"Gowun Batang",serif;--sans:"Noto Sans KR",-apple-system,"Apple SD Gothic Neo",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1A2126;--surface:#273037;--line:#39444D;--fg:#E3E7EA;--fg2:#CFD5DA;--fg3:#98A2AA;--accent:#92C0DF;--accent-soft:#154662;--gold:#D1BF9A;--gold-soft:#3B2E11;--rose:#DDAFB7;--rose-soft:#451824;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1A2126;--surface:#273037;--line:#39444D;--fg:#E3E7EA;--fg2:#CFD5DA;--fg3:#98A2AA;--accent:#92C0DF;--accent-soft:#154662;--gold:#D1BF9A;--gold-soft:#3B2E11;--rose:#DDAFB7;--rose-soft:#451824;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:400 14px/1.7 var(--sans);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1760px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--fg3)}
+h1{margin:8px 0 0;font:400 32px/1.35 var(--serif);text-wrap:balance}
+.intro{max-width:68ch;margin:12px 0 0;color:var(--fg2)}
+.brief{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:28px}
+.brief section{min-width:0;padding:20px;border-radius:16px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
+.brief h2{margin:0 0 8px;font-size:13px;font-weight:600}
+.brief ul{margin:0;padding-left:18px;color:var(--fg2)}
+.brief li+li{margin-top:4px}
+.brief b{color:var(--accent);font-weight:600}
+.grid{display:flex;flex-wrap:wrap;gap:24px;margin-top:40px;align-items:flex-start}
+.card{flex:0 1 390px;min-width:0;display:flex;flex-direction:column;gap:12px}
+.tag{display:flex;align-items:center;gap:8px}
+.tag b{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:13px;font-weight:600}
+.card.now .tag b{background:var(--fg3)}
+.tag span{font:400 18px/1.4 var(--serif)}
+.kind{margin-left:auto;padding:2px 10px;border-radius:12px;font-size:11px;background:var(--accent-soft);color:var(--accent)}
+.kind.risk{background:var(--rose-soft);color:var(--rose)}
+.kind.film{background:var(--gold-soft);color:var(--gold)}
+.phone{width:100%;max-width:390px;height:760px;border-radius:28px;overflow:hidden;box-shadow:0 0 0 1px var(--line),0 12px 32px rgb(0 0 0 / .08);background:#F8F9F6}
+.phone iframe{width:100%;height:100%;border:0;display:block}
+.phone img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.concept{margin:0;font:400 15px/1.6 var(--serif);color:var(--fg)}
+.desc{margin:0;color:var(--fg2);font-size:13px}
+.desc li{margin-top:2px}
+.desc ul{margin:0;padding-left:18px}
+.p{font-size:12px;color:var(--fg3)}
+.p em{font-style:normal;color:var(--accent)}
+.next{max-width:68ch;margin-top:48px;padding:20px;border-radius:16px;background:var(--accent-soft);color:var(--fg)}
+.next h2{margin:0 0 4px;font-size:14px}
+.next p{margin:0}
+@media (max-width:440px){h1{font-size:26px}.phone{height:700px}}
+
+.group{margin-top:48px}
+.group>h2{margin:0;font:400 22px/1.4 var(--serif)}
+.group>p{max-width:68ch;margin:4px 0 0;color:var(--fg2)}
+.group .grid{margin-top:20px}
+.toggle{display:inline-flex;gap:4px;padding:4px;border-radius:12px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line);align-self:flex-start}
+.toggle button{height:32px;padding:0 12px;border:0;border-radius:8px;background:none;font:500 12px var(--sans);color:var(--fg3);cursor:pointer}
+.toggle button[aria-pressed=true]{background:var(--accent-soft);color:var(--accent)}
+.toggle button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<div class="wrap">
+<p class="eyebrow">YAHWA · 가입 5/5 · 2차</p>
+<h1>당신의 첫 소개, 이렇게 보여요</h1>
+<p class="intro">1차에서 고른 A · B · D를 방향마다 두 가지로 다듬었어요. 위계(이름 → 서울 · 여성 → 해시태그 → 나의 정보)는 모두 같고, 나의 정보를 보여 주는 방식만 달라요. 휴대폰 화면은 직접 스크롤해 볼 수 있어요.</p>
+
+<section class="group"><h2>A · 잘 정리된 한 장</h2><p>1차 A는 세 칸 카드가 다른 앱과 비슷해 보여서, 상자를 덜어 내고 야화의 손그림 결을 더했어요.</p>
+<div class="grid">
+<article class="card">
+<div class="tag"><b>A1</b><span>더 가볍게</span></div>
+<div class="phone"><iframe id="f-a1" src="a1.html#me" title="2차 시안 A1 더 가볍게" loading="lazy"></iframe></div>
+<p class="concept">"상자 없이 한 장에 정리"</p>
+<div class="desc"><ul><li>세 칸을 상자 하나로 합치고 칸 사이를 손그림 세로선으로 나눔</li><li>아이콘 → 값(크게) → 라벨(작게)을 가운데 정렬</li><li>생활 네 가지는 칩 없이 아이콘 + 글자 한 줄</li></ul></div>
+<p class="p">원칙 <em>P1 P2 P3 P6</em> · 1차 A보다 테두리가 줄어 조용해요.</p>
+</article>
+<article class="card">
+<div class="tag"><b>A2</b><span>말하는 목록</span></div>
+<div class="phone"><iframe id="f-a2" src="a2.html#me" title="2차 시안 A2 말하는 목록" loading="lazy"></iframe></div>
+<p class="concept">"아이콘 옆에 짧은 말"</p>
+<div class="desc"><ul><li>하는 일 · 키 · 성격을 "회사에서 일해요", "키 168cm", "INFP예요"처럼 짧은 말로</li><li>아이콘은 옅은 하늘색 타일 안에</li><li>생활은 회색 칩으로 한 단계 낮춤</li></ul></div>
+<p class="p">원칙 <em>P2 P3 P4</em> · A와 D 사이. 아이콘 목록 구조는 숙소 앱 호스트 소개와 비슷해서, 타일 · 말투 · 묶음으로 달리했어요.</p>
+</article>
+</div></section>
+
+<section class="group"><h2>B · 필름 한 롤</h2><p>1차 B는 흰 상자가 많아 무거웠어요. 필름 재료는 살리고 칸을 덜어 냈어요.</p>
+<div class="grid">
+<article class="card">
+<div class="tag"><b>B1</b><span>얇은 스트립</span></div>
+<div class="phone"><iframe id="f-b1" src="b1.html#me" title="2차 시안 B1 얇은 스트립" loading="lazy"></iframe></div>
+<p class="concept">"필름 한 줄 위에 세 장면"</p>
+<div class="desc"><ul><li>흰 상자 대신 필름 위 반투명 칸 세 개 (하는 일 · 키 · 성격)</li><li>가장자리에 필름 인쇄 글자 YAHWA 400 ▸01 ▸02 ▸03</li><li>생활은 스트립 아래쪽에 04~07 번호와 함께 한 줄</li></ul></div>
+<p class="p">원칙 <em>P2 P3 P6 P8</em> · 1차 B보다 높이가 줄고 필름 느낌은 더 진해요.</p>
+</article>
+<article class="card">
+<div class="tag"><b>B2</b><span>세로 필름 옆줄</span></div>
+<div class="phone"><iframe id="f-b2" src="b2.html#me" title="2차 시안 B2 세로 필름 옆줄" loading="lazy"></iframe></div>
+<p class="concept">"필름을 세로로 세워 한 장씩"</p>
+<div class="desc"><ul><li>왼쪽에 세로 필름 줄, 구멍 사이에 프레임 번호 01~07</li><li>오른쪽엔 라벨(작게) + 값(크게) 목록, 박스 없음</li><li>생활 네 가지는 한 줄씩 작게</li></ul></div>
+<p class="p">원칙 <em>P3 P6 P8</em> · 정보가 늘어도 아래로 이어 붙이기 쉬워 앱에 넣기 좋아요.</p>
+</article>
+</div></section>
+
+<section class="group"><h2>D · 건네는 쪽지</h2><p>1차 D의 형광펜이 세 색이라 어지러웠어요. 그리고 빈 항목이 있을 때 어떻게 보이는지 직접 바꿔 볼 수 있게 했어요.</p>
+<div class="grid">
+<article class="card">
+<div class="tag"><b>D1</b><span>쪽지, 한 색 형광펜</span></div>
+<div class="phone"><iframe id="f-d1" src="d1.html#me" title="2차 시안 D1 쪽지, 한 색 형광펜" loading="lazy"></iframe></div><div class="toggle" role="group" aria-label="D1 정보 상태"><button type="button" aria-pressed="true" data-f="d1" data-h="me">정보 다 채움</button><button type="button" aria-pressed="false" data-f="d1" data-h="sparse">하는 일 · 키만</button></div>
+<p class="concept">"친구에게 건네는 자기소개 쪽지"</p>
+<div class="desc"><ul><li>정보를 짧은 문장으로 자동으로 이어 씀, 형광펜은 하늘색 하나</li><li>해시태그는 쪽지 위 마스킹 테이프 (자기소개 화면과 같은 재료)</li><li>빈 항목은 문장에서 빠져요. 예: "회사에서 일하는 사람이에요. 키는 168cm예요."</li></ul></div>
+<p class="p">원칙 <em>P4 P5 P8</em> · 가장 사람 냄새가 나지만, 값을 한눈에 비교하긴 어려워요.</p>
+</article>
+<article class="card">
+<div class="tag"><b>D2</b><span>빈칸 채우기 쪽지</span></div>
+<div class="phone"><iframe id="f-d2" src="d2.html#me" title="2차 시안 D2 빈칸 채우기 쪽지" loading="lazy"></iframe></div><div class="toggle" role="group" aria-label="D2 정보 상태"><button type="button" aria-pressed="true" data-f="d2" data-h="me">정보 다 채움</button><button type="button" aria-pressed="false" data-f="d2" data-h="sparse">하는 일 · 키만</button></div>
+<p class="concept">"인쇄된 칸에 손으로 채운 프로필 쪽지"</p>
+<div class="desc"><ul><li>같은 줄 노트 위에 칸 이름(작게)과 손글씨 같은 답(바탕체, 하늘색)</li><li>첫 줄 하는 일 · 키 · 성격 세 칸, 아래 술 · 담배 · 종교 · 학력 두 칸씩</li><li>빈칸은 "—"로 남아 쪽지 모양이 유지돼요</li></ul></div>
+<p class="p">원칙 <em>P2 P3 P8</em> · D의 감성 + A의 정리. 값을 훑어보기 쉬워요.</p>
+</article>
+</div></section>
+
+<div class="next"><h2>다음 단계</h2><p>하나를 고르시면 앱 화면에 바로 적용하고, 컴포넌트 문서와 Figma도 같이 맞출게요. 섞고 싶은 부분이 있으면 그것도 말씀해 주세요.</p></div>
+</div>
+<script>
+document.addEventListener('click',e=>{const b=e.target.closest('.toggle button');if(!b)return;const f=document.getElementById('f-'+b.dataset.f);if(!f)return;
+ b.parentElement.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+ f.src=b.dataset.f+'.html#'+b.dataset.h;});
+</script>

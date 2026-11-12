@@ -1,0 +1,78 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A1 생활 큰 칩 · 파스텔</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--color-bg-page);color:var(--color-fg-primary);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ic{display:inline-block;flex:none;width:var(--s,20px);height:var(--s,20px);background:currentColor;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat}
+.i-back{--m:var(--ic-chevron-left-large);--s:24px}.i-next{--m:var(--ic-chevron-right);--s:20px}.i-down{--m:var(--ic-chevron-down);--s:16px}
+.app{position:relative;height:100%;max-width:430px;margin:0 auto;display:flex;flex-direction:column;overflow:hidden;background:var(--color-bg-page)}
+.top{flex:none;height:52px;padding:0 20px;display:flex;align-items:center;justify-content:space-between}
+.back{width:44px;height:44px;margin-left:-10px;border:0;background:none;display:grid;place-items:center}
+.back .ic{transform:translateX(-8px)}
+.cnt{font-size:12px;color:var(--color-fg-accent-strong);font-variant-numeric:tabular-nums}
+.gauge{flex:none;height:3px;margin:0 20px;border-radius:3px;background:var(--color-bg-notice);overflow:hidden}
+.gauge i{display:block;width:100%;height:100%;background:var(--color-bg-button-primary)}
+.body{flex:1;min-height:0;overflow-y:auto;padding:28px 20px 32px;scrollbar-width:none}
+.body::-webkit-scrollbar{display:none}
+h1{margin:0;font:400 28px/1.45 var(--font-serif);letter-spacing:-.5px}
+.lead{margin:12px 0 0;font-size:13px;line-height:1.7;color:var(--color-fg-tertiary)}
+.lead small{display:block;font-size:11px;color:var(--color-fg-subtle)}
+.photo{position:relative;margin-top:28px;height:330px;border-radius:90px 90px 18px 18px;overflow:hidden;background:var(--color-bg-notice)}
+.photo img{width:100%;height:100%;object-fit:cover;display:block}
+.photo .arrow{position:absolute;right:8px;top:50%;margin-top:-22px;width:44px;height:44px;border:0;border-radius:50%;background:color-mix(in srgb,var(--white) 82%,transparent);display:grid;place-items:center;color:var(--color-fg-primary)}
+.photo .count{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);padding:2px 8px;border-radius:10px;background:color-mix(in srgb,var(--cool-neutral-900) 45%,transparent);color:var(--white);font-size:11px;font-variant-numeric:tabular-nums}
+.me{scroll-margin-top:96px}
+.qa{margin-top:40px}
+.qa h3{margin:0 0 8px;font:400 19px/1.7 var(--font-serif);color:var(--color-fg-accent-strong)}
+.qa p{margin:0;font-size:14px;line-height:2;color:var(--color-fg-secondary)}
+.bottom{flex:none;padding:12px 20px calc(20px + env(safe-area-inset-bottom,0px));background:var(--color-bg-page);box-shadow:0 -1px 0 var(--color-border-default)}
+.cta{width:100%;height:52px;border:0;border-radius:14px;background:var(--color-bg-button-primary);color:var(--white);font-size:15px;font-weight:600}
+.fi{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+.r-name{margin:28px 0 0;font:400 30px/1.3 var(--font-serif);letter-spacing:-.5px}
+.r-meta{display:flex;align-items:center;gap:4px;margin:8px 0 0;font-size:14px;color:var(--color-fg-secondary)}
+.r-meta .fi{width:16px;height:16px;color:var(--color-fg-tertiary)}
+.r-meta i{width:2px;height:2px;margin:0 4px;border-radius:50%;background:var(--color-fg-subtle)}
+.r-tags{display:flex;flex-wrap:wrap;gap:4px 12px;margin:12px 0 0;padding:0;list-style:none;font-size:13px;color:var(--color-fg-accent-strong)}
+.r-h{margin:0 0 12px;font-size:12px;font-weight:500;color:var(--color-fg-tertiary)}
+
+.a1-key{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:stretch;margin-top:32px;padding:20px 0;border-radius:20px;background:var(--color-bg-surface)}
+.a1-key>div{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+.a1-key .fi{color:var(--color-fg-accent);margin-bottom:4px}
+.a1-key b{font-size:17px;font-weight:600;line-height:1.35}
+.a1-key small{font-size:11px;color:var(--color-fg-subtle)}
+.a1-key svg.v{width:6px;height:auto;align-self:stretch;fill:none;stroke:var(--color-border-default);stroke-width:1.4;stroke-linecap:round}
+.x-unused{display:flex;flex-wrap:wrap;gap:8px 16px;margin:16px 4px 0;padding:0;list-style:none;font-size:13px;color:var(--color-fg-secondary)}
+.x-unused li{display:inline-flex;align-items:center;gap:6px}
+.x-unused .fi{width:16px;height:16px;color:var(--color-fg-tertiary)}
+
+.lf{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 0;padding:0;list-style:none}
+.lf li{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px 0 12px;border-radius:20px;font-size:14px;font-weight:500}
+.lf li:nth-child(1){background:color-mix(in srgb,var(--sky-100) 80%,transparent);color:var(--story-tape-1-fg)}
+.lf li:nth-child(2){background:color-mix(in srgb,var(--rose-100) 90%,transparent);color:var(--story-tape-2-fg)}
+.lf li:nth-child(3){background:var(--gold-100);color:var(--story-tape-3-fg)}
+.lf li:nth-child(4){background:var(--sage-100);color:var(--story-tape-4-fg)}
+
+</style></head><body><div class="app">
+<div class="top"><button type="button" class="back" aria-label="이전 화면"><i class="ic i-back" aria-hidden="true"></i></button><span class="cnt">5 / 5</span></div>
+<div class="gauge"><i></i></div>
+<div class="body" id="body">
+<h1>당신의 첫 소개,<br>이렇게 보여요.</h1>
+<p class="lead">상대방에게 보여줄 첫 소개예요.<small>가상 정보와 예시 사진을 사용한 시연용 프로필 · 사진을 옆으로 넘겨보세요</small></p>
+<div class="photo"><img src="img/p1.jpg" alt="내 대표 사진"><button type="button" class="arrow" aria-label="다음 사진"><i class="ic i-next" aria-hidden="true"></i></button><span class="count">1 / 5</span></div>
+<section class="me" id="me" aria-label="나의 정보">
+<h2 class="r-name">하늘</h2><p class="r-meta"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-6-6-11a6 6 0 0 1 12 0c0 5-6 11-6 11ZM12 8.5v3"/></svg>서울<i></i>여성</p><ul class="r-tags" aria-label="해시태그"><li>#산책메이트</li><li>#카페탐방러</li><li>#다정한사람</li><li>#에겐녀</li><li>#필름감성</li></ul>
+<div class="a1-key" role="list" aria-label="나에 대해"><div role="listitem"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16v11H4ZM9 8V5h6v3M4 13h16"/></svg><b>직장인</b><small>하는 일</small></div><svg class="v" viewBox="0 0 6 60" preserveAspectRatio="none" aria-hidden="true"><path d="M3 4q-1.6 13 .2 26t-.4 26"/></svg><div role="listitem"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v18H7ZM7 7h4M7 11h6M7 15h4"/></svg><b>168cm</b><small>키</small></div><svg class="v" viewBox="0 0 6 60" preserveAspectRatio="none" aria-hidden="true"><path d="M3 4q-1.6 13 .2 26t-.4 26"/></svg><div role="listitem"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v12H9l-5 4ZM8 9h8M8 13h5"/></svg><b>INFP</b><small>성격</small></div></div><ul class="lf" aria-label="생활"><li><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13h18v5H3ZM16 13v5M7 3q-3 3 0 5M12 3q-3 3 0 5"/></svg>비흡연</li><li><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v5a5 5 0 0 1-10 0ZM12 13v8M8 21h8"/></svg>술은 가끔</li><li><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M6 9h12"/></svg>무교</li><li><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="m2 8 10-5 10 5-10 5ZM6 11v6q6 5 12 0v-6"/></svg>대학교 졸업</li></ul>
+</section>
+<section class="qa"><h3>“간단한 자기소개를 들려주세요”</h3><p>서울에서 일하는 하늘이에요. 주말에는 동네 카페를 찾거나 산책하며 여유로운 시간을 보내는 걸 좋아해요.</p></section>
+</div>
+<div class="bottom"><button type="button" class="cta">이 소개로 완성하기</button></div>
+</div>
+<script>
+/* 비교 페이지에서 #me로 열면 이름 영역부터 보이게 */
+if(location.hash==='#me'){const b=document.getElementById('body'),m=document.getElementById('me');requestAnimationFrame(()=>{b.scrollTop=m.offsetTop-b.offsetTop-80;});}
+
+</script></body></html>

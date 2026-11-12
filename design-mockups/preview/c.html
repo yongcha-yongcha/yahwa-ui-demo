@@ -1,0 +1,75 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>소개 미리보기 시안 C</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--color-bg-page);color:var(--color-fg-primary);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ic{display:inline-block;flex:none;width:var(--s,20px);height:var(--s,20px);background:currentColor;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat}
+.i-back{--m:var(--ic-chevron-left-large);--s:24px}.i-next{--m:var(--ic-chevron-right);--s:20px}.i-down{--m:var(--ic-chevron-down);--s:16px}
+.app{position:relative;height:100%;max-width:430px;margin:0 auto;display:flex;flex-direction:column;overflow:hidden;background:var(--color-bg-page)}
+.top{flex:none;height:52px;padding:0 20px;display:flex;align-items:center;justify-content:space-between}
+.back{width:44px;height:44px;margin-left:-10px;border:0;background:none;display:grid;place-items:center}
+.back .ic{transform:translateX(-8px)}
+.cnt{font-size:12px;color:var(--color-fg-accent-strong);font-variant-numeric:tabular-nums}
+.gauge{flex:none;height:3px;margin:0 20px;border-radius:3px;background:var(--color-bg-notice);overflow:hidden}
+.gauge i{display:block;width:100%;height:100%;background:var(--color-bg-button-primary)}
+.body{flex:1;min-height:0;overflow-y:auto;padding:28px 20px 32px;scrollbar-width:none}
+.body::-webkit-scrollbar{display:none}
+h1{margin:0;font:400 28px/1.45 var(--font-serif);letter-spacing:-.5px}
+.lead{margin:12px 0 0;font-size:13px;line-height:1.7;color:var(--color-fg-tertiary)}
+.lead small{display:block;font-size:11px;color:var(--color-fg-subtle)}
+.photo{position:relative;margin-top:28px;height:330px;border-radius:90px 90px 18px 18px;overflow:hidden;background:var(--color-bg-notice)}
+.photo img{width:100%;height:100%;object-fit:cover;display:block}
+.photo .arrow{position:absolute;right:8px;top:50%;margin-top:-22px;width:44px;height:44px;border:0;border-radius:50%;background:color-mix(in srgb,var(--white) 82%,transparent);display:grid;place-items:center;color:var(--color-fg-primary)}
+.photo .count{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);padding:2px 8px;border-radius:10px;background:color-mix(in srgb,var(--cool-neutral-900) 45%,transparent);color:var(--white);font-size:11px;font-variant-numeric:tabular-nums}
+.me{scroll-margin-top:96px}
+.qa{margin-top:40px}
+.qa h3{margin:0 0 8px;font:400 19px/1.7 var(--font-serif);color:var(--color-fg-accent-strong)}
+.qa p{margin:0;font-size:14px;line-height:2;color:var(--color-fg-secondary)}
+.bottom{flex:none;padding:12px 20px calc(20px + env(safe-area-inset-bottom,0px));background:var(--color-bg-page);box-shadow:0 -1px 0 var(--color-border-default)}
+.cta{width:100%;height:52px;border:0;border-radius:14px;background:var(--color-bg-button-primary);color:var(--white);font-size:15px;font-weight:600}
+.fi{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+.c{text-align:center;padding-top:36px}
+.c-role{margin:0;font-size:11px;letter-spacing:3px;color:var(--color-fg-subtle)}
+.c-name{margin:8px 0 0;font:400 34px/1.25 var(--font-serif);letter-spacing:2px}
+.c-meta{margin:8px 0 0;font-size:13px;color:var(--color-fg-secondary);letter-spacing:.5px}
+.c-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:0 14px;max-width:320px;margin:16px auto 0;font:400 14px/1.9 var(--font-serif);color:var(--color-fg-accent-strong)}
+.c-tags span{white-space:nowrap}
+.c-mark{display:block;width:40px;height:12px;margin:28px auto;color:var(--color-border-accent-soft)}
+.c-roll{display:grid;grid-template-columns:1fr 1fr;column-gap:20px;row-gap:12px;margin:0;align-items:baseline}
+.c-roll dt{text-align:right;font-size:11px;letter-spacing:2px;color:var(--color-fg-tertiary)}
+.c-roll dd{margin:0;text-align:left;font:400 16px/1.4 var(--font-serif);color:var(--color-fg-primary)}
+.c-sub{margin:28px 0 12px;font-size:11px;letter-spacing:3px;color:var(--color-fg-subtle)}
+.c-roll.sm dd{font-size:14px;color:var(--color-fg-secondary)}
+
+</style></head><body><div class="app">
+<div class="top"><button type="button" class="back" aria-label="이전 화면"><i class="ic i-back" aria-hidden="true"></i></button><span class="cnt">5 / 5</span></div>
+<div class="gauge"><i></i></div>
+<div class="body" id="body">
+<h1>당신의 첫 소개,<br>이렇게 보여요.</h1>
+<p class="lead">상대방에게 보여줄 첫 소개예요.<small>가상 정보와 예시 사진을 사용한 시연용 프로필 · 사진을 옆으로 넘겨보세요</small></p>
+<div class="photo"><img src="img/p1.jpg" alt="내 대표 사진"><button type="button" class="arrow" aria-label="다음 사진"><i class="ic i-next" aria-hidden="true"></i></button><span class="count">1 / 5</span></div>
+<section class="me" id="me" aria-label="나의 정보">
+<div class="c">
+<p class="c-role">STARRING</p>
+<h2 class="c-name">하늘</h2>
+<p class="c-meta">서울 · 여성</p>
+<p class="c-tags" aria-label="해시태그"><span>#산책메이트</span><span>#카페탐방러</span><span>#다정한사람</span><span>#에겐녀</span><span>#필름감성</span></p>
+<svg class="c-mark" viewBox="0 0 40 12" aria-hidden="true"><path d="M2 6q4.5-5 9 0t9 0 9 0 9 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+<dl class="c-roll"><dt>하는 일</dt><dd>직장인</dd><dt>키</dt><dd>168cm</dd><dt>성격</dt><dd>INFP</dd></dl>
+<p class="c-sub">EVERYDAY</p>
+<dl class="c-roll sm"><dt>흡연</dt><dd>비흡연</dd><dt>음주</dt><dd>가끔</dd><dt>종교</dt><dd>무교</dd><dt>학력</dt><dd>대학교 졸업</dd></dl>
+</div>
+</section>
+<section class="qa"><h3>“간단한 자기소개를 들려주세요”</h3><p>서울에서 일하는 하늘이에요. 주말에는 동네 카페를 찾거나 산책하며 여유로운 시간을 보내는 걸 좋아해요.</p></section>
+</div>
+<div class="bottom"><button type="button" class="cta">이 소개로 완성하기</button></div>
+</div>
+<script>
+/* 비교 페이지에서 #me로 열면 이름 영역부터 보이게 */
+if(location.hash==='#me'){const b=document.getElementById('body'),m=document.getElementById('me');requestAnimationFrame(()=>{b.scrollTop=m.offsetTop-b.offsetTop-80;});}
+
+</script></body></html>

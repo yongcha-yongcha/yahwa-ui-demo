@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>관심 온보딩 툴팁</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398;--pg-soft:#E4EEF5}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-soft:#25333D;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-soft:#25333D;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.wrap{max-width:1100px;margin:0 auto;padding:36px 16px 64px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:80ch;margin:10px 0 0;color:var(--pg-fg2)}
+.layout{display:flex;flex-wrap:wrap;gap:32px;margin-top:28px;align-items:flex-start}
+.side{flex:1 1 380px;min-width:0;display:flex;flex-direction:column;gap:16px}
+.steps{margin:0;padding:0;list-style:none;display:grid;gap:8px;counter-reset:s}
+.steps button{width:100%;display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start;padding:12px 14px;border:0;border-radius:14px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);text-align:left}
+.steps button::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:28px;height:28px;border-radius:14px;background:var(--pg-soft);color:var(--pg-accent);font:600 13px var(--font-sans)}
+.steps button b{display:block;font-weight:600;font-size:14px}
+.steps button span{display:block;font-size:12px;color:var(--pg-fg3)}
+.steps button[aria-current=step]{box-shadow:inset 0 0 0 2px var(--pg-accent)}
+.steps button[aria-current=step]::before{background:var(--pg-accent);color:#fff}
+.steps button:focus-visible{outline:2px solid var(--pg-accent);outline-offset:2px}
+.state{padding:14px 16px;border-radius:14px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);font-size:13px}
+.state h3{margin:0 0 8px;font-size:12px;font-weight:600;color:var(--pg-fg3)}
+.state dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.state dt{color:var(--pg-fg3)}
+.state dd{margin:0;font-variant-numeric:tabular-nums}
+.state .on{color:#2F7A55;font-weight:600}
+.rules{margin:0;padding:14px 16px 14px 32px;border-radius:14px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);font-size:13px;color:var(--pg-fg2)}
+.rules li+li{margin-top:4px}
+.ctrl{display:flex;gap:8px}
+.ctrl button{flex:1;height:40px;border:0;border-radius:10px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);font-size:13px}
+
+/* ───── 휴대폰 (상대 프로필, 앱 수치) ───── */
+.phone{position:relative;flex:none;width:360px;max-width:100%;height:780px;border-radius:32px;overflow:hidden;background:var(--color-bg-page);color:var(--color-fg-primary);box-shadow:0 0 0 1px var(--pg-line),0 16px 40px rgb(0 0 0 / .12)}
+.top{position:absolute;left:20px;right:20px;top:24px;height:44px;display:flex;align-items:center;justify-content:space-between}
+.top i{width:24px;height:24px;background:var(--color-fg-primary);-webkit-mask:var(--ic-chevron-left-large) center/contain no-repeat;mask:var(--ic-chevron-left-large) center/contain no-repeat}
+.top b{font:700 16px/1 var(--font-sans);letter-spacing:1px}
+.photo{position:absolute;left:20px;right:20px;top:100px;height:330px;border-radius:90px 90px 18px 18px;background:center 30%/cover}
+.name{position:absolute;left:20px;top:458px;margin:0;font:400 30px/1.3 var(--font-serif);letter-spacing:-.5px}
+.meta{position:absolute;left:20px;top:504px;margin:0;font-size:14px;color:var(--color-fg-secondary)}
+.actions{position:absolute;left:20px;right:20px;bottom:116px;display:grid;grid-template-columns:1fr 1.15fr;gap:10px}
+.cta{height:54px;border:0;border-radius:14px;background:var(--color-bg-button-primary);color:var(--color-fg-inverse);font:500 15px var(--font-sans);transition:transform 100ms ease-out,background-color 160ms ease,color 160ms ease}
+.cta:active{transform:scale(.97)}
+.cta.sent{background:var(--color-bg-muted);color:var(--color-fg-secondary);cursor:default}
+.cta.mutual{background:var(--rose-50,#FBEFF1);color:var(--rose-600,#B4516A)}
+.cta:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:2px}
+.nav{position:absolute;left:20px;right:20px;bottom:20px;height:64px;display:flex;align-items:center;padding:0 4px;border:1px solid var(--gnb-border);border-radius:32px;background:var(--gnb-bg);box-shadow:var(--gnb-shadow)}
+.nav span{position:relative;flex:1;height:54px;display:grid;place-items:center;border-radius:27px;color:var(--gnb-icon)}
+.nav span.on{background:var(--gnb-selected-bg);color:var(--gnb-icon-active)}
+.nav svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.nav span.on svg{fill:currentColor;stroke:none}
+.nav i{position:absolute;left:50%;top:11px;margin-left:8px;width:8px;height:8px;border-radius:50%;background:var(--gnb-badge-bg);box-shadow:0 0 0 1px var(--white)}
+.nav img{width:32px;height:32px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1.5px var(--white)}
+.nav .heart.pulse svg{animation:pulse 420ms cubic-bezier(.23,1,.32,1)}
+@keyframes pulse{0%{transform:scale(1)}40%{transform:scale(1.22)}100%{transform:scale(1)}}
+/* 로그인 / 홈 화면 (단계 사이 잠깐) */
+.cover{position:absolute;inset:0;z-index:8;display:grid;place-items:center;align-content:center;gap:12px;background:var(--color-bg-page);text-align:center;opacity:0;pointer-events:none;transition:opacity 220ms ease-out}
+.cover.show{opacity:1}
+.cover strong{font:400 22px/1.5 var(--font-serif)}
+.cover small{font-size:13px;color:var(--color-fg-tertiary)}
+
+/* 툴팁: 불투명한 어두운 바탕 + 흰 글자, 꼬리로 대상을 가리켜요 */
+.tip{position:absolute;z-index:5;display:flex;align-items:center;gap:6px;padding:10px 14px;border-radius:12px;background:var(--cool-neutral-900);color:var(--white);font:500 13px/1.45 var(--font-sans);white-space:nowrap;box-shadow:0 6px 18px rgb(0 0 0 / .18);transform-origin:var(--ax,50%) 100%}
+.tip::after{content:"";position:absolute;left:var(--ax,50%);bottom:-5px;width:10px;height:10px;margin-left:-5px;border-radius:0 0 2px 0;background:var(--cool-neutral-900);transform:rotate(45deg)}
+.tip.sm{padding:6px 12px;border-radius:10px;font-size:12px;line-height:16px}
+.tip.sm::after{bottom:-4px;width:8px;height:8px;margin-left:-4px}
+.tip .x{flex:none;width:28px;height:28px;margin:-6px -10px -6px 0;border:0;border-radius:14px;background:none;display:grid;place-items:center;color:rgb(255 255 255 / .72)}
+.tip .x::before{content:"";width:12px;height:12px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 2l8 8M10 2l-8 8' stroke='black' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 2l8 8M10 2l-8 8' stroke='black' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat}
+.tip .x:focus-visible{outline:2px solid var(--white);outline-offset:-2px}
+.tip .ok{flex:none;width:14px;height:14px;border-radius:50%;background:var(--rose-400,#E58E9E);display:grid;place-items:center}
+.tip .ok::before{content:"";width:8px;height:8px;background:#fff;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 27C12 24 3.6 18 4 11.2C4.4 4.5 12.1 4.3 15.6 10.2C18.3 3.9 26.8 3.8 28 10.6C29.1 16.5 22 24 16 27Z'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 27C12 24 3.6 18 4 11.2C4.4 4.5 12.1 4.3 15.6 10.2C18.3 3.9 26.8 3.8 28 10.6C29.1 16.5 22 24 16 27Z'/%3E%3C/svg%3E") center/contain no-repeat}
+/* 관심 보낼 때 하트 효과 (앱 .interest-bloom 그대로) */
+.loop-heart{display:inline-block;flex:none;background:currentColor;-webkit-mask:url('img/heart-loop.png') center/190px 190px no-repeat;mask:url('img/heart-loop.png') center/190px 190px no-repeat;width:160px;height:100px}
+.bloom{position:absolute;z-index:4;left:50%;bottom:194px;pointer-events:none;display:flex;flex-direction:column;align-items:center;width:210px;padding:12px 10px 17px;border-radius:24px;background:color-mix(in srgb,var(--color-bg-page) 96%,transparent);box-shadow:0 8px 32px rgb(39 48 55 / .07);color:var(--color-fg-love);opacity:0;transform:translateX(-50%)}
+.bloom span:last-child{font:400 15px/1.4 var(--font-serif)}
+.bloom.is-playing{animation:interest-appear 1.8s ease both}
+.bloom.is-playing .loop-heart{animation:interest-beat .85s ease both}
+@keyframes interest-appear{0%{opacity:0;translate:0 8px}15%,80%{opacity:1;translate:0 0}100%{opacity:0;translate:0 -5px}}
+@keyframes interest-beat{0%{scale:.85}35%{scale:1.06}55%{scale:.97}75%{scale:1.03}100%{scale:1}}
+@media (prefers-reduced-motion:reduce){.cover{transition:none}.bloom.is-playing{animation:none;opacity:1}.bloom.is-playing .loop-heart{animation:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">YAHWA · 상대 프로필 · 관심 온보딩</p>
+  <h1 class="title">처음 한 번만 알려 주는 관심 툴팁</h1>
+  <p class="intro">가입하고 처음 상대 프로필을 볼 때만 "마음이 가면 관심을 보내 보세요."를 알려 주고, 처음 관심을 보낼 때만 아래 마음함 탭에 "보낸 관심은 마음함에 모여요"를 알려 줘요. 두 안내 모두 잠깐 떴다 저절로 사라져요. 한 번 본 계정은 다시 뜨지 않고, 로그아웃했다가 다시 로그인하면 처음처럼 다시 떠요. 오른쪽 단계를 차례로 눌러 보세요. 휴대폰 안 버튼을 직접 눌러도 돼요.</p>
+  <div class="layout">
+    <div class="phone" id="phone">
+      <div class="top"><i aria-hidden="true"></i><b aria-label="프로필 더보기">···</b></div>
+      <div class="photo" id="photo" role="img"></div>
+      <h2 class="name" id="name"></h2><p class="meta" id="meta"></p>
+      <div class="actions"><button type="button" class="cta" id="like"></button><button type="button" class="cta">편지 보내기</button></div>
+      <nav class="nav" aria-label="앱 메뉴"><span class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h7v8H3zM14 3h7v8h-7zM3 15h7v6H3zM14 15h7v6h-7z"/></svg></span><span class="heart" id="heart"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20C9 17.8 3.4 13.6 3.8 8.5C4.1 4.1 9.2 4 11.7 8.7C13.6 3.9 19.4 3.7 20.3 8.1C21.1 12.1 16.2 17.3 12 20Z"/></svg><i></i></span><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6Q12 5 21 6V19H3Z M3 7L12 14L21 7 M3 19L9 13 M21 19L15 13"/></svg></span><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v12H9l-5 4V5M8 9h8M8 13h5"/></svg><i></i></span><span><img src="img/me.jpg" alt=""></span></nav>
+      <div class="cover" id="cover" aria-hidden="true"><strong id="cover-t"></strong><small id="cover-s"></small></div>
+    </div>
+    <div class="side">
+      <ol class="steps" id="steps"></ol>
+      <div class="ctrl"><button type="button" id="next">다음 단계</button><button type="button" id="restart">처음부터</button></div>
+      <div class="state" aria-live="polite"><h3>이 계정이 기억하는 것 (로그인 동안만)</h3><dl><dt>계정</dt><dd id="s-acc">지우</dd><dt>로그인</dt><dd id="s-login"></dd><dt>프로필 안내</dt><dd id="s-a"></dd><dt>마음함 안내</dt><dd id="s-b"></dd></dl></div>
+      <ul class="rules">
+        <li><b>프로필 안내</b> "마음이 가면 관심을 보내 보세요." · 아직 관심을 보내지 않은 상대 프로필을 처음 열 때 한 번. 0.6초 뒤 떠서 4초 뒤 저절로 사라져요(화면을 누르거나 관심을 보내면 바로). 다시 안 떠요.</li>
+        <li><b>관심 보낼 때</b> 지금 앱의 하트 효과("마음이 한 걸음 가까이", 1.8초)는 그대로 나와요.</li><li><b>마음함 안내</b> "보낸 관심은 마음함에 모여요" · 처음 관심을 보낼 때 한 번, 하트 효과가 사라져 갈 즈음(1.4초) 떠서 3초 뒤 사라지고, 마음함 하트가 한 번 통 튀어요.</li>
+        <li>버튼은 상대가 먼저 관심을 보냈으면 "나도 관심 있어요" → "서로 호감이 있어요", 아니면 "관심 보내기" → "관심을 보냈어요".</li>
+        <li>기억은 계정마다, 로그인한 동안만. 로그아웃하면 지워져서 다시 로그인하면 처음처럼 다시 떠요.</li>
+        <li>툴팁 바탕은 투명도 없이 Cool Neutral 900, 꼬리도 같은 색이에요.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script>
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const P=[
+ {name:'봄빛',meta:'26세 · 서울 마포구 · 여성',img:'img/p1.jpg',likedMe:true},
+ {name:'작은파도',meta:'30세 · 부산 수영구 · 여성',img:'img/p2.jpg',likedMe:false},
+ {name:'포근한날',meta:'28세 · 경기 수원시 · 여성',img:'img/p3.jpg',likedMe:false},
+];
+const STEPS=[
+ {t:'가입을 마치고 처음 상대 프로필을 열어요',d:'봄빛 · 나에게 먼저 관심을 보낸 사람',run:()=>openProfile(0,'가입을 마쳤어요','오늘의 인연을 둘러봐요')},
+ {t:'관심을 보내요',d:'하트 효과 뒤 버튼은 "서로 호감이 있어요"로, 마음함 탭에 안내가 한 번',run:()=>send()},
+ {t:'다른 사람 프로필을 열어요',d:'작은파도 · 안내가 다시 뜨지 않아요',run:()=>openProfile(1)},
+ {t:'관심을 보내요',d:'"관심을 보냈어요"로만 바뀌고, 마음함 안내도 다시 안 떠요',run:()=>send()},
+ {t:'로그아웃했다가 다시 로그인해요',d:'이 계정의 기억이 지워져요',run:()=>relogin()},
+ {t:'다시 상대 프로필을 열어요',d:'포근한날 · 처음처럼 안내가 다시 떠요',run:()=>openProfile(2)},
+ {t:'관심을 보내요',d:'마음함 안내도 다시 한 번',run:()=>send()},
+];
+const $=id=>document.getElementById(id);
+const phone=$('phone'),like=$('like'),heart=$('heart');
+let mem={a:false,b:false},login=1,cur=0,sent=new Set(),step=-1,tip=null,tipTimer=0;
+function hideTip(){clearTimeout(tipTimer);const t=tip;tip=null;if(!t)return;if(reduce){t.remove();return;}t.animate([{opacity:1},{opacity:0,transform:'translateY(2px) scale(.98)'}],{duration:140,easing:'ease-in'}).onfinish=()=>t.remove();}
+function showTip(target,html,{ms=0,close=false,sm=false}={}){
+  hideTip();const t=document.createElement('div');t.className='tip'+(sm?' sm':'');t.setAttribute('role','status');t.innerHTML=html+(close?'<button type="button" class="x" aria-label="안내 닫기"></button>':'');phone.append(t);
+  const pr=phone.getBoundingClientRect(),tr=target.getBoundingClientRect(),w=t.offsetWidth,cx=tr.left-pr.left+tr.width/2,left=Math.max(12,Math.min(pr.width-12-w,cx-w/2));
+  t.style.left=left+'px';t.style.bottom=(pr.bottom-tr.top+(sm?4:10))+'px';t.style.setProperty('--ax',(cx-left)+'px');
+  t.animate(reduce?[{opacity:0},{opacity:1}]:[{opacity:0,transform:'translateY(4px) scale(.96)'},{opacity:1,transform:'none'}],{duration:180,easing:'cubic-bezier(.23,1,.32,1)'});
+  t.querySelector('.x')?.addEventListener('click',()=>{mem.a=true;paint();hideTip();});
+  tip=t;if(ms)tipTimer=setTimeout(hideTip,ms);
+}
+function label(i){const p=P[i],s=sent.has(i);return s?(p.likedMe?'서로 호감이 있어요':'관심을 보냈어요'):(p.likedMe?'나도 관심 있어요':'관심 보내기');}
+function render(){const p=P[cur];$('photo').style.backgroundImage=`url(${p.img})`;$('photo').setAttribute('aria-label',p.name+'의 사진');$('name').textContent=p.name;$('meta').textContent=p.meta;
+  like.textContent=label(cur);like.classList.toggle('sent',sent.has(cur)&&!P[cur].likedMe);like.classList.toggle('mutual',sent.has(cur)&&P[cur].likedMe);like.disabled=sent.has(cur);}
+function cover(t,s,then){$('cover-t').textContent=t;$('cover-s').textContent=s||'';$('cover').classList.add('show');setTimeout(()=>{then?.();$('cover').classList.remove('show');},reduce?300:900);}
+function openProfile(i,ct,cs){hideTip();const go=()=>{cur=i;render();
+    /* 프로필 안내: 이번 로그인에서 아직 안 봤고, 아직 관심을 보내지 않은 사람일 때만 */
+    if(!mem.a&&!sent.has(i))setTimeout(()=>{showTip(like,'마음이 가면 관심을 보내 보세요.',{ms:4000});mem.a=true;paint();},reduce?0:600);};
+  if(ct)cover(ct,cs,go);else go();}
+let bloomTimer=0,tabTimer=0;
+function bloom(){phone.querySelector('.bloom')?.remove();clearTimeout(bloomTimer);const b=document.createElement('div');b.className='bloom is-playing';b.setAttribute('aria-hidden','true');b.innerHTML='<span class="loop-heart"></span><span>마음이 한 걸음 가까이</span>';phone.append(b);bloomTimer=setTimeout(()=>b.remove(),1800);}
+function send(){if(sent.has(cur))return;hideTip();clearTimeout(tabTimer);sent.add(cur);mem.a=true;render();
+  bloom();
+  /* 처음 보낼 때만: 하트 효과가 사라져 갈 즈음(1.4초) 마음함 탭을 가리켜요 */
+  if(!mem.b){mem.b=true;tabTimer=setTimeout(()=>{showTip(heart,'<span class="ok" aria-hidden="true"></span>보낸 관심은 마음함에 모여요',{ms:3000,sm:true});if(!reduce){heart.classList.remove('pulse');void heart.offsetWidth;heart.classList.add('pulse');}},reduce?0:1400);}
+  paint();}
+function relogin(){hideTip();clearTimeout(tabTimer);cover('로그아웃했어요','다시 로그인하는 중…',()=>{login++;mem={a:false,b:false};paint();cover('다시 로그인했어요','인연 홈으로 돌아왔어요');});}
+function paint(){$('s-login').textContent=login+'번째 로그인';
+  $('s-a').innerHTML=mem.a?'<span class="on">봤어요</span> · 다시 안 떠요':'아직 · 다음 프로필에서 떠요';
+  $('s-b').innerHTML=mem.b?'<span class="on">봤어요</span> · 다시 안 떠요':'아직 · 첫 관심 때 떠요';
+  document.querySelectorAll('#steps button').forEach((b,k)=>{if(k===step)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');});
+  $('next').disabled=step>=STEPS.length-1;$('next').textContent=step>=STEPS.length-1?'끝':'다음 단계';}
+const list=$('steps');STEPS.forEach((s,k)=>{const li=document.createElement('li');li.innerHTML=`<button type="button"><span><b>${s.t}</b><span>${s.d}</span></span></button>`;li.querySelector('button').addEventListener('click',()=>goTo(k));list.append(li);});
+/* 단계로 건너뛰면 그 앞 단계를 조용히 다시 밟아 상태를 맞춰요 */
+function goTo(k){restart(false);const saved=[showTip,cover];
+  for(let i=0;i<k;i++){window.__quiet=true;quietRun(i);}window.__quiet=false;step=k;STEPS[k].run();paint();}
+function quietRun(i){const s=STEPS[i];if(i===0||i===2||i===5){cur=[0,1,2][[0,2,5].indexOf(i)];if(!mem.a&&!sent.has(cur))mem.a=true;}else if(i===4){login++;mem={a:false,b:false};}else{sent.add(cur);mem.a=true;mem.b=true;}render();}
+function restart(show=true){hideTip();clearTimeout(tabTimer);phone.querySelector('.bloom')?.remove();mem={a:false,b:false};login=1;cur=0;sent=new Set();step=-1;render();paint();if(show){step=0;STEPS[0].run();paint();}}
+$('next').addEventListener('click',()=>{if(step<STEPS.length-1){step++;STEPS[step].run();paint();}});
+$('restart').addEventListener('click',()=>restart(true));
+like.addEventListener('click',()=>{send();const k=STEPS.findIndex((s,j)=>j>step&&s.t==='관심을 보내요');if(k===step+1){step=k;paint();}});
+phone.addEventListener('click',e=>{if(tip&&!tip.contains(e.target)&&e.target!==like&&!tip.querySelector('.x'))hideTip();});
+restart(true);
+</script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>인연 홈 윗부분 정리</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398;--pg-on:#fff;--ease-out:cubic-bezier(0.23, 1, 0.32, 1)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.wrap{max-width:1640px;margin:0 auto;padding:36px 16px 64px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:84ch;margin:10px 0 0;color:var(--pg-fg2)}
+.phones{display:flex;flex-wrap:wrap;gap:24px;margin-top:24px}
+.col{display:flex;flex-direction:column;gap:10px;width:360px;max-width:100%}
+.col h2{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.col h2 b{display:grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:13px;background:var(--pg-accent);color:var(--pg-on);font:600 12px var(--font-sans)}
+.col h2 b.now{background:var(--pg-line);color:var(--pg-fg2)}
+.col h2 em{font:600 11px/1 var(--font-sans);font-style:normal;padding:4px 8px;border-radius:10px;background:var(--color-bg-accent-soft);color:var(--color-fg-accent-strong)}
+.col>p{margin:0;min-height:66px;font-size:13px;color:var(--pg-fg2)}
+.zoom{width:360px;max-width:100%;height:150px;border-radius:20px;overflow:hidden;position:relative;box-shadow:0 0 0 1px var(--pg-line)}
+.zoom .phone{position:absolute;right:0;top:0;transform:scale(1.5);transform-origin:100% 0;box-shadow:none;border-radius:0;pointer-events:none}
+.zoom::after{content:"오른쪽 위 1.5배";position:absolute;left:10px;top:8px;padding:2px 8px;border-radius:8px;background:rgb(0 0 0 / .5);color:#fff;font:600 11px/1.6 var(--font-sans)}
+.panel{margin-top:32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.box{padding:18px;border-radius:18px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.box h3{margin:0 0 10px;font-size:14px}
+.box ul{margin:0;padding-left:18px;font-size:13px;color:var(--pg-fg2)}
+.box li+li{margin-top:6px}
+table{width:100%;border-collapse:collapse;font-size:12px;line-height:1.6}
+th,td{padding:8px 6px;text-align:left;vertical-align:top;border-top:1px solid var(--pg-line)}
+th{width:64px;color:var(--pg-fg3);font-weight:600;white-space:nowrap}
+.note{margin:10px 0 0;font-size:12px;color:var(--pg-fg3)}
+
+/* 폰: 카드 · 아래 탭 · 제목은 실제 앱 화면 그대로(리프 · 설정 · 일정 문구만 지운 캡처) */
+.phone{position:relative;width:360px;max-width:100%;height:780px;border-radius:36px;overflow:hidden;background:#F8F9F6 url(clean.jpg) 0 0/360px 780px no-repeat;box-shadow:0 0 0 1px var(--pg-line),0 16px 40px rgb(0 0 0 / .12);color:var(--color-fg-primary)}
+.phone.now{background-image:url(now.jpg)}
+.sched{position:absolute;left:var(--layout-gutter);top:76px;margin:0;font:400 12px/20px var(--font-sans);color:var(--color-fg-muted)}
+.hit{position:absolute;display:flex;align-items:center;justify-content:center;gap:6px;height:44px;padding:0;border:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.hit:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:-4px;border-radius:12px}
+.hit svg{flex:none;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round}
+.hit .in{display:flex;align-items:center;gap:6px;transition:transform 120ms var(--ease-out)}
+.hit:active .in{transform:scale(.94)}
+.num{font:600 14px/1 var(--font-sans);font-variant-numeric:tabular-nums;letter-spacing:-.2px}
+.unit{font:500 11px/1 var(--font-sans);color:var(--color-fg-muted);margin-left:-2px}
+
+/* A 제목 줄에 나란히 */
+.a .leaf{right:64px;top:28px;padding:0 6px;color:var(--color-fg-secondary)}
+.a .leaf svg{width:20px;height:20px;stroke-width:3}
+.a .filter{right:var(--layout-gutter);top:28px;width:44px;color:var(--color-fg-secondary)}
+.a .filter svg{width:22px;height:22px;stroke-width:3.2}
+
+/* B 캡슐 하나 (아래 탭과 같은 유리) */
+.capsule{position:absolute;right:var(--layout-gutter);top:30px;display:flex;align-items:center;height:40px;padding:0 4px;border-radius:20px;background:color-mix(in srgb,var(--color-bg-surface) 66%,transparent);-webkit-backdrop-filter:blur(16px) saturate(140%);backdrop-filter:blur(16px) saturate(140%);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--white) 80%,transparent),0 4px 14px rgb(30 50 70 / .08)}
+.capsule .hit{position:relative;height:40px;padding:0 10px;color:var(--color-fg-secondary);border-radius:20px}
+.capsule .hit::before{content:"";position:absolute;inset:-2px 0}
+.capsule .hit svg{width:18px;height:18px}
+.capsule .leaf svg{stroke-width:3}
+.capsule .filter svg{stroke-width:3.2}
+.capsule i{display:block;width:1px;height:16px;background:var(--color-border-default)}
+.capsule .hit:active{background:color-mix(in srgb,var(--color-bg-muted) 70%,transparent)}
+
+/* C 설정은 제목 줄, 리프는 일정 줄 끝 글자 */
+.c .filter{right:var(--layout-gutter);top:28px;width:44px;color:var(--color-fg-secondary)}
+.c .filter svg{width:22px;height:22px;stroke-width:3.2}
+.c .leaf{right:var(--layout-gutter);top:64px;padding:0 0 0 8px;color:var(--color-fg-secondary)}
+.c .leaf .in{gap:4px}
+.c .leaf svg{width:16px;height:16px;stroke-width:3.2}
+.c .leaf .num{font-size:12px}
+.c .sched{right:96px}
+
+.toast{position:absolute;left:50%;top:108px;transform:translate(-50%,6px);padding:8px 14px;border-radius:10px;background:var(--color-bg-inverse);color:var(--color-fg-inverse);font:500 12px/20px var(--font-sans);white-space:nowrap;opacity:0;transition:opacity 180ms var(--ease-out),transform 180ms var(--ease-out);pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.guides .phone::before,.guides .phone::after{content:"";position:absolute;top:0;bottom:0;width:1px;background:rgb(225 80 120 / .55);z-index:5;pointer-events:none}
+.guides .phone::before{left:20px}.guides .phone::after{right:20px}
+.chk{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-size:13px}
+@media (prefers-reduced-motion:reduce){.hit:active .in{transform:none}.toast,.toast.on{transform:translate(-50%,0)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">인연 홈 · 윗부분</p>
+  <h1 class="title">리프와 추천 설정을 제자리에</h1>
+  <p class="intro">제목 · 가운데 카드 · 아래 탭은 지금 앱 화면을 그대로 캡처해서 썼고, 리프 · 추천 설정 · 일정 문구만 다시 놓았어요. 카드 위치(위에서 124)도 그대로예요. 아이콘도 지금 쓰는 Figma 앱 아이콘(<b>Icon/Status &amp; Action/Wallet Leaf</b>, <b>Filter</b>) 그대로예요. 버튼을 눌러 보면 어디로 가는지 알림이 떠요.</p>
+  <label class="chk"><input type="checkbox" id="guides"> 좌우 여백선(20) 보기</label>
+
+  <div class="phones" id="phones">
+    <div class="col">
+      <h2><b class="now">지금</b>정리 전</h2>
+      <p>리프는 제목 줄 끝에 글자만, 설정은 한 줄 아래 테두리 동그라미라서 모양도 높이도 오른쪽 끝도 서로 달라요. 설정이 카드 윗변에 거의 붙어 있어요.</p>
+      <div class="phone now"></div>
+      <div class="zoom"><div class="phone now"></div></div>
+    </div>
+    <div class="col" data-k="a">
+      <h2><b>A</b>제목 줄에 나란히<em>추천</em></h2>
+      <p>리프와 설정을 제목 줄 오른쪽에 같은 색 · 같은 크기 아이콘으로 나란히 둬요. 일정 문구는 한 줄을 다 쓰고, 카드 위가 비어요.</p>
+      <div class="phone a"></div>
+      <div class="zoom"><div class="phone a"></div></div>
+    </div>
+    <div class="col" data-k="b">
+      <h2><b>B</b>캡슐 하나로</h2>
+      <p>리프와 설정을 아래 탭과 같은 유리 캡슐 하나에 담아요. 위아래가 한 식구처럼 보이고, 오른쪽 위에 물건이 하나만 남아요.</p>
+      <div class="phone b"></div>
+      <div class="zoom"><div class="phone b"></div></div>
+    </div>
+    <div class="col" data-k="c">
+      <h2><b>C</b>설정은 위, 리프는 문구 끝</h2>
+      <p>누르는 설정만 제목 줄에 두고, 리프 잔액은 일정 문구 줄 끝에 작은 글자로 내려요. 하는 일(설정)과 보는 정보(일정 · 잔액)를 줄로 나눠요.</p>
+      <div class="phone c"></div>
+      <div class="zoom"><div class="phone c"></div></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="box">
+      <h3>세 안 비교</h3>
+      <table>
+        <tr><th>A</th><td>데이팅 앱 홈에서 가장 익숙한 배치예요(제목 오른쪽에 작은 도구 두 개). 바꾸는 양이 가장 적고, 제목의 담백한 느낌을 그대로 둬요. 리프 숫자가 아이콘보다 살짝 더 눈에 띄어요.</td></tr>
+        <tr><th>B</th><td>아래 탭의 유리 캡슐과 짝이 맞아서 야화다운 느낌이 가장 진해요. 대신 오른쪽 위에 면이 하나 생겨서 사진 위 하늘빛 바탕에서 조금 무거워 보일 수 있어요.</td></tr>
+        <tr><th>C</th><td>제목 줄이 가장 가벼워요. 다만 잔액이 설명 글처럼 작아져서, 리프를 자주 충전하게 하려면 눈에 덜 띄어요. 일정 문구가 길어지면 줄이 빠듯해요.</td></tr>
+      </table>
+      <p class="note"><b>추천은 A</b>예요. 제목 · 카드 · 아래 탭은 손대지 않고, 흩어져 있던 두 버튼을 같은 줄 · 같은 모양으로 맞추기만 해서 “정리된 느낌”이 가장 확실하게 나요. 야화다운 느낌을 더 원하면 B가 좋아요.</p>
+    </div>
+    <div class="box">
+      <h3>세 안 공통으로 바뀌는 것</h3>
+      <ul>
+        <li>두 버튼 모두 누르는 영역 44를 지키고, 맨 오른쪽 버튼의 누르는 영역 끝을 여백선(20)에 맞춰요.</li>
+        <li>버튼은 제목 글자의 세로 가운데(위에서 50)에 맞춰요. 카드 바로 위에 떠 있던 설정 버튼은 없어져요.</li>
+        <li>일정 문구가 제목보다 4px 안쪽(24)에서 시작하던 것을 제목과 같은 여백선(20)에 맞춰요.</li>
+        <li>설정 아이콘 색을 파랑에서 리프와 같은 회색(<code>--color-fg-secondary</code>)으로 맞춰서 둘이 한 묶음으로 읽혀요.</li>
+        <li>눌림은 사진 관리 시트 · 더보기와 같은 0.94배 · 120ms예요.</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>Mobbin에서 본 것 (간단 벤치마킹 6개)</h3>
+      <ul>
+        <li>홈 · 목록 화면은 제목 오른쪽 같은 줄에 작은 도구 1~2개를 같은 모양으로 둬요. 추천 설정(조절 아이콘)은 대부분 맨 오른쪽 끝이에요.</li>
+        <li>매일 정해진 시간에 소개하는 앱은 제목 아래 한 줄로 설명하고, 오른쪽 끝에는 남은 시간 같은 작은 정보 글자만 둬요.</li>
+        <li>제목 아래 줄이나 카드 바로 위에 버튼을 띄우는 곳은 없었어요.</li>
+      </ul>
+      <p class="note">원칙 정리: design-references/home-head/principles.md</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const LEAF='<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 38C2 14 24 6 42 6C42 28 30 42 14 34M8 42L32 18"/></svg>';
+const FILTER='<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 14H18M26 14H40M8 34H26M34 34H40M22 8V20M30 28V40"/></svg>';
+const sched='<p class="sched">매일 12시 · 15시 · 18시 · 21시, 두 명씩</p>';
+const leafBtn=(extra='')=>`<button type="button" class="hit leaf" aria-label="보유 리프 100, 리프 지갑 열기" data-t="리프 지갑으로 가요"><span class="in">${LEAF}<span class="num">100</span>${extra}</span></button>`;
+const filterBtn=`<button type="button" class="hit filter" aria-label="인연 추천 설정" data-t="추천 설정이 열려요"><span class="in">${FILTER}</span></button>`;
+const html={
+  a:sched+leafBtn()+filterBtn,
+  b:sched+`<div class="capsule">${leafBtn()}<i aria-hidden="true"></i>${filterBtn}</div>`,
+  c:sched+filterBtn+leafBtn('<span class="unit">리프</span>')
+};
+document.querySelectorAll('.phone.a,.phone.b,.phone.c').forEach(p=>{const k=[...p.classList].find(c=>html[c]);p.innerHTML=html[k]+'<div class="toast" role="status"></div>';});
+document.querySelectorAll('.phones .col>.phone').forEach(p=>{let t=0;p.addEventListener('click',e=>{const b=e.target.closest('[data-t]');if(!b)return;const el=p.querySelector('.toast');el.textContent=b.dataset.t;el.classList.add('on');clearTimeout(t);t=setTimeout(()=>el.classList.remove('on'),1600);});});
+document.getElementById('guides').onchange=e=>document.getElementById('phones').classList.toggle('guides',e.target.checked);
+</script>
+</body>
+</html>

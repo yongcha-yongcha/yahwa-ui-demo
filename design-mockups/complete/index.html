@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>소개 완성 화면 시안</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="tokens.css">
+<style>
+/* 레이아웃: 위 설명과 공통 버튼, 아래 휴대폰 다섯 대. 각 휴대폰에서 "이 소개로 완성하기" → 소개 확인 중 → 소개 완성까지 이어서 재생 */
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button,input{font:inherit;color:inherit}
+.wrap{max-width:1960px;margin:0 auto;padding-block:36px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:76ch;margin:10px 0 0;color:var(--pg-fg2)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin-top:20px}
+.bar label{font-size:13px;color:var(--pg-fg2)}
+.bar input[type=range]{width:180px;max-width:100%;accent-color:var(--pg-accent)}
+.bar output{min-width:44px;font-size:13px;font-variant-numeric:tabular-nums}
+.tool{height:44px;padding:0 16px;border:0;border-radius:12px;background:var(--pg-accent);color:#fff;font-weight:600;cursor:pointer}
+.tool.ghost{background:var(--pg-surface);color:var(--pg-fg);box-shadow:inset 0 0 0 1px var(--pg-line)}
+.tool:focus-visible{outline:2px solid var(--pg-accent);outline-offset:3px}
+.grid{display:flex;flex-wrap:wrap;gap:28px 24px;margin-top:24px}
+.item{flex:0 1 360px;min-width:0;display:flex;flex-direction:column;gap:10px}
+.item h2{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.item h2 b{display:grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:13px;background:var(--pg-accent);color:#fff;font:600 12px var(--font-sans)}
+.item.now h2 b{background:var(--pg-fg3)}
+.item>p{margin:0;font-size:13px;color:var(--pg-fg2)}
+.item .feel{font-size:12px;color:var(--pg-fg3)}
+.item .run{display:flex;gap:8px}
+.item .run button{flex:1;height:40px;border:0;border-radius:10px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);font-size:12px;cursor:pointer}
+
+/* ───────── 휴대폰 (앱 토큰, 360 × 780) ───────── */
+.phone{position:relative;width:360px;max-width:100%;height:780px;border-radius:32px;overflow:hidden;background:var(--color-bg-page);box-shadow:0 0 0 1px var(--pg-line),0 16px 40px rgb(0 0 0 / .12);color:var(--color-fg-primary);isolation:isolate}
+.scr{position:absolute;inset:0;background:var(--color-bg-page)}
+.scr[hidden]{display:none}
+.bot{position:absolute;left:20px;right:20px;bottom:24px}
+.cta{width:100%;height:52px;border:0;border-radius:14px;background:var(--color-bg-button-primary);color:#fff;font:500 15px var(--font-sans);display:flex;align-items:center;justify-content:center;gap:4px;cursor:pointer}
+.cta i{width:18px;height:18px;background:currentColor;-webkit-mask:var(--ic-chevron-right) center/contain no-repeat;mask:var(--ic-chevron-right) center/contain no-repeat}
+.link{display:block;margin:10px auto 0;height:36px;border:0;background:none;font:500 13px var(--font-sans);color:var(--color-fg-accent-strong);text-decoration:underline;text-underline-offset:4px}
+/* 소개 미리보기 (간단히) */
+.p .top{height:44px;margin:24px 20px 0;display:flex;align-items:center;justify-content:space-between}
+.p .top i{width:24px;height:24px;background:var(--color-fg-primary);-webkit-mask:var(--ic-chevron-left-large) center/contain no-repeat;mask:var(--ic-chevron-left-large) center/contain no-repeat}
+.p .top span{font-size:11px;color:var(--color-fg-accent)}
+.p .gauge{height:3px;margin:16px 20px 0;border-radius:3px;background:var(--color-bg-button-primary)}
+.p .ph{margin:24px 20px 0;height:330px;border-radius:90px 90px 18px 18px;background:url(img/p1.jpg) 50% 30%/cover}
+.p .nm{margin:24px 20px 0;font:400 30px/1.3 var(--font-serif)}
+.p .mt{margin:6px 20px 0;font-size:14px;color:var(--color-fg-secondary)}
+/* 소개 확인 중 */
+.s{background:linear-gradient(var(--sky-50),var(--color-bg-page) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 24px 80px}
+.s .slogo{width:136px;height:66px;object-fit:contain}
+.dots{display:flex;gap:8px;margin:28px 0 24px}
+.dots i{width:8px;height:8px;border-radius:50%;background:var(--sky-300);animation:dot 1.2s ease-in-out infinite}
+.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+@keyframes dot{0%,100%{transform:translateY(0);opacity:.55}40%{transform:translateY(-5px);opacity:1}}
+.s h3{margin:0;font:400 24px/1.55 var(--font-serif)}
+.s p{margin:16px 0 0;font-size:13px;color:var(--color-fg-secondary)}
+.s small{display:block;margin-top:10px;font-size:11px;color:var(--color-fg-tertiary)}
+/* 소개 완성 공통 */
+.c{background:linear-gradient(var(--sky-50),var(--color-bg-page) 45%);text-align:center}
+.c .clogo{position:absolute;left:50%;top:56px;width:120px;height:58px;margin-left:-60px;object-fit:contain}
+.c .main{position:absolute;left:0;right:0;top:140px;display:flex;flex-direction:column;align-items:center;padding:0 24px}
+.c h3{margin:0;font:400 24px/1.55 var(--font-serif)}
+.c .sub{margin:12px 0 0;font-size:13px;color:var(--color-fg-secondary)}
+.c .note{margin:14px 0 0;font-size:11px;line-height:1.6;color:var(--color-fg-tertiary)}
+.c .chip{display:inline-flex;align-items:center;gap:6px;margin-top:16px;height:30px;padding:0 12px;border-radius:15px;background:var(--color-bg-notice);font-size:12px;color:var(--color-fg-accent-strong);font-variant-numeric:tabular-nums}
+.c .chip b{font-weight:600}
+/* 0 지금 */
+.c0 .couple{width:170px;height:200px;object-fit:contain}
+.c0 .seal{display:grid;place-items:center;width:40px;height:40px;margin:8px 0 18px;border-radius:50%;background:var(--sky-50);box-shadow:inset 0 0 0 1px var(--sky-200)}
+.c0 .seal i,.c3 .ck i{width:20px;height:20px;background:var(--color-fg-accent);-webkit-mask:var(--ic-check) center/contain no-repeat;mask:var(--ic-check) center/contain no-repeat}
+/* 1 필름 현상 */
+.polaroid{width:212px;padding:10px 10px 0;background:#fff;border-radius:4px;box-shadow:0 12px 30px color-mix(in srgb,var(--cool-neutral-900) 14%,transparent),0 1px 2px color-mix(in srgb,var(--cool-neutral-900) 10%,transparent);transform:rotate(-2deg);margin-bottom:26px}
+.polaroid .shot{position:relative;height:214px;border-radius:2px;background:url(img/p1.jpg) 50% 28%/cover}
+.polaroid .stamp{position:absolute;right:8px;bottom:6px;font:600 12px/1 ui-monospace,Menlo,monospace;letter-spacing:1px;color:#F2A65A;text-shadow:0 0 4px rgb(242 166 90 / .5)}
+.polaroid .cap{display:block;padding:12px 2px 14px;font:italic 15px/1.2 var(--font-serif);color:var(--color-fg-secondary)}
+/* 2 입장권 */
+.ticket{position:relative;display:grid;grid-template-columns:1fr 84px;width:292px;height:150px;margin:6px 0 30px;border-radius:14px;background:var(--color-bg-surface);box-shadow:0 10px 28px color-mix(in srgb,var(--cool-neutral-900) 12%,transparent);text-align:left;overflow:visible}
+.ticket .l{padding:18px 16px;display:flex;flex-direction:column;gap:2px}
+.ticket .l small{font-size:10px;letter-spacing:2px;color:var(--sky-500)}
+.ticket .l strong{font:400 20px/1.35 var(--font-serif);margin-top:4px}
+.ticket .l span{margin-top:auto;font-size:11px;color:var(--color-fg-tertiary);font-variant-numeric:tabular-nums}
+.ticket .r{position:relative;border-left:1.5px dashed var(--cool-neutral-200);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:var(--sky-50);border-radius:0 14px 14px 0}
+.ticket .r small{font-size:10px;color:var(--color-fg-tertiary)}
+.ticket .r b{font:600 20px/1.2 var(--font-sans);color:var(--color-fg-accent-strong);font-variant-numeric:tabular-nums}
+.ticket .notch{position:absolute;right:76px;width:16px;height:16px;border-radius:50%;background:var(--color-bg-page)}
+.ticket .notch.t{top:-8px}.ticket .notch.b{bottom:-8px}
+.ticket .ok{position:absolute;left:124px;top:68px;width:74px;height:74px;border-radius:50%;border:2px solid var(--rose-400);display:grid;place-items:center;color:var(--rose-500);font:600 12px/1.2 var(--font-sans);transform:rotate(-12deg);opacity:.85}
+.ticket .ok::before{content:"";position:absolute;inset:4px;border-radius:50%;border:1px solid var(--rose-300)}
+/* 3 다음 장면 미리보기 */
+.c3 .couple{width:130px;height:150px;object-fit:contain;margin-bottom:10px}
+.c3 .hello{font-size:13px;color:var(--color-fg-accent-strong);margin-bottom:4px}
+.c3 .next{width:100%;margin:22px 0 0;padding:6px 16px;border-radius:16px;background:var(--color-bg-surface);text-align:left;list-style:none}
+.c3 .next li{display:flex;align-items:center;gap:12px;min-height:44px;font-size:13px;color:var(--color-fg-secondary)}
+.c3 .next li+li{border-top:1px solid var(--color-border-default)}
+.c3 .ck{display:grid;place-items:center;width:24px;height:24px;flex:none;border-radius:50%;background:var(--sky-50)}
+.c3 .ck i{width:14px;height:14px}
+.c3 .next b{color:var(--color-fg-primary);font-weight:600;font-variant-numeric:tabular-nums}
+/* 4 편지 봉투 */
+.env{position:relative;width:230px;height:200px;margin-bottom:12px}
+.env .back{position:absolute;left:0;right:0;bottom:0;height:136px;border-radius:6px;background:var(--sky-100)}
+.env .card{position:absolute;left:30px;right:30px;bottom:20px;height:104px;padding:10px;border-radius:6px;background:#fff;box-shadow:0 2px 8px rgb(0 0 0 / .08);display:flex;gap:10px;text-align:left}
+.env .card span{width:64px;height:84px;flex:none;border-radius:4px;background:url(img/p1.jpg) 50% 28%/cover}
+.env .card p{margin:4px 0 0;font:400 15px/1.4 var(--font-serif)}
+.env .card p small{display:block;font:400 11px var(--font-sans);color:var(--color-fg-tertiary)}
+.env .front{position:absolute;left:0;right:0;bottom:0;height:136px}
+.env .flap{position:absolute;left:0;right:0;bottom:66px;height:70px;transform-origin:50% 0;transform-style:preserve-3d}
+.env .flap svg,.env .front svg{display:block;width:100%;height:100%}
+.env .seal{position:absolute;left:50%;bottom:52px;width:34px;height:34px;margin-left:-17px;border-radius:50%;background:var(--rose-400);box-shadow:inset 0 0 0 3px color-mix(in srgb,var(--rose-500) 60%,transparent);display:grid;place-items:center;opacity:0}
+.env .seal::after{content:"";width:14px;height:14px;background:#fff;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 27C12 24 3.6 18 4 11.2C4.4 4.5 12.1 4.3 15.6 10.2C18.3 3.9 26.8 3.8 28 10.6C29.1 16.5 22 24 16 27Z'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 27C12 24 3.6 18 4 11.2C4.4 4.5 12.1 4.3 15.6 10.2C18.3 3.9 26.8 3.8 28 10.6C29.1 16.5 22 24 16 27Z'/%3E%3C/svg%3E") center/contain no-repeat}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">YAHWA · 가입 흐름 끝 · 소개 완성</p>
+  <h1 class="title">소개 완성 화면과 넘어가는 순간</h1>
+  <p class="intro">"이 소개로 완성하기"를 누르면 소개 확인 중(약 2.4초) → 소개 완성으로 넘어가요. 지금은 두 번 모두 화면이 옆으로 밀려 들어와요. A~D는 앞 화면들처럼 떠오르기로 잇고, 확인 중 화면의 로고가 그대로 위로 올라가 완성 화면 로고가 되면서 각자 다른 완성 장면이 열려요. 휴대폰 안의 "이 소개로 완성하기"를 눌러 보세요.</p>
+  <div class="bar">
+    <label for="spd">속도 배율</label><input type="range" id="spd" min="0.5" max="3" step="0.1" value="1"><output id="o-spd" for="spd">1.0배</output>
+    <button type="button" class="tool" id="all">전체 다시 보기</button>
+    <button type="button" class="tool ghost" id="reset">처음 화면으로</button>
+  </div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<template id="tpl">
+  <div class="phone">
+    <section class="scr p" aria-label="소개 미리보기">
+      <div class="top"><i aria-hidden="true"></i><span>5 / 5</span></div><div class="gauge"></div>
+      <div class="ph" role="img" aria-label="대표 사진"></div><h3 class="nm">지우</h3><p class="mt">서울 · 남성</p>
+      <div class="bot"><button type="button" class="cta go">이 소개로 완성하기</button></div>
+    </section>
+    <section class="scr s" aria-label="소개 확인 중" hidden>
+      <img class="slogo" src="img/logo.png" alt="야화"><div class="dots" aria-label="소개 확인 중"><i></i><i></i><i></i></div>
+      <h3>당신의 첫 소개를<br>살펴보고 있어요.</h3><p>새로운 인연을 만나기 전, 잠시만 기다려주세요.</p><small>소개 확인 과정을 보여주는 시연이에요.</small>
+    </section>
+    <section class="scr c" aria-label="소개 완성" hidden></section>
+  </div>
+</template>
+
+<script>
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let K=1;const T=ms=>ms*K;
+const DRAWER='cubic-bezier(.32,.72,0,1)',OUT='cubic-bezier(.23,1,.32,1)';
+const M={rise:30,duration:800,stagger:50,exit:100};
+const SPRING='linear('+Array.from({length:41},(_,i)=>{const t=i/40;return i===40?1:+(1-Math.exp(-9*t)*(1+9*t)).toFixed(4)}).join(',')+')';
+/* 살짝 넘치는 스프링 (도장 · 카드용) */
+const POP='linear(0,0.18,0.52,0.86,1.06,1.1,1.07,1.02,0.99,0.99,1)';
+const BOT='<div class="bot"><button type="button" class="cta">오늘의 인연 만나보기<i aria-hidden="true"></i></button><button type="button" class="link">내 소개 다시 보기</button></div>';
+const NOTE='<p class="note">가입 흐름 체험이 완료되었어요. 실제 계정은 만들어지지 않았어요.</p>';
+const V=[
+ {tag:'지금',name:'지금 완성 화면',desc:'두 사람 일러스트와 체크 표시, 제목과 버튼. 확인 중 → 완성 모두 오른쪽에서 밀려 들어와요.',feel:'단정함 · 여기만 밀림',now:true,
+  html:`<img class="clogo" src="img/logo.png" alt="야화"><div class="main"><img class="couple" src="img/couple.png" alt="손을 잡고 나란히 선 두 사람의 손그림"><span class="seal"><i aria-hidden="true"></i></span><h3>첫 장면을 위한<br>준비가 되었어요.</h3><p class="sub">지우님, 당신의 속도로 한 걸음씩 시작해요.</p>${NOTE}</div>${BOT}`},
+ {tag:'A',name:'필름 한 장 현상',desc:'대표 사진이 폴라로이드로 나오며 하얗게 바랜 상태에서 천천히 현상돼요. 오른쪽 아래에 필름 날짜 각인, 아래엔 다음 소개 시간.',feel:'야화다움 · 필름 감성',
+  html:`<img class="clogo" src="img/logo.png" alt="야화"><div class="main"><figure class="polaroid" style="margin:0 0 26px"><div class="shot" role="img" aria-label="지우의 대표 사진"><span class="stamp">'26 11 11</span></div><span class="cap">지우의 첫 장면</span></figure><h3>첫 장면을 위한<br>준비가 되었어요.</h3><p class="sub">지우님, 당신의 속도로 한 걸음씩 시작해요.</p><span class="chip">다음 소개 · 오늘 <b>21:00</b></span></div>${BOT}`,
+  enter(c){const pol=c.querySelector('.polaroid'),shot=c.querySelector('.shot');
+   pol.animate([{opacity:0,transform:'translateY(28px) rotate(-7deg) scale(.94)'},{opacity:1,transform:'rotate(-2deg)'}],{duration:T(900),delay:T(250),easing:POP,fill:'backwards'});
+   shot.animate([{filter:'brightness(2.3) saturate(0) contrast(.55) blur(2px)'},{filter:'brightness(1) saturate(1) contrast(1) blur(0)'}],{duration:T(1800),delay:T(350),easing:'cubic-bezier(.3,.1,.2,1)',fill:'backwards'});
+   c.querySelector('.stamp').animate([{opacity:0},{opacity:1}],{duration:T(300),delay:T(1600),fill:'backwards'});
+   return [c.querySelector('h3'),c.querySelector('.sub'),c.querySelector('.chip')];}},
+ {tag:'B',name:'첫 장면 입장권',desc:'영화 티켓처럼 생긴 입장권이 올라오고, "입장 완료" 도장이 쾅 찍혀요. 오른쪽 조각에 다음 상영(소개) 시간.',feel:'설렘 · 극장',
+  html:`<img class="clogo" src="img/logo.png" alt="야화"><div class="main"><div class="ticket"><div class="l"><small>FIRST SCENE</small><strong>첫 장면 입장권</strong><span>지우님 · 2026. 11. 11</span></div><div class="r"><small>다음 상영</small><b>21:00</b><small>오늘</small></div><i class="notch t"></i><i class="notch b"></i><span class="ok">입장<br>완료</span></div><h3>첫 장면을 위한<br>준비가 되었어요.</h3><p class="sub">지우님, 오늘 밤 첫 인연을 만나요.</p></div>${BOT}`,
+  enter(c){const tk=c.querySelector('.ticket'),ok=c.querySelector('.ok');
+   tk.animate([{opacity:0,transform:'translateY(40px) rotate(3deg)'},{opacity:1,transform:'none'}],{duration:T(800),delay:T(250),easing:POP,fill:'backwards'});
+   ok.animate([{opacity:0,transform:'scale(1.8) rotate(-28deg)'},{opacity:.85,transform:'scale(1) rotate(-12deg)'}],{duration:T(260),delay:T(950),easing:'cubic-bezier(.5,0,.75,0)',fill:'backwards'});
+   tk.animate([{transform:'none'},{transform:'translateY(2px) scale(.99)'},{transform:'none'}],{duration:T(220),delay:T(1200),easing:'ease-out'});
+   return [c.querySelector('h3'),c.querySelector('.sub')];}},
+ {tag:'C',name:'다음 장면 미리보기',desc:'지금 일러스트는 작게 두고, 이름을 먼저 부른 뒤 "앞으로 일어날 일" 세 줄이 하나씩 체크되며 나타나요.',feel:'안심 · 친절',
+  html:`<img class="clogo" src="img/logo.png" alt="야화"><div class="main"><img class="couple" src="img/couple.png" alt="손을 잡고 나란히 선 두 사람의 손그림"><span class="hello">지우님,</span><h3>첫 장면을 위한<br>준비가 되었어요.</h3><ul class="next"><li><span class="ck"><i aria-hidden="true"></i></span><span>첫 소개를 완성했어요</span></li><li><span class="ck"><i aria-hidden="true"></i></span><span>오늘 <b>21:00</b>, 두 명이 소개돼요</span></li><li><span class="ck"><i aria-hidden="true"></i></span><span>마음이 가면 편지를 보내요</span></li></ul></div>${BOT}`,
+  enter(c){const lis=[...c.querySelectorAll('.next li')];
+   c.querySelector('.couple').animate([{opacity:0,transform:'translateY(20px)'},{opacity:1,transform:'none'}],{duration:T(800),delay:T(250),easing:SPRING,fill:'backwards'});
+   lis.forEach((li,i)=>{li.animate([{opacity:0,transform:'translateX(-8px)'},{opacity:1,transform:'none'}],{duration:T(420),delay:T(800+i*160),easing:OUT,fill:'backwards'});
+     li.querySelector('.ck').animate([{transform:'scale(.3)',opacity:0},{transform:'scale(1)',opacity:1}],{duration:T(360),delay:T(900+i*160),easing:POP,fill:'backwards'});});
+   c.querySelector('.next').animate([{opacity:0},{opacity:1}],{duration:T(200),delay:T(760),fill:'backwards'});
+   return [c.querySelector('.hello'),c.querySelector('h3')];}},
+ {tag:'D',name:'편지 봉투에 담기',desc:'내 소개 카드가 봉투 안으로 쏙 들어가고, 덮개가 닫히며 하트 봉인이 찍혀요. 편지함과 같은 "마음을 전한다"는 결.',feel:'따뜻함 · 손편지',
+  html:`<img class="clogo" src="img/logo.png" alt="야화"><div class="main"><div class="env" aria-hidden="true"><div class="back"></div><div class="card"><span></span><p>지우<small>서울 · 남성</small></p></div><div class="front"><svg viewBox="0 0 230 136" preserveAspectRatio="none"><path d="M0 6Q0 0 6 0L115 70L224 0Q230 0 230 6V130Q230 136 224 136H6Q0 136 0 130Z" fill="var(--sky-200)"/><path d="M2 134L100 60M228 134L130 60" stroke="var(--sky-300)" stroke-width="1.2" fill="none"/></svg></div><div class="flap"><svg viewBox="0 0 230 70" preserveAspectRatio="none"><path d="M0 0H230L119 66Q115 70 111 66Z" fill="var(--sky-300)"/></svg></div><span class="seal"></span></div><h3>첫 소개를<br>정성껏 담았어요.</h3><p class="sub">지우님의 이야기가 오늘 21:00, 첫 인연에게 전해져요.</p></div>${BOT}`,
+  enter(c){const card=c.querySelector('.card'),flap=c.querySelector('.flap'),seal=c.querySelector('.seal');
+   c.querySelector('.env').animate([{opacity:0,transform:'translateY(24px)'},{opacity:1,transform:'none'}],{duration:T(700),delay:T(200),easing:SPRING,fill:'backwards'});
+   card.animate([{transform:'translateY(-62px)'},{transform:'translateY(-62px)',offset:.3},{transform:'none'}],{duration:T(900),delay:T(250),easing:'cubic-bezier(.5,0,.2,1)',fill:'backwards'});
+   flap.animate([{transform:'perspective(400px) rotateX(-180deg)'},{transform:'perspective(400px) rotateX(-180deg)',offset:.5},{transform:'none'}],{duration:T(1000),delay:T(400),easing:'cubic-bezier(.5,0,.2,1)',fill:'backwards'});
+   seal.animate([{opacity:0,transform:'scale(1.7)'},{opacity:1,transform:'scale(1)'}],{duration:T(280),delay:T(1400),easing:POP,fill:'both'});
+   return [c.querySelector('h3'),c.querySelector('.sub')];}},
+];
+
+const grid=document.getElementById('grid'),tpl=document.getElementById('tpl'),phones=[];
+V.forEach((v,i)=>{
+  const it=document.createElement('article');it.className='item'+(v.now?' now':'');
+  it.innerHTML=`<h2><b>${v.tag}</b>${v.name}</h2>`;
+  const ph=tpl.content.firstElementChild.cloneNode(true);ph.dataset.v=i;
+  const c=ph.querySelector('.scr.c');c.classList.add('c'+(i===0?'0':i===3?'3':''));c.innerHTML=v.html;
+  it.append(ph);
+  it.insertAdjacentHTML('beforeend',`<div class="run"><button type="button" data-run="flow">처음부터 재생</button><button type="button" data-run="end">완성 화면만</button></div><p>${v.desc}</p><span class="feel">느낌 · ${v.feel}</span>`);
+  grid.append(it);phones.push(ph);
+  ph.querySelector('.go').addEventListener('click',()=>flow(ph));
+  it.querySelector('[data-run=flow]').addEventListener('click',()=>{reset(ph);flow(ph);});
+  it.querySelector('[data-run=end]').addEventListener('click',()=>{reset(ph);toComplete(ph,true);});
+});
+const S=(ph,k)=>ph.querySelector('.scr.'+k);
+let timers=new Map();
+function reset(ph){clearTimeout(timers.get(ph));ph.getAnimations({subtree:true}).forEach(a=>{if(isFinite(a.effect.getTiming().iterations))a.cancel();});
+  ['p','s','c'].forEach(k=>{const s=S(ph,k);s.hidden=k!=='p';s.style.zIndex='';s.style.transform='';});}
+function riseIn(list,start){list.forEach((c,i)=>{const d=start+i*M.stagger;
+  c.animate([{transform:`translateY(${M.rise}px)`},{transform:'none'}],{duration:T(M.duration),delay:T(d),easing:SPRING,fill:'backwards'});
+  c.animate([{opacity:0},{opacity:1}],{duration:T(M.duration/2),delay:T(d),easing:OUT,fill:'backwards'});});}
+function slide(a,b){b.hidden=false;b.style.zIndex=2;a.style.zIndex=1;b.animate([{transform:'translateX(100%)'},{transform:'none'}],{duration:T(300),easing:DRAWER});
+  a.animate([{transform:'none',opacity:1},{transform:'translateX(-24%)',opacity:.72}],{duration:T(300),easing:DRAWER}).finished.then(()=>{a.hidden=true;a.style.zIndex=b.style.zIndex='';});}
+function flow(ph){const v=V[ph.dataset.v],p=S(ph,'p'),s=S(ph,'s');
+  if(reduce){p.hidden=true;s.hidden=false;timers.set(ph,setTimeout(()=>toComplete(ph),T(2400)));return;}
+  if(v.now)slide(p,s);
+  else{const out=[...p.children].map(c=>c.animate([{opacity:1},{opacity:0}],{duration:T(M.exit),easing:'ease-out',fill:'forwards'}));
+    out[0].finished.then(()=>{p.hidden=true;s.hidden=false;out.forEach(a=>a.cancel());riseIn([...s.children],0);});}
+  timers.set(ph,setTimeout(()=>toComplete(ph),T(2400)));}
+function toComplete(ph,direct){const v=V[ph.dataset.v],s=S(ph,'s'),c=S(ph,'c'),p=S(ph,'p');
+  if(direct){p.hidden=true;s.hidden=true;c.hidden=false;}
+  if(reduce){s.hidden=true;p.hidden=true;c.hidden=false;c.animate([{opacity:0},{opacity:1}],{duration:200});return;}
+  if(v.now){if(!direct)slide(s,c);return;}
+  /* 로고 이어 받기: 확인 중 화면 로고 자리에서 완성 화면 로고 자리로 */
+  c.hidden=false;
+  const logo=c.querySelector('.clogo');
+  if(!direct){s.style.zIndex=2;const sl=s.querySelector('.slogo'),a=sl.getBoundingClientRect(),b=logo.getBoundingClientRect();
+    const dx=(a.left+a.width/2)-(b.left+b.width/2),dy=(a.top+a.height/2)-(b.top+b.height/2),k=a.width/b.width;
+    [...s.children].filter(e=>e!==sl).forEach(e=>e.animate([{opacity:1},{opacity:0}],{duration:T(140),easing:'ease-out',fill:'forwards'}));
+    sl.style.visibility='hidden';
+    s.animate([{opacity:1},{opacity:0}],{duration:T(260),delay:T(80),fill:'forwards'}).finished.then(()=>{s.hidden=true;s.style.zIndex='';sl.style.visibility='';s.getAnimations({subtree:true}).forEach(x=>{if(isFinite(x.effect.getTiming().iterations))x.cancel();});});
+    logo.animate([{transform:`translate(${dx}px,${dy}px) scale(${k})`},{transform:'none'}],{duration:T(640),easing:DRAWER,fill:'backwards'});
+    c.animate([{opacity:0},{opacity:1}],{duration:T(260),easing:OUT,fill:'backwards'});
+  }else logo.animate([{opacity:0,transform:'translateY(-8px)'},{opacity:1,transform:'none'}],{duration:T(400),easing:OUT,fill:'backwards'});
+  const texts=v.enter(c);
+  riseIn(texts,450);
+  const bot=c.querySelector('.bot');riseIn([bot],700);
+}
+document.getElementById('all').addEventListener('click',()=>phones.forEach(ph=>{reset(ph);flow(ph);}));
+document.getElementById('reset').addEventListener('click',()=>phones.forEach(reset));
+const spd=document.getElementById('spd'),o=document.getElementById('o-spd');spd.addEventListener('input',()=>{K=+spd.value;o.textContent=K.toFixed(1)+'배';});
+</script>
+</body>
+</html>

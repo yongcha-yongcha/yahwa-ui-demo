@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>인연 카드 넘김</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398;--pg-on:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.wrap{max-width:1640px;margin:0 auto;padding:36px 16px 80px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:96ch;margin:10px 0 0;color:var(--pg-fg2)}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.tools button{height:36px;padding:0 14px;border:0;border-radius:18px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);color:var(--pg-fg);font:600 12px var(--font-sans);cursor:pointer}
+.tools button[aria-pressed="true"]{box-shadow:inset 0 0 0 1.5px var(--pg-accent);color:var(--pg-accent)}
+.row{display:flex;flex-wrap:wrap;gap:24px;margin-top:22px}
+.col{display:flex;flex-direction:column;gap:10px;width:360px;max-width:100%}
+.col h3{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.col h3 b{display:grid;place-items:center;min-width:26px;height:26px;padding:0 8px;border-radius:13px;background:var(--pg-accent);color:var(--pg-on);font:600 12px var(--font-sans)}
+.col h3 b.now{background:var(--pg-line);color:var(--pg-fg2)}
+.col h3 em{font:600 11px/1 var(--font-sans);font-style:normal;padding:4px 8px;border-radius:10px;background:var(--sky-100);color:var(--color-fg-accent-strong)}
+.col>p{margin:0;min-height:108px;font-size:13px;color:var(--pg-fg2)}
+.box{max-width:1180px;margin-top:36px;padding:16px 18px;border-radius:16px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);font-size:13px;color:var(--pg-fg2)}
+.box h4{margin:0 0 8px;font-size:14px;color:var(--pg-fg)}.box ul{margin:0;padding-left:18px}.box li+li{margin-top:5px}.box b{color:var(--pg-fg)}
+
+.phone{position:relative;width:360px;max-width:100%;height:700px;border-radius:32px;overflow:hidden;background:linear-gradient(var(--sky-50),var(--paper) 240px);color:var(--color-fg-primary);box-shadow:0 0 0 1px var(--pg-line),0 12px 32px rgb(0 0 0 / .1);isolation:isolate;user-select:none;-webkit-user-select:none}
+.hd{position:absolute;left:20px;right:20px;top:44px}
+.hd b{display:block;font:400 26px/40px var(--font-serif)}
+.hd p{margin:6px 0 0;font:400 12px/20px var(--font-sans);color:var(--color-fg-muted)}
+.guide{position:absolute;top:0;bottom:0;width:0;border-left:1px dashed color-mix(in srgb,var(--pg-accent) 55%,transparent);z-index:9;pointer-events:none;display:none}
+.show-guide .guide{display:block}
+/* 넘김 영역 */
+.deck{position:absolute;top:124px;height:500px;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;cursor:grab}
+.deck::-webkit-scrollbar{display:none}
+.deck.drag{cursor:grabbing;scroll-snap-type:none}
+.deck.anim{scroll-snap-type:none}
+.card{position:relative;flex:none;height:100%;border-radius:22px;overflow:hidden;background:var(--color-bg-muted);scroll-snap-align:start;scroll-snap-stop:always;transform-origin:center;will-change:transform}
+.card .ph{position:absolute;inset:0;background:center 35%/cover}
+.card::after{content:"";position:absolute;inset:auto 0 0;height:46%;background:linear-gradient(transparent,rgb(20 28 34 / .55))}
+.card .nm{position:absolute;left:22px;right:22px;bottom:24px;z-index:1;color:#fff}
+.card .nm b{font:600 24px/1.3 var(--font-sans)}.card .nm span{margin-left:6px;font:600 24px/1.3 var(--font-sans)}
+.card .nm small{display:block;margin-top:4px;font:400 14px/1.4 var(--font-sans);opacity:.9}
+.card .chip{position:absolute;left:14px;top:14px;z-index:1;display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 8px;border-radius:12px;background:var(--color-bg-activity);color:var(--color-fg-activity);font:500 12px/1 var(--font-sans)}
+.card .chip i{width:5px;height:5px;border-radius:50%;background:var(--color-fg-activity-dot)}
+.pager{position:absolute;left:0;right:0;top:640px;display:flex;justify-content:center;gap:12px;font:400 16px/16px var(--font-sans);color:var(--color-fg-muted);font-variant-numeric:tabular-nums}
+.pager b{color:var(--color-fg-primary);font-weight:600}
+
+/* 지금: 여백 안쪽에서 잘림 */
+.k0 .deck{left:20px;right:20px;gap:16px}
+.k0 .card{width:320px}
+/* S1: 화면 끝까지 · 쉬는 동안엔 옆 카드 안 보임 */
+.k1 .deck{left:0;right:0;gap:20px;padding:0 20px;scroll-padding:0 20px}
+.k1 .card{width:320px}
+/* S2: 옆 카드 살짝 보이기 + 작아졌다 커짐 */
+.k2 .deck{left:0;right:0;gap:10px;padding:0 28px;scroll-padding:0 28px}
+.k2 .card{width:304px;scroll-snap-align:start}
+/* S3: 뒤에 겹친 다음 카드 */
+.k3 .deck{left:0;right:0;gap:20px;padding:0 20px;scroll-padding:0 20px}
+.k3 .card{width:320px}
+.k3 .card.under{box-shadow:none}
+@media (prefers-reduced-motion:reduce){.card{transition:none}}
+</style>
+</head>
+<body class="show-guide">
+<div class="wrap">
+<p class="eyebrow">YAHWA · 인연 홈</p>
+<h1 class="title">인연 카드 넘김</h1>
+<p class="intro">지금은 카드 목록이 좌우 여백(20) 안쪽 320 폭에서만 보이도록 잘려 있어서, 옆으로 넘기는 동안 다음 카드가 여백선에서 딱 끊겨요. 화면 가장자리에서 들어오는 모습이 안 보이는 이유예요. 세 안 모두 목록을 화면 끝까지 넓히고 카드 정렬만 여백선에 맞춰요. 폰 안을 마우스로 끌거나 “넘겨 보기”를 눌러 보세요. 점선은 여백선(20)이에요.</p>
+<div class="tools"><button id="play">넘겨 보기</button><button id="slow" aria-pressed="false">느리게(3배)</button><button id="guideBtn" aria-pressed="true">여백선 보기</button></div>
+
+<div class="row">
+  <div class="col"><h3><b class="now">지금</b>여백 안에서 잘림</h3><p>목록 자체가 320 폭이라, 넘기는 카드도 들어오는 카드도 여백선에서 잘려요. 가장자리 20만큼은 늘 비어 있어 “밀어서 넘긴다”는 느낌이 약해요.</p><div class="phone k0" data-k="0"></div></div>
+  <div class="col"><h3><b>S1</b>화면 끝까지<em>추천</em></h3><p>목록을 화면 끝까지 넓히고 안쪽에 여백 20을 둬요. 가만히 있을 때는 지금과 똑같이 보이고(카드 사이 20), 넘기는 동안에는 다음 카드가 화면 가장자리에서 자연스럽게 들어와요. 바뀌는 게 가장 적어요.</p><div class="phone k1" data-k="1"></div></div>
+  <div class="col"><h3><b>S2</b>옆 카드 살짝 보이기</h3><p>카드를 304로 줄이고 오른쪽에 다음 카드가 18 정도 비쳐 “더 있다”를 알려요. 가운데로 올수록 94% → 100%로 커지고 밝아져요. 넘길 수 있다는 게 가장 잘 보이지만 사진이 조금 작아져요.</p><div class="phone k2" data-k="2"></div></div>
+  <div class="col"><h3><b>S3</b>겹친 카드</h3><p>다음 카드가 지금 카드 뒤에 겹쳐 있다가, 지금 카드가 왼쪽으로 빠지면 92% → 100%로 커지며 앞으로 나와요. 카드를 한 장씩 넘기는 덱 느낌이 가장 강하지만 옆으로 미는 손가락 방향과는 조금 달라요.</p><div class="phone k3" data-k="3"></div></div>
+</div>
+
+<div class="box">
+  <h4>세 안 공통</h4>
+  <ul>
+    <li><b>목록 폭</b>: 화면 전체(0~360). 안쪽 여백 20과 <code>scroll-padding</code> 20으로 카드 왼쪽 끝은 지금처럼 여백선에 맞아요(S2는 옆 카드를 비추려고 양옆 28 · 카드 304). 제목 · 넘김 표시 · 하단 메뉴 자리는 그대로예요.</li>
+    <li><b>한 장씩</b>: 세게 밀어도 한 장만 넘어가요(<code>scroll-snap-stop: always</code>). 넘김 표시 숫자는 카드가 반 넘게 들어왔을 때 바뀌어요.</li>
+    <li><b>세로 스크롤</b>과 섞이지 않게 가로 넘김만 받아요. 움직임 줄이기 설정이면 S2 · S3의 크기 변화 없이 S1처럼 넘어가요.</li>
+  </ul>
+</div>
+</div>
+<script>
+const P=[['봄빛',26,'서울 마포구','person-02-2.jpg'],['달빛편지',31,'서울 성동구','person-07-3.jpg'],['푸른밤',26,'서울 종로구','person-08-4.jpg'],['한여름',28,'경기 성남시','person-03-1.jpg']];
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let SLOW=1;
+function build(ph){const k=+ph.dataset.k;
+ ph.innerHTML='<div class="hd"><b>오늘의 인연</b><p>매일 12시 · 15시 · 18시 · 21시, 두 명씩</p></div><div class="deck">'+P.map(([n,a,l,src])=>'<div class="card"><span class="ph" style="background-image:url('+src+')"></span><span class="chip"><i></i>최근활동</span><div class="nm"><b>'+n+'</b><span>'+a+'</span><small>'+l+'</small></div></div>').join('')+'</div><div class="pager"><span><b class="cur">1</b> / '+P.length+'</span></div><span class="guide" style="left:20px"></span><span class="guide" style="left:340px"></span>';
+ const deck=ph.querySelector('.deck'),cards=[...deck.children],cur=ph.querySelector('.cur');
+ const step=()=>cards[1].offsetLeft-cards[0].offsetLeft;
+ const fx=()=>{const s=step(),x=deck.scrollLeft;cur.textContent=Math.min(cards.length,Math.round(x/s)+1);
+  if(reduce)return;
+  cards.forEach((c,i)=>{const p=(i*s-x)/s;
+   if(k===2){const q=Math.min(1,Math.abs(p));c.style.transform='scale('+(1-.06*q)+')';c.style.opacity=String(1-.25*q);}
+   if(k===3){if(p>0&&p<=1){c.style.transform='translateX('+(-p*s)+'px) scale('+(1-.08*p)+')';c.style.zIndex='1';c.style.filter='brightness('+(1-.12*p)+')';}else if(p>1){c.style.transform='translateX('+(-p*s)+'px) scale(.92)';c.style.zIndex='0';c.style.filter='brightness(.88)';c.style.opacity=p>1.2?'0':'1';}else{c.style.transform='';c.style.zIndex='2';c.style.filter='';c.style.opacity='1';}if(p>0&&p<=1)c.style.opacity='1';}
+  });};
+ deck.addEventListener('scroll',fx,{passive:true});fx();
+ /* 마우스로 끌기 */
+ let sx=0,sl=0,down=false,vx=0,lt=0,lx=0;
+ deck.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse')return;down=true;sx=e.clientX;sl=deck.scrollLeft;lx=e.clientX;lt=performance.now();deck.classList.add('drag');deck.setPointerCapture(e.pointerId);});
+ deck.addEventListener('pointermove',e=>{if(!down)return;deck.scrollLeft=sl-(e.clientX-sx);const t=performance.now();vx=(e.clientX-lx)/Math.max(1,t-lt);lx=e.clientX;lt=t;});
+ const end=()=>{if(!down)return;down=false;deck.classList.remove('drag');const s=step();let i=Math.round(deck.scrollLeft/s);if(Math.abs(vx)>.3)i=Math.round(sl/s)+(vx<0?1:-1);i=Math.max(0,Math.min(cards.length-1,i));go(deck,i*s);};
+ deck.addEventListener('pointerup',end);deck.addEventListener('pointercancel',end);
+ ph._deck=deck;ph._step=step;}
+function go(deck,to,ms=360){const from=deck.scrollLeft,t0=performance.now(),d=ms*SLOW;deck.classList.add('anim');const ease=t=>1-Math.pow(1-t,3);
+ return new Promise(r=>{const f=now=>{const t=Math.min(1,(now-t0)/d);deck.scrollLeft=from+(to-from)*ease(t);if(t<1)requestAnimationFrame(f);else{deck.classList.remove('anim');r();}};requestAnimationFrame(f);});}
+const phones=[...document.querySelectorAll('[data-k]')];phones.forEach(build);
+let busy=false;
+document.getElementById('play').onclick=async()=>{if(busy)return;busy=true;const s=phones[0]._step();
+ await Promise.all(phones.map(p=>go(p._deck,p._step(),700)));await new Promise(r=>setTimeout(r,500*SLOW));
+ await Promise.all(phones.map(p=>go(p._deck,p._step()*2,700)));await new Promise(r=>setTimeout(r,500*SLOW));
+ await Promise.all(phones.map(p=>go(p._deck,0,900)));busy=false;};
+document.getElementById('slow').onclick=e=>{const on=e.currentTarget.getAttribute('aria-pressed')!=='true';e.currentTarget.setAttribute('aria-pressed',on);SLOW=on?3:1;};
+document.getElementById('guideBtn').onclick=e=>{const on=e.currentTarget.getAttribute('aria-pressed')!=='true';e.currentTarget.setAttribute('aria-pressed',on);document.body.classList.toggle('show-guide',on);};
+</script>
+</body>
+</html>

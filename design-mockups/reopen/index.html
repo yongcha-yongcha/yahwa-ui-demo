@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>인연 다시 보기</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398;--pg-on:#fff;--ease-out:cubic-bezier(0.23, 1, 0.32, 1);--drawer:cubic-bezier(0.32, 0.72, 0, 1)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;--pg-on:#161C20;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.wrap{max-width:1640px;margin:0 auto;padding:36px 16px 80px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:92ch;margin:10px 0 0;color:var(--pg-fg2)}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.tools button{height:36px;padding:0 14px;border:0;border-radius:18px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);color:var(--pg-fg);font:600 12px var(--font-sans);cursor:pointer}
+.tools button[aria-pressed="true"]{box-shadow:inset 0 0 0 1.5px var(--pg-accent);color:var(--pg-accent)}
+.row{display:flex;flex-wrap:wrap;gap:24px;margin-top:22px}
+.col{display:flex;flex-direction:column;gap:10px;width:360px;max-width:100%}
+.col h3{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.col h3 b{display:grid;place-items:center;min-width:26px;height:26px;padding:0 8px;border-radius:13px;background:var(--pg-accent);color:var(--pg-on);font:600 12px var(--font-sans)}
+.col h3 b.now{background:var(--pg-line);color:var(--pg-fg2)}
+.col h3 em{font:600 11px/1 var(--font-sans);font-style:normal;padding:4px 8px;border-radius:10px;background:var(--sky-100);color:var(--color-fg-accent-strong)}
+.col>p{margin:0;min-height:108px;font-size:13px;color:var(--pg-fg2)}
+.box{max-width:1180px;margin-top:36px;padding:16px 18px;border-radius:16px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);font-size:13px;color:var(--pg-fg2)}
+.box h4{margin:0 0 8px;font-size:14px;color:var(--pg-fg)}.box ul{margin:0;padding-left:18px}.box li+li{margin-top:5px}.box b{color:var(--pg-fg)}
+
+/* ---------- 폰 ---------- */
+.phone{position:relative;width:360px;max-width:100%;height:720px;border-radius:32px;overflow:hidden;background:linear-gradient(var(--sky-50),var(--paper) 220px);color:var(--color-fg-primary);box-shadow:0 0 0 1px var(--pg-line),0 12px 32px rgb(0 0 0 / .1);isolation:isolate}
+.scr{position:absolute;inset:0;padding:44px 20px 0;overflow:hidden}
+.ht{display:flex;align-items:center;gap:8px;font:400 26px/1.4 var(--font-serif)}
+.ht svg{width:30px;height:30px;fill:none;stroke:var(--color-fg-love);stroke-width:1.6;stroke-linecap:round}
+.hs{margin:2px 0 0;font:400 12px/1.5 var(--font-sans);color:var(--color-fg-accent)}
+.tabs{display:flex;margin:18px 0 16px;box-shadow:inset 0 -1px 0 var(--color-border-default)}
+.tabs span{flex:1;display:flex;justify-content:center;gap:6px;height:40px;align-items:center;font:500 13px/1 var(--font-sans);color:var(--color-fg-secondary)}
+.tabs span small{display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--color-bg-muted);font:600 10px/1 var(--font-sans);color:var(--color-fg-muted)}
+.tabs span.on{color:var(--color-fg-love-strong);font-weight:600;box-shadow:inset 0 -2px 0 var(--color-fg-love)}
+.tabs span.on small{background:var(--color-bg-love-soft);color:var(--color-fg-love-strong)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{position:relative;display:block;aspect-ratio:4/5;padding:0;border:0;border-radius:16px;overflow:hidden;background:var(--color-bg-muted);cursor:pointer;text-align:left;-webkit-tap-highlight-color:transparent;transition:transform 160ms var(--ease-out)}
+.card:active{transform:scale(.97)}
+.card .ph{position:absolute;inset:0;background:center 40%/cover;transition:filter 420ms var(--ease-out),transform 420ms var(--ease-out)}
+.card::after{content:"";position:absolute;inset:auto 0 0;height:50%;background:linear-gradient(transparent,rgb(20 28 34 / .55));pointer-events:none}
+.card .bd{position:absolute;left:8px;top:8px;z-index:1;padding:4px 8px;border-radius:12px;background:var(--color-bg-love-soft);color:var(--color-fg-love-strong);font:500 11px/1.3 var(--font-sans)}
+.card .nm{position:absolute;left:12px;right:12px;bottom:10px;z-index:1;color:#fff}
+.card .nm b{display:block;font:600 15px/1.3 var(--font-sans)}
+.card .nm span{font:500 12px/1.4 var(--font-sans);opacity:.9}
+.card.exp .ph{filter:blur(9px);transform:scale(1.08)}
+.foot{margin:14px 0 0;font:400 11px/1.5 var(--font-sans);color:var(--color-fg-muted)}
+.gnb{position:absolute;left:20px;right:20px;bottom:20px;height:64px;border-radius:32px;background:color-mix(in srgb,var(--color-bg-surface) 82%,transparent);box-shadow:0 6px 24px rgb(30 50 70 / .08),inset 0 0 0 1px rgb(255 255 255 / .6);backdrop-filter:blur(16px)}
+.leaf{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.lock{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* 지금: 페이지 */
+.page{position:absolute;inset:0;padding:24px 20px;background:linear-gradient(var(--sky-50),var(--paper) 220px)}
+.page .back{display:grid;place-items:center;width:44px;height:44px;color:var(--color-fg-secondary)}
+.page .back i{width:24px;height:24px;background:currentColor;-webkit-mask:var(--ic-chevron-left-large) center/contain no-repeat;mask:var(--ic-chevron-left-large) center/contain no-repeat}
+.page h2{margin:28px 0 0;font:400 26px/1.45 var(--font-serif)}
+.page p{margin:8px 0 0;font:400 13px/1.6 var(--font-sans);color:var(--color-fg-secondary);word-break:keep-all}
+.page .pri{display:block;width:100%;height:52px;margin-top:24px;border:0;border-radius:14px;background:var(--color-bg-accent);color:var(--color-fg-inverse);font:600 15px/1 var(--font-sans)}
+
+/* 공용 덮개 */
+.dim{position:absolute;inset:0;z-index:20;background:var(--photo-sheet-dim,rgb(20 30 40 / .32));opacity:0;pointer-events:none;transition:opacity 240ms var(--ease-out)}
+.phone.open .dim{opacity:1;pointer-events:auto;transition-duration:300ms}
+/* R1 · R3 시트 */
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:21;padding:8px 20px 28px;border-radius:24px 24px 0 0;background:var(--color-bg-surface);transform:translateY(100%);transition:transform 240ms var(--ease-out)}
+.phone.open .sheet{transform:none;transition:transform 300ms var(--drawer)}
+.hdl{display:block;width:36px;height:4px;margin:0 auto 16px;border-radius:2px;background:var(--color-bg-control)}
+.who{display:flex;align-items:center;gap:12px;padding-bottom:16px;border-bottom:1px solid var(--color-border-default)}
+.who .th{flex:none;width:42px;height:56px;border-radius:8px;overflow:hidden;position:relative}
+.who .th i{position:absolute;inset:-6px;background:center 40%/cover;filter:blur(6px)}
+.who b{display:block;font:600 15px/1.4 var(--font-sans)}
+.who small{display:flex;align-items:center;gap:4px;margin-top:2px;font:400 12px/1.5 var(--font-sans);color:var(--color-fg-muted)}
+.sheet .q{display:block;margin-top:16px;font:600 17px/1.4 var(--font-sans)}
+.sheet p{margin:4px 0 20px;font:400 14px/1.6 var(--font-sans);color:var(--color-fg-secondary);word-break:keep-all}
+.cost{display:flex;align-items:center;gap:12px;margin:0 0 20px;padding:16px;border-radius:16px;background:var(--color-bg-muted)}
+.cost .lf{display:grid;place-items:center;flex:none;width:40px;height:40px;border-radius:20px;background:var(--color-bg-surface);color:var(--color-fg-accent)}
+.cost .t{flex:1}.cost .t small{display:block;font:400 12px/1.4 var(--font-sans);color:var(--color-fg-muted)}.cost .t strong{display:block;font:600 20px/1.3 var(--font-sans)}
+.cost .hv{text-align:right;font:500 12px/1.5 var(--font-sans);color:var(--color-fg-muted)}.cost .hv b{display:block;font:600 14px/1.3 var(--font-sans);color:var(--color-fg-secondary)}
+.short{display:flex;align-items:center;gap:8px;margin:-8px 0 16px;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--color-bg-danger) 8%,var(--color-bg-surface));font:500 13px/1.5 var(--font-sans);color:var(--color-fg-danger)}
+.short .leaf{width:16px;height:16px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pair button,.pri2{height:52px;border:0;border-radius:14px;font:600 15px/1 var(--font-sans);cursor:pointer;transition:transform 120ms var(--ease-out)}
+.pair button:active,.pri2:active{transform:scale(.98)}
+.ghost{background:var(--color-bg-muted);color:var(--color-fg-primary)}
+.prim{background:var(--color-bg-accent);color:var(--color-fg-inverse)}
+/* R2 가운데 팝업 */
+.pop{position:absolute;left:50%;top:50%;z-index:21;width:296px;padding:28px 20px 16px;border-radius:24px;background:var(--color-bg-surface);text-align:center;opacity:0;transform:translate(-50%,-50%) scale(.96);pointer-events:none;transition:opacity 160ms ease,transform 160ms var(--ease-out);box-shadow:0 20px 48px rgb(20 30 40 / .18)}
+.phone.open .pop{opacity:1;transform:translate(-50%,-50%);pointer-events:auto;transition-duration:220ms}
+.pop .av{position:relative;width:72px;height:72px;margin:0 auto;border-radius:50%;overflow:hidden;box-shadow:0 0 0 3px var(--color-bg-surface),0 0 0 4px var(--color-border-default)}
+.pop .av i{position:absolute;inset:-8px;background:center 40%/cover;filter:blur(7px)}
+.pop .av span{position:absolute;inset:0;display:grid;place-items:center;color:#fff}
+.pop .av .lock{width:22px;height:22px;stroke-width:2}
+.pop b.t{display:block;margin-top:14px;font:600 17px/1.4 var(--font-sans)}
+.pop p{margin:6px 0 0;font:400 13px/1.6 var(--font-sans);color:var(--color-fg-secondary);word-break:keep-all}
+.pop .line{display:flex;align-items:center;justify-content:center;gap:6px;margin:16px 0 0;padding:10px 12px;border-radius:12px;background:var(--color-bg-muted);font:500 13px/1.4 var(--font-sans);color:var(--color-fg-secondary)}
+.pop .line b{color:var(--color-fg-primary)}
+.pop .line .leaf{width:16px;height:16px;color:var(--color-fg-accent)}
+.pop .pri2{display:block;width:100%;margin-top:16px;background:var(--color-bg-accent);color:var(--color-fg-inverse)}
+.pop .tl{display:block;width:100%;height:44px;margin-top:4px;border:0;background:none;color:var(--color-fg-muted);font:500 14px/1 var(--font-sans);cursor:pointer}
+/* R3 카드에 미리 표시 */
+.r3 .card.exp .veil{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#fff;text-align:center}
+.r3 .card.exp .veil .lock{width:22px;height:22px;stroke-width:2}
+.r3 .card.exp .veil small{font:500 12px/1.4 var(--font-sans);text-shadow:0 1px 6px rgb(0 0 0 / .25)}
+.r3 .card.exp .veil em{display:inline-flex;align-items:center;gap:4px;height:28px;padding:0 10px;border-radius:14px;background:color-mix(in srgb,var(--color-bg-surface) 92%,transparent);color:var(--color-fg-accent-strong);font:600 12px/1 var(--font-sans);font-style:normal}
+.r3 .card.exp .veil em .leaf{width:14px;height:14px}
+.r3 .card.exp .nm,.r3 .card.exp .bd{opacity:.0}
+.veil{display:none}.r3 .card.exp .veil{display:flex}
+.toast{position:absolute;left:50%;bottom:100px;z-index:40;transform:translate(-50%,6px);padding:8px 14px;border-radius:10px;background:var(--color-bg-inverse);color:var(--color-fg-inverse);font:500 12px/1.5 var(--font-sans);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 200ms ease,transform 200ms var(--ease-out)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){.sheet,.pop,.card .ph{transition:opacity 160ms ease!important}.pop{transform:translate(-50%,-50%)!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="eyebrow">YAHWA · 마음함</p>
+<h1 class="title">인연 다시 보기</h1>
+<p class="intro">마음함에서 7일이 지난 인연은 사진이 흐려지고, 누르면 “인연 다시 보기” 페이지로 넘어가요. 그 페이지는 제목 · 설명 한 줄 · 버튼뿐이라 굳이 화면을 옮길 이유가 없어요. 마음함 위에서 바로 묻고, 리프를 쓰면 그 자리에서 사진이 선명해진 뒤 프로필로 넘어가게 바꿔요. 각 폰의 흐린 카드(푸른밤)를 눌러 보세요.</p>
+<div class="tools"><button id="short" aria-pressed="false">리프가 모자랄 때 보기</button><button id="reset">처음 상태로</button></div>
+
+<div class="row">
+  <div class="col"><h3><b class="now">지금</b>페이지로 넘어감</h3><p>흐린 카드를 누르면 새 페이지가 열려요. 누구를 다시 보는지(사진 · 이름)가 없고, 보유 리프도 안 보여요. 돌아가려면 뒤로를 한 번 더 눌러야 해요.</p>
+    <div class="phone"><div class="page"><span class="back"><i></i></span><h2>인연 다시 보기</h2><p>7일이 지난 프로필은 가려져요. 10리프로 다시 열면 7일 동안 볼 수 있어요.</p><button class="pri">다시 보기 · 10리프</button></div></div></div>
+  <div class="col"><h3><b>R1</b>아래에서 올라오는 시트<em>추천</em></h3><p>교환 요청 · 편지 답장과 같은 “사용할 리프 · 보유” 카드를 써서 리프 쓰는 시트가 하나의 모양으로 맞아요. 누구를 다시 보는지 흐린 썸네일과 이름으로 보여 줘요. 다시 보면 시트가 내려가고 카드 사진이 그 자리에서 선명해진 뒤 프로필로 넘어가요.</p><div class="phone r1" data-kind="sheet"></div></div>
+  <div class="col"><h3><b>R2</b>가운데 팝업</h3><p>화면 가운데 작은 창. 흐린 얼굴과 자물쇠가 가장 먼저 보여 “가려진 사람”이라는 게 분명해요. 다만 앱의 다른 리프 결제는 모두 아래 시트라 이것만 다른 모양이 돼요.</p><div class="phone r2" data-kind="pop"></div></div>
+  <div class="col"><h3><b>R3</b>카드에 미리 알리고 시트</h3><p>누르기 전부터 흐린 카드 위에 자물쇠 · “7일이 지났어요” · “10리프로 다시 보기”를 보여 줘요. 왜 흐린지 바로 알 수 있고, 누르면 R1과 같은 시트가 떠요. 카드가 여러 장 가려지면 화면이 조금 무거워져요.</p><div class="phone r3" data-kind="sheet"></div></div>
+</div>
+
+<div class="box">
+  <h4>세 안 공통</h4>
+  <ul>
+    <li><b>리프가 모자라면</b> “N리프가 더 필요해요” 줄이 붙고 버튼이 “리프 충전하기”로 바뀌어 충전 화면으로 가요.</li>
+    <li><b>다시 보기를 누르면</b> 10리프를 쓰고 7일 동안 열려요. 시트(팝업)가 닫히고 카드 흐림이 420ms 동안 걷힌 뒤 프로필로 넘어가요. 시안에서는 넘어가는 대신 알림 한 줄로 보여 줘요.</li>
+    <li><b>닫기</b>: 어두운 바깥 · Esc · “취소”. 마음함은 그대로라 뒤로를 누를 필요가 없어요. 받은 마음 · 보낸 마음 탭의 흐린 카드도 같은 시트를 써요.</li>
+  </ul>
+</div>
+</div>
+<script>
+const LEAF='<svg class="leaf" viewBox="0 0 48 48" aria-hidden="true"><path d="M10 38C2 14 24 6 42 6C42 28 30 42 14 34M8 42L32 18"/></svg>';
+const LOCK='<svg class="lock" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 11h12v9H6z M8.5 11V8a3.5 3.5 0 0 1 7 0v3"/></svg>';
+const HS='M8.00003 24C1.00003 10 17 5.00001 23 19C30 1.33514e-05 46 8.00001 37 23C31.6667 29.6667 23.3334 35.3333 12 40C20 32.6667 30.3334 29.3333 43 30';
+const P=[['느린오후',29,'person-02-2.jpg'],['달빛편지',31,'person-07-3.jpg'],['푸른밤',26,'person-08-4.jpg']];
+let SHORT=false;const BAL=()=>SHORT?4:100,COST=10;
+function screen(){return '<div class="scr"><div class="ht">마음함<svg viewBox="0 0 48 48" aria-hidden="true"><path d="'+HS+'"/></svg></div><p class="hs">서로에게 조금 더 가까워지는 마음</p><div class="tabs"><span>보낸 마음 <small>3</small></span><span>받은 마음 <small>0</small></span><span class="on">서로 호감 <small>3</small></span></div><div class="grid">'
+ +P.map(([n,a,src],i)=>'<button class="card'+(i===2?' exp':'')+'" data-i="'+i+'"><span class="ph" style="background-image:url('+src+')"></span><span class="bd">서로 호감</span><span class="nm"><b>'+n+'</b><span>'+a+'세</span></span><span class="veil">'+LOCK+'<small>7일이 지났어요</small><em>'+LEAF+'10리프로 다시 보기</em></span></button>').join('')
+ +'</div><p class="foot">UI 시연 · 실제 알림이나 관심은 전송되지 않아요.</p></div><div class="gnb"></div><div class="dim"></div>';}
+function costHTML(){const b=BAL(),s=b<COST;return '<div class="cost"><span class="lf">'+LEAF+'</span><span class="t"><small>사용할 리프</small><strong>'+COST+'리프</strong></span><span class="hv">보유<b>'+b+'리프</b></span></div>'+(s?'<div class="short">'+LEAF+(COST-b)+'리프가 더 필요해요</div>':'');}
+function sheetHTML(){const s=BAL()<COST;return '<div class="sheet" role="dialog" aria-modal="true" aria-label="인연 다시 보기"><span class="hdl"></span><div class="who"><span class="th"><i style="background-image:url('+P[2][2]+')"></i></span><span><b>'+P[2][0]+' · '+P[2][1]+'세</b><small>'+LOCK+'서로 호감 7일이 지나 가려졌어요</small></span></div><b class="q">다시 볼까요?</b><p>다시 열면 7일 동안 프로필과 사진을 볼 수 있어요. 쓴 리프는 돌려받지 않아요.</p>'+costHTML()+'<div class="pair"><button class="ghost" data-a="close">취소</button><button class="prim" data-a="'+(s?'charge':'go')+'">'+(s?'리프 충전하기':'다시 보기')+'</button></div></div>';}
+function popHTML(){const b=BAL(),s=b<COST;return '<div class="pop" role="dialog" aria-modal="true" aria-label="인연 다시 보기"><div class="av"><i style="background-image:url('+P[2][2]+')"></i><span>'+LOCK+'</span></div><b class="t">'+P[2][0]+'님을 다시 볼까요?</b><p>서로 호감 7일이 지나 가려졌어요. 다시 열면 7일 동안 볼 수 있어요.</p><div class="line">'+LEAF+'<span><b>'+COST+'리프</b> 사용 · 보유 '+b+'리프</span></div>'+(s?'<div class="short" style="margin:8px 0 0">'+LEAF+(COST-b)+'리프가 더 필요해요</div>':'')+'<button class="pri2" data-a="'+(s?'charge':'go')+'">'+(s?'리프 충전하기':'10리프로 다시 보기')+'</button><button class="tl" data-a="close">다음에 할게요</button></div>';}
+function draw(ph){ph.classList.remove('open');ph.innerHTML=screen()+(ph.dataset.kind==='pop'?popHTML():sheetHTML())+'<div class="toast" role="status"></div>';}
+function toast(ph,t){const e=ph.querySelector('.toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),1800);}
+const phones=[...document.querySelectorAll('[data-kind]')];
+phones.forEach(ph=>{draw(ph);ph.addEventListener('click',e=>{
+ if(e.target.closest('.dim')){ph.classList.remove('open');return;}
+ const c=e.target.closest('.card');if(c&&!ph.classList.contains('open')){if(c.classList.contains('exp'))ph.classList.add('open');else toast(ph,c.querySelector('b').textContent+'님 프로필로 넘어가요');return;}
+ const a=e.target.closest('[data-a]')?.dataset.a;if(!a)return;
+ if(a==='close'){ph.classList.remove('open');return;}
+ if(a==='charge'){ph.classList.remove('open');setTimeout(()=>toast(ph,'리프 충전 화면으로 넘어가요'),240);return;}
+ if(a==='go'){ph.classList.remove('open');const card=ph.querySelector('.card.exp');setTimeout(()=>{card.classList.remove('exp');setTimeout(()=>toast(ph,'7일 동안 열렸어요 · 프로필로 넘어가요'),420);},260);}
+});});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')phones.forEach(p=>p.classList.remove('open'));});
+document.getElementById('short').onclick=e=>{SHORT=!SHORT;e.currentTarget.setAttribute('aria-pressed',SHORT);phones.forEach(draw);};
+document.getElementById('reset').onclick=()=>phones.forEach(draw);
+</script>
+</body>
+</html>

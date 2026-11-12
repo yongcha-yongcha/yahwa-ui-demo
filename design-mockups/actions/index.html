@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>호감 · 편지 버튼</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+:root{--pg:#EEF2F4;--pg-surface:#FFFFFF;--pg-line:#DDE3E7;--pg-fg:#273037;--pg-fg2:#505C65;--pg-fg3:#69757E;--pg-accent:#377398}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#161C20;--pg-surface:#222A30;--pg-line:#34404A;--pg-fg:#E3E7EA;--pg-fg2:#CFD5DA;--pg-fg3:#98A2AA;--pg-accent:#92C0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pg-fg);font:400 14px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.wrap{max-width:1600px;margin:0 auto;padding:36px 16px 64px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:2px;color:var(--pg-fg3)}
+h1.title{margin:6px 0 0;font:400 30px/1.35 var(--font-serif)}
+.intro{max-width:80ch;margin:10px 0 0;color:var(--pg-fg2)}
+.grid{display:flex;flex-wrap:wrap;gap:32px 24px;margin-top:28px}
+.item{flex:0 1 360px;min-width:0;display:flex;flex-direction:column;gap:10px}
+.item h2{margin:0;display:flex;align-items:center;gap:8px;font:400 18px/1.4 var(--font-serif)}
+.item h2 b{display:grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:13px;background:var(--pg-accent);color:#fff;font:600 12px var(--font-sans)}
+.item.now h2 b{background:var(--pg-fg3)}
+.item>p{margin:0;font-size:13px;color:var(--pg-fg2)}
+.item .feel{font-size:12px;color:var(--pg-fg3)}
+.run{display:flex;gap:8px}
+.run button{flex:1;height:40px;border:0;border-radius:10px;background:var(--pg-surface);box-shadow:inset 0 0 0 1px var(--pg-line);font-size:12px}
+
+/* ───── 휴대폰 아래쪽 (상대 프로필 · 이야기 끝부분, 앱 수치) ───── */
+.phone{position:relative;width:360px;max-width:100%;height:520px;border-radius:0 0 32px 32px;overflow:hidden;background:var(--color-bg-page);color:var(--color-fg-primary);box-shadow:0 0 0 1px var(--pg-line),0 16px 40px rgb(0 0 0 / .12)}
+.story{position:absolute;left:20px;right:20px;top:20px}
+.story h3{margin:0 0 8px;font:400 19px/1.7 var(--font-serif);color:var(--color-fg-accent-strong)}
+.story p{margin:0;font-size:14px;line-height:2;color:var(--color-fg-secondary)}
+.story figure{margin:24px 0 0;height:120px;border-radius:12px;background:url(img/story.jpg) 50% 40%/cover}
+.acts{position:absolute;left:20px;right:20px;bottom:96px;display:flex;gap:10px}
+.acts.right{justify-content:flex-end}
+.acts.left{justify-content:flex-start}
+.acts svg{flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.acts button{border:0;transition:transform 100ms ease-out,background-color 160ms ease,color 160ms ease,box-shadow 160ms ease}
+.acts button:active{transform:scale(.94)}
+.acts button:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:2px}
+/* 지금: 큰 버튼 두 개 */
+.big{display:grid!important;grid-template-columns:1fr 1.15fr}
+.big button{height:54px;border-radius:14px;background:var(--color-bg-button-primary);color:var(--color-fg-inverse);font:500 15px var(--font-sans)}
+.big button.sent{background:var(--rose-50,#FBEFF1);color:var(--rose-600,#B4516A)}
+/* A: white-review처럼 글자 + 아이콘, 오른쪽 · 흰 바탕 테두리 */
+.chip button{display:flex;align-items:center;gap:6px;height:44px;padding:0 14px 0 12px;border-radius:14px;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-control),0 2px 6px rgb(39 48 55 / .05);color:var(--color-fg-secondary);font:500 14px var(--font-sans)}
+.chip svg{width:20px;height:20px}
+.chip button.sent{background:var(--color-bg-subtle);color:var(--color-fg-accent-strong)}
+.chip button.sent.heart svg{fill:var(--rose-300,#EBB3BE);stroke:var(--rose-500,#C9667D)}
+/* B: 아이콘만, 흰 바탕 테두리 */
+.ico button{position:relative;display:grid;place-items:center;width:52px;height:52px;border-radius:26px;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-control),0 2px 6px rgb(39 48 55 / .06);color:var(--color-fg-secondary)}
+.ico svg{width:24px;height:24px}
+.ico button.sent.heart{color:var(--rose-500,#C9667D)}
+.ico button.sent.heart svg{fill:var(--rose-300,#EBB3BE)}
+/* C · D: 아이콘만, 색 채운 바탕 */
+.fill button{position:relative;display:grid;place-items:center;width:52px;height:52px;border-radius:26px;color:var(--white);box-shadow:0 4px 12px rgb(39 48 55 / .14)}
+.fill svg{width:24px;height:24px}
+.fill .heart{background:var(--rose-400,#E58E9E)}
+.fill .mail{background:var(--color-bg-button-primary)}
+.fill button.sent.heart{background:var(--rose-50,#FBEFF1);color:var(--rose-500,#C9667D);box-shadow:inset 0 0 0 1px var(--rose-200,#F2CDD5)}
+.fill button.sent.heart svg{fill:var(--rose-400,#E58E9E);stroke:var(--rose-500,#C9667D)}
+/* 아이콘만일 때 상태를 알 수 있게 작은 글 (화면 읽기는 aria-label) */
+.state{position:absolute;bottom:72px;margin:0;font-size:11px;color:var(--color-fg-tertiary);white-space:nowrap;opacity:0;transition:opacity 160ms ease}
+.state.on{opacity:1}
+/* GNB */
+.nav{position:absolute;left:20px;right:20px;bottom:20px;height:64px;display:flex;align-items:center;padding:0 4px;border:1px solid var(--gnb-border);border-radius:32px;background:var(--gnb-bg);box-shadow:var(--gnb-shadow)}
+.nav span{position:relative;flex:1;height:54px;display:grid;place-items:center;border-radius:27px;color:var(--gnb-icon)}
+.nav span.on{background:var(--gnb-selected-bg);color:var(--gnb-icon-active)}
+.nav svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.nav span.on svg{fill:currentColor;stroke:none}
+.nav i{position:absolute;left:50%;top:11px;margin-left:8px;width:8px;height:8px;border-radius:50%;background:var(--gnb-badge-bg);box-shadow:0 0 0 1px var(--white)}
+.nav img{width:32px;height:32px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1.5px var(--white)}
+/* 앱의 하트 효과 */
+.loop-heart{display:inline-block;background:currentColor;-webkit-mask:url('img/heart-loop.png') center/190px 190px no-repeat;mask:url('img/heart-loop.png') center/190px 190px no-repeat;width:160px;height:100px}
+.bloom{position:absolute;z-index:4;left:50%;bottom:170px;pointer-events:none;display:flex;flex-direction:column;align-items:center;width:210px;padding:12px 10px 17px;border-radius:24px;background:color-mix(in srgb,var(--color-bg-page) 96%,transparent);box-shadow:0 8px 32px rgb(39 48 55 / .07);color:var(--color-fg-love);opacity:0;transform:translateX(-50%)}
+.bloom span:last-child{font:400 15px/1.4 var(--font-serif)}
+.bloom.is-playing{animation:appear 1.8s ease both}
+.bloom.is-playing .loop-heart{animation:beat .85s ease both}
+@keyframes appear{0%{opacity:0;translate:0 8px}15%,80%{opacity:1;translate:0 0}100%{opacity:0;translate:0 -5px}}
+@keyframes beat{0%{scale:.85}35%{scale:1.06}55%{scale:.97}75%{scale:1.03}100%{scale:1}}
+@media (prefers-reduced-motion:reduce){.acts button{transition:none}.acts button:active{transform:none}.bloom.is-playing{animation:none;opacity:1}.bloom.is-playing .loop-heart{animation:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">YAHWA · 상대 프로필 · 호감 · 편지 버튼</p>
+  <h1 class="title">아래 버튼을 작게</h1>
+  <p class="intro">지금은 화면 폭을 다 쓰는 큰 버튼 두 개가 이야기를 가려요. white-review 시안의 오른쪽 작은 "호감 보내기 · 편지 보내기"를 가져와 우리 하단 메뉴 아이콘(하트 · 편지)으로 바꾸고, 아이콘만 있는 버전과 색을 채운 버전(왼쪽 · 오른쪽)을 같이 놓았어요. 휴대폰 안 하트를 눌러 보면 보낸 상태와 하트 효과가 나와요.</p>
+  <div class="grid" id="grid"></div>
+</div>
+<script>
+const HEART='<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 26C12 23 4.5 17.5 5 11.3C5.4 5.5 12.2 5.5 15.6 12.2C18.1 5.2 25.8 4.9 27 10.8C28.1 16.1 21.6 23.1 16 26Z"/></svg>';
+const MAIL='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6Q12 5 21 6V19H3Z M3 7L12 14L21 7 M3 19L9 13 M21 19L15 13"/></svg>';
+const NAV=`<nav class="nav" aria-label="앱 메뉴"><span class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h7v8H3zM14 3h7v8h-7zM3 15h7v6H3zM14 15h7v6h-7z"/></svg></span><span>${HEART}<i></i></span><span>${MAIL}</span><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v12H9l-5 4V5M8 9h8M8 13h5"/></svg><i></i></span><span><img src="img/me.jpg" alt=""></span></nav>`;
+const V=[
+ {k:'now',tag:'지금',name:'큰 버튼 두 개',cls:'big',desc:'화면 폭을 다 쓰는 파란 버튼 두 개(54px)가 하단 메뉴 바로 위에 늘 떠 있어요. 이야기를 읽는 동안 화면 아래 약 70px을 계속 가려요.',feel:'분명하지만 무거움',
+  btn:(s)=>[`<button type="button" class="heart${s?' sent':''}">${s?'서로 호감이 있어요':'나도 관심 있어요'}</button>`,`<button type="button" class="mail">편지 확인하기</button>`]},
+ {k:'a',tag:'A',name:'글자 + 아이콘, 오른쪽 (white-review)',cls:'chip right',desc:'white-review처럼 오른쪽에 작은 흰 버튼 두 개(높이 44)를 둬요. 아이콘은 하단 메뉴와 같은 하트 · 편지예요. 보내면 하트가 분홍으로 채워지고 "호감 보냄"으로 바뀌어요.',feel:'가벼움 · 글로 분명함',
+  btn:(s)=>[`<button type="button" class="heart${s?' sent':''}" aria-label="${s?'호감 보냄':'호감 보내기'}">${HEART}<span>${s?'호감 보냄':'호감 보내기'}</span></button>`,`<button type="button" class="mail" aria-label="편지 보내기">${MAIL}<span>편지 보내기</span></button>`]},
+ {k:'b',tag:'B',name:'아이콘만, 흰 바탕 · 오른쪽',cls:'ico right',desc:'글자를 빼고 52px 동그라미 아이콘 두 개만 둬요. 가장 덜 가리고 사진 · 이야기에 집중돼요. 처음 보는 사람은 첫 프로필 온보딩 툴팁("마음이 가면 관심을 보내 보세요.")이 하트를 가리켜 알려 줘요.',feel:'가장 조용함',state:true,
+  btn:(s)=>[`<button type="button" class="heart${s?' sent':''}" aria-label="${s?'호감 보냄':'호감 보내기'}">${HEART}</button>`,`<button type="button" class="mail" aria-label="편지 보내기">${MAIL}</button>`]},
+ {k:'c',tag:'C',name:'아이콘만, 색 채움 · 왼쪽',cls:'fill left',desc:'하트는 로즈, 편지는 우리 주요 버튼 파랑으로 채운 52px 동그라미를 왼쪽에 둬요. 글을 읽는 시선이 왼쪽에서 시작해 바로 눈에 들어와요. 보내면 하트 버튼이 연한 로즈로 바뀌고 하트가 채워져요.',feel:'또렷함 · 손에 먼저 닿음',state:true,
+  btn:(s)=>[`<button type="button" class="heart${s?' sent':''}" aria-label="${s?'호감 보냄':'호감 보내기'}">${HEART}</button>`,`<button type="button" class="mail" aria-label="편지 보내기">${MAIL}</button>`]},
+ {k:'d',tag:'D',name:'아이콘만, 색 채움 · 오른쪽',cls:'fill right',desc:'C와 같은 색 채운 버튼을 오른쪽에 둬요. 오른손 엄지가 닿기 쉬운 자리이고, 왼쪽 글 시작을 가리지 않아요.',feel:'또렷함 · 엄지 자리',state:true,
+  btn:(s)=>[`<button type="button" class="heart${s?' sent':''}" aria-label="${s?'호감 보냄':'호감 보내기'}">${HEART}</button>`,`<button type="button" class="mail" aria-label="편지 보내기">${MAIL}</button>`]},
+];
+const grid=document.getElementById('grid');
+V.forEach(v=>{
+  const it=document.createElement('article');it.className='item'+(v.k==='now'?' now':'');
+  it.innerHTML=`<h2><b>${v.tag}</b>${v.name}</h2><div class="phone"><div class="story"><h3>“이런 사람에게 마음이 가요”</h3><p>말을 끝까지 들어주고 작은 약속도 소중하게 지키는 사람에게 마음이 가요. 서로의 일상을 편하게 나누고 싶어요.</p><figure role="img" aria-label="일상 사진"></figure></div><div class="acts ${v.cls}"></div>${NAV}</div><div class="run"><button type="button" data-a="send">호감 보내기 누르기</button><button type="button" data-a="reset">처음으로</button></div><p>${v.desc}</p><span class="feel">느낌 · ${v.feel}</span>`;
+  grid.append(it);
+  const ph=it.querySelector('.phone'),acts=ph.querySelector('.acts');let sent=false;
+  const draw=()=>{acts.innerHTML=v.btn(sent).join('');acts.querySelector('.heart').addEventListener('click',send);
+};
+  const send=()=>{if(sent)return;sent=true;draw();ph.querySelector('.bloom')?.remove();const b=document.createElement('div');b.className='bloom is-playing';b.setAttribute('aria-hidden','true');b.innerHTML='<span class="loop-heart"></span><span>마음이 한 걸음 가까이</span>';ph.append(b);setTimeout(()=>b.remove(),1800);};
+  it.querySelector('[data-a=send]').addEventListener('click',()=>{sent=false;draw();send();});
+  it.querySelector('[data-a=reset]').addEventListener('click',()=>{sent=false;draw();ph.querySelector('.bloom')?.remove();});
+  draw();
+});
+</script>
+</body>
+</html>
