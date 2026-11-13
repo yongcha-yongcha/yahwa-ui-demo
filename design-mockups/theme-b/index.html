@@ -1,0 +1,122 @@
+<title>야화 A · B 시안</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* 레이아웃: 위에 두 컨셉 요약, 아래는 같은 화면을 A | B로 나란히 (폰에서는 위아래) */
+:root{
+  --bg:#F6F3EE; --surface:#FFFFFF; --fg:#2E2B27; --muted:#6B655C; --line:#E4DED3;
+  --a:#377398; --a-soft:#ECF5FC; --b:#0E7A8C; --b-soft:#E6F7F7; --stamp:#B4531A; --peach:#FFE8DA;
+  --serif:'Gowun Batang',serif; --sans:'Noto Sans KR',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif; --mono:ui-monospace,'SF Mono',Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#1B1916;--surface:#25221E;--fg:#EEE9E1;--muted:#ADA597;--line:#3A352F;--a:#8CB9D6;--a-soft:#1E2B33;--b:#6CCBCF;--b-soft:#173033;--stamp:#F59A62;--peach:#3A2A22;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1B1916;--surface:#25221E;--fg:#EEE9E1;--muted:#ADA597;--line:#3A352F;--a:#8CB9D6;--a-soft:#1E2B33;--b:#6CCBCF;--b-soft:#173033;--stamp:#F59A62;--peach:#3A2A22;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.65 var(--sans);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 72px}
+.wrap{max-width:1040px;margin:0 auto;display:grid;gap:48px}
+header{display:grid;gap:12px}
+.eyebrow{font:600 12px/1 var(--mono);letter-spacing:2px;color:var(--stamp)}
+h1{margin:0;font:700 34px/1.3 var(--sans);letter-spacing:-0.6px;text-wrap:balance}
+.lead{margin:0;max-width:62ch;color:var(--muted)}
+.concepts{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.concept{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;display:grid;gap:14px;min-width:0}
+.concept h2{margin:0;display:flex;align-items:baseline;gap:10px;font-size:20px;line-height:1.4}
+.concept h2 b{font:700 13px/1 var(--mono);padding:6px 9px;border-radius:8px;color:var(--surface)}
+.concept.a h2{font-family:var(--serif);font-weight:400}
+.concept.a h2 b{background:var(--a)}
+.concept.b h2 b{background:var(--b)}
+.concept p{margin:0;color:var(--muted)}
+.swatches{display:flex;gap:6px;flex-wrap:wrap}
+.swatches i{width:32px;height:32px;border-radius:10px;border:1px solid color-mix(in srgb,var(--fg) 10%,transparent)}
+.concept dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:13px}
+.concept dt{color:var(--muted)}
+.concept dd{margin:0}
+.how{background:var(--b-soft);border-radius:16px;padding:16px 20px;font-size:14px;display:grid;gap:4px}
+.how code{font:600 13px var(--mono);color:var(--b)}
+.sec{display:grid;gap:20px}
+.sec>h2{margin:0;font-size:22px;letter-spacing:-0.3px}
+.pairs{display:grid;gap:40px}
+.pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.1fr);gap:20px;align-items:start}
+.shot{margin:0;display:grid;gap:8px;min-width:0}
+.shot img{width:100%;max-width:300px;aspect-ratio:360/780;object-fit:cover;border-radius:24px;border:1px solid var(--line);display:block;background:var(--surface)}
+.shot figcaption{font:600 12px/1 var(--mono);letter-spacing:1px;color:var(--muted)}
+.shot.b figcaption{color:var(--b)}
+.note{display:grid;gap:8px;align-content:start;min-width:0;padding-top:20px}
+.note h3{margin:0;font-size:17px}
+.note p{margin:0;color:var(--muted);font-size:14px}
+.note ul{margin:0;padding-left:18px;font-size:14px;display:grid;gap:4px}
+.keep{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;display:grid;gap:10px}
+.keep h2{margin:0;font-size:18px}
+.keep ul{margin:0;padding-left:18px;display:grid;gap:4px;color:var(--muted)}
+@media (max-width:760px){.pair{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.note{grid-column:1/-1;padding-top:0;order:-1}h1{font-size:28px}}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">'26 11 13 · YAHWA</span>
+    <h1>같은 야화, 두 가지 분위기</h1>
+    <p class="lead">기능, 흐름, 문구는 그대로 두고 보이는 모습만 둘로 나눴어요. A는 지금까지 다듬은 기본 시안이고, B는 한여름 오후에 바닷가에서 필름 카메라로 찍은 한 장을 떠올리며 만들었어요.</p>
+  </header>
+
+  <section class="concepts" aria-label="두 컨셉 요약">
+    <article class="concept a">
+      <h2><b>A</b>하늘 편지</h2>
+      <p>하늘빛 손그림과 고운바탕 글씨. 차분하고 조용한 편지지 같은 화면.</p>
+      <div class="swatches" aria-label="A 색"><i style="background:#F8F9F6"></i><i style="background:#377398"></i><i style="background:#ECF5FC"></i><i style="background:#B26073"></i><i style="background:#E7D9BE"></i><i style="background:#39444D"></i></div>
+      <dl><dt>바탕</dt><dd>차가운 종이 #F8F9F6</dd><dt>주 색</dt><dd>하늘 #377398</dd><dt>제목</dt><dd>고운바탕</dd><dt>모서리</dt><dd>버튼 12 · 카드 16</dd><dt>질감</dt><dd>손그림 아이콘 · 사진 위 흐림</dd></dl>
+    </article>
+    <article class="concept b">
+      <h2><b>B</b>여름빛 필름</h2>
+      <p>크림 인화지, 소다빛 청록, 복숭아빛 빛 번짐. 사진은 인화한 한 장처럼, 모서리에는 날짜 도장.</p>
+      <div class="swatches" aria-label="B 색"><i style="background:#FFF8EE"></i><i style="background:#0E7A8C"></i><i style="background:#E6F7F7"></i><i style="background:#DD6070"></i><i style="background:#FFD3BC"></i><i style="background:#3D3832"></i></div>
+      <dl><dt>바탕</dt><dd>크림 인화지 #FFF8EE + 빛 번짐</dd><dt>주 색</dt><dd>소다 #0E7A8C (흰 글자 5.0:1)</dd><dt>제목</dt><dd>Pretendard 600</dd><dt>모서리</dt><dd>버튼 28(알약) · 카드 22</dd><dt>질감</dt><dd>필름 입자 · 따뜻한 사진 색 · 날짜 도장</dd></dl>
+    </article>
+  </section>
+
+  <div class="how">
+    <strong>시연 도구에서 바로 바꿔 볼 수 있어요</strong>
+    <span>오른쪽 시연 도구 맨 위 <b>디자인 컨셉</b>에서 A / B를 누르면 지금 화면 그대로 바뀌어요. 주소에 <code>?theme=b</code>를 붙이면 B로 열려요.</span>
+  </div>
+
+  <section class="sec">
+    <h2>화면별로 나란히</h2>
+    <div class="pairs">
+      <div class="pair"><figure class="shot"><img src="img/a_m_discovery.jpg" alt="A 인연 홈"><figcaption>A</figcaption></figure><figure class="shot b"><img src="img/b_m_discovery.jpg" alt="B 인연 홈"><figcaption>B</figcaption></figure>
+        <div class="note"><h3>인연 홈 · 인화한 사진 한 장</h3><p>B에서 가장 크게 달라진 곳이에요.</p><ul><li>크림 테두리 안에 사진을 두고, 이름과 한 장면은 아래 여백에 진한 잉크색으로 써요.</li><li>사진 위 흐림 층을 걷어서 사진이 더 맑게 보여요.</li><li>사진 오른쪽 아래에 필름 카메라 날짜 도장을 찍어요.</li></ul></div></div>
+      <div class="pair"><figure class="shot"><img src="img/a_locked.jpg" alt="A 공개 전 카드"><figcaption>A</figcaption></figure><figure class="shot b"><img src="img/b_locked.jpg" alt="B 공개 전 카드"><figcaption>B</figcaption></figure>
+        <div class="note"><h3>공개 전 · 현상 중인 한 장</h3><ul><li>아래 여백에 “아직 현상 중인 한 장 · 12:00에 선명해져요”를 적어요.</li><li>흐림이 걷히는 공개 모션이 필름이 현상되는 느낌과 이어져요.</li></ul></div></div>
+      <div class="pair"><figure class="shot"><img src="img/a_m_match-profile.jpg" alt="A 상대 프로필"><figcaption>A</figcaption></figure><figure class="shot b"><img src="img/b_m_match-profile.jpg" alt="B 상대 프로필"><figcaption>B</figcaption></figure>
+        <div class="note"><h3>상대 프로필</h3><ul><li>큰 사진 둘레에 크림 테두리와 날짜 도장을 넣었어요.</li><li>하트는 수박빛 분홍, 편지는 소다 청록이에요.</li></ul></div></div>
+      <div class="pair"><figure class="shot"><img src="img/a_hb.jpg" alt="A 마음함"><figcaption>A</figcaption></figure><figure class="shot b"><img src="img/b_hb.jpg" alt="B 마음함"><figcaption>B</figcaption></figure>
+        <div class="note"><h3>마음함 · 작은 인화 사진</h3><ul><li>타일도 홈과 같은 인화 사진 모양이에요. 이름은 사진 아래 여백에 써요.</li></ul></div></div>
+      <div class="pair"><figure class="shot"><img src="img/a_s_welcome.jpg" alt="A 웰컴"><figcaption>A</figcaption></figure><figure class="shot b"><img src="img/b_s_welcome.jpg" alt="B 웰컴"><figcaption>B</figcaption></figure>
+        <div class="note"><h3>웰컴</h3><ul><li>같은 사진을 여름 필름 색으로 바꾸고, 오른쪽 위에서 빛이 번져 들어와요.</li><li>“THE FIRST FRAME”은 날짜 도장 글씨로 써요.</li></ul></div></div>
+      <div class="pair"><figure class="shot"><img src="img/a_s_details.jpg" alt="A 가입 상세 정보"><figcaption>A</figcaption></figure><figure class="shot b"><img src="img/b_s_details.jpg" alt="B 가입 상세 정보"><figcaption>B</figcaption></figure>
+        <div class="note"><h3>가입 흐름</h3><ul><li>제목을 고딕 600으로 바꿔 더 밝고 또렷해요.</li><li>진행 막대는 청록에서 복숭아빛으로, 단계 2 / 5는 필름 장 번호처럼 써요.</li><li>버튼은 알약 모양이고, 입력칸 모서리는 16이에요.</li></ul></div></div>
+      <div class="pair"><figure class="shot"><img src="img/a_s_story.jpg" alt="A 자기소개"><figcaption>A</figcaption></figure><figure class="shot b"><img src="img/b_s_story.jpg" alt="B 자기소개"><figcaption>B</figcaption></figure>
+        <div class="note"><h3>자기소개 노트</h3><ul><li>노트 줄과 여백선, 라벨 테이프 색이 B 팔레트를 따라가요.</li></ul></div></div>
+      <div class="pair"><figure class="shot"><img src="img/a_s_preview.jpg" alt="A 소개 미리보기"><figcaption>A</figcaption></figure><figure class="shot b"><img src="img/b_s_preview.jpg" alt="B 소개 미리보기"><figcaption>B</figcaption></figure>
+        <div class="note"><h3>소개 미리보기</h3><ul><li>내 사진도 상대 프로필과 같은 인화 테두리와 날짜 도장을 써요.</li></ul></div></div>
+      <div class="pair"><figure class="shot"><img src="img/a_m_chats.jpg" alt="A 편지함"><figcaption>A</figcaption></figure><figure class="shot b"><img src="img/b_m_chats.jpg" alt="B 편지함"><figcaption>B</figcaption></figure>
+        <div class="note"><h3>다섯 탭</h3><ul><li>편지함 · 마음함 · 커뮤니티 · 마이페이지 제목은 24 / 600으로 굵기를 맞췄어요. 줄 높이 40과 위치는 A와 같아요.</li><li>하단 메뉴는 크림 종이 막대에 소다빛 알약이에요.</li></ul></div></div>
+      <div class="pair"><figure class="shot"><img src="img/a_f_community.jpg" alt="A 익명 이야기"><figcaption>A</figcaption></figure><figure class="shot b"><img src="img/b_f_community.jpg" alt="B 익명 이야기"><figcaption>B</figcaption></figure>
+        <div class="note"><h3>익명 이야기</h3><ul><li>글 사진에 얇은 크림 테두리를 둘렀어요.</li></ul></div></div>
+      <div class="pair"><figure class="shot"><img src="img/a_m_mypage.jpg" alt="A 마이페이지"><figcaption>A</figcaption></figure><figure class="shot b"><img src="img/b_m_mypage.jpg" alt="B 마이페이지"><figcaption>B</figcaption></figure>
+        <div class="note"><h3>마이페이지</h3><ul><li>목록 카드 모서리 20, 내 사진에는 작은 크림 테두리가 있어요.</li></ul></div></div>
+      <div class="pair"><figure class="shot"><img src="img/a_f_notifications.jpg" alt="A 새로운 소식"><figcaption>A</figcaption></figure><figure class="shot b"><img src="img/b_f_notifications.jpg" alt="B 새로운 소식"><figcaption>B</figcaption></figure>
+        <div class="note"><h3>새로운 소식 · 기능 화면</h3><ul><li>공용 머리, 시트, 목록 행은 A 구조 그대로이고, 색과 모서리만 B를 따라가요.</li></ul></div></div>
+      <div class="pair"><figure class="shot"><img src="img/a_f_story-match.jpg" alt="A 당신을 위한 인연"><figcaption>A</figcaption></figure><figure class="shot b"><img src="img/b_f_story-match.jpg" alt="B 당신을 위한 인연"><figcaption>B</figcaption></figure>
+        <div class="note"><h3>맞춤 인연 추천</h3><ul><li>버튼과 강조색이 소다 청록으로 바뀌어요.</li></ul></div></div>
+    </div>
+  </section>
+
+  <section class="keep">
+    <h2>A와 똑같이 지키는 것</h2>
+    <ul>
+      <li>모든 문구, 화면 흐름, 저장되는 기록</li>
+      <li>여백 4의 배수, 최소 글자 11px, 좌우 여백 20, 터치 영역 44</li>
+      <li>인연 홈 화면 맞춤. 작은 폰에서도 카드 400 · 사진 278로 하단 메뉴에 가리지 않아요.</li>
+      <li>글자 대비. 주 버튼 흰 글자 5.0:1, 날짜 도장 잉크 4.9:1</li>
+    </ul>
+  </section>
+</div>

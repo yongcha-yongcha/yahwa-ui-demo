@@ -195,7 +195,7 @@ const motion=$('motion-preview'),flow=$('flow');
 const dock=document.createElement('aside');
 dock.className='demo-dock';dock.setAttribute('aria-label','시연 도구');
 dock.innerHTML=`<div class="dock-head"><b>시연 도구</b><span id="dock-title"></span></div>
-<label class="dock-field"><span>화면 이동</span><select id="dock-screen"></select></label>
+<div class="dock-field"><span>화면 이동</span><div class="dock-screens" id="dock-screen" role="navigation" aria-label="화면 이동"></div></div>
 <section class="dock-context"><h2>이 화면에서 바꿔보기</h2><div class="dock-motion" id="dock-motion"></div><div id="dock-time"></div><div id="dock-lab"></div><p class="dock-empty" id="dock-empty" hidden>이 화면에서 바꿀 조건은 없어요.</p></section>`;
 document.body.append(dock);
 $('dock-motion').append(motion,flow);
@@ -207,13 +207,15 @@ sections.forEach(s=>{const h=s.querySelector('h3');if(h)h.textContent=h.textCont
 const select=$('dock-screen');
 const flowOptions=[...document.querySelectorAll('nav.categories [data-screen]')].filter(b=>b.dataset.screen!=='discovery').map(b=>[b.dataset.screen,b.textContent.trim()]);
 const appOptions=[['discovery','인연 홈'],['match-profile','상대 프로필'],['heartbox','마음함'],['chats','편지함'],['letter-chat','편지'],['community','커뮤니티'],['mypage','마이페이지']];
-const group=(l,o)=>`<optgroup label="${l}">${o.map(([v,t])=>`<option value="${v}">${t}</option>`).join('')}</optgroup>`;
-select.innerHTML='<option value="" hidden>세부 화면</option>'+group('앱 화면',appOptions)+group('가입 흐름',flowOptions);
-select.onchange=()=>{
-  const v=select.value;
+/* 화면 이동: 드롭다운 대신 바로 누르는 버튼 (2026-11-13) */
+const group=(l,o)=>`<p class="dock-screens-h">${l}</p><div class="dock-chips">${o.map(([v,t])=>`<button type="button" data-dock-go="${v}">${t}</button>`).join('')}</div>`;
+select.innerHTML=group('앱 화면',appOptions)+group('가입 흐름',flowOptions);
+select.addEventListener('click',e=>{
+  const b=e.target.closest('[data-dock-go]');if(!b)return;
+  const v=b.dataset.dockGo;
   if(v==='community'){nav.querySelector('[data-feature-tab="community"]').click();return;}
   window.__navHint='fade';show(v);
-};
+});
 const COMMUNITY=['community','post','compose-post','exchange','exchange-release-confirm','activity','notifications','community-guide'];
 const LETTER=['letter','compose-letter','letter-decline'];
 const PLACE=['places','shop','coupons','coupon-detail','coupon-confirm','place-help','point-ledger','wallet','ledger'];
@@ -229,9 +231,9 @@ function contextFor(name){
 }
 function updateDock(name){
   const fxView=window.__fxView;
-  select.value=name==='features'?(COMMUNITY.includes(fxView)?'community':''):name;
-  const opt=select.selectedOptions[0];
-  $('dock-title').textContent=opt?opt.textContent:'';
+  const cur=name==='features'?(COMMUNITY.includes(fxView)?'community':''):name;
+  let curBtn=null;select.querySelectorAll('[data-dock-go]').forEach(b=>{const on=b.dataset.dockGo===cur;b.toggleAttribute('aria-current',on);if(on){b.setAttribute('aria-current','page');curBtn=b;}});
+  $('dock-title').textContent=curBtn?curBtn.textContent:'';
   const ctx=contextFor(name);
   sections.forEach((s,i)=>{s.hidden=!ctx.includes(i)});
   if(lab){
@@ -269,9 +271,11 @@ function placeToast(el){
   const cur=typeof active==='string'&&document.getElementById(active);
   const scr=cur&&!cur.hidden?cur:[...phone.querySelectorAll(':scope>.screen:not([hidden]):not(.gnb-layer)')].pop();
   const cands=[...(scr?scr.children:[])];
+  /* 편지 보내기 · 답장처럼 스크롤 칸 안에 붙은 아래 고정 버튼(.lt-dock)도 기준에 넣어요 (2026-11-13) */
+  if(scr)cands.push(...scr.querySelectorAll('.lt-dock'));
   if(!layer.classList.contains('is-off'))cands.push(nav);
   let top=pr.bottom;
-  cands.forEach(n=>{if(!n.getClientRects().length)return;const cs=getComputedStyle(n);if(!/absolute|fixed|sticky/.test(cs.position))return;if(!n.querySelector('button,a,[role=button]'))return;const r=n.getBoundingClientRect();if((r.bottom<pr.bottom-64*z&&!n.classList.contains('ob-bottom'))||r.top<pr.top+pr.height*.4)return;top=Math.min(top,r.top);});
+  cands.forEach(n=>{if(!n.getClientRects().length)return;const cs=getComputedStyle(n);if(!/absolute|fixed|sticky/.test(cs.position))return;if(!n.querySelector('button,a,[role=button]'))return;const r=(n.classList.contains('lt-dock')&&n.querySelector('button')||n).getBoundingClientRect();if((r.bottom<pr.bottom-64*z&&!n.classList.contains('ob-bottom'))||r.top<pr.top+pr.height*.4)return;top=Math.min(top,r.top);});
   el.style.bottom=Math.round((pr.bottom-top)/z+TOAST_GAP)+'px';
 }
 /* 알림 모션: 아래에서 7px · 90%에서 떠오르며 460ms로 나타나고, 최소 2.8초 머문 뒤 4px 내려가며 380ms로 흐려짐(부드러운 ease-out). 새 알림으로 바뀔 땐 이전 것은 바로 빠짐 */

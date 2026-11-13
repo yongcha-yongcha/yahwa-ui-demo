@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>새 B 바탕 비교</title>
+<style>
+:root{--bg:#F4F1EA;--ink:#2B2723;--sub:#6F675B;--line:#E4DDD0;--card:#FFFDF9;--chip:#EFE7DA;--pick:#0E7A8C}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17181A;--ink:#ECEDEE;--sub:#A3AAB0;--line:#2F3338;--card:#202326;--chip:#2A2E33;--pick:#5EEAD4}}
+:root[data-theme="dark"]{--bg:#17181A;--ink:#ECEDEE;--sub:#A3AAB0;--line:#2F3338;--card:#202326;--chip:#2A2E33;--pick:#5EEAD4}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.65 system-ui,-apple-system,"Apple SD Gothic Neo",sans-serif;word-break:keep-all}
+main{max-width:1180px;margin:0 auto;padding:40px 20px 96px}
+h1{font-size:26px;line-height:1.35;margin:0 0 8px}
+.lead{color:var(--sub);margin:0 0 20px;max-width:780px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:0 0 24px}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+.box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.box h2{font-size:15px;margin:0 0 8px}
+.box ul{margin:0;padding-left:18px;font-size:14px}
+.box li+li{margin-top:4px}
+.sw{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.sw span{display:flex;align-items:center;gap:8px;font:500 12px/1.4 ui-monospace,Menlo,monospace;color:var(--sub)}
+.sw i{width:28px;height:28px;border-radius:8px;border:1px solid var(--line)}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.seg{display:inline-flex;gap:4px;background:var(--chip);padding:4px;border-radius:12px}
+.seg button{font:600 13px system-ui;border:0;background:transparent;color:var(--sub);padding:8px 14px;border-radius:9px;cursor:pointer;min-height:36px}
+.seg button[aria-pressed=true]{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.seg button:focus-visible{outline:2px solid var(--pick);outline-offset:2px}
+.row{margin-top:28px}
+.row h3{font-size:16px;margin:0 0 10px}
+.cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+body[data-v=two] .c-b{display:none}
+body[data-v=two] .cols{grid-template-columns:repeat(2,minmax(0,1fr));max-width:780px}
+@media(max-width:640px){.cols{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}}
+figure{margin:0}
+figure img{display:block;width:100%;height:auto;border-radius:20px;border:1px solid var(--line)}
+figcaption{font-size:12px;color:var(--sub);margin-top:6px;text-align:center}
+.c-n figcaption{color:var(--pick);font-weight:600}
+code{font:500 12.5px/1.6 ui-monospace,Menlo,monospace;background:var(--chip);padding:1px 6px;border-radius:6px}
+</style></head><body data-v="three"><main>
+<h1>새 B · 바탕만 여름빛 필름</h1>
+<p class="lead">A의 버튼, 글자, 색, 글꼴, 모서리, 배치는 모두 그대로 두고 화면 바탕과 카드·시트 바탕만 여름빛 필름 색감으로 바꿨어요. 담당자가 보면 “같은 앱인데 바탕이 여름빛”이라고 알 수 있는 정도예요. 아래는 지금 앱에 새 B를 입혀 실제로 찍은 화면이에요.</p>
+<div class="grid2">
+<div class="box"><h2>새 B에서 바뀌는 것</h2><ul><li>화면 바탕: 크림 인화지 + 위쪽 복숭아·민트 빛번짐</li><li>카드 · 시트 · 입력칸 바탕: 크림 흰색</li><li>하단 메뉴 바탕: 크림 (A처럼 바탕 색을 따라감)</li><li>시연 화면 바깥 무대: 따뜻한 모래색</li></ul>
+<div class="sw"><span><i style="background:#FFF8EE"></i>#FFF8EE 바탕</span><span><i style="background:#FFFDF9"></i>#FFFDF9 카드</span><span><i style="background:#FFD3BC"></i>#FFD3BC 빛번짐</span><span><i style="background:#C9EEEE"></i>#C9EEEE 빛번짐</span></div></div>
+<div class="box"><h2>A와 같아지는 것 (지금 B에서 빠짐)</h2><ul><li>버튼 색(하늘 파랑) · 모양(알약 → A 모서리) · 빛 그림자</li><li>글꼴: 제목 · 편지 고운바탕 그대로</li><li>글자 · 테두리 회색(차가운 회색)과 강조색</li><li>인연 카드 인화 테두리 배치, 마음함 폴라로이드 타일</li><li>필름 입자, 사진 필터, 날짜 도장, 진행 막대 노을색</li></ul></div>
+</div>
+<div class="bar"><div class="seg" role="group" aria-label="보기"><button type="button" data-v="three" aria-pressed="true">A · 지금 B · 새 B</button><button type="button" data-v="two" aria-pressed="false">A · 새 B만</button></div><span style="font-size:13px;color:var(--sub)">적용하면 바뀌는 곳은 <code>public/theme-b.css</code> 한 파일이에요.</span></div>
+<section class="row" data-k="welcome"><h3>웰컴</h3><div class="cols"><figure class="c-a"><img loading="lazy" src="img/a_welcome.jpg" alt="A 하늘 편지 웰컴 화면"><figcaption>A 하늘 편지</figcaption></figure><figure class="c-b"><img loading="lazy" src="img/b_welcome.jpg" alt="지금 B 웰컴 화면"><figcaption>지금 B</figcaption></figure><figure class="c-n"><img loading="lazy" src="img/b2_welcome.jpg" alt="새 B 웰컴 화면"><figcaption>새 B · 바탕만 여름빛</figcaption></figure></div></section><section class="row" data-k="profile"><h3>가입 · 기본 프로필</h3><div class="cols"><figure class="c-a"><img loading="lazy" src="img/a_profile.jpg" alt="A 하늘 편지 가입 · 기본 프로필 화면"><figcaption>A 하늘 편지</figcaption></figure><figure class="c-b"><img loading="lazy" src="img/b_profile.jpg" alt="지금 B 가입 · 기본 프로필 화면"><figcaption>지금 B</figcaption></figure><figure class="c-n"><img loading="lazy" src="img/b2_profile.jpg" alt="새 B 가입 · 기본 프로필 화면"><figcaption>새 B · 바탕만 여름빛</figcaption></figure></div></section><section class="row" data-k="story"><h3>자기소개</h3><div class="cols"><figure class="c-a"><img loading="lazy" src="img/a_story.jpg" alt="A 하늘 편지 자기소개 화면"><figcaption>A 하늘 편지</figcaption></figure><figure class="c-b"><img loading="lazy" src="img/b_story.jpg" alt="지금 B 자기소개 화면"><figcaption>지금 B</figcaption></figure><figure class="c-n"><img loading="lazy" src="img/b2_story.jpg" alt="새 B 자기소개 화면"><figcaption>새 B · 바탕만 여름빛</figcaption></figure></div></section><section class="row" data-k="discovery"><h3>인연 홈</h3><div class="cols"><figure class="c-a"><img loading="lazy" src="img/a_discovery.jpg" alt="A 하늘 편지 인연 홈 화면"><figcaption>A 하늘 편지</figcaption></figure><figure class="c-b"><img loading="lazy" src="img/b_discovery.jpg" alt="지금 B 인연 홈 화면"><figcaption>지금 B</figcaption></figure><figure class="c-n"><img loading="lazy" src="img/b2_discovery.jpg" alt="새 B 인연 홈 화면"><figcaption>새 B · 바탕만 여름빛</figcaption></figure></div></section><section class="row" data-k="match-profile"><h3>상대 프로필</h3><div class="cols"><figure class="c-a"><img loading="lazy" src="img/a_match-profile.jpg" alt="A 하늘 편지 상대 프로필 화면"><figcaption>A 하늘 편지</figcaption></figure><figure class="c-b"><img loading="lazy" src="img/b_match-profile.jpg" alt="지금 B 상대 프로필 화면"><figcaption>지금 B</figcaption></figure><figure class="c-n"><img loading="lazy" src="img/b2_match-profile.jpg" alt="새 B 상대 프로필 화면"><figcaption>새 B · 바탕만 여름빛</figcaption></figure></div></section><section class="row" data-k="heartbox"><h3>마음함</h3><div class="cols"><figure class="c-a"><img loading="lazy" src="img/a_heartbox.jpg" alt="A 하늘 편지 마음함 화면"><figcaption>A 하늘 편지</figcaption></figure><figure class="c-b"><img loading="lazy" src="img/b_heartbox.jpg" alt="지금 B 마음함 화면"><figcaption>지금 B</figcaption></figure><figure class="c-n"><img loading="lazy" src="img/b2_heartbox.jpg" alt="새 B 마음함 화면"><figcaption>새 B · 바탕만 여름빛</figcaption></figure></div></section><section class="row" data-k="chats"><h3>편지함</h3><div class="cols"><figure class="c-a"><img loading="lazy" src="img/a_chats.jpg" alt="A 하늘 편지 편지함 화면"><figcaption>A 하늘 편지</figcaption></figure><figure class="c-b"><img loading="lazy" src="img/b_chats.jpg" alt="지금 B 편지함 화면"><figcaption>지금 B</figcaption></figure><figure class="c-n"><img loading="lazy" src="img/b2_chats.jpg" alt="새 B 편지함 화면"><figcaption>새 B · 바탕만 여름빛</figcaption></figure></div></section><section class="row" data-k="mypage"><h3>마이페이지</h3><div class="cols"><figure class="c-a"><img loading="lazy" src="img/a_mypage.jpg" alt="A 하늘 편지 마이페이지 화면"><figcaption>A 하늘 편지</figcaption></figure><figure class="c-b"><img loading="lazy" src="img/b_mypage.jpg" alt="지금 B 마이페이지 화면"><figcaption>지금 B</figcaption></figure><figure class="c-n"><img loading="lazy" src="img/b2_mypage.jpg" alt="새 B 마이페이지 화면"><figcaption>새 B · 바탕만 여름빛</figcaption></figure></div></section><section class="row" data-k="community"><h3>익명 이야기</h3><div class="cols"><figure class="c-a"><img loading="lazy" src="img/a_community.jpg" alt="A 하늘 편지 익명 이야기 화면"><figcaption>A 하늘 편지</figcaption></figure><figure class="c-b"><img loading="lazy" src="img/b_community.jpg" alt="지금 B 익명 이야기 화면"><figcaption>지금 B</figcaption></figure><figure class="c-n"><img loading="lazy" src="img/b2_community.jpg" alt="새 B 익명 이야기 화면"><figcaption>새 B · 바탕만 여름빛</figcaption></figure></div></section>
+</main>
+<script>document.querySelectorAll('[data-v]').forEach(b=>{if(b.tagName!=='BUTTON')return;b.addEventListener('click',()=>{document.querySelectorAll('button[data-v]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));document.body.dataset.v=b.dataset.v;});});</script>
+</body></html>

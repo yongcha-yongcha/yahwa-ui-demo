@@ -1,0 +1,51 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>거절 버튼 눌림</title>
+<style>
+@font-face{font-family:"PJ";src:url(PretendardVariable.woff2) format("woff2");font-weight:100 900}
+:root{--bg:#F4F3EF;--ink:#262C31;--sub:#5F6A72;--line:#E1E0D9;--card:#fff;--chip:#ECEEEF;--pick:#0F766E;--warn:#B4531A}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#16181A;--ink:#ECEDEE;--sub:#A2A9AF;--line:#2E3237;--card:#1F2225;--chip:#2A2E33;--pick:#5EEAD4;--warn:#FDBA74}}
+:root[data-theme="dark"]{--bg:#16181A;--ink:#ECEDEE;--sub:#A2A9AF;--line:#2E3237;--card:#1F2225;--chip:#2A2E33;--pick:#5EEAD4;--warn:#FDBA74}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.65 "PJ",system-ui,sans-serif;word-break:keep-all}
+main{max-width:1100px;margin:0 auto;padding:40px 20px 96px}h1{font-size:26px;margin:0 0 8px}.lead{color:var(--sub);margin:0 0 24px;max-width:780px}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.seg{display:inline-flex;gap:4px;background:var(--chip);padding:4px;border-radius:12px}.seg button{font:600 13px "PJ";border:0;background:transparent;color:var(--sub);padding:8px 14px;border-radius:9px;cursor:pointer;min-height:36px}.seg button[aria-pressed=true]{background:var(--card);color:var(--ink)}
+.opt{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;margin-top:16px}
+.opt h3{margin:0 0 12px;font-size:16px;display:flex;gap:8px;align-items:center}
+.tag{font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;background:var(--chip);color:var(--sub)}.tag.rec{color:var(--pick)}.tag.bad{color:var(--warn)}
+.row{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start}figure{margin:0;flex:0 1 360px;min-width:0}figcaption{font-size:12px;color:var(--sub);margin-top:6px;text-align:center}
+.desc{flex:1 1 300px;font-size:14px;color:var(--sub)}.desc p{margin:0 0 8px}.desc b{color:var(--ink)}
+.sw{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;border:1px solid var(--line);margin-right:4px}
+/* 앱 조각 (A 값) */
+.sl{--page:#F8F9F6;--muted:#E3E7EA;--fg:#39444D;--fgm:#818C94;--fg2:#505C65;--acc:#4E8AB0;--acc2:#377398;--line:#E3E7EA;--love:#F6E9EC;--loveS:#7D3749;--sky50:#ECF5FC;
+ width:100%;max-width:360px;padding:12px 20px 8px;border-radius:24px;background:var(--page);color:var(--fg);font-family:"PJ";color-scheme:light;box-shadow:0 0 0 1px rgba(0,0,0,.06)}
+body[data-t=b] .sl{--page:#FFF8EE}
+.cap{display:flex;align-items:center;gap:6px;margin:0;font:400 12px/1.5 "PJ";color:var(--fgm)}.cap svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.it{display:flex;gap:12px;padding:16px 0}.it+.it{box-shadow:0 -1px 0 var(--line)}
+.av{position:relative;flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--love);color:var(--loveS)}.av svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.av i{position:absolute;right:0;top:0;width:9px;height:9px;border-radius:50%;background:var(--acc);box-shadow:0 0 0 2px var(--page)}
+.bd{flex:1;min-width:0}.who{display:flex;align-items:center;gap:6px}.who b{font:600 14px/1.4 "PJ"}.g{height:20px;padding:0 6px;border-radius:10px;background:var(--love);color:var(--loveS);font:500 11px/20px "PJ"}.who time{margin-left:auto;font:400 11px/1 "PJ";color:var(--fgm)}
+.msg{margin:4px 0 0;font:400 14px/1.55 "PJ"}
+.acts{display:flex;justify-content:flex-end;gap:8px;margin-top:8px}
+.pill{height:36px;padding:0 16px;border:0;border-radius:18px;font:600 13px/1 "PJ";cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform 120ms cubic-bezier(.23,1,.32,1),background-color 120ms ease,color 120ms ease}
+.pill:active,.pill.is-held{transform:scale(.97)}
+.pill.pri{background:var(--acc);color:#fff}
+.pill.ghost{background:transparent;color:var(--fgm)}
+.pill:focus-visible{outline:2px solid var(--acc2);outline-offset:2px}
+/* G1 · 누르면 연한 회색 */
+.g1 .pill.ghost:active,.g1 .pill.ghost.is-held{background:var(--muted);color:var(--fg2)}
+.g1 .pill.pri:active,.g1 .pill.pri.is-held{background:var(--acc2)}
+/* G2 · 누르면 연한 하늘 */
+.g2 .pill.ghost:active,.g2 .pill.ghost.is-held{background:var(--sky50);color:var(--acc2)}
+.g2 .pill.pri:active,.g2 .pill.pri.is-held{background:var(--acc2)}
+/* G3 · 평소 아주 연한 회색 + 누르면 한 단계 */
+.g3 .pill.ghost{background:#F1F4F6;color:var(--fg2)}
+.g3 .pill.ghost:active,.g3 .pill.ghost.is-held{background:var(--muted)}
+.g3 .pill.pri:active,.g3 .pill.pri.is-held{background:var(--acc2)}
+@media (prefers-reduced-motion:reduce){.pill{transition:background-color 120ms ease,color 120ms ease}.pill:active,.pill.is-held{transform:none}}
+</style></head><body data-t="a"><main>
+<h1>교환 요청 · 거절 버튼 눌림 상태</h1>
+<p class="lead">“이야기에서 시작한 인연” 받은 요청의 거절 버튼이에요. 지금도 누르면 0.97로 작아지지만 배경이 없는 글자 버튼이라 줄어드는 게 보이지 않아요. 누르는 동안 연한 바탕이 깔리는 눌림 상태를 더한 시안이에요. 앱은 아직 바꾸지 않았어요.</p>
+<div class="bar"><div class="seg" role="group" aria-label="컨셉"><button type="button" data-t="a" aria-pressed="true">A 하늘 편지</button><button type="button" data-t="b" aria-pressed="false">B 여름빛 필름</button></div><span style="font-size:13px;color:var(--sub)">수락 버튼도 누르면 한 단계 진해지게 맞췄어요.</span></div>
+<section class="opt"><h3>G1 · 누르면 연한 회색 알약 <span class="tag rec">추천</span></h3><div class="row"><figure><div class="sl g1"><p class="cap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 11h12v9H6z M8.5 11V8a3.5 3.5 0 0 1 7 0v3"/></svg>수락하면 서로의 인연 프로필만 공개돼요</p><div class="it"><span class="av"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0M4 21c0-9 16-9 16 0"/></svg><i></i></span><div class="bd"><div class="who"><b>익명</b><span class="g">여성</span><time>49분 전</time></div><p class="msg">산책 이야기가 반가웠어요.</p><div class="acts"><button type="button" class="pill ghost">거절</button><button type="button" class="pill pri">수락</button></div></div></div><div class="it"><span class="av"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0M4 21c0-9 16-9 16 0"/></svg><i></i></span><div class="bd"><div class="who"><b>익명</b><span class="g">여성</span><time>49분 전</time></div><p class="msg">전시 취향이 비슷한 것 같아요.</p><div class="acts"><button type="button" class="pill ghost is-held">거절</button><button type="button" class="pill pri">수락</button></div></div></div></div><figcaption>위 줄은 직접 눌러 보세요 · 아래 줄은 거절을 누르고 있을 때</figcaption></figure><div class="desc"><p><b>평소에는 지금처럼 글자만</b>, 누르는 동안 <span class="sw" style="background:#E3E7EA"></span>연한 회색(<code>--color-bg-muted</code>) 알약이 120ms에 깔리고 글자가 한 단계 진해져요(muted → secondary). 손을 떼면 같은 속도로 사라져요.</p><p>수락은 누르면 <span class="sw" style="background:#377398"></span>한 단계 진한 파랑으로. 두 버튼이 같은 크기 · 같은 모양으로 반응해서 “둘 다 누를 수 있는 버튼”으로 느껴져요. 회색이라 거절이 경고처럼 보이지도 않아요.</p></div></div></section>
+<section class="opt"><h3>G2 · 누르면 연한 하늘 알약 </h3><div class="row"><figure><div class="sl g2"><p class="cap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 11h12v9H6z M8.5 11V8a3.5 3.5 0 0 1 7 0v3"/></svg>수락하면 서로의 인연 프로필만 공개돼요</p><div class="it"><span class="av"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0M4 21c0-9 16-9 16 0"/></svg><i></i></span><div class="bd"><div class="who"><b>익명</b><span class="g">여성</span><time>49분 전</time></div><p class="msg">산책 이야기가 반가웠어요.</p><div class="acts"><button type="button" class="pill ghost">거절</button><button type="button" class="pill pri">수락</button></div></div></div><div class="it"><span class="av"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0M4 21c0-9 16-9 16 0"/></svg><i></i></span><div class="bd"><div class="who"><b>익명</b><span class="g">여성</span><time>49분 전</time></div><p class="msg">전시 취향이 비슷한 것 같아요.</p><div class="acts"><button type="button" class="pill ghost is-held">거절</button><button type="button" class="pill pri">수락</button></div></div></div></div><figcaption>위 줄은 직접 눌러 보세요 · 아래 줄은 거절을 누르고 있을 때</figcaption></figure><div class="desc"><p>눌림 바탕을 <span class="sw" style="background:#ECF5FC"></span>연한 하늘(<code>--color-bg-subtle</code>)로, 글자는 파랑으로 바뀌어요. 앱 강조색과 이어지지만, 거절이 수락과 같은 색 계열이 되어 두 버튼의 차이가 흐려져요.</p></div></div></section>
+<section class="opt"><h3>G3 · 평소에도 연한 회색 </h3><div class="row"><figure><div class="sl g3"><p class="cap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 11h12v9H6z M8.5 11V8a3.5 3.5 0 0 1 7 0v3"/></svg>수락하면 서로의 인연 프로필만 공개돼요</p><div class="it"><span class="av"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0M4 21c0-9 16-9 16 0"/></svg><i></i></span><div class="bd"><div class="who"><b>익명</b><span class="g">여성</span><time>49분 전</time></div><p class="msg">산책 이야기가 반가웠어요.</p><div class="acts"><button type="button" class="pill ghost">거절</button><button type="button" class="pill pri">수락</button></div></div></div><div class="it"><span class="av"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0M4 21c0-9 16-9 16 0"/></svg><i></i></span><div class="bd"><div class="who"><b>익명</b><span class="g">여성</span><time>49분 전</time></div><p class="msg">전시 취향이 비슷한 것 같아요.</p><div class="acts"><button type="button" class="pill ghost is-held">거절</button><button type="button" class="pill pri">수락</button></div></div></div></div><figcaption>위 줄은 직접 눌러 보세요 · 아래 줄은 거절을 누르고 있을 때</figcaption></figure><div class="desc"><p>거절도 평소부터 <span class="sw" style="background:#F1F4F6"></span>아주 연한 회색 알약으로 보이고, 누르면 한 단계 진해져요. 버튼이라는 게 가장 분명하지만, 받은 요청이 여러 개면 회색 알약이 줄마다 생겨 목록이 무거워져요.</p></div></div></section>
+</main><script>document.querySelectorAll('[data-t]').forEach(b=>{if(b.tagName!=='BUTTON')return;b.addEventListener('click',()=>{document.querySelectorAll('button[data-t]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));document.body.dataset.t=b.dataset.t;});});</script></body></html>

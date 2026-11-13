@@ -1,0 +1,250 @@
+/* ─────────────────────────────────────────────────────────────
+   야화 컨셉 B · 여름빛 필름 (2026-11-13)
+   - 한여름 오후, 바닷가에서 필름 카메라로 찍은 한 장.
+   - A(하늘 · 고운바탕 · 손그림)를 그대로 두고, html[data-theme="b"]일 때만 덮어씁니다.
+   - 1층: 팔레트 자리에 B 색을 넣어 모든 화면이 함께 바뀌게 합니다.
+   - 2층: 질감(필름 입자 · 빛 번짐 · 날짜 도장)과 모양(둥근 버튼 · 인화 테두리)
+   - 3층: 화면별 배치 차이 (인연 카드 · 상단 · 하단 메뉴 · 웰컴 · 스플래시)
+   ───────────────────────────────────────────────────────────── */
+
+/* ── 1층 · 팔레트 ─────────────────────────────────────────── */
+html[data-theme="b"]{
+  --paper:#FFF8EE;               /* 크림 인화지 */
+  --b-surface:#FFFDF9;
+
+  /* Sand · 따뜻한 회색 (A의 Cool Neutral 자리) */
+  --cool-neutral-50:#F7F1E7;
+  --cool-neutral-100:#EFE7DA;
+  --cool-neutral-200:#E1D7C7;
+  --cool-neutral-300:#CBC0AE;
+  --cool-neutral-400:#ADA290;
+  --cool-neutral-500:#8F8574;
+  --cool-neutral-600:#6F675B;
+  --cool-neutral-700:#575046;
+  --cool-neutral-800:#3D3832;
+  --cool-neutral-900:#2B2723;
+  --cool-neutral-950:#1C1A17;
+
+  /* Soda · 라무네 병 청록 (A의 Sky 자리, 주 색 600 = 흰 글자 5.0:1) */
+  --sky-50:#E6F7F7;
+  --sky-100:#C9EEEE;
+  --sky-200:#9FDFE0;
+  --sky-300:#6CCBCF;
+  --sky-400:#3BB1B8;
+  --sky-500:#1A95A0;
+  --sky-600:#0E7A8C;
+  --sky-700:#0E6272;
+  --sky-800:#0D4D5A;
+  --sky-900:#0A3841;
+  --sky-950:#06272D;
+
+  --logo-blue-300:#8ED3D6;
+  --logo-blue-400:#5BBCC2;
+  --logo-blue-500:#2A9CA6;
+  --logo-blue-600:#147F8D;
+
+  /* Watermelon · 수박빛 분홍 (A의 Rose 자리, 마음 색) */
+  --rose-50:#FFF3F3;
+  --rose-100:#FFE3E5;
+  --rose-200:#FCC9CE;
+  --rose-300:#F7A6AF;
+  --rose-400:#EE828E;
+  --rose-500:#DD6070;
+  --rose-600:#BF4959;
+  --rose-700:#9C3747;
+  --rose-800:#772936;
+  --rose-900:#521C25;
+  --rose-950:#381219;
+
+  /* Butter · 오후 햇살 (A의 Gold 자리) */
+  --gold-50:#FFF8E6;
+  --gold-100:#FFEFC9;
+  --gold-200:#FFE0A0;
+  --gold-300:#F6CA77;
+  --gold-400:#E3AE52;
+  --gold-500:#C69137;
+  --gold-600:#A47528;
+  --gold-700:#835B1D;
+  --gold-800:#634414;
+  --gold-900:#452F0D;
+  --gold-950:#2F2008;
+
+  /* Peach · 빛 번짐 (B 전용) */
+  --peach-100:#FFE8DA;
+  --peach-200:#FFD3BC;
+  --peach-300:#FFB894;
+  --peach-400:#FF9A6C;
+
+  /* 날짜 도장 · 필름 카메라 주황 LED */
+  --b-stamp:#FF7A2E;
+  --b-stamp-glow:color-mix(in srgb,#FF7A2E 55%,transparent);
+
+  /* 역할 색 다듬기 */
+  --color-bg-surface:var(--b-surface);
+  --color-bg-stage:#EFE6D8;
+  --color-bg-highlight:var(--gold-100);
+  --color-bg-subtle:var(--sky-50);
+  --color-bg-icon:var(--cool-neutral-50);
+  --color-brand-butter:var(--gold-200);
+  --color-brand-line:var(--sky-400);
+  --color-brand-rose:var(--rose-300);
+  --color-shadow-default:#5A4630;
+
+  /* 글꼴 · 제목도 맑은 고딕으로 (A는 고운바탕) */
+  --font-serif:'Pretendard JP',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;
+  --font-stamp:ui-monospace,'SF Mono',Menlo,monospace;
+  --tracking-display:-0.6px;
+  --tracking-title:-0.4px;
+  --type-display-1:600 28px/1.45 var(--font-sans);
+  --type-display-2:600 24px/1.45 var(--font-sans);
+  --type-title-1:600 22px/1.45 var(--font-sans);
+  --type-title-2:600 20px/1.45 var(--font-sans);
+  --type-title-3:600 18px/1.45 var(--font-sans);
+  --type-title-4:600 16px/1.45 var(--font-sans);
+  --type-quote:500 12px/1.7 var(--font-sans);
+  --tab-title-size:24px;
+
+  /* 모양 · 더 둥글게 */
+  --radius-button:28px;
+  --b-radius-card:24px;
+  --b-radius-field:16px;
+  --b-radius-chip:999px;
+  --otp-radius:16px;
+  --chip-radius:999px;
+  --toast-radius:18px;
+  --mp-card-radius:20px;
+  --pe-card-radius:20px;
+  --pe-done-radius:20px;
+  --sheet-row-radius:18px;
+
+  /* GNB · 크림 종이 막대 + 소다 알약 */
+  --gnb-bg:color-mix(in srgb,var(--b-surface) 86%,transparent);
+  --gnb-border:color-mix(in srgb,var(--white) 70%,transparent);
+  --gnb-shadow:0 10px 28px color-mix(in srgb,#8A6A45 16%,transparent),0 1px 0 color-mix(in srgb,var(--white) 80%,transparent) inset;
+  --gnb-selected-bg:var(--sky-100);
+  --gnb-icon:var(--cool-neutral-700);
+  --gnb-icon-active:var(--sky-700);
+  --gnb-icon-knock:color-mix(in srgb,var(--sky-100) 72%,var(--paper));
+  --gnb-badge-bg:var(--rose-500);
+
+  /* 인연 공개 전 번짐 색 · 여름 바다와 햇살 */
+  --reveal-blob-1:color-mix(in srgb,var(--sky-300) 85%,transparent);
+  --reveal-blob-2:color-mix(in srgb,var(--peach-300) 85%,transparent);
+  --reveal-blob-3:color-mix(in srgb,var(--gold-200) 90%,transparent);
+  --reveal-blob-4:color-mix(in srgb,var(--sky-200) 85%,transparent);
+
+  --nt-unread-bg:color-mix(in srgb,var(--sky-50) 85%,transparent);
+  --btn-disabled-bg:var(--cool-neutral-100);
+  --chip-on-bg:var(--sky-50);
+  --story-note-rule:color-mix(in srgb,var(--sky-100) 60%,transparent);
+  --story-note-margin:color-mix(in srgb,var(--peach-200) 80%,transparent);
+  --wheel-band:var(--sky-50);
+}
+
+/* ── 2층 · 질감 ───────────────────────────────────────────── */
+/* 무대 */
+html[data-theme="b"] body{background:radial-gradient(120% 80% at 90% 0%,var(--peach-100),transparent 60%),radial-gradient(90% 70% at 0% 100%,var(--sky-50),transparent 60%),var(--color-bg-stage)}
+html[data-theme="b"] .phone{background:var(--paper)}
+
+/* 화면 바탕 · 위쪽 오른편에서 햇살이 번져 들어와요 */
+html[data-theme="b"] .phone>.screen:not(.gnb-layer):not(#welcome):not(#splash){
+  background:
+    radial-gradient(60% 34% at 100% 0%,color-mix(in srgb,var(--peach-200) 55%,transparent),transparent 72%),
+    radial-gradient(48% 26% at 0% 0%,color-mix(in srgb,var(--sky-100) 50%,transparent),transparent 70%),
+    var(--paper)!important}
+
+/* 필름 입자 · 화면 맨 위 얇은 막 (누르기는 통과) */
+html[data-theme="b"] .tb-grain{position:absolute;inset:0;z-index:2147483000;pointer-events:none;border-radius:inherit;opacity:.06;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .27 0 0 0 0 .2 0 0 0 1.4 -.2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+html:not([data-theme="b"]) .tb-grain{display:none}
+
+/* 사진 색감 · 여름 필름 (살짝 밝고 따뜻하게, 대비는 부드럽게) */
+html[data-theme="b"] :is(.match-sheet-thumb,#match-gallery img,#preview-photo img,.photo-slot img,.my-photo,.pe-slot img,.cx-photo img,.welcome-photo,.wl-photo img){filter:saturate(1.08) contrast(.95) brightness(1.04) sepia(.07)}
+
+/* 날짜 도장 (theme.js가 사진 위에 붙여요) */
+html[data-theme="b"] .tb-stamp{position:absolute;right:14px;bottom:12px;z-index:3;pointer-events:none;font:600 13px/1 var(--font-stamp);letter-spacing:1.5px;color:var(--b-stamp);text-shadow:0 0 6px var(--b-stamp-glow),0 0 1px var(--b-stamp);opacity:.92;font-variant-numeric:tabular-nums}
+html:not([data-theme="b"]) .tb-stamp{display:none}
+
+/* 빛 번짐 한 줄 · 사진 오른쪽 위 가장자리 */
+html[data-theme="b"] .tb-leak{position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:inherit;
+  background:radial-gradient(70% 45% at 104% -4%,color-mix(in srgb,var(--peach-400) 42%,transparent),transparent 70%),radial-gradient(40% 30% at 100% 10%,color-mix(in srgb,var(--gold-200) 40%,transparent),transparent 70%);mix-blend-mode:screen}
+html:not([data-theme="b"]) .tb-leak{display:none}
+
+/* ── 2층 · 모양 ───────────────────────────────────────────── */
+/* 주 버튼 · 알약 모양 + 위쪽 빛 한 줄 */
+html[data-theme="b"] .phone :is(.ob-next,.start,.pf-save,.lt-primary,.photo-sheet-primary,.cx-primary,.mp-cta){border-radius:var(--radius-button)!important}
+html[data-theme="b"] .phone :is(.ob-next,.start,.pf-save,.lt-primary,.photo-sheet-primary):not(:disabled){box-shadow:0 1px 0 color-mix(in srgb,var(--white) 28%,transparent) inset,0 8px 20px color-mix(in srgb,var(--sky-700) 22%,transparent)}
+
+/* 입력칸 */
+html[data-theme="b"] .phone :is(input[type=text],input[type=tel],input[type=number],input:not([type]),select,textarea,.select-like,.field-box):not(.pe-num-in){border-radius:var(--b-radius-field)}
+
+/* 시트 · 위가 더 둥글게 */
+html[data-theme="b"] .phone :is(.photo-sheet,.yh-sheet,.fx-sheet){border-top-left-radius:32px!important;border-top-right-radius:32px!important}
+
+/* 토스트 · 크림 위의 진한 소다 */
+html[data-theme="b"]{--toast-bg:var(--sky-800)}
+
+/* ── 시연 도구 · 디자인 컨셉 고르기 (A/B 모두 보임) ─────────── */
+.demo-dock .dock-concept{display:grid;gap:8px}
+.demo-dock .dock-concept-label{font-size:12px;color:var(--color-fg-tertiary)}
+.demo-dock .dock-concept-seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:14px;background:var(--color-bg-muted)}
+.demo-dock .dock-concept-seg button{display:flex;align-items:center;justify-content:center;gap:6px;min-height:44px;border:0;border-radius:10px;background:none;color:var(--color-fg-tertiary);font:500 13px/1.3 var(--font-sans);cursor:pointer;transition:background-color 160ms ease,color 160ms ease}
+.demo-dock .dock-concept-seg button b{font-weight:700}
+.demo-dock .dock-concept-seg button[aria-pressed="true"]{background:var(--color-bg-surface);color:var(--color-fg-primary);box-shadow:0 1px 3px color-mix(in srgb,var(--color-shadow-default) 14%,transparent)}
+.demo-dock .dock-concept-seg button:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:2px}
+.demo-dock .dock-concept-note{margin:0;font-size:12px;line-height:1.5;color:var(--color-fg-tertiary)}
+
+/* ── 3층 · 화면별 배치 ────────────────────────────────────── */
+html[data-theme="b"]{--b-strip:112px;--b-frame:10px;--b-stamp-ink:#B4531A}
+
+/* 인연 홈 카드 · 인화한 사진 한 장 (크림 테두리 안에 사진, 아래 여백에 이름과 한 장면) */
+html[data-theme="b"] #discovery #daily-grid .daily-card{background:var(--b-surface)!important;border:0!important;border-radius:22px!important;box-shadow:0 0 0 1px color-mix(in srgb,#5A4630 5%,transparent),0 4px 10px color-mix(in srgb,#5A4630 9%,transparent)!important;overflow:hidden}
+html[data-theme="b"] #discovery #daily-grid .daily-card .match-sheet-thumb{inset:var(--b-frame) var(--b-frame) var(--b-strip) var(--b-frame)!important;width:auto!important;height:auto!important;min-height:0!important;border-radius:14px!important;overflow:hidden}
+html[data-theme="b"] #discovery #daily-grid .daily-card:not(.is-locked) :is(.card-blur-layer,.card-tint){display:none!important}
+html[data-theme="b"] #discovery #daily-grid.nov-single-deck .daily-card .nov-open-copy{top:auto!important;bottom:0!important;height:var(--b-strip)!important;max-height:none!important;padding:14px 22px 0!important;background:none!important;color:var(--color-fg-primary)!important}
+html[data-theme="b"] #discovery #daily-grid.nov-single-deck .daily-card .nov-open-copy :is(strong,p,span){color:var(--color-fg-primary)!important;text-shadow:none!important}
+html[data-theme="b"] #discovery #daily-grid.nov-single-deck .daily-card .nov-open-copy .nov-person-title strong{font:600 22px/32px var(--font-sans)!important;letter-spacing:-0.4px}
+html[data-theme="b"] #discovery #daily-grid.nov-single-deck .daily-card .nov-open-copy .nov-person-title>span:not(.person-cert){font:500 17px/32px var(--font-sans)!important;color:var(--color-fg-tertiary)!important}
+html[data-theme="b"] #discovery #daily-grid.nov-single-deck .daily-card .nov-open-copy .nov-location{display:none!important}
+html[data-theme="b"] #discovery #daily-grid.nov-single-deck .daily-card .nov-open-copy .nov-scene{margin-top:4px}
+html[data-theme="b"] #discovery #daily-grid.nov-single-deck .daily-card .nov-open-copy .nov-scene small{display:none!important}
+html[data-theme="b"] #discovery #daily-grid.nov-single-deck .daily-card .nov-open-copy .nov-scene p{font:400 14px/24px var(--font-sans)!important;color:var(--color-fg-tertiary)!important;-webkit-line-clamp:2!important;max-height:48px!important;height:48px!important;min-height:0!important;margin:0!important}
+html[data-theme="b"] #discovery .nov-activity{top:calc(var(--b-frame) + 12px)!important;left:calc(var(--b-frame) + 12px)!important}
+
+/* 웰컴 · 같은 사진을 여름 필름 색으로, 오른쪽 위에서 빛이 번져요 */
+html[data-theme="b"] #welcome :is(.full-photo,.full-photo-mirror){filter:saturate(1.12) sepia(.14) brightness(1.05) contrast(.94) hue-rotate(-8deg)}
+html[data-theme="b"] #welcome .welcome-visual::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:1;mix-blend-mode:screen;background:radial-gradient(55% 32% at 100% 0%,color-mix(in srgb,var(--peach-400) 60%,transparent),transparent 70%),radial-gradient(30% 50% at 0% 70%,color-mix(in srgb,var(--gold-200) 35%,transparent),transparent 70%)}
+html[data-theme="b"] #welcome .welcome-actions{background:var(--paper)!important}
+html[data-theme="b"] #welcome .welcome-actions .chapter{font:600 11px/1 var(--font-stamp)!important;letter-spacing:3px!important;color:var(--b-stamp-ink)!important}
+html[data-theme="b"] #welcome .welcome-visual>.tb-stamp{bottom:212px;right:24px;font-size:15px;z-index:3}
+
+/* 스플래시 · 한여름 하늘에서 크림빛 모래로 */
+html[data-theme="b"] #splash{background:radial-gradient(70% 40% at 85% 8%,color-mix(in srgb,var(--peach-200) 70%,transparent),transparent 70%),linear-gradient(180deg,var(--sky-100) 0%,var(--sky-50) 34%,var(--paper) 70%,var(--peach-100) 100%)!important}
+html[data-theme="b"] #splash .splash-logo{filter:hue-rotate(-22deg) saturate(1.25) brightness(.96)}
+
+/* 가입 흐름 · 진행 막대는 바다에서 노을로, 단계는 필름 장 번호처럼 */
+html[data-theme="b"] .ob-progress{height:4px!important;border-radius:2px;background:var(--sky-50)!important;overflow:hidden}
+html[data-theme="b"] .ob-progress i{border-radius:2px;background:linear-gradient(90deg,var(--sky-400),var(--sky-300) 60%,var(--peach-300))!important}
+html[data-theme="b"] .intro-step-label{font:600 12px/1 var(--font-stamp)!important;letter-spacing:1px;color:var(--sky-700)!important}
+
+/* 사진 둘레 · 인화지 테두리 (자리는 그대로, 바깥으로 크림 테두리만) */
+html[data-theme="b"] #match-gallery{box-shadow:0 0 0 8px var(--b-surface),0 16px 32px color-mix(in srgb,#5A4630 14%,transparent)!important}
+html[data-theme="b"] #preview-photo{box-shadow:0 0 0 8px var(--b-surface),0 16px 32px color-mix(in srgb,#5A4630 14%,transparent)!important}
+html[data-theme="b"] #features :is(.cx-photo,.cx-media,.post-photo){box-shadow:0 0 0 6px var(--b-surface),0 10px 22px color-mix(in srgb,#5A4630 12%,transparent)}
+html[data-theme="b"] :is(.my-photo,.mp-avatar img){box-shadow:0 0 0 4px var(--b-surface),0 6px 14px color-mix(in srgb,#5A4630 14%,transparent)}
+/* 공개 전 카드 · 아래 여백에 “현상 중” 메모 */
+html[data-theme="b"] #discovery .daily-card .tb-caption{position:absolute;left:22px;right:22px;bottom:0;height:var(--b-strip);display:flex;flex-direction:column;justify-content:center;gap:4px;text-align:left;pointer-events:none}
+html[data-theme="b"] #discovery .daily-card .tb-caption strong{font:600 18px/26px var(--font-sans);letter-spacing:-0.3px;color:var(--color-fg-primary)}
+html[data-theme="b"] #discovery .daily-card .tb-caption span{font:500 12px/18px var(--font-stamp);letter-spacing:.5px;color:var(--b-stamp-ink)}
+html[data-theme="b"] #discovery .daily-card:is(:not(.is-locked),.is-ready,[data-opening]) .tb-caption,html:not([data-theme="b"]) .tb-caption{display:none}
+
+/* 마음함 타일 · 작은 인화 사진 (사진은 테두리 안, 이름은 아래 여백) */
+html[data-theme="b"] #heartbox .heart-person{aspect-ratio:auto;height:auto;background:var(--b-surface)!important;border-radius:18px;box-shadow:0 1px 2px color-mix(in srgb,#5A4630 8%,transparent),0 8px 18px color-mix(in srgb,#5A4630 11%,transparent)}
+html[data-theme="b"] #heartbox .heart-person-photo{position:relative!important;inset:auto!important;display:block;margin:6px 6px 0;width:calc(100% - 12px)!important;height:auto!important;aspect-ratio:4/5;border-radius:12px!important;overflow:hidden;background-size:cover!important;filter:saturate(1.08) contrast(.95) brightness(1.04) sepia(.07)}
+html[data-theme="b"] #heartbox .heart-person-photo::after{display:none}
+html[data-theme="b"] #heartbox .heart-person-info{position:static!important;padding:10px 10px 12px!important;color:var(--color-fg-primary)!important}
+html[data-theme="b"] #heartbox .heart-person-info :is(strong,span){color:var(--color-fg-primary)!important;text-shadow:none!important}
+html[data-theme="b"] #heartbox .heart-person-info .person-age{color:var(--color-fg-tertiary)!important;font-weight:500}
+
+/* 다섯 탭 제목 · 같은 굵기 (A 규칙의 400!important를 B에서만 600으로) */
+html[data-theme="b"] :is(#discovery #daily-tab,#heartbox .category-title,#chats .category-title,#features .comm-heading .category-title,#mypage .ob-top strong){font-weight:600!important;letter-spacing:-0.5px!important}

@@ -231,6 +231,15 @@ body.cloud-edition>nav.categories{display:none!important}
 .dock-head b{font:700 18px/1.4 var(--font-serif)}
 .dock-head span{font-size:13px;color:var(--color-fg-secondary)}
 .dock-field{display:grid;gap:4px;font-size:12px;color:var(--color-fg-secondary)}
+.dock-screens{display:grid;gap:8px}
+.dock-screens-h{margin:4px 0 0;font:600 11px/1.4 var(--font-sans);color:var(--color-fg-muted)}
+.dock-chips{display:flex;flex-wrap:wrap;gap:6px}
+.dock-chips button{min-height:36px;padding:0 12px;border:1px solid var(--color-border-control);border-radius:18px;background:var(--color-bg-surface);color:var(--color-fg-primary);font:500 12px/1 var(--font-sans);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color 120ms ease,border-color 120ms ease,transform 120ms cubic-bezier(0.23, 1, 0.32, 1)}
+@media (hover:hover) and (pointer:fine){.dock-chips button:hover{background:var(--color-bg-subtle)}}
+.dock-chips button:active{transform:scale(.97)}
+.dock-chips button[aria-current]{border-color:var(--color-border-focus);background:var(--color-bg-subtle);color:var(--color-fg-accent-strong);font-weight:600}
+.dock-chips button:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.dock-chips button{transition:none}.dock-chips button:active{transform:none}}
 .dock-field select{height:40px;padding:0 8px;border:1px solid var(--color-border-default);border-radius:10px;background:var(--color-bg-surface);color:var(--color-fg-primary);font:400 14px var(--font-sans)}
 .dock-context{display:grid;gap:12px}
 .dock-context h2{margin:0;font-size:14px;font-weight:600}
@@ -602,11 +611,13 @@ body.cloud-edition .phone{margin:0!important;border-radius:32px;box-shadow:0 8px
 /* 쓰기 */
 #story .st-w-eye{margin:0;font:600 12px/1.4 var(--font-sans);color:var(--color-fg-accent-strong)}
 #story .detail-scroll>h1.st-w-q{margin:var(--space-6) 0 0;font:400 21px/1.5 var(--font-serif);word-break:keep-all;text-wrap:balance}
-#story .st-paper{margin-top:var(--space-16);border-radius:14px;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-default);transition:box-shadow 160ms ease}
-#story .st-paper:focus-within{box-shadow:inset 0 0 0 1.5px var(--color-border-focus)}
-#story.is-warn .st-paper{box-shadow:inset 0 0 0 1px var(--story-warn-line)}
-#story .st-paper textarea{display:block;box-sizing:border-box;width:100%;height:192px;margin:0;padding:var(--space-4) var(--space-14);border:0;border-radius:14px;resize:none;background:repeating-linear-gradient(to bottom,transparent 0 31px,var(--story-rule) 31px 32px) 0 4px/100% 32px local;color:var(--color-fg-primary);font:400 15px/32px var(--font-sans);box-shadow:none}
-#story .st-paper textarea:focus{outline:none}
+#story .st-paper{margin-top:var(--space-16);border-radius:14px;background:var(--color-bg-surface)}
+/* 테두리는 종이 한 겹만, 입력칸 위 층에 그려요 (줄무늬가 테두리를 덮지 않게 · 2026-11-13) */
+#story .st-paper::after{content:"";position:absolute;inset:0;z-index:1;border-radius:inherit;pointer-events:none;box-shadow:inset 0 0 0 1px var(--color-border-default);transition:box-shadow 160ms ease}
+#story .st-paper:focus-within::after{box-shadow:inset 0 0 0 1.5px var(--color-border-focus)}
+#story.is-warn .st-paper::after{box-shadow:inset 0 0 0 1px var(--story-warn-line)}
+#story .st-paper textarea{display:block;box-sizing:border-box;width:100%;height:192px;margin:0;padding:var(--space-4) var(--space-14);border:0;border-radius:inherit!important;resize:none;background:repeating-linear-gradient(to bottom,transparent 0 31px,var(--story-rule) 31px 32px) var(--space-14) 4px/calc(100% - 28px) calc(100% - 4px) no-repeat local;color:var(--color-fg-primary);font:400 15px/32px var(--font-sans);box-shadow:none}
+#story .st-paper textarea:focus{outline:none;box-shadow:none!important}
 #story .st-paper textarea::placeholder{color:var(--color-border-hover);opacity:1}
 #story .st-meter{margin-top:var(--space-4)}
 #story .st-meter svg{display:block;width:100%;height:auto}
@@ -663,7 +674,7 @@ body.cloud-edition .phone{margin:0!important;border-radius:32px;box-shadow:0 8px
 .st-dots i{width:6px;height:6px;border-radius:3px;background:var(--color-bg-control);transition:width 200ms ease,background-color 200ms ease}
 .st-dots i.is-on{width:16px;background:var(--color-fg-tertiary)}
 .st-tabs button:focus-visible,.st-qcard:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:2px}
-@media(prefers-reduced-motion:reduce){#story .st-entry.is-pressed{transform:none}#story .st-entry.is-new,#story .st-meter.is-scribble .st-meter-pencil{animation:none}#story .st-mark i,#story .st-paper,#story .st-meter-hatch{transition:none}.st-deck{scroll-behavior:auto}}
+@media(prefers-reduced-motion:reduce){#story .st-entry.is-pressed{transform:none}#story .st-entry.is-new,#story .st-meter.is-scribble .st-meter-pencil{animation:none}#story .st-mark i,#story .st-paper::after,#story .st-meter-hatch{transition:none}.st-deck{scroll-behavior:auto}}
 
 /* 시연 도구 · 자기소개 이야기 채운 정도 */
 .dock-story{display:grid;gap:8px}
@@ -998,6 +1009,8 @@ body.cloud-edition .phone{margin:0!important;border-radius:32px;box-shadow:0 8px
 .yh-sheet{max-height:calc(100% - 48px);display:flex;flex-direction:column;overflow:hidden}
 .yh-sheet:focus{outline:none}
 .yh-sheet-body{overflow-y:auto;scrollbar-width:none}.yh-sheet-body::-webkit-scrollbar{display:none}
+/* 시트 행(.photo-sheet-row)은 눌림 바탕이 양옆 8 넘쳐 그려져요. 본문이 세로 스크롤이라 가로가 잘려서 왼쪽 모서리가 사라졌어요 → 본문 칸을 양옆 8 넓히고 안쪽 8로 되돌려 자리는 그대로 (2026-11-13) */
+.yh-sheet-body{margin-inline:calc(var(--space-8) * -1);padding-inline:var(--space-8)}
 .yh-sheet .photo-sheet-row>.chev{flex:none;color:var(--color-fg-muted)}
 .yh-sheet .photo-sheet-row .yh-ai{width:24px;height:24px}
 /* 추천 설정 시트 */
@@ -1198,8 +1211,10 @@ body.cloud-edition .phone{margin:0!important;border-radius:32px;box-shadow:0 8px
 #features[data-view="letter"] .detail-scroll,#features[data-view="letter"] #fx-body{bottom:0;padding-bottom:0;overflow-x:clip}
 #features[data-view="letter"] #fx-body{display:flex;flex-direction:column}
 #features[data-view="letter"] #fx-body>*{flex-shrink:0}
-.lt-from{display:flex;align-items:center;gap:12px;width:calc(100% + 16px);margin:4px -8px 16px;padding:8px;border:0;border-radius:16px;background:none;text-align:left;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.lt-from:active{background:var(--color-bg-muted)}
+/* 시안 P2 (2026-11-13): 눌림 배경을 화면 칸 너비 안에 (예전엔 양옆 8 넘쳐서 왼쪽이 잘렸어요) + 누르면 0.98 */
+.lt-from{display:flex;align-items:center;gap:12px;width:100%;margin:4px 0 12px;padding:8px 12px;border:0;border-radius:16px;background:none;text-align:left;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform 160ms cubic-bezier(0.23, 1, 0.32, 1),background-color 120ms ease}
+.lt-from:active{transform:scale(.98);background:var(--color-bg-muted)}
+@media (prefers-reduced-motion:reduce){.lt-from{transition:background-color 120ms ease}.lt-from:active{transform:none}}
 .lt-from img{flex:none;width:var(--lt-avatar);height:var(--lt-avatar);border-radius:50%;object-fit:cover}
 .lt-from>span:nth-child(2){flex:1;min-width:0}
 .lt-from b{display:block;font:600 15px/1.4 var(--font-sans);color:var(--color-fg-primary)}
@@ -1230,6 +1245,75 @@ body.cloud-edition .phone{margin:0!important;border-radius:32px;box-shadow:0 8px
 #features #fx-body .lt-lock{margin:0}
 #features #fx-body .lt-keep{margin:6px 0 0}
 #features #fx-body .lt-reply p{margin:8px 0 0}
+/* 편지 쓰기 · 답장 쓰기 (시안 “편지지는 그대로, 아래에 연락처” · 2026-11-13): 받은 편지(.letter-paper)와 같은 편지지에 쓰고 아래 연락처, 보내기는 아래 고정 */
+#features[data-view="compose-letter"] .detail-scroll,#features[data-view="compose-letter"] #fx-body{bottom:0;padding-bottom:0;overflow-x:clip;scrollbar-width:none}
+#features[data-view="compose-letter"] #fx-body::-webkit-scrollbar{display:none}
+#features[data-view="compose-letter"] #fx-body{display:flex;flex-direction:column}
+#features[data-view="compose-letter"] #fx-body>*{flex-shrink:0}
+.lc-from{display:flex;align-items:center;gap:12px;margin:4px 0 16px;padding:8px 0}
+.lc-from img{flex:none;width:var(--lt-avatar);height:var(--lt-avatar);border-radius:50%;object-fit:cover}
+.lc-from>span{flex:1;min-width:0}
+.lc-from b{display:block;font:600 15px/1.4 var(--font-sans);color:var(--color-fg-primary)}
+.lc-from small{display:block;margin-top:3px;font:400 12px/1.4 var(--font-sans);color:var(--color-fg-muted)}
+#fx-body .lc-paper{transition:border-color 160ms ease}
+#fx-body .lc-paper:focus-within{border-color:color-mix(in srgb,var(--color-border-focus) 45%,var(--color-border-default))}
+#features #fx-body .lc-paper textarea{display:block;box-sizing:border-box;width:100%;height:160px;min-height:160px;margin:16px 0 24px;padding:0;border:0!important;border-radius:0!important;box-shadow:none!important;outline:none;resize:none;overflow:hidden;font:16px/2 'Gowun Batang',serif;color:var(--color-fg-primary);word-break:keep-all;background:repeating-linear-gradient(transparent 0,transparent 31px,var(--color-bg-muted) 31px,var(--color-bg-muted) 32px) 0 0/100% 32px local}
+#features #fx-body .lc-paper textarea::placeholder{color:var(--color-fg-muted);opacity:1}
+#fx-body .lc-paper footer{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;text-align:left}
+.lc-sign{display:grid;gap:6px;text-align:right}
+.lc-count{font-variant-numeric:tabular-nums}
+.lc-count i{font-style:normal;font-weight:600;color:var(--color-fg-accent)}
+#features #fx-body .lc-contact{margin-top:8px}
+#features #fx-body .lc-contact .lt-lock{justify-content:flex-start;margin:0 0 4px}
+.lc-contact label span{margin-left:4px;color:var(--color-fg-muted);font-weight:400}
+#features #fx-body .lc-hint{display:block;margin:8px 0 0;font:400 12px/1.5 var(--font-sans);color:var(--color-fg-muted)}
+#features .lt-dock .lt-primary:disabled{background:var(--color-bg-control);color:var(--color-fg-tertiary);cursor:default;transform:none}
+#features .lt-dock .lt-primary:disabled .lt-price{background:color-mix(in srgb,var(--white) 50%,transparent)}
+@media (prefers-reduced-motion:reduce){#fx-body .lc-paper{transition:none}}
+/* 편지 보내기 · 쓰는 리프와 내 리프 (시안 C1 · 2026-11-13, design-mockups/letter-cost/) */
+#features #fx-body .lc-types{margin:0;padding:0;border:0;min-width:0}
+#features #fx-body .lc-types legend{padding:0;margin:0 0 8px;font:500 14px/1.4 var(--font-sans);color:var(--color-fg-secondary)}
+.lc-types>div{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#features #fx-body .lc-type{position:relative;display:block;margin:0;padding:12px;border-radius:14px;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-control);cursor:pointer;transition:box-shadow 120ms ease,background-color 120ms ease,transform 120ms cubic-bezier(0.23, 1, 0.32, 1);-webkit-tap-highlight-color:transparent}
+.lc-type:active{transform:scale(.98)}
+.lc-type input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+#features #fx-body .lc-type:has(input:checked){background:var(--color-bg-subtle);box-shadow:inset 0 0 0 1.5px var(--color-border-focus)}
+.lc-type:has(input:focus-visible){outline:2px solid var(--color-border-focus);outline-offset:2px}
+.lc-type-h{display:flex;justify-content:space-between;align-items:center;gap:4px}
+.lc-type-h b{font:600 14px/1.3 var(--font-sans);color:var(--color-fg-primary)}
+.lc-cost{display:inline-flex;align-items:center;gap:2px;font:600 13px/1 var(--font-sans);color:var(--color-fg-accent-strong);font-variant-numeric:tabular-nums}
+.lc-cost svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+#features #fx-body .lc-type small{display:block;margin-top:6px;font:400 11px/1.5 var(--font-sans);color:var(--color-fg-tertiary)}
+#features #fx-body .lc-types.is-off{opacity:.5}
+#features #fx-body .lc-types.is-off .lc-type{cursor:default}
+#features #fx-body .lc-bal{display:flex;align-items:center;gap:8px;margin:8px 0 0;padding:12px;border-radius:12px;background:var(--color-bg-subtle);font:400 13px/1.4 var(--font-sans);color:var(--color-fg-secondary)}
+.lc-bal svg{flex:none;width:16px;height:16px;fill:none;stroke:var(--color-fg-accent);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.lc-bal b{font-weight:600;color:var(--color-fg-primary);font-variant-numeric:tabular-nums}
+.lc-bal-after{margin-left:auto;font-size:12px;color:var(--color-fg-muted)}
+#features #fx-body .lc-bal.is-short{background:var(--color-bg-love-soft)}
+.lc-bal.is-short svg{stroke:var(--color-fg-love-strong)}
+.lc-bal.is-short .lc-bal-after{color:var(--color-fg-love-strong);font-weight:600}
+#features #fx-body .lc-sent{margin:0 0 16px;padding:14px 16px;border-radius:16px;background:var(--color-bg-subtle)}
+.lc-sent b{display:block;font:600 14px/1.4 var(--font-sans);color:var(--color-fg-primary)}
+.lc-sent span{display:block;margin-top:4px;font:400 12px/1.6 var(--font-sans);color:var(--color-fg-tertiary);word-break:keep-all}
+/* 편지 고르기 · 내 리프 줄 아래 편지지 간격 16 (#fx-body .letter-paper의 위 여백 0을 덮어요) */
+#features #fx-body .lc-types ~ .lc-paper{margin-top:16px}
+#fx-body .lc-paper.is-off{opacity:.5}
+#features #fx-body .lc-paper textarea:disabled{background-color:transparent!important;color:var(--color-fg-muted);cursor:default}
+#features #fx-body .lc-dock-note{margin:8px 0 0;text-align:center;font:400 12px/1.4 var(--font-sans);color:var(--color-fg-muted)}
+#features #fx-body .lc-dock-note[hidden]{display:none}
+#features .lt-dock .lt-primary[data-fx="letter-charge"] .lt-price{display:none}
+@media (prefers-reduced-motion:reduce){.lc-type{transition:none}.lc-type:active{transform:none}}
+/* 편지 거절 확인 창 (시안 D1 · 2026-11-13) */
+.lt-dctx{display:flex;gap:12px;align-items:center;margin-top:16px;padding:14px 16px;border-radius:16px;background:var(--color-bg-muted)}
+.lt-dctx img{flex:none;width:40px;height:40px;border-radius:50%;object-fit:cover}
+.lt-dctx>div{min-width:0}
+.lt-dctx small{display:block;font:500 12px/1.4 var(--font-sans);color:var(--color-fg-muted)}
+.lt-dctx span{display:block;font:14px/1.6 'Gowun Batang',serif;color:var(--color-fg-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lt-after{list-style:none;margin:16px 0 20px;padding:0;display:grid;gap:8px}
+.lt-after li{display:flex;gap:10px;font:400 14px/1.55 var(--font-sans);color:var(--color-fg-secondary);word-break:keep-all}
+.lt-after li::before{content:"";flex:none;width:5px;height:5px;border-radius:50%;background:var(--color-fg-muted);margin-top:9px}
+.photo-sheet-primary.lt-decline-go{background:var(--color-bg-inverse);color:var(--color-fg-inverse)}
 
 /* ---------- 프로필 수정 (시안 C 채워 가는 노트) ---------- */
 #features #fx-body:has(.pe){padding-bottom:32px}
@@ -1421,6 +1505,9 @@ body.cloud-edition .phone{margin:0!important;border-radius:32px;box-shadow:0 8px
 .xc-tabs button small{display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--color-bg-muted);color:var(--color-fg-muted);font:600 11px/1 var(--font-sans)}
 .xc-tabs button[aria-selected="true"]{color:var(--color-fg-accent-strong);font-weight:600;box-shadow:inset 0 -2px 0 var(--color-fg-accent)}
 .xc-tabs button[aria-selected="true"] small{background:var(--sky-100);color:var(--color-fg-accent-strong)}
+/* 숫자 칩 정렬 (2026-11-13): features.css의 #features small(13px · 줄높이 1.75)이 이겨서 숫자가 칩 아래로 처졌어요 → 같은 무게로 다시 지정 */
+#features .xc-tabs button{line-height:1}
+#features .xc-tabs button small{display:inline-grid;place-items:center;height:18px;font-size:11px;line-height:18px;font-variant-numeric:tabular-nums}
 #features #fx-body .xc-cap{display:flex;align-items:center;gap:6px;margin:12px 0 0;font:400 12px/1.5 var(--font-sans);color:var(--color-fg-muted)}
 .xc-cap svg{flex:none;width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .xc-list{margin-top:8px}
@@ -1440,10 +1527,14 @@ body.cloud-edition .phone{margin:0!important;border-radius:32px;box-shadow:0 8px
 .xc-from .chev{width:14px;height:14px}
 #features #fx-body .xc-st{margin:6px 0 0;font:400 12px/1.5 var(--font-sans);color:var(--color-fg-muted)}
 .xc-acts{display:flex;justify-content:flex-end;gap:8px;margin-top:8px}
-.xc-pill{height:var(--xc-pill-h);padding:0 16px;border:0;border-radius:calc(var(--xc-pill-h) / 2);font:600 13px/1 var(--font-sans);cursor:pointer;transition:transform 120ms cubic-bezier(0.23, 1, 0.32, 1)}
+.xc-pill{height:var(--xc-pill-h);padding:0 16px;border:0;border-radius:calc(var(--xc-pill-h) / 2);font:600 13px/1 var(--font-sans);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform 120ms cubic-bezier(0.23, 1, 0.32, 1),background-color 120ms ease,color 120ms ease}
 .xc-pill:active{transform:scale(.97)}
 .xc-pill.is-pri{background:var(--color-bg-accent);color:var(--color-fg-inverse)}
-.xc-pill.is-ghost{background:none;color:var(--color-fg-muted)}
+.xc-pill.is-ghost{background:transparent;color:var(--color-fg-muted)}
+/* 눌림 상태 (시안 G1 · 2026-11-13): 거절은 누르는 동안 연한 회색 알약, 수락은 한 단계 진하게 */
+.xc-pill.is-ghost:active{background:var(--xc-pill-ghost-press);color:var(--xc-pill-ghost-press-fg)}
+.xc-pill.is-pri:active{background:var(--xc-pill-pri-press)}
+@media (prefers-reduced-motion:reduce){.xc-pill{transition:background-color 120ms ease,color 120ms ease}.xc-pill:active{transform:none}}
 .xc-empty{margin:56px 0 0;text-align:center}
 .xc-empty b{display:block;font:500 15px/1.5 var(--font-sans);color:var(--color-fg-secondary)}
 #features #fx-body .xc-empty p{margin:4px 0 0;font:400 12px/1.6 var(--font-sans);color:var(--color-fg-muted);word-break:keep-all}
@@ -1475,9 +1566,11 @@ body.cloud-edition .phone{margin:0!important;border-radius:32px;box-shadow:0 8px
 .nt-count{display:grid;place-items:center;min-width:22px;height:22px;padding:0 7px;border-radius:11px;background:var(--gnb-badge-bg);color:var(--white);font:600 12px/1 var(--font-sans);font-variant-numeric:tabular-nums}
 .nt-pin .chev{flex:none;color:var(--color-fg-muted)}
 .nt-sh{margin:24px 0 4px;font:600 13px/1 var(--font-sans);color:var(--color-fg-muted)}
-.nt-it{position:relative;display:flex;align-items:flex-start;gap:12px;width:calc(100% + 16px);margin:0 -8px;padding:12px 8px;border:0;border-radius:14px;background:none;text-align:left;color:var(--color-fg-primary);cursor:pointer;transition:background-color 200ms ease}
+/* 시안 N1 (2026-11-13): 배경을 목록 칸 너비에 맞춘 카드로 (예전엔 양옆 8px 넘쳐서 왼쪽이 잘렸어요) */
+.nt-it{position:relative;display:flex;align-items:flex-start;gap:12px;width:100%;margin:0;padding:12px;border:0;border-radius:16px;background:none;text-align:left;color:var(--color-fg-primary);cursor:pointer;transition:background-color 200ms ease}
 .nt-it:active{background:var(--color-bg-muted)}
 .nt-it.is-unread{background:var(--nt-unread-bg)}
+.nt-it+.nt-it{margin-top:4px}
 .nt-ico{flex:none;display:grid;place-items:center;width:var(--nt-icon);height:var(--nt-icon);border-radius:50%}
 .nt-ico svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round}
 .nt-ico.is-talk{background:var(--sky-100);color:var(--color-fg-accent-strong)}
@@ -1488,6 +1581,24 @@ body.cloud-edition .phone{margin:0!important;border-radius:32px;box-shadow:0 8px
 .is-unread .nt-tx{padding-right:16px}.is-unread .nt-tx b{font-weight:600;color:var(--color-fg-primary)}
 .nt-tx q{display:block;margin-top:2px;font:400 12px/1.5 var(--font-sans);color:var(--color-fg-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;quotes:none}
 .nt-tx time{display:block;margin-top:2px;font:400 11px/1.4 var(--font-sans);color:var(--color-fg-muted)}
-.nt-dot{position:absolute;right:10px;top:18px;width:var(--gnb-badge-size);height:var(--gnb-badge-size);border-radius:50%;background:var(--gnb-badge-bg)}
+.nt-dot{position:absolute;right:14px;top:18px;width:var(--gnb-badge-size);height:var(--gnb-badge-size);border-radius:50%;background:var(--gnb-badge-bg)}
 .nt-empty{margin:80px 0 0;text-align:center}.nt-empty b{display:block;font:500 15px/1.5 var(--font-sans);color:var(--color-fg-secondary)}
 #features #fx-body .nt-empty p{margin:4px 0 0;font:400 12px/1.6 var(--font-sans);color:var(--color-fg-muted)}
+
+/* ---------- Letter Chat · 편지 대화 (시안 H1 · 2026-11-13, design-mockups/chat-head/) ----------
+   제목은 공용 머리처럼 가운데 16 SemiBold. 대화는 화면 맨 위부터 흐르고, 2px 넘게 내리면 공용 머리와 같은
+   하늘 50 → 종이색 + 흐림 + 아래로 사라지는 페이드. 입력칸 위 40은 종이색으로 스며들어요. 안내 문구는 대화 맨 위에서 함께 스크롤. */
+#letter-chat .ob-top{position:relative;z-index:3}
+#letter-chat .ob-top::before{content:"";position:absolute;z-index:-1;left:calc(var(--layout-gutter) * -1);right:calc(var(--layout-gutter) * -1);top:calc(var(--space-24,24px) * -1);height:var(--page-head-fade-h);pointer-events:none;opacity:0;transition:opacity 200ms ease-out;
+  background:linear-gradient(color-mix(in srgb,var(--sky-50) 82%,transparent) 0%,color-mix(in srgb,var(--paper) 62%,transparent) 60%,color-mix(in srgb,var(--paper) 0%,transparent) 100%);
+  -webkit-backdrop-filter:blur(var(--head-glass-blur)) saturate(140%);backdrop-filter:blur(var(--head-glass-blur)) saturate(140%);-webkit-mask-image:linear-gradient(#000 55%,transparent);mask-image:linear-gradient(#000 55%,transparent)}
+#letter-chat .ob-top.is-scrolled::before{opacity:1}
+#letter-chat #chat-name{position:absolute;left:50%;top:0;height:44px;display:flex;align-items:center;max-width:calc(100% - var(--page-head-side) * 2);margin:0;transform:translateX(-50%);font:600 var(--page-head-title-size)/1.3 var(--font-sans);color:var(--color-fg-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
+#letter-chat #chat-messages{top:0;bottom:28px;padding:80px 0 72px;scrollbar-width:none}
+#letter-chat #chat-messages::-webkit-scrollbar{display:none}
+#letter-chat.has-app-nav #chat-messages{bottom:var(--gnb-clearance)}
+#letter-chat #chat-messages .chat-demo{margin:0 0 4px}
+#letter-chat #chat-form{z-index:3}
+#letter-chat #chat-form::before{content:"";position:absolute;left:calc(var(--layout-gutter) * -1);right:calc(var(--layout-gutter) * -1);bottom:0;height:calc(100% + 40px);z-index:-1;pointer-events:none;background:linear-gradient(color-mix(in srgb,var(--color-bg-page) 0%,transparent),var(--color-bg-page) 40px)}
+@media (prefers-reduced-transparency:reduce){#letter-chat .ob-top::before{-webkit-backdrop-filter:none;backdrop-filter:none;background:linear-gradient(var(--sky-50) 0%,var(--paper) 60%,color-mix(in srgb,var(--paper) 0%,transparent) 100%)}}
+@media (prefers-reduced-motion:reduce){#letter-chat .ob-top::before{transition:none}}

@@ -1,0 +1,7 @@
+/* 새 B 후보 · “여름빛 필름”은 바탕 색감만 (2026-11-13 목업용, 적용 전)
+   A의 버튼 · 글자 · 테두리 · 모서리 · 글꼴 · 배치는 그대로, 화면 바탕과 카드 · 시트 바탕만 크림으로 */
+html[data-theme="b2"]{--paper:#FFF8EE;--b-surface:#FFFDF9;--b-leak-peach:#FFD3BC;--b-leak-sky:#C9EEEE;--color-bg-surface:var(--b-surface);--color-bg-stage:#EFE6D8}
+html[data-theme="b2"] body{background:radial-gradient(120% 80% at 90% 0%,#FFE8DA,transparent 60%),radial-gradient(90% 70% at 0% 100%,#E6F7F7,transparent 60%),var(--color-bg-stage)}
+html[data-theme="b2"] .phone{background:var(--paper)}
+html[data-theme="b2"] .phone>.screen:not(.gnb-layer):not(#welcome):not(#splash){background:radial-gradient(60% 34% at 100% 0%,color-mix(in srgb,var(--b-leak-peach) 55%,transparent),transparent 72%),radial-gradient(48% 26% at 0% 0%,color-mix(in srgb,var(--b-leak-sky) 50%,transparent),transparent 70%),var(--paper)!important}
+html[data-theme="b2"] #welcome .welcome-actions{background:var(--paper)!important}

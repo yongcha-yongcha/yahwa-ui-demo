@@ -1,0 +1,125 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>자기소개 노트 줄 맞춤</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* 레이아웃: 위에 문제 한 줄, 가운데 지금 · S1 · S2 세 칸(실제 크기 입력칸 + 3배 확대), 아래 바뀌는 값 표 */
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2-variations'),url('PretendardVariable.woff2') format('woff2');font-weight:45 920;font-display:swap}
+:root{
+  --bg:#F1F4F6; --panel:#FFFFFF; --fg:#273037; --muted:#69757E; --line:#E3E7EA; --guide:#E0465B; --ok:#3C6555;
+  --sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;
+  /* 앱 토큰 (A · 실제 값) */
+  --app-page:#F8F9F6; --app-surface:#FFFFFF; --app-edge:#E3E7EA; --app-focus:#377398; --app-rule:#D6EAF8; --app-ink:#39444D; --app-margin:color-mix(in srgb,#EBD0D5 70%,transparent);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#1A2126;--panel:#273037;--fg:#E3E7EA;--muted:#98A2AA;--line:#39444D;--guide:#F99EA1;--ok:#9FC4B7;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1A2126;--panel:#273037;--fg:#E3E7EA;--muted:#98A2AA;--line:#39444D;--guide:#F99EA1;--ok:#9FC4B7;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.6 var(--sans);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:36px 64px}
+.wrap{max-width:1120px;margin:0 auto;display:grid;gap:32px}
+header{display:grid;gap:8px}
+h1{margin:0;font-size:26px;line-height:1.35;letter-spacing:-0.4px;text-wrap:balance}
+.lead{margin:0;color:var(--muted);max-width:68ch}
+.cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:980px){.cols{grid-template-columns:minmax(0,1fr)}}
+.col{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:20px;display:grid;gap:16px;align-content:start;min-width:0}
+.col h2{margin:0;font-size:17px;display:flex;align-items:center;gap:8px}
+.tag{font:600 11px/1 var(--sans);letter-spacing:.5px;padding:5px 8px;border-radius:999px;background:var(--line);color:var(--muted)}
+.tag.rec{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}
+.col>p{margin:0;font-size:14px;color:var(--muted)}
+/* 앱 화면 조각 (앱은 밝은 화면만 있어서 두 테마 모두 같은 앱 색) */
+.stage{color-scheme:light;background:var(--app-page);border-radius:16px;padding:16px;display:block}
+.paper{width:100%;max-width:320px;margin:0 auto;border-radius:14px;background:var(--app-surface);box-shadow:inset 0 0 0 1.5px var(--app-focus);position:relative}
+.paper textarea{display:block;width:100%;height:192px;margin:0;border:0;border-radius:14px;resize:none;color:var(--app-ink);background-color:transparent;font:400 15px/32px var(--sans);background-attachment:local;outline:none;caret-color:var(--app-focus)}
+/* 지금: 위 4 · 줄은 칸 맨 아래(31~32) · 좌우 끝까지 */
+.v0 textarea{padding:4px 14px;background-image:repeating-linear-gradient(to bottom,transparent 0 31px,var(--app-rule) 31px 32px);background-position:0 4px;background-size:100% 32px}
+/* S1: 위 8 · 줄은 기준선 4.5 아래(26~27) · 좌우 14 안쪽에서 끝 */
+.v1 textarea{padding:8px 14px 0;background-image:linear-gradient(var(--app-surface),var(--app-surface)),repeating-linear-gradient(to bottom,transparent 0 26px,var(--app-rule) 26px 27px,transparent 27px 32px);background-position:0 0,14px 8px;background-size:100% 8px,calc(100% - 28px) 32px;background-repeat:no-repeat,repeat-y}
+/* S2: S1 + 노트 여백선(목록 노트와 같은 세로줄) */
+.v2 textarea{padding:8px 14px 0 38px;background-image:linear-gradient(var(--app-margin),var(--app-margin)),linear-gradient(var(--app-surface),var(--app-surface)),repeating-linear-gradient(to bottom,transparent 0 26px,var(--app-rule) 26px 27px,transparent 27px 32px);background-position:26px 0,0 0,14px 8px;background-size:1px 100%,100% 8px,calc(100% - 28px) 32px;background-repeat:no-repeat,no-repeat,repeat-y}
+/* 3배 확대 */
+.zoomlab{font:600 12px/1 var(--sans);color:var(--muted)}
+.zoom{color-scheme:light;position:relative;height:216px;overflow:hidden;border-radius:12px;background:var(--app-page);border:1px solid var(--line)}
+.zoom .inner{position:absolute;left:0;top:0;width:200px;transform:scale(3);transform-origin:0 0}
+.zoom .clone{width:200px;height:72px;white-space:nowrap;overflow:hidden;background:var(--app-surface);color:var(--app-ink);font:400 15px/32px var(--sans);border-radius:14px 0 0 0;box-shadow:inset 1.5px 1.5px 0 var(--app-focus)}
+.v0 .clone{padding:4px 0 0 14px;background-image:repeating-linear-gradient(to bottom,transparent 0 31px,var(--app-rule) 31px 32px);background-position:0 4px;background-size:100% 32px}
+.v1 .clone{padding:8px 0 0 14px;background-image:linear-gradient(var(--app-surface),var(--app-surface)),repeating-linear-gradient(to bottom,transparent 0 26px,var(--app-rule) 26px 27px,transparent 27px 32px);background-position:0 0,14px 8px;background-size:100% 8px,100% 32px;background-repeat:no-repeat,repeat-y}
+.v2 .clone{padding:8px 0 0 38px;background-image:linear-gradient(var(--app-margin),var(--app-margin)),linear-gradient(var(--app-surface),var(--app-surface)),repeating-linear-gradient(to bottom,transparent 0 26px,var(--app-rule) 26px 27px,transparent 27px 32px);background-position:26px 0,0 0,14px 8px;background-size:1px 100%,100% 8px,100% 32px;background-repeat:no-repeat,no-repeat,repeat-y}
+.g{position:absolute;left:0;right:0;pointer-events:none}
+.g.base{border-top:1.5px dashed var(--guide)}
+.g.lab{left:auto;right:8px;font:600 12px/1.2 var(--sans);color:var(--guide);background:color-mix(in srgb,var(--app-page) 88%,transparent);padding:3px 6px;border-radius:6px;transform:translateY(-50%)}
+.g.span{left:auto;width:0;border-left:2px solid var(--guide)}
+.g.span::before,.g.span::after{content:'';position:absolute;left:-6px;width:10px;border-top:2px solid var(--guide)}
+.g.span::before{top:0}.g.span::after{bottom:0}
+.verdict{margin:0;font-size:14px;padding:12px 14px;border-radius:12px;background:var(--bg)}
+.verdict b{color:var(--fg)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+.tbl{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:8px 20px;overflow-x:auto}
+th,td{text-align:left;padding:12px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{font-size:12px;color:var(--muted);font-weight:600}
+td code{font:500 12.5px ui-monospace,'SF Mono',Menlo,monospace}
+.foot{margin:0;font-size:13px;color:var(--muted)}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>자기소개 입력칸 · 글자를 줄 위에 앉히기</h1>
+    <p class="lead">지금은 줄이 글줄 칸의 맨 아래(31~32px)에 있어서, 글자가 위아래 줄 사이 한가운데에 떠 있어요. 위 줄까지 9.7, 아래 줄까지 8.3이라 어느 줄에도 앉지 않아요. 맨 위 줄은 테두리에 붙고, 줄 끝은 둥근 모서리에 잘려요. 아래 입력칸은 실제 앱과 같은 글꼴과 크기라 직접 써 볼 수 있어요.</p>
+  </header>
+
+  <div class="cols">
+    <section class="col v0">
+      <h2>지금 <span class="tag">현재</span></h2>
+      <div class="stage"><div class="paper"><textarea aria-label="지금 입력칸">서비스를 기획하는 지우예요. 쉬는 날에는 필름카메라를 들고 익숙한 골목의 새로운 장면을 찾아요.</textarea></div></div>
+      <span class="zoomlab">첫 두 줄 · 3배</span>
+      <div class="zoom" data-pad="4" data-rule="31"><div class="inner"><div class="clone">서비스를 기획하는 지우예요.<br>메라를 들고 익숙한 골목</div></div></div>
+      <p class="verdict"><b>떠 있음.</b> 위 줄까지 9.7, 아래 줄까지 8.3. 줄이 글자의 위아래를 똑같이 감싸서 표처럼 보이고, 글자와 줄이 따로 놀아요.</p>
+    </section>
+
+    <section class="col v1">
+      <h2>S1 · 줄 위에 앉히기 <span class="tag rec">추천</span></h2>
+      <div class="stage"><div class="paper"><textarea aria-label="S1 입력칸">서비스를 기획하는 지우예요. 쉬는 날에는 필름카메라를 들고 익숙한 골목의 새로운 장면을 찾아요.</textarea></div></div>
+      <span class="zoomlab">첫 두 줄 · 3배</span>
+      <div class="zoom" data-pad="8" data-rule="26"><div class="inner"><div class="clone">서비스를 기획하는 지우예요.<br>메라를 들고 익숙한 골목</div></div></div>
+      <p class="verdict"><b>앉음.</b> 줄을 기준선 4.5px 아래로 올려 글자 바로 밑에 붙였어요(아래 3.3 · 위 14.7). 영문 g·y 꼬리도 줄에 닿지 않아요. 줄은 좌우 14 안쪽에서 끝나 둥근 테두리와 겹치지 않고, 맨 위 줄도 없어졌어요.</p>
+    </section>
+
+    <section class="col v2">
+      <h2>S2 · S1 + 노트 여백선</h2>
+      <div class="stage"><div class="paper"><textarea aria-label="S2 입력칸">서비스를 기획하는 지우예요. 쉬는 날에는 필름카메라를 들고 익숙한 골목의 새로운 장면을 찾아요.</textarea></div></div>
+      <span class="zoomlab">첫 두 줄 · 3배</span>
+      <div class="zoom" data-pad="8" data-rule="26"><div class="inner"><div class="clone">서비스를 기획하는 지우예요.<br>메라를 들고 익숙한</div></div></div>
+      <p class="verdict"><b>노트 한 장.</b> S1에 이야기 목록 노트와 같은 분홍 세로 여백선을 더했어요. 목록에서 눌러 들어와도 같은 종이로 이어져 보여요. 대신 한 줄에 들어가는 글자가 2~3자 줄어요.</p>
+    </section>
+  </div>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>값</th><th>지금</th><th>S1</th><th>S2</th></tr></thead>
+      <tbody>
+        <tr><td>위 여백</td><td><code>4</code> · 맨 위 줄이 테두리에 붙음</td><td><code>8</code> · 맨 위 줄 없음</td><td><code>8</code></td></tr>
+        <tr><td>줄 위치 (32px 칸 안)</td><td><code>31~32</code> 칸 맨 아래</td><td><code>26~27</code> 기준선(21.5) 4.5 아래</td><td><code>26~27</code></td></tr>
+        <tr><td>줄 길이</td><td>좌우 끝까지, 둥근 모서리에서 잘림</td><td>좌우 14 안쪽에서 끝</td><td>좌우 14 안쪽 + 세로 여백선 x=26</td></tr>
+        <tr><td>글자 왼쪽 여백</td><td><code>14</code></td><td><code>14</code></td><td><code>38</code></td></tr>
+        <tr><td>글꼴 · 줄 높이 · 칸 높이</td><td colspan="3">그대로 <code>15 / 32</code> · <code>192</code>, 포커스 테두리 1.5 · 줄 색 <code>--story-rule</code> 그대로 (B 테마도 같은 토큰이라 함께 맞춰져요)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="foot">파일: <code>public/nov08.css</code> 608줄 <code>#story .st-paper textarea</code> 한 규칙만 바뀌어요.</p>
+</div>
+
+<script>
+// 확대 칸 안내선: 줄 칸 위치 = 위 여백 + 32k, 기준선 = +21.5, 글자 잉크 = 9.7~22.7 (Pretendard 15px 실측)
+const S=3;
+document.querySelectorAll('.zoom').forEach(z=>{
+  const pad=+z.dataset.pad, rule=+z.dataset.rule;
+  const add=(cls,top,h,txt)=>{const e=document.createElement('div');e.className='g '+cls;e.style.top=(top*S)+'px';if(h!=null)e.style.height=(h*S)+'px';if(txt)e.textContent=txt;z.append(e);return e;};
+  const base1=pad+32+21.5, inkTop1=pad+32+9.7, inkBot0=pad+22.7, rule0=pad+rule, rule1=pad+32+rule;
+  add('base',pad+21.5);add('base',base1);
+  const below=+(rule0-inkBot0).toFixed(1), above=+(inkTop1-(rule0+1)).toFixed(1);
+  const s1=add('span',inkBot0,rule0-inkBot0);s1.style.right='104px';
+  const s2=add('span',rule0+1,inkTop1-rule0-1);s2.style.right='92px';
+  add('lab',(inkBot0+rule0)/2,null,'아래 줄 '+below);
+  add('lab',(rule0+1+inkTop1)/2+3,null,'위 줄 '+above).style.right='8px';
+});
+</script>

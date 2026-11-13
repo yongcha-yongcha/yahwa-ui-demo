@@ -1,0 +1,75 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>보낸 사람 줄 누르기</title>
+<style>
+@font-face{font-family:"PJ";src:url(PretendardVariable.woff2) format("woff2");font-weight:100 900}
+@font-face{font-family:"GB";src:url(GowunBatang-Regular.woff2) format("woff2")}
+:root{--bg:#F4F3EF;--ink:#262C31;--sub:#5F6A72;--line:#E1E0D9;--card:#fff;--chip:#ECEEEF;--pick:#0F766E;--warn:#B4531A}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#16181A;--ink:#ECEDEE;--sub:#A2A9AF;--line:#2E3237;--card:#1F2225;--chip:#2A2E33;--pick:#5EEAD4;--warn:#FDBA74}}
+:root[data-theme="dark"]{--bg:#16181A;--ink:#ECEDEE;--sub:#A2A9AF;--line:#2E3237;--card:#1F2225;--chip:#2A2E33;--pick:#5EEAD4;--warn:#FDBA74}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.65 "PJ",system-ui,sans-serif;word-break:keep-all}
+main{max-width:1200px;margin:0 auto;padding:40px 20px 96px}h1{font-size:26px;margin:0 0 8px}h2{font-size:20px;margin:40px 0 8px}
+.lead{color:var(--sub);margin:0 0 16px;max-width:820px}
+.now{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start}.now img{width:360px;max-width:100%;border-radius:16px;border:1px solid var(--line)}
+.now ol{margin:0;padding-left:20px;max-width:520px;font-size:14px}.now li+li{margin-top:6px}
+.opts{display:grid;grid-template-columns:1fr;gap:20px}
+.opt{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px}
+.opt h3{margin:0 0 12px;font-size:16px;display:flex;gap:8px;align-items:center}
+.tag{font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;background:var(--chip);color:var(--sub)}.tag.rec{color:var(--pick)}
+.pair{display:flex;gap:16px;flex-wrap:wrap}figure{margin:0;flex:0 1 360px;min-width:0}figcaption{font-size:12px;color:var(--sub);text-align:center;margin-top:6px}
+.opt p{font-size:14px;color:var(--sub);margin:12px 0 0;max-width:760px}
+code{font:500 12.5px/1.6 ui-monospace,Menlo,monospace;background:var(--chip);padding:1px 6px;border-radius:6px}
+/* 폰 (앱 A 값 · 위쪽만) */
+.ph{position:relative;width:100%;max-width:360px;height:300px;overflow:hidden;border-radius:28px;background:linear-gradient(#ECF5FC 0,#F8F9F6 200px);color:#39444D;color-scheme:light;font-family:"PJ";box-shadow:0 0 0 1px rgba(0,0,0,.06)}
+.back svg{position:absolute;left:28px;top:28px;width:28px;height:28px;fill:#39444D}
+.col{position:absolute;left:20px;right:20px;top:76px;bottom:0;overflow-x:clip}
+.from{display:flex;align-items:center;gap:12px;border:0;background:none;text-align:left;color:inherit;cursor:pointer;font:inherit;-webkit-tap-highlight-color:transparent}
+.from img{flex:none;width:44px;height:44px;border-radius:50%;object-fit:cover}
+.ft{flex:1;min-width:0}.ft b{display:block;font:600 15px/1.4 "PJ"}.ft small{display:block;margin-top:3px;font:400 12px/1.4 "PJ";color:#818C94}
+.go{flex:none;display:inline-flex;align-items:center;gap:2px;font:500 12px/1 "PJ";color:#818C94}.chev{width:16px;height:16px;fill:currentColor}
+.from:focus-visible{outline:2px solid #377398;outline-offset:2px;border-radius:16px}
+.paper{margin-top:16px;padding:24px 20px;border:1px solid #E3E7EA;border-radius:4px 20px 4px 4px;background:#fff}
+.to{font:15px/1.8 "GB",serif;color:#4E8AB0}.paper p{margin:16px 0 0;font:16px/2 "GB",serif;background:repeating-linear-gradient(transparent 0,transparent 31px,#E3E7EA 31px,#E3E7EA 32px)}
+/* 지금 */
+.now-v .from{width:calc(100% + 16px);margin:4px -8px 0;padding:8px;border-radius:16px}
+.now-v .from:active,.now-v .from.is-held{background:#E3E7EA}
+/* P1 · 배경 없이 */
+.p1 .from{width:100%;margin:4px 0 0;padding:8px 0;min-height:60px;transition:transform 160ms cubic-bezier(.23,1,.32,1)}
+.p1 .from>*{transition:opacity 160ms ease}
+.p1 .go .chev{transition:transform 160ms cubic-bezier(.23,1,.32,1)}
+.p1 .from:active,.p1 .from.is-held{transform:scale(.98)}
+.p1 .from:active>*,.p1 .from.is-held>*{opacity:.55}
+.p1 .from:active .chev,.p1 .from.is-held .chev{transform:translateX(2px)}
+/* P2 · 칸 안 배경 */
+.p2 .from{width:100%;margin:4px 0 0;padding:8px 12px;border-radius:16px;transition:transform 160ms cubic-bezier(.23,1,.32,1),background-color 120ms ease}
+.p2 .from:active,.p2 .from.is-held{transform:scale(.98);background:#E3E7EA}
+.p2 .paper{margin-top:12px}
+/* P3 · 늘 보이는 카드 */
+.p3 .from{width:100%;margin:4px 0 0;padding:12px 14px;border-radius:16px;background:#fff;box-shadow:inset 0 0 0 1px #E3E7EA;transition:transform 160ms cubic-bezier(.23,1,.32,1),background-color 120ms ease}
+.p3 .from:active,.p3 .from.is-held{transform:scale(.98);background:#F1F4F6}
+@media (prefers-reduced-motion:reduce){.ph *{transition:none!important}.from:active,.from.is-held{transform:none!important}}
+</style></head><body><main>
+<h1>편지 세부 · 보낸 사람 줄 누르기</h1>
+<p class="lead">받은 편지 화면 맨 위 “봄빛님이 보낸 편지 · 프로필 ›” 줄(누르면 상대 프로필)을 고치는 시안이에요. 앱은 아직 바꾸지 않았어요. 폰은 앱과 같은 크기 · 색으로 다시 그렸고, 왼쪽 폰은 직접 눌러 볼 수 있어요.</p>
+<h2>지금</h2>
+<div class="now"><img src="img/now_press.jpg" alt="누르고 있을 때 회색 배경 왼쪽이 잘린 모습"><ol>
+<li><b>눌림 배경이 왼쪽에서 잘려요.</b> 줄이 사진을 편지지 왼쪽 선에 맞추려고 양옆 8px씩 넓게 그려지는데, 화면 칸이 넘치는 부분을 잘라서 왼쪽은 네모로 끊기고 사진이 회색 끝에 붙어요. (새로운 소식 줄과 같은 원인)</li>
+<li><b>오른쪽은 편지지보다 8px 더 나가요.</b> 양쪽 끝이 아래 편지지와 맞지 않아요.</li>
+<li><b>누르는 느낌이 없어요.</b> 회색이 갑자기 깔릴 뿐 크기 · 움직임 변화가 없고, 전환이 <code>transition: all</code>로 걸려 있어요.</li></ol></div>
+<h2>개선안</h2>
+<div class="opts">
+<section class="opt"><h3>P1 · 배경 없이 눌림 <span class="tag rec">추천</span></h3><div class="pair"><figure><div class="ph p1"><span class="back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.293 7.29096C13.6834 6.90047 14.3165 6.90051 14.707 7.29096C15.0975 7.68144 15.0975 8.31448 14.707 8.70502L11.4131 11.998L14.707 15.2919C15.0975 15.6825 15.0975 16.3155 14.707 16.706C14.3165 17.0965 13.6835 17.0965 13.293 16.706L9.29297 12.706C8.90249 12.3155 8.90253 11.6825 9.29297 11.2919L13.293 7.29096Z"/></svg></span><div class="col">
+<button type="button" class="from"><img src="img/bombit.jpg" alt=""><span class="ft"><b>봄빛님이 보낸 편지</b><small>11월 13일 · 7일 뒤 사라져요</small></span><span class="go">프로필<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.29301 7.29096C9.68355 6.90051 10.3166 6.90047 10.7071 7.29096L14.7071 11.2919C15.0975 11.6825 15.0976 12.3155 14.7071 12.706L10.7071 16.706C10.3165 17.0965 9.68353 17.0965 9.29301 16.706C8.9025 16.3155 8.90249 15.6825 9.29301 15.2919L12.586 11.998L9.29301 8.70502C8.90256 8.31448 8.90252 7.68144 9.29301 7.29096Z"/></svg></span></button>
+<article class="paper"><span class="to">당신에게</span><p>프로필 속 산책 이야기가 마음에 남았어요.<br>함께 이야기 나눠보고 싶어요.</p></article></div></div><figcaption>눌러 보세요</figcaption></figure><figure><div class="ph p1"><span class="back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.293 7.29096C13.6834 6.90047 14.3165 6.90051 14.707 7.29096C15.0975 7.68144 15.0975 8.31448 14.707 8.70502L11.4131 11.998L14.707 15.2919C15.0975 15.6825 15.0975 16.3155 14.707 16.706C14.3165 17.0965 13.6835 17.0965 13.293 16.706L9.29297 12.706C8.90249 12.3155 8.90253 11.6825 9.29297 11.2919L13.293 7.29096Z"/></svg></span><div class="col">
+<button type="button" class="from is-held"><img src="img/bombit.jpg" alt=""><span class="ft"><b>봄빛님이 보낸 편지</b><small>11월 13일 · 7일 뒤 사라져요</small></span><span class="go">프로필<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.29301 7.29096C9.68355 6.90051 10.3166 6.90047 10.7071 7.29096L14.7071 11.2919C15.0975 11.6825 15.0976 12.3155 14.7071 12.706L10.7071 16.706C10.3165 17.0965 9.68353 17.0965 9.29301 16.706C8.9025 16.3155 8.90249 15.6825 9.29301 15.2919L12.586 11.998L9.29301 8.70502C8.90256 8.31448 8.90252 7.68144 9.29301 7.29096Z"/></svg></span></button>
+<article class="paper"><span class="to">당신에게</span><p>프로필 속 산책 이야기가 마음에 남았어요.<br>함께 이야기 나눠보고 싶어요.</p></article></div></div><figcaption>누르고 있을 때</figcaption></figure></div><p>사진은 지금처럼 편지지 왼쪽 선에 그대로 두고, 누르면 줄 전체가 살짝 작아지고(0.98) 사진 · 글자가 옅어지며 “프로필 ›” 화살표가 오른쪽으로 2px 움직여요. 배경을 깔지 않아서 잘릴 것이 없고, 화면 둘레를 가볍게 둔 지금 편지 화면(L2)과도 맞아요. 누르는 영역은 줄 전체(높이 60, 너비 칸 전체).</p></section>
+<section class="opt"><h3>P2 · 칸 안에 눌림 배경 </h3><div class="pair"><figure><div class="ph p2"><span class="back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.293 7.29096C13.6834 6.90047 14.3165 6.90051 14.707 7.29096C15.0975 7.68144 15.0975 8.31448 14.707 8.70502L11.4131 11.998L14.707 15.2919C15.0975 15.6825 15.0975 16.3155 14.707 16.706C14.3165 17.0965 13.6835 17.0965 13.293 16.706L9.29297 12.706C8.90249 12.3155 8.90253 11.6825 9.29297 11.2919L13.293 7.29096Z"/></svg></span><div class="col">
+<button type="button" class="from"><img src="img/bombit.jpg" alt=""><span class="ft"><b>봄빛님이 보낸 편지</b><small>11월 13일 · 7일 뒤 사라져요</small></span><span class="go">프로필<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.29301 7.29096C9.68355 6.90051 10.3166 6.90047 10.7071 7.29096L14.7071 11.2919C15.0975 11.6825 15.0976 12.3155 14.7071 12.706L10.7071 16.706C10.3165 17.0965 9.68353 17.0965 9.29301 16.706C8.9025 16.3155 8.90249 15.6825 9.29301 15.2919L12.586 11.998L9.29301 8.70502C8.90256 8.31448 8.90252 7.68144 9.29301 7.29096Z"/></svg></span></button>
+<article class="paper"><span class="to">당신에게</span><p>프로필 속 산책 이야기가 마음에 남았어요.<br>함께 이야기 나눠보고 싶어요.</p></article></div></div><figcaption>눌러 보세요</figcaption></figure><figure><div class="ph p2"><span class="back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.293 7.29096C13.6834 6.90047 14.3165 6.90051 14.707 7.29096C15.0975 7.68144 15.0975 8.31448 14.707 8.70502L11.4131 11.998L14.707 15.2919C15.0975 15.6825 15.0975 16.3155 14.707 16.706C14.3165 17.0965 13.6835 17.0965 13.293 16.706L9.29297 12.706C8.90249 12.3155 8.90253 11.6825 9.29297 11.2919L13.293 7.29096Z"/></svg></span><div class="col">
+<button type="button" class="from is-held"><img src="img/bombit.jpg" alt=""><span class="ft"><b>봄빛님이 보낸 편지</b><small>11월 13일 · 7일 뒤 사라져요</small></span><span class="go">프로필<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.29301 7.29096C9.68355 6.90051 10.3166 6.90047 10.7071 7.29096L14.7071 11.2919C15.0975 11.6825 15.0976 12.3155 14.7071 12.706L10.7071 16.706C10.3165 17.0965 9.68353 17.0965 9.29301 16.706C8.9025 16.3155 8.90249 15.6825 9.29301 15.2919L12.586 11.998L9.29301 8.70502C8.90256 8.31448 8.90252 7.68144 9.29301 7.29096Z"/></svg></span></button>
+<article class="paper"><span class="to">당신에게</span><p>프로필 속 산책 이야기가 마음에 남았어요.<br>함께 이야기 나눠보고 싶어요.</p></article></div></div><figcaption>누르고 있을 때</figcaption></figure></div><p>눌림 배경을 화면 칸 너비에 맞춰 양쪽 끝이 편지지와 같은 선에 와요. 대신 사진이 왼쪽에서 12 안으로 들어가서 편지지 글자 선과는 어긋나요. 누르면 0.98로 작아지며 회색 배경이 120ms에 깔려요.</p></section>
+<section class="opt"><h3>P3 · 늘 보이는 카드 </h3><div class="pair"><figure><div class="ph p3"><span class="back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.293 7.29096C13.6834 6.90047 14.3165 6.90051 14.707 7.29096C15.0975 7.68144 15.0975 8.31448 14.707 8.70502L11.4131 11.998L14.707 15.2919C15.0975 15.6825 15.0975 16.3155 14.707 16.706C14.3165 17.0965 13.6835 17.0965 13.293 16.706L9.29297 12.706C8.90249 12.3155 8.90253 11.6825 9.29297 11.2919L13.293 7.29096Z"/></svg></span><div class="col">
+<button type="button" class="from"><img src="img/bombit.jpg" alt=""><span class="ft"><b>봄빛님이 보낸 편지</b><small>11월 13일 · 7일 뒤 사라져요</small></span><span class="go">프로필<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.29301 7.29096C9.68355 6.90051 10.3166 6.90047 10.7071 7.29096L14.7071 11.2919C15.0975 11.6825 15.0976 12.3155 14.7071 12.706L10.7071 16.706C10.3165 17.0965 9.68353 17.0965 9.29301 16.706C8.9025 16.3155 8.90249 15.6825 9.29301 15.2919L12.586 11.998L9.29301 8.70502C8.90256 8.31448 8.90252 7.68144 9.29301 7.29096Z"/></svg></span></button>
+<article class="paper"><span class="to">당신에게</span><p>프로필 속 산책 이야기가 마음에 남았어요.<br>함께 이야기 나눠보고 싶어요.</p></article></div></div><figcaption>눌러 보세요</figcaption></figure><figure><div class="ph p3"><span class="back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.293 7.29096C13.6834 6.90047 14.3165 6.90051 14.707 7.29096C15.0975 7.68144 15.0975 8.31448 14.707 8.70502L11.4131 11.998L14.707 15.2919C15.0975 15.6825 15.0975 16.3155 14.707 16.706C14.3165 17.0965 13.6835 17.0965 13.293 16.706L9.29297 12.706C8.90249 12.3155 8.90253 11.6825 9.29297 11.2919L13.293 7.29096Z"/></svg></span><div class="col">
+<button type="button" class="from is-held"><img src="img/bombit.jpg" alt=""><span class="ft"><b>봄빛님이 보낸 편지</b><small>11월 13일 · 7일 뒤 사라져요</small></span><span class="go">프로필<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.29301 7.29096C9.68355 6.90051 10.3166 6.90047 10.7071 7.29096L14.7071 11.2919C15.0975 11.6825 15.0976 12.3155 14.7071 12.706L10.7071 16.706C10.3165 17.0965 9.68353 17.0965 9.29301 16.706C8.9025 16.3155 8.90249 15.6825 9.29301 15.2919L12.586 11.998L9.29301 8.70502C8.90256 8.31448 8.90252 7.68144 9.29301 7.29096Z"/></svg></span></button>
+<article class="paper"><span class="to">당신에게</span><p>프로필 속 산책 이야기가 마음에 남았어요.<br>함께 이야기 나눠보고 싶어요.</p></article></div></div><figcaption>누르고 있을 때</figcaption></figure></div><p>“새로운 소식”의 교환 요청 줄처럼 흰 카드로 늘 보여서 누를 수 있다는 게 가장 분명해요. 대신 편지지 위에 카드가 하나 더 생겨 위쪽이 무거워지고, 지금의 가벼운 둘레(L2)에서 멀어져요.</p></section>
+</div>
+</main></body></html>
