@@ -1629,3 +1629,36 @@ body.cloud-edition .phone{margin:0!important;border-radius:32px;box-shadow:0 8px
 
 /* 공유 링크(Artifact)는 페이지에 img{max-width:100%}를 깔아요. 웰컴 사진처럼 칸보다 크게(140%) 그린 이미지가 줄어들지 않게 앱 안 이미지는 원래대로 (2026-11-13) */
 .phone img{max-width:none}
+
+/* ---------- 인연 홈 · 프로필 확인 중 (시안 V1 · 2026-11-13) ---------- */
+#discovery.is-review #nov-deck-controls{display:none!important}
+/* 확인 중엔 추천 설정 · 공개 시간 줄이 없으니 리프를 오른쪽 여백선까지 (2026-11-13) */
+#discovery.is-review #nov-filter,#discovery.is-review #nov-schedule{display:none!important}
+.phone #discovery.is-review #home-wallet{right:var(--layout-gutter)!important}
+#discovery .rv-card{align-self:start;height:auto!important;min-height:0!important;margin:0;padding:22px 20px 20px;border-radius:24px;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border-default);text-align:left;grid-column:1/-1}
+.rv-chip{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:12px;background:var(--color-bg-subtle);color:var(--color-fg-accent-strong);font:600 12px/1 var(--font-sans)}
+.rv-chip i{width:6px;height:6px;border-radius:50%;background:var(--color-fg-accent)}
+#discovery .rv-card h2{margin:12px 0 0;font:400 21px/1.45 'Gowun Batang',serif;letter-spacing:-.5px;color:var(--color-fg-primary);word-break:keep-all}
+#discovery .rv-card .rv-sub{margin:6px 0 0;font:400 13px/1.6 var(--font-sans);color:var(--color-fg-tertiary);word-break:keep-all}
+.rv-steps{list-style:none;margin:20px 0 0;padding:0}
+.rv-steps li{position:relative;display:flex;gap:12px;padding-bottom:16px}
+.rv-steps li:last-child{padding-bottom:0}
+.rv-steps li:not(:last-child)::before{content:"";position:absolute;left:9px;top:24px;bottom:2px;width:2px;border-radius:1px;background:var(--color-bg-muted)}
+.rv-steps li.is-done::before{background:var(--color-fg-accent)}
+.rv-mk{flex:none;display:grid;place-items:center;width:20px;height:20px;margin-top:1px;border-radius:50%;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1.5px var(--color-bg-muted)}
+.is-done .rv-mk{background:var(--color-fg-accent);box-shadow:none}
+.is-done .rv-mk svg{width:12px;height:12px;fill:none;stroke:var(--color-fg-inverse);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.is-now .rv-mk{box-shadow:inset 0 0 0 1.5px var(--color-fg-accent)}
+.is-now .rv-mk i{width:8px;height:8px;border-radius:50%;background:var(--color-fg-accent);animation:rvBreath 1.6s ease-in-out infinite}
+@keyframes rvBreath{0%,100%{transform:scale(.7);opacity:.6}50%{transform:none;opacity:1}}
+.rv-steps b{display:block;font:600 14px/1.5 var(--font-sans);color:var(--color-fg-primary)}
+.rv-steps li:not(.is-done):not(.is-now) b{font-weight:500;color:var(--color-fg-muted)}
+.is-now b{color:var(--color-fg-accent-strong)}
+.rv-steps small{display:block;margin-top:2px;font:400 12px/1.5 var(--font-sans);color:var(--color-fg-muted)}
+.rv-acts{display:grid;gap:4px;margin-top:20px}
+#discovery .rv-ghost{height:48px;margin:0;border:0;border-radius:var(--radius-button,14px);background:var(--color-bg-muted);color:var(--color-fg-primary);font:600 15px/1 var(--font-sans);cursor:pointer;transition:transform 120ms cubic-bezier(0.23, 1, 0.32, 1)}
+#discovery .rv-ghost:active{transform:scale(.98)}
+#discovery .rv-link{display:inline-flex;align-items:center;justify-content:center;gap:2px;height:40px;margin:0;border:0;background:none;color:var(--color-fg-tertiary);font:500 13px/1 var(--font-sans);cursor:pointer}
+#discovery .rv-link .chev{width:16px;height:16px;color:currentColor}
+#discovery .rv-ghost:focus-visible,#discovery .rv-link:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:2px;border-radius:12px}
+@media (prefers-reduced-motion:reduce){.is-now .rv-mk i{animation:none}#discovery .rv-ghost:active{transform:none}}
