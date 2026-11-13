@@ -1,0 +1,76 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>웰컴 로고 고정</title>
+<style>
+@font-face{font-family:"PJ";src:url(PretendardVariable.woff2) format("woff2");font-weight:100 900}
+@font-face{font-family:"GB";src:url(GowunBatang-Regular.woff2) format("woff2")}
+:root{--bg:#F4F3EF;--ink:#262C31;--sub:#5F6A72;--line:#E1E0D9;--card:#fff;--chip:#ECEEEF;--pick:#0F766E;--warn:#B4531A}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#16181A;--ink:#ECEDEE;--sub:#A2A9AF;--line:#2E3237;--card:#1F2225;--chip:#2A2E33;--pick:#5EEAD4;--warn:#FDBA74}}
+:root[data-theme="dark"]{--bg:#16181A;--ink:#ECEDEE;--sub:#A2A9AF;--line:#2E3237;--card:#1F2225;--chip:#2A2E33;--pick:#5EEAD4;--warn:#FDBA74}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.65 "PJ",system-ui,sans-serif;word-break:keep-all}
+main{max-width:1240px;margin:0 auto;padding:40px 20px 96px}h1{font-size:26px;margin:0 0 8px}h2{font-size:19px;margin:36px 0 8px}.lead{color:var(--sub);margin:0 0 16px;max-width:900px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;font-size:14px;max-width:900px}.box p{margin:0}.box p+p{margin-top:8px}.box b{color:var(--ink)}
+.opt{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;margin-top:16px}
+.opt h3{margin:0 0 4px;font-size:16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}.opt>p{margin:0 0 4px;font-size:13.5px;color:var(--sub);max-width:900px}.opt>p b{color:var(--ink)}
+.tag{font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;background:var(--chip);color:var(--sub)}.tag.rec{color:var(--pick)}.tag.bad{color:var(--warn)}
+.row{display:flex;gap:20px;overflow-x:auto;padding:16px 2px 4px;align-items:flex-end}
+.dev{flex:none;display:grid;gap:8px;justify-items:center}.dev small{font-size:12px;color:var(--sub);text-align:center;line-height:1.4}
+.fit{position:relative;overflow:hidden;border-radius:18px;box-shadow:0 0 0 1px rgba(0,0,0,.08),0 8px 20px rgba(0,0,0,.08)}
+.guide{position:absolute;inset:0;pointer-events:none;z-index:9}
+.tg{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);margin-top:4px}.tg input{width:18px;height:18px}
+/* 앱 화면 복제 (A · 실제 값) */
+.scr{position:absolute;left:0;top:0;transform-origin:0 0;overflow:hidden;background:#F8F9F6;color-scheme:light}
+.vis{position:absolute;inset:0;overflow:hidden;background:linear-gradient(#D6EAF8,#E3E7EA 220px)}
+.mot{position:absolute;left:0;top:0;right:0;overflow:hidden}
+.ph,.mir{position:absolute;background:url(img/couple-pastel-film.png) center/cover no-repeat}
+.mir{transform:scaleY(-1)}
+.logo{position:absolute;filter:brightness(0) invert(1)}
+.heart{position:absolute;filter:brightness(0) invert(1);transform:rotate(-24deg)}
+.cp{position:absolute;margin:0;text-align:center;color:#fff;font:italic 400 23px/1.65 "GB",serif;letter-spacing:-.8px;text-shadow:0 1px 12px rgba(0,0,0,.12)}
+.sheet{position:absolute;left:0;right:0;bottom:0;height:203px;padding:24px 20px 20px;border-radius:26px 26px 0 0;background:#F8F9F6;display:grid;align-content:start;justify-items:center;gap:12px;font-family:"PJ"}
+.sheet .ch{margin:0;font:500 11px/1.4 "PJ";letter-spacing:3px;color:#4E8AB0}
+.sheet .bt{width:100%;height:56px;border-radius:16px;background:#3A7397;color:#fff;display:grid;place-items:center;font:500 18px/1 "GB"}
+.sheet .lk{font:400 13px/1.4 "PJ";color:#505C65;text-decoration:underline;text-underline-offset:4px}
+.stage{position:absolute;left:0;top:0;width:360px;height:596px;transform-origin:0 0}
+.mark{position:absolute;width:26px;height:26px;border-radius:50%;border:2px dashed #E4572E;transform:translate(-50%,-50%);z-index:8;display:none}
+.show-mark .mark{display:block}
+</style></head><body><main>
+<h1>웰컴 화면 · 로고와 하트가 사진에서 떨어지지 않게</h1>
+<p class="lead">화면 크기마다 “yahwa” 로고와 하트가 사진 속 두 사람에게서 미끄러지는 문제예요. 아래 폰은 실제 앱 값(사진 · 로고 · 하트 위치와 크기)을 그대로 옮겨 그린 거예요. 앱은 아직 바꾸지 않았어요.</p>
+<div class="box"><p><b>왜 움직이나요</b> · 사진은 화면 크기에 맞춰 커지거나 잘리는데(가로 140% · 높이 140%, 왼쪽 −144 · 위 −135), 로고(왼쪽 3 · 위 129 · 폭 345)와 하트(왼쪽 157 · 위 358)는 화면 왼쪽 위에서 고정된 거리에 있어요. 360×780(설계 크기)에서만 맞고, 폭이 넓어지면 로고가 왼쪽으로 쏠리고, 높이가 길어지면 사진이 더 커지면서 하트가 두 사람 머리 사이에서 벗어나요.</p></div>
+<label class="tg"><input type="checkbox" id="mk"> 하트 원래 자리(360×780 기준) 표시</label>
+
+<section class="opt" data-mode="now"><h3>지금 <span class="tag bad">어긋남</span></h3><p>점선 동그라미가 하트가 있어야 할 자리예요(사진 속 같은 지점). 기기마다 하트와 로고가 다른 곳에 가 있어요.</p><div class="row"></div></section>
+
+<section class="opt" data-mode="w1"><h3>W1 · 사진 · 로고 · 하트를 한 장으로 묶기 <span class="tag rec">추천</span></h3><p>설계 크기(360×596 그림 영역)의 사진 · 로고 · 하트를 <b>한 장의 엽서처럼 묶어서</b> 화면에 꽉 차게 같은 비율로 키워요(사진이 화면을 덮는 방식 그대로, 가운데 기준). 그래서 어떤 기기에서도 하트는 두 사람 머리 사이, 로고는 하늘 같은 자리에 있어요. <b>위 문구는 묶지 않고</b> 지금처럼 위 51 · 23px로 두어 글자 크기가 기기마다 같아요. 넓은 기기에서는 사진이 조금 더 크게 보이고 가장자리가 조금 더 잘려요.</p><div class="row"></div></section>
+
+<section class="opt" data-mode="w2"><h3>W2 · 문구까지 모두 한 장으로</h3><p>W1에 위 문구까지 함께 묶어요. 포스터처럼 모든 기기에서 완전히 같은 구도가 되지만, 큰 기기에서는 문구도 커지고(430 폭에서 약 28px), 화면이 길쭉하면 위아래가 잘려 문구가 위 가장자리에 붙을 수 있어요.</p><div class="row"></div></section>
+
+<div class="box" style="margin-top:16px"><p><b>로고와 하트를 사진에 아예 그려 넣는 방법</b>은 권하지 않아요. 어긋남은 사라지지만 로고만 따로 움직이는 들어오는 모션을 못 쓰고, B 컨셉이나 다른 사진으로 바꿀 때마다 이미지를 다시 만들어야 해요.</p></div>
+</main><script>
+const DEV=[[360,780,'360 × 780 · 설계 크기 (Galaxy S25)'],[390,780,'390 × 780 · 카카오톡 · claude.ai 안'],[390,844,'390 × 844 · iPhone 15'],[430,932,'430 × 932 · iPhone 15 Pro Max']];
+const LOGO_H=345*4554/7874, K=0.5;
+const CP='좋은 인연의 시작은 생각보다<br>평범한 순간에 있으니까.';
+/* 설계 크기에서 사진 속 하트 중심 */
+const HEART={x:157+57/2,y:358+65/2};
+function art(W,A){ /* 지금 앱 규칙: 사진·반사·로고·하트 (motion box W×A 기준) */
+ const pw=1.4*W,ph=1.4*A;
+ return `<div class="ph" style="left:-144px;top:-135px;width:${pw}px;height:${ph}px"></div><div class="mir" style="left:-144px;top:${ph-135}px;width:${pw}px;height:${ph}px"></div>`;}
+function marks(W,A){ /* 360×596 설계 사진 기준 하트 자리를 지금 사진 좌표로 옮겨요 (object-fit:cover · center) */
+ const img=[971,1619];
+ const place=(bw,bh)=>{const s=Math.max(bw/img[0],bh/img[1]);return {s,ox:(bw-img[0]*s)/2,oy:(bh-img[1]*s)/2};};
+ const d=place(1.4*360,1.4*596),u={x:(HEART.x+144-d.ox)/d.s,y:(HEART.y+135-d.oy)/d.s};
+ const n=place(1.4*W,1.4*A);return {x:-144+n.ox+u.x*n.s,y:-135+n.oy+u.y*n.s};}
+function screen(mode,W,H){
+ const A=H-184;let inner='';
+ if(mode==='now'){
+  const m=marks(W,A);
+  inner=`<div class="vis"><div class="mot" style="height:${A}px">${art(W,A)}</div><p class="cp" style="top:51px;left:16px;right:16px">${CP}</p><img class="logo" src="img/yahwa-blue.png" alt="" style="left:3px;top:129px;width:345px"><img class="heart" src="img/heart-tilt.png" alt="" style="left:157px;top:358px;width:57px;height:65px"><i class="mark" style="left:${m.x}px;top:${m.y}px"></i></div>`;
+ }else{
+  const k=Math.max(W/360,A/596),ox=(W-360*k)/2,oy=(A-596*k)/2;
+  const cpIn=mode==='w2'?`<p class="cp" style="top:51px;left:16px;right:16px">${CP}</p>`:'';
+  inner=`<div class="vis"><div class="mot" style="height:${A}px"><div class="stage" style="transform:translate(${ox}px,${oy}px) scale(${k})">${art(360,596)}${cpIn}<img class="logo" src="img/yahwa-blue.png" alt="" style="left:3px;top:129px;width:345px"><img class="heart" src="img/heart-tilt.png" alt="" style="left:157px;top:358px;width:57px;height:65px"><i class="mark" style="left:${HEART.x}px;top:${HEART.y}px"></i></div></div>${mode==='w1'?`<p class="cp" style="top:51px;left:16px;right:16px">${CP}</p>`:''}</div>`;
+ }
+ return `<div class="scr" style="width:${W}px;height:${H}px;transform:scale(${K})">${inner}<div class="sheet"><p class="ch">THE FIRST FRAME</p><span class="bt">우리의 첫 장면 시작하기</span><span class="lk">이미 야화와 함께하고 있어요</span></div></div>`;}
+document.querySelectorAll('.opt[data-mode]').forEach(sec=>{const row=sec.querySelector('.row');row.innerHTML=DEV.map(([W,H,c])=>`<div class="dev"><div class="fit" style="width:${W*K}px;height:${H*K}px" role="img" aria-label="${c} 웰컴 화면">${screen(sec.dataset.mode,W,H)}</div><small>${c}</small></div>`).join('');});
+document.getElementById('mk').onchange=e=>document.body.classList.toggle('show-mark',e.target.checked);
+document.body.classList.add('show-mark');document.getElementById('mk').checked=true;
+</script></body></html>

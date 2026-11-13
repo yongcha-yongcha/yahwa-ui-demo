@@ -78,7 +78,7 @@ async function playSuccess(id){
     done.hidden=false;box.classList.add('is-done');
     tween(done,[{clipPath:`inset(${iy}px ${ix}px round 12px)`,backgroundColor:'var(--otp-fill-bg)'},{clipPath:`inset(0px 0px round ${size/2}px)`,backgroundColor:'var(--otp-done-bg)'}],MOTION.morph,OUT);
     await wait(MOTION.morph-MOTION.checkLead);if(!live())return;
-    tween(check,[{strokeDashoffset:1},{strokeDashoffset:0}],MOTION.check,OUT);
+    tween(check,[{strokeDashoffset:1.01},{strokeDashoffset:0}],MOTION.check,OUT);
     await wait(MOTION.check-MOTION.textLead);if(!live())return;
     showText();
   }

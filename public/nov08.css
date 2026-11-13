@@ -370,7 +370,8 @@ body.cloud-edition .phone{margin:0!important;border-radius:32px;box-shadow:0 8px
 .otp-done[hidden]{display:none}
 /* 24 그리드 아이콘을 48로 키우므로 1.75가 화면에서 3.5px */
 .otp-done svg{display:block;width:var(--otp-check-size);height:var(--otp-check-size);fill:none;stroke:var(--color-fg-inverse);stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
-#otp-check{stroke-dasharray:1;stroke-dashoffset:1}
+/* 숨긴 상태에서 길이 0인 조각이 남으면 iPhone 사파리가 둥근 끝으로 점을 찍어요. 틈을 길이보다 길게(2), 시작을 1.01로 밀어 선이 하나도 걸리지 않게 해요 (2026-11-13) */
+#otp-check{stroke-dasharray:1 2;stroke-dashoffset:1.01}
 .otp-done-text{position:absolute;left:50%;top:calc(100% + var(--otp-done-gap));z-index:2;margin:0;transform:translateX(-50%);white-space:nowrap;color:var(--otp-done-fg);font:500 16px/1.5 var(--font-sans);pointer-events:none}
 .otp-meta{display:flex;justify-content:space-between;align-items:center;gap:var(--space-12);min-height:44px;margin-top:var(--space-4)}
 .otp-meta .ob-error{min-width:0;margin:0;font-size:12px;line-height:1.5}
@@ -1668,8 +1669,12 @@ body.cloud-edition .phone{margin:0!important;border-radius:32px;box-shadow:0 8px
 .xc-tdot{flex:none;align-self:flex-start;width:6px;height:6px;margin:12px 0 0 -2px;border-radius:50%;background:var(--xc-tab-dot)}
 .xc-nw{height:20px;padding:0 6px;border-radius:10px;background:var(--xc-tab-new-bg);color:var(--xc-tab-new-fg);font:600 11px/20px var(--font-sans)}
 
-/* 모바일에서 볼 때는 폰 틀 없이 화면을 꽉 채워요 (2026-11-13). 760보다 좁으면 시연 도구는 폰 아래로 내려가고, 위쪽 화면 칩 줄은 시연 도구의 화면 이동과 같아서 숨겨요 */
+/* 모바일에서 볼 때는 폰 틀 없이 가로를 꽉 채워요 (2026-11-13). 높이는 설계 높이 780을 지키고(짧은 화면은 페이지째 스크롤, 더 긴 화면은 채움). 760보다 좁으면 시연 도구는 폰 아래로 내려가고, 위쪽 화면 칩 줄은 시연 도구의 화면 이동과 같아서 숨겨요 */
 @media(max-width:759px){
 body.cloud-edition>nav.categories{display:none!important}
-body.cloud-edition .phone{width:100%!important;max-width:none!important;height:100vh!important;height:100dvh!important;min-height:600px;border-radius:0!important;box-shadow:none!important}
+body.cloud-edition .phone{width:100%!important;max-width:none!important;height:780px!important;height:max(780px,100dvh)!important;border-radius:0!important;box-shadow:none!important}
 }
+
+/* 웰컴 · 사진 · 로고 · 하트 한 장 묶음 (시안 W1 · 2026-11-13). 크기와 위치는 welcome-fit.js가 정해요 */
+.welcome-stage{position:absolute;left:0;top:0;width:360px;height:596px;transform-origin:0 0;transform:translate(var(--wl-x,0px),var(--wl-y,0px)) scale(var(--wl-k,1))}
+.welcome-stage .welcome-photo-motion{height:100%}
