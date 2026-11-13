@@ -53,6 +53,9 @@ const STEP_FIXED='.ob-top,.ob-progress,.intro-step-gauge,.ob-bottom,.auth-back';
 const STEP_EASE='linear('+Array.from({length:41},(_,i)=>{const t=i/40;return i===40?1:+(1-Math.exp(-9*t)*(1+9*t)).toFixed(4)}).join(',')+')';
 function kind(a,b,hint){
   if(b==='splash'||(b==='welcome'&&a!=='auth'))return 'none';
+  /* 소개 완성 → 인연 홈: 한 장씩 도착 (시안 E1 · 2026-11-13) */
+  /* 앱을 켜서 바로 들어올 때(스플래시 · 로그인 뒤)도 같은 도착 모션. 하단 메뉴로 오갈 때는 아님 */
+  if((a==='complete'||a==='splash'||a==='auth')&&b==='discovery')return 'arrive';
   if(hint)return hint==='tab'?'fade':hint;
   if(STEP_SCREENS.includes(a)&&STEP_SCREENS.includes(b))return 'rise';
   if(INTRO_SCREENS.includes(a)&&INTRO_SCREENS.includes(b))return 'rise';
@@ -153,6 +156,21 @@ function riseSwap(old,next){
   if(exits.length)Promise.all(exits.map(a=>a.finished)).then(()=>{if(pending===token)cleanOld();}).catch(()=>{});else cleanOld();
   queueMicrotask(()=>Promise.all(anims.map(a=>a.finished)).then(()=>{if(pending===token)finish();}).catch(()=>{}));
 }
+/* 소개 완성 → 인연 홈 (시안 E1 “한 장씩 도착”, design-mockups/home-entry/): 완성 화면이 0.26초 동안 12px 위로 옅어지고,
+   제목 줄(16px) → 인연 카드(28px · 0.98→1) → 하단 메뉴(아래에서) 순서로 0.08초 간격 떠올라요. 가입 단계와 같은 튕김 없는 곡선. 약 1초 */
+function arriveSwap(old,next){
+  old.hidden=false;old.style.pointerEvents='none';old.style.zIndex=2;next.style.zIndex=1;
+  const anims=[],add=(el,kf,o)=>{if(el)anims.push(el.animate(kf,{fill:'backwards',...o}));};
+  const out=old.animate([{opacity:1,transform:'none'},{opacity:0,transform:'translateY(-12px)'}],{duration:260,easing:EASE_OUT,fill:'forwards'});anims.push(out);
+  /* .home-head에 변형을 걸면 안의 리프 버튼 기준 위치가 바뀌어 튀어요 → 안쪽 요소에 직접 */next.querySelectorAll(':scope>.home-head>*,:scope>.home-tabs,:scope>#nov-schedule,:scope>#nov-filter').forEach(el=>add(el,[{opacity:0,transform:'translateY(16px)'},{opacity:1,transform:'none'}],{duration:700,delay:80,easing:STEP_EASE}));
+  add(next.querySelector(':scope>.home-grid-scroll'),[{opacity:0,transform:'translateY(28px) scale(.98)'},{opacity:1,transform:'none'}],{duration:800,delay:160,easing:STEP_EASE});
+  add(nav,[{transform:'translateY(calc(100% + 24px))'},{transform:'none'}],{duration:520,delay:320,easing:DRAWER});
+  const cleanOld=()=>{old.hidden=true;old.style.pointerEvents='';old.style.zIndex='';out.cancel();};
+  out.onfinish=cleanOld;
+  const token={anims,clean(){cleanOld();next.style.zIndex='';}};
+  pending=token;
+  Promise.all(anims.map(a=>a.finished)).then(()=>{if(pending===token)finish();}).catch(()=>{});
+}
 window.swapScreens=(prev,name)=>{
   finish();
   const hint=window.__navHint;window.__navHint=null;
@@ -164,6 +182,7 @@ window.swapScreens=(prev,name)=>{
   /* 하단 메뉴 탭끼리(같은 깊이 0)는 애니메이션 없이 바로 바꿔요(시안 “탭 전환 잔상” T2).
      예전에는 옛 화면 위에서 새 화면이 170ms 동안 서서히 나타나 두 화면이 겹쳐 보였어요. 하단 메뉴 캡슐 움직임은 그대로 */
   if(k==='fade'&&(hint==='tab'||(DEPTH[prev]===0&&DEPTH[name]===0)))return;
+  if(k==='arrive'){arriveSwap(old,next);return;}
   if(k==='rise'){riseSwap(old,next);return;}
   if(k==='wrise'){welcomeOut(old,next);return;}
   if(k==='wback'){welcomeIn(old,next);return;}
@@ -198,7 +217,7 @@ dock.innerHTML=`<div class="dock-head"><b>시연 도구</b><span id="dock-title"
 <div class="dock-field"><span>화면 이동</span><div class="dock-screens" id="dock-screen" role="navigation" aria-label="화면 이동"></div></div>
 <section class="dock-context"><h2>이 화면에서 바꿔보기</h2><div class="dock-motion" id="dock-motion"></div><div id="dock-time"></div><div id="dock-lab"></div><p class="dock-empty" id="dock-empty" hidden>이 화면에서 바꿀 조건은 없어요.</p></section>`;
 document.body.append(dock);
-$('dock-motion').append(motion,flow);
+$('dock-motion').append(motion,flow);const launch=$('launch-home');if(launch)$('dock-motion').append(launch);
 if(timeDemo)$('dock-time').append(timeDemo);
 if(lab){$('dock-lab').append(lab);lab.open=true;}
 const sections=lab?[...lab.querySelectorAll('.demo-groups>section')]:[];
@@ -244,7 +263,7 @@ function updateDock(name){
     });
   }
   const timeOn=timeDemo&&!timeDemo.hidden;
-  const motionOn=!motion.hidden||!flow.hidden;
+  const motionOn=!motion.hidden||!flow.hidden||!!($('launch-home')&&!$('launch-home').hidden);
   $('dock-motion').hidden=!motionOn;
   $('dock-empty').textContent=name==='verify-code'?'시연용 인증번호는 123456이에요.':'이 화면에서 바꿀 조건은 없어요.';
   $('dock-empty').hidden=!!(ctx.length||timeOn||motionOn);
@@ -271,11 +290,11 @@ function placeToast(el){
   const cur=typeof active==='string'&&document.getElementById(active);
   const scr=cur&&!cur.hidden?cur:[...phone.querySelectorAll(':scope>.screen:not([hidden]):not(.gnb-layer)')].pop();
   const cands=[...(scr?scr.children:[])];
-  /* 편지 보내기 · 답장처럼 스크롤 칸 안에 붙은 아래 고정 버튼(.lt-dock)도 기준에 넣어요 (2026-11-13) */
-  if(scr)cands.push(...scr.querySelectorAll('.lt-dock'));
+  /* 편지 보내기 · 답장의 아래 고정 버튼(.lt-dock), 글 상세의 이야기 입력 막대(.cx-bar)처럼 스크롤 칸 안에 붙은 아래 영역도 기준에 넣어요 (2026-11-13) */
+  if(scr)cands.push(...scr.querySelectorAll('.lt-dock,.cx-bar'));
   if(!layer.classList.contains('is-off'))cands.push(nav);
   let top=pr.bottom;
-  cands.forEach(n=>{if(!n.getClientRects().length)return;const cs=getComputedStyle(n);if(!/absolute|fixed|sticky/.test(cs.position))return;if(!n.querySelector('button,a,[role=button]'))return;const r=(n.classList.contains('lt-dock')&&n.querySelector('button')||n).getBoundingClientRect();if((r.bottom<pr.bottom-64*z&&!n.classList.contains('ob-bottom'))||r.top<pr.top+pr.height*.4)return;top=Math.min(top,r.top);});
+  cands.forEach(n=>{if(!n.getClientRects().length)return;const cs=getComputedStyle(n);if(!/absolute|fixed|sticky/.test(cs.position))return;if(!n.querySelector('button,a,[role=button]'))return;const r=(n.classList.contains('lt-dock')&&n.querySelector('button')||n.classList.contains('cx-bar')&&n.firstElementChild||n).getBoundingClientRect();if((r.bottom<pr.bottom-64*z&&!n.classList.contains('ob-bottom'))||r.top<pr.top+pr.height*.4)return;top=Math.min(top,r.top);});
   el.style.bottom=Math.round((pr.bottom-top)/z+TOAST_GAP)+'px';
 }
 /* 알림 모션: 아래에서 7px · 90%에서 떠오르며 460ms로 나타나고, 최소 2.8초 머문 뒤 4px 내려가며 380ms로 흐려짐(부드러운 ease-out). 새 알림으로 바뀔 땐 이전 것은 바로 빠짐 */

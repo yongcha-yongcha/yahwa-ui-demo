@@ -1,0 +1,54 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>위쪽 소식 알림</title>
+<style>
+@font-face{font-family:"PJ";src:url(PretendardVariable.woff2) format("woff2");font-weight:100 900}
+:root{--bg:#F4F3EF;--ink:#262C31;--sub:#5F6A72;--line:#E1E0D9;--card:#fff;--chip:#ECEEEF;--pick:#0F766E}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#16181A;--ink:#ECEDEE;--sub:#A2A9AF;--line:#2E3237;--card:#1F2225;--chip:#2A2E33;--pick:#5EEAD4}}
+:root[data-theme="dark"]{--bg:#16181A;--ink:#ECEDEE;--sub:#A2A9AF;--line:#2E3237;--card:#1F2225;--chip:#2A2E33;--pick:#5EEAD4}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.65 "PJ",system-ui,sans-serif;word-break:keep-all}
+main{max-width:1240px;margin:0 auto;padding:40px 20px 96px}h1{font-size:26px;margin:0 0 8px}.lead{color:var(--sub);margin:0 0 20px;max-width:880px}
+.opt{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;margin-top:16px}.opt h3{margin:0 0 6px;font-size:16px;display:flex;gap:8px;align-items:center}
+.tag{font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;background:var(--chip);color:var(--sub)}.tag.rec{color:var(--pick)}
+.row{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start}figure{margin:0;flex:0 1 330px;min-width:0}figcaption{font-size:12.5px;color:var(--sub);margin-top:8px}
+.desc{flex:1 1 320px;font-size:14px;color:var(--sub)}.desc p{margin:0 0 8px}.desc b{color:var(--ink)}
+.trig{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 0}.trig button{min-height:40px;padding:0 14px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);font:600 13px "PJ";cursor:pointer}
+.trig button:focus-visible{outline:2px solid var(--pick);outline-offset:2px}
+/* 폰 */
+.ph{position:relative;width:100%;max-width:330px;aspect-ratio:360/780;overflow:hidden;border-radius:36px;background:#F8F9F6;color-scheme:light;box-shadow:0 0 0 1px rgba(0,0,0,.06),0 14px 32px rgba(0,0,0,.08);font-family:"PJ"}
+.ph .bg{display:block;width:100%;height:100%;object-fit:cover}
+.nb{position:absolute;left:12px;right:12px;top:12px;z-index:5;pointer-events:none}
+.n{pointer-events:auto;cursor:pointer;transform:translateY(-130%);opacity:0;transition:transform 420ms cubic-bezier(.32,.72,0,1),opacity 240ms ease}
+.n.in{transform:none;opacity:1}
+.n.out{transform:translateY(-130%);opacity:0;transition:transform 300ms cubic-bezier(.32,.72,0,1),opacity 200ms ease}
+/* T1 카드 */
+.t1 .n{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:18px;background:rgba(255,255,255,.86);-webkit-backdrop-filter:blur(16px) saturate(160%);backdrop-filter:blur(16px) saturate(160%);box-shadow:0 0 0 1px rgba(57,68,77,.06),0 10px 28px rgba(57,68,77,.16);color:#39444D}
+.ico{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:50%}.ico svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round}
+.ico.talk{background:#D6EAF8;color:#245D7E}.ico.ex{background:#F6E9EC;color:#7D3749}.ico.ok{background:#E3F4EE;color:#2F6B57}
+.t1 .tx{flex:1;min-width:0}.t1 .tx b{display:block;font:600 14px/1.4 "PJ"}.t1 .tx q{display:block;margin-top:2px;font:400 12px/1.5 "PJ";color:#69757E;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;quotes:none}
+.t1 .tm{flex:none;align-self:flex-start;font:400 11px/1.4 "PJ";color:#818C94;margin-top:2px}
+.grab{position:absolute;left:50%;bottom:5px;width:32px;height:4px;margin-left:-16px;border-radius:2px;background:rgba(57,68,77,.16)}
+/* T2 알약 */
+.t2 .nb{display:flex;justify-content:center;top:16px}
+.t2 .n{display:inline-flex;align-items:center;gap:8px;max-width:100%;padding:9px 8px 9px 14px;border-radius:999px;background:#39444D;color:#fff;font:500 13px/1.4 "PJ";box-shadow:0 8px 20px rgba(0,0,0,.18)}
+.t2 .n .dot{flex:none;width:8px;height:8px;border-radius:50%;background:#CF5C65}
+.t2 .n span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t2 .n em{flex:none;font-style:normal;font-weight:600;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.16)}
+.chr{width:14px;height:14px;fill:currentColor}
+@media (prefers-reduced-motion:reduce){.n,.n.out{transform:none;transition:opacity 200ms ease}}
+@media (prefers-reduced-transparency:reduce){.t1 .n{background:#fff;-webkit-backdrop-filter:none;backdrop-filter:none}}
+</style></head><body><main>
+<h1>소식이 왔을 때 · 위에서 내려오는 알림</h1>
+<p class="lead">내 글에 댓글이 달리거나, 프로필 교환 요청이 오거나 수락됐을 때 지금은 아무 표시 없이 쌓이기만 해요. 화면 위에서 내려오는 알림으로 바로 알려 주는 시안이에요. 앱은 아직 바꾸지 않았어요. 폰 아래 버튼을 누르면 실제처럼 내려와요.</p>
+<section class="opt"><h3>T1 · 위에서 내려오는 소식 카드 <span class="tag rec">추천</span></h3>
+<div class="row"><figure><div class="ph t1" data-v="t1"><img class="bg" src="img/bg.jpg" alt="커뮤니티 목록 화면"><div class="nb" role="status" aria-live="polite"></div></div><div class="trig" data-for="t1"><button type="button" data-k="talk">댓글 오기</button><button type="button" data-k="ex">교환 요청 오기</button><button type="button" data-k="ok">교환 수락</button></div></figure>
+<div class="desc"><p><b>“새로운 소식”의 한 줄과 같은 모양</b>이 화면 위 12에서 내려와요. 종류 아이콘 40(댓글 하늘 · 교환 로즈 · 수락 민트) + 문장 14 굵게 + 무엇에 대한 소식인지 12 + “방금”. 반투명 흰 카드(흐림 16)라 아래 화면이 살짝 비쳐요.</p><p><b>누르면 바로 그곳으로</b> 가요. 댓글은 그 글의 이야기 칸, 교환 요청은 받은 요청, 수락은 교환 기록. 4초 뒤 위로 사라지고, 위로 밀어도 닫혀요(아래 손잡이).</p><p><b>아래 알림과 겹치지 않아요.</b> “요청을 보냈어요” 같은 내 행동의 결과는 지금처럼 아래, 남이 보낸 소식은 위. 위치로 종류가 구분돼요.</p><p>지금 그 글을 보고 있으면 카드는 띄우지 않고 새 댓글만 연한 하늘로 한 번 반짝여요. 여러 개가 겹치면 마지막 것만 보이고 “외 N개”를 붙여요.</p></div></div></section>
+<section class="opt"><h3>T2 · 위쪽 작은 알약</h3>
+<div class="row"><figure><div class="ph t2" data-v="t2"><img class="bg" src="img/bg.jpg" alt="커뮤니티 목록 화면"><div class="nb" role="status" aria-live="polite"></div></div><div class="trig" data-for="t2"><button type="button" data-k="talk">댓글 오기</button><button type="button" data-k="ex">교환 요청 오기</button><button type="button" data-k="ok">교환 수락</button></div></figure>
+<div class="desc"><p>지금 아래 알림과 같은 진한 알약을 위쪽 가운데에 띄우고, 빨간 점 + 한 줄 + “보기”를 붙여요. 가장 작고 조용하지만, 무엇에 대한 소식인지(어떤 글 · 어떤 댓글)는 담기 어렵고 아래 알림과 모양이 같아 구분이 약해요.</p></div></div></section>
+</main><script>
+const M={talk:['talk',`<svg viewBox="0 0 48 48" aria-hidden="true" style="stroke-width:2.7"><path d="M16 20H32M16 26H26M8 12C18.6667 9.33333 29.3333 9.99999 40 14V32L26 34L14 42V34L8 32V12Z"/></svg>`,'내 글에 댓글이 달렸어요','“이야기가 반가워요. 오늘도 좋은 하루 보내세요.”','댓글'],ex:['ex',`<svg viewBox="0 0 24 24" aria-hidden="true" style="stroke-width:1.6"><path d="M8 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0M4 21c0-9 16-9 16 0"/></svg>`,'프로필 교환 요청이 왔어요','“산책 이야기가 반가웠어요.”','요청'],ok:['ok',`<svg viewBox="0 0 24 24" aria-hidden="true" style="stroke-width:1.6"><path d="M8 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0M4 21c0-9 16-9 16 0"/></svg>`,'프로필 교환이 수락됐어요','이야기에서 시작한 인연에서 볼 수 있어요','수락']};
+function show(v,k){const ph=document.querySelector('.ph.'+v),nb=ph.querySelector('.nb');const [c,ic,t,q,short]=M[k];nb.querySelector('.n')?.remove();const el=document.createElement('div');el.className='n';el.tabIndex=0;
+ el.innerHTML=v==='t1'?`<span class="ico ${c}">${ic}</span><span class="tx"><b>${t}</b><q>${q}</q></span><time class="tm">방금</time><i class="grab"></i>`:`<i class="dot"></i><span>${t}</span><em>보기</em>`;
+ nb.append(el);requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('in')));const hide=()=>{el.classList.add('out');setTimeout(()=>el.remove(),320);};const tm=setTimeout(hide,4000);el.onclick=()=>{clearTimeout(tm);hide();};}
+document.querySelectorAll('.trig').forEach(g=>g.addEventListener('click',e=>{const b=e.target.closest('[data-k]');if(b)show(g.dataset.for,b.dataset.k);}));
+setTimeout(()=>{show('t1','talk');show('t2','talk');},500);
+</script></body></html>

@@ -98,8 +98,8 @@ function enhanceFeatureChoices(){body.querySelectorAll('select').forEach(source=
  });}
 function select(label,id,opts,value){return `<label>${label}<select id="${id}">${opts.map(v=>`<option ${v===value?'selected':''}>${esc(v)}</option>`).join('')}</select></label>`;}
 function title(t,sub=''){return `<h1>${t}</h1>${sub?`<p class="fx-note">${sub}</p>`:''}`;}
-function navTo(v,c={},push=true){if(push)stack.push({view,context,active});view=v;context=c;window.__fxView=v;window.__navHint=['community','places','story-match'].includes(v)?'tab':(push?'push':'fade');show('features');body.scrollTop=0;}
-$('fx-back').onclick=()=>{const prev=stack.pop();window.__navHint='pop';if(prev?.active==='features'){view=prev.view;context=prev.context;window.__fxView=view;show('features');}else show(prev?.active||'mypage');};
+function navTo(v,c={},push=true){if(push)stack.push({view,context,active,scroll:active==='features'?body.scrollTop:0});view=v;context=c;window.__fxView=v;window.__navHint=['community','places','story-match'].includes(v)?'tab':(push?'push':'fade');show('features');body.scrollTop=0;}
+$('fx-back').onclick=()=>{const prev=stack.pop();window.__navHint='pop';if(prev?.active==='features'){view=prev.view;context=prev.context;window.__fxView=view;show('features');/* 뒤로 오면 눌렀던 자리로 (2026-11-13) */const y=prev.scroll||0;body.scrollTop=y;requestAnimationFrame(()=>{body.scrollTop=y;});}else show(prev?.active||'mypage');};
 syncAppNav=function(name){if(name!=='features'){baseNav(name);document.querySelectorAll('[data-feature-tab]').forEach(b=>b.removeAttribute('aria-current'));return;}document.querySelectorAll('.screen').forEach(el=>el.classList.remove('has-app-nav'));if(['prefs','story-match','post','letter','compose-letter','profile-edit'].includes(view)){document.querySelectorAll('.home-nav button').forEach(b=>b.removeAttribute('aria-current'));return;}page.classList.add('has-app-nav');const current=['community','post','compose-post','exchange','exchange-release-confirm','activity','notifications','community-guide'].includes(view)?'community':['places','shop','coupons','coupon-detail','coupon-confirm','place-help'].includes(view)?'places':['letter','compose-letter','letter-decline'].includes(view)?'chats':'mypage';document.querySelectorAll('.home-nav button').forEach(b=>{if((b.dataset.featureTab||b.dataset.go)===current)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});};
 const nav=document.querySelector('.home-nav');for(const [key,label,paths] of [['community','커뮤니티','M4 5h16v12H9l-5 4V5M8 9h8M8 13h5'],]){const b=document.createElement('button');b.dataset.featureTab=key;b.setAttribute('aria-label',label);b.title=label;b.innerHTML=`<span class="nav-symbol"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${paths}"/></svg></span>`;b.onclick=()=>navTo(key);nav.insertBefore(b,nav.lastElementChild);}
 show=function(name){if(name!=='features'||view!=='places')disposeMap();document.querySelector('.phone').classList.toggle('fx-gray',!!state.gray&&['discovery','match-profile','heartbox','chats','letter-chat','features','mypage'].includes(name));if(name==='match-profile'&&state.reviewStatus==='pending'){navTo('profile-review');return;}if(name==='match-profile'&&(!state.visible||state.blocks.includes(matchIndex))){toast(state.visible?'차단한 사용자예요.':'인연 공개를 다시 켜면 볼 수 있어요.');return;}baseShow(name);if(name==='features'){ $('screen-label').textContent='기능 확장 · UI 시연';render();}if(name==='discovery')drawRelease();if(name==='mypage')renderMyPage();if(name==='chats')renderChatList();if(name==='match-profile'){let more=document.querySelector('.fx-profile-more');if(!more){more=document.createElement('button');more.type='button';more.className='fx-profile-more';more.innerHTML='<span class="ic ic-more-horizontal" aria-hidden="true"></span>';more.setAttribute('aria-label','프로필 더보기');more.setAttribute('aria-haspopup','dialog');more.setAttribute('aria-expanded','false');document.querySelector('#match-profile .ob-top').append(more);}more.onclick=()=>personSheet(matchIndex);}persist();};
@@ -323,7 +323,7 @@ simulations.addEventListener('click',e=>{const b=e.target.closest('button');if(!
  if(b.dataset.demoGo){show(b.dataset.demoGo);return;}if(b.dataset.featureDemo){navTo(b.dataset.featureDemo);return;}
  if(b.hasAttribute('data-demo-restore')){if(!simulationUndo)return;state=JSON.parse(simulationUndo.state);offset=simulationUndo.offset;openedMatches.clear();simulationUndo.opened.forEach(i=>openedMatches.add(i));simulationUndo=null;persist();refreshDemoView();$('demo-result').textContent='마지막 시연을 되돌렸어요. 시연 버튼을 누르기 직전 상태예요.';return;}
  const cmd=b.dataset.sim;if(!cmd||b.disabled)return;
- simulationUndo={state:JSON.stringify(state),offset,opened:[...openedMatches]};let result='';
+ simulationUndo={state:JSON.stringify(state),offset,opened:[...openedMatches]};let result='';const ntBefore=state.notifications[0];
  if(cmd==='profile-pending'||cmd==='profile-approved'){state.reviewStatus=cmd==='profile-pending'?'pending':'approved';result=cmd==='profile-pending'?'프로필을 검토 중으로 바꿨어요. 인연홈에서 대기 안내를 확인하세요.':'프로필 승인을 완료했어요. 인연홈에서 카드를 열 수 있어요.';}
  else if(cmd==='cert-approve'||cmd==='cert-reject'){const x=state.credentials.find(x=>x.status==='검토 중');if(!x)return;x.status=cmd==='cert-approve'?'시연 승인':'다시 확인 필요';x.reason=cmd==='cert-reject'?'정보가 불명확해요. 내용을 확인하고 다시 제출해주세요.':'';result=cmd==='cert-approve'?'인증이 승인됐어요. 마이페이지에서 배지를 확인하세요.':'보완 요청을 보냈어요. 인증 관리에서 사유를 확인하세요.';}
  else if(cmd==='read'||cmd==='reply'){const l=state.letters.find(l=>l.direction==='out'&&!['기간 만료','거절','리프 반환'].includes(R.status(l,now()))&&!l.connectedAt);if(!l)return;l.readAt=l.readAt||now();if(cmd==='reply'){l.connectedAt=now();l.reply='이야기를 나눠보고 싶어요. 반가워요!';l.contact={k:'yahwa_demo_reply',t:''};state.notifications.unshift({text:'편지 답장이 도착했어요.',letter:l.id,at:now()});}result=cmd==='reply'?'답장이 도착했어요. 편지함에서 답장과 공개된 연락처를 확인하세요.':'상대가 편지를 읽었어요. 편지함에서 읽음 상태를 확인하세요.';}
@@ -331,6 +331,7 @@ simulations.addEventListener('click',e=>{const b=e.target.closest('button');if(!
  else if(cmd==='comment'){const p=state.posts.find(p=>p.author==='me');if(!p)return;p.comments.push({id:uid(),author:8,body:'이야기가 반가워요. 오늘도 좋은 하루 보내세요.',at:now()});state.notifications.unshift({text:'내 글에 댓글이 달렸어요.',post:p.id,at:now()});result='내 글에 댓글이 도착했어요. 커뮤니티 알림에서 열어보세요.';}
  else if(cmd==='3'||cmd==='7'){offset+=Number(cmd)*R.DAY;R.expire(state,now());refreshBatch();result=cmd+'일 뒤로 이동했어요. 편지함·쿠폰함에서 만료 상태를 확인하세요. 되돌리기로 복구할 수 있어요.';}
  persist();refreshDemoView();$('demo-result').innerHTML=esc(result).replace(/→/g,'<i class="ic ic-inline ic-arrow-right-small" aria-hidden="true"></i>');
+ /* 남이 보낸 소식이 새로 쌓였으면 위에서 알려요 (시안 T1) */if(state.notifications[0]&&state.notifications[0]!==ntBefore)topNotice(state.notifications[0]);
 });
 document.addEventListener('click',()=>queueMicrotask(updateDemoControls));
 // Time buttons follow the current batch order, including after simulated date changes.
@@ -528,6 +529,26 @@ const HEAD_ICONS={info:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="
 const NT_IC={talk:'<svg viewBox="0 0 48 48" aria-hidden="true" style="stroke-width:2.7"><path d="M16 20H32M16 26H26M8 12C18.6667 9.33333 29.3333 9.99999 40 14V32L26 34L14 42V34L8 32V12Z"/></svg>',ex:'<svg viewBox="0 0 24 24" aria-hidden="true" style="stroke-width:1.6"><path d="M8 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0M4 21c0-9 16-9 16 0"/></svg>',lt:'<svg viewBox="0 0 24 24" aria-hidden="true" style="stroke-width:1.6"><path d="M3 6.5h18v11H3zM3.5 7l8.5 6 8.5-6"/></svg>'};
 function ntDay(t){const k=x=>new Date(x+9*3600000).toISOString().slice(0,10);return k(t);}
 function ntWhen(t){const d=(now()-t)/86400000,a=ntDay(now()),b=ntDay(t);if(a===b)return xcAgo(t);if(ntDay(now()-86400000)===b)return '어제';if(d<7)return Math.max(2,Math.floor(d))+'일 전';const x=new Date(t+9*3600000);return (x.getUTCMonth()+1)+'월 '+x.getUTCDate()+'일';}
+/* ── 위에서 내려오는 소식 (시안 T1 “소식 카드” · 2026-11-13, design-mockups/top-notice/) ──
+   남이 보낸 소식(댓글 · 교환 요청 · 수락 · 편지 답장)만 위에서, 내 행동의 결과는 지금처럼 아래 알림. 누르면 그곳으로, 4초 뒤 · 위로 밀면 닫혀요.
+   지금 그 글을 보고 있으면 카드 대신 새 이야기를 한 번 반짝여요. */
+let tnTimer=0,tnCount=0;
+function tnKind(n){return n.post||/댓글/.test(n.text||'')?'talk':n.letter||/편지/.test(n.text||'')?'lt':/수락/.test(n.text||'')?'ok':'ex';}
+function tnAbout(n){if(n.post){const p=state.posts.find(x=>x.id===n.post),last=p?.comments?.[p.comments.length-1];return last?'“'+last.body.split('\n')[0]+'”':p?'“'+p.body.split('\n')[0]+'”':'';}if(n.letter){const l=state.letters?.find(x=>x.id===n.letter),m=l&&demoMatches[l.person];return (m?m.name+' · ':'')+'편지함에서 이어서 읽어요';}return /수락/.test(n.text||'')?'이야기에서 시작한 인연에서 볼 수 있어요':'이야기에서 시작한 인연에서 답할 수 있어요';}
+function topNotice(n){
+ if(active==='features'&&view==='post'&&n.post&&context.id===n.post){n.read=true;persist();render();const p=state.posts.find(x=>x.id===n.post),last=p?.comments?.[p.comments.length-1],el=last&&document.getElementById('cmt-'+last.id);if(el){el.classList.add('is-new');el.scrollIntoView({block:'nearest',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});setTimeout(()=>el.classList.remove('is-new'),1600);}return;}
+ const phone=document.querySelector('.phone');let host=phone.querySelector('.yh-notice-host');if(!host){host=document.createElement('div');host.className='yh-notice-host';phone.append(host);}
+ const prev=host.querySelector('.yh-notice:not(.is-out)');tnCount=prev?tnCount+1:0;prev?.remove();clearTimeout(tnTimer);
+ const k=tnKind(n),icon=NT_IC[k==='ok'?'ex':k],el=document.createElement('button');el.type='button';el.className='yh-notice';el.setAttribute('role','status');
+ el.innerHTML='<span class="nt-ico is-'+k+'">'+icon+'</span><span class="yh-notice-t"><b>'+esc(n.text.replace(/\.$/,''))+(tnCount?' <small>외 '+tnCount+'개</small>':'')+'</b><q>'+esc(tnAbout(n))+'</q></span><time>방금</time><i class="yh-notice-grab" aria-hidden="true"></i>';
+ host.append(el);requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('is-in')));
+ const hide=()=>{if(el.classList.contains('is-out'))return;el.classList.add('is-out');el.classList.remove('is-in');setTimeout(()=>el.remove(),320);};
+ tnTimer=setTimeout(hide,4000);let y0=null,moved=false;
+ el.addEventListener('pointerdown',e=>{y0=e.clientY;moved=false;});
+ el.addEventListener('pointermove',e=>{if(y0==null)return;const dy=e.clientY-y0;if(dy<-6){moved=true;el.style.transform='translateY('+Math.max(dy,-80)+'px)';}});
+ el.addEventListener('pointerup',e=>{const dy=y0==null?0:e.clientY-y0;y0=null;if(dy<-24){el.style.transform='';clearTimeout(tnTimer);hide();}else el.style.transform='';});
+ el.addEventListener('click',()=>{if(moved)return;clearTimeout(tnTimer);hide();const i=state.notifications.indexOf(n);if(i>=0)action('notice-open:'+i);});
+}
 function notificationsView(){const req=state.requests.filter(r=>r.direction==='in'&&r.status==='received'&&!state.blocks.includes(r.person)).length;
  const pin=req?'<button type="button" class="nt-pin" data-fx="exchange"><span class="nt-ico is-ex">'+NT_IC.ex+'</span><span class="nt-pin-t"><b>프로필 교환 요청</b><small>이야기에서 시작한 인연</small></span><span class="nt-count">'+req+'</span>'+chev('r','md')+'</button>':'';
  const list=state.notifications.map((n,i)=>({n,i})).sort((a,b)=>(b.n.at||0)-(a.n.at||0));
@@ -702,7 +723,7 @@ function cxReqState(person){const r=state.requests.filter(r=>r.person===person).
 function cxReqButton(person){const st=cxReqState(person),HS='<svg class="cx-xs" viewBox="0 0 48 48" aria-hidden="true"><path d="M8.00003 24C1.00003 10 17 5.00001 23 19C30 1.33514e-05 46 8.00001 37 23C31.6667 29.6667 23.3334 35.3333 12 40C20 32.6667 30.3334 29.3333 43 30"/></svg>';
  if(st==='sent')return '<button type="button" class="cx-xreq is-wait" disabled><span class="cx-xl"><i class="cx-dot"></i>수락 기다리는 중</span></button>';
  if(st==='done')return '<button type="button" class="cx-xreq is-done" data-fx="exchange"><span class="cx-xl">교환한 사이예요</span></button>';
- if(st==='received')return '<button type="button" class="cx-xreq" data-fx="exchange"><span class="cx-xl">'+HS+'요청이 와 있어요</span></button>';
+ if(st==='received')return '<button type="button" class="cx-xreq is-rcv" data-fx="exchange" aria-label="받은 프로필 교환 요청 보기"><i class="cx-xbd" aria-hidden="true"></i><span class="cx-xl">'+HS+'요청이 와 있어요'+chev('r','sm')+'</span></button>';
  return '<button type="button" class="cx-xreq" data-cx="req:'+person+'"><span class="cx-xl">'+HS+'프로필 교환 요청</span></button>';}
 function postDetailView(c){const p=state.posts.find(p=>p.id===c.id);if(!p)return title('삭제된 이야기예요.');
  const mine=p.author==='me',list=cxVisibleComments(p),top=list.filter(x=>!x.parent||!list.some(y=>y.id===x.parent)),kids=id=>list.filter(x=>x.parent===id);

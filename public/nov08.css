@@ -1147,6 +1147,12 @@ body.cloud-edition .phone{margin:0!important;border-radius:32px;box-shadow:0 8px
 .cx-xs{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
 .cx-xreq.is-wait{background:color-mix(in srgb,var(--color-bg-accent-soft) 45%,transparent);cursor:default}
 .cx-xreq.is-done{box-shadow:inset 0 0 0 1px var(--color-border-default);color:var(--color-fg-secondary)}
+/* 받은 요청 (시안 R1 · 2026-11-13, design-mockups/exchange-received/): 로즈 채움 + 알림 점 + 꺾쇠 */
+.cx-xreq.is-rcv{position:relative;overflow:visible;background:var(--color-bg-love-soft);box-shadow:none;color:var(--color-fg-love-strong)}
+.cx-xreq.is-rcv .chev{width:14px;height:14px;margin:0 -4px 0 -2px;color:currentColor}
+.cx-xbd{position:absolute;right:-2px;top:-2px;width:var(--gnb-badge-size);height:var(--gnb-badge-size);border-radius:50%;background:var(--gnb-badge-bg);box-shadow:0 0 0 2px var(--color-bg-page);animation:cxBadgePop 520ms cubic-bezier(0.34, 1.56, 0.64, 1) both}
+@keyframes cxBadgePop{from{transform:scale(0)}to{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.cx-xbd{animation:none}}
 .cx-dot{width:6px;height:6px;border-radius:3px;background:var(--color-fg-accent);animation:cxBreath 1.6s ease-in-out infinite}
 @keyframes cxBreath{50%{opacity:.3}}
 .cx-plane{position:absolute;z-index:70;width:18px;height:18px;fill:none;stroke:var(--color-fg-accent);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
@@ -1576,6 +1582,24 @@ body.cloud-edition .phone{margin:0!important;border-radius:32px;box-shadow:0 8px
 .nt-ico.is-talk{background:var(--sky-100);color:var(--color-fg-accent-strong)}
 .nt-ico.is-ex{background:var(--color-bg-love-soft);color:var(--color-fg-love-strong)}
 .nt-ico.is-lt{background:var(--mint-50);color:var(--mint-700)}
+.nt-ico.is-ok{background:var(--mint-50);color:var(--mint-700)}
+/* 위에서 내려오는 소식 (시안 T1 · 2026-11-13) — 남이 보낸 소식은 위, 내 행동의 결과는 아래 알림 */
+.yh-notice-host{position:absolute;left:var(--space-12);right:var(--space-12);top:var(--space-12);z-index:60;pointer-events:none}
+.yh-notice{position:relative;display:flex;align-items:center;gap:var(--space-12);width:100%;margin:0;padding:var(--space-12) 14px;border:0;border-radius:18px;background:color-mix(in srgb,var(--color-bg-surface) 86%,transparent);-webkit-backdrop-filter:blur(16px) saturate(160%);backdrop-filter:blur(16px) saturate(160%);box-shadow:0 0 0 1px color-mix(in srgb,var(--color-shadow-default) 6%,transparent),0 10px 28px color-mix(in srgb,var(--color-shadow-default) 16%,transparent);color:var(--color-fg-primary);text-align:left;cursor:pointer;pointer-events:auto;touch-action:none;-webkit-tap-highlight-color:transparent;transform:translateY(-130%);opacity:0;transition:transform 420ms cubic-bezier(.32,.72,0,1),opacity 240ms ease}
+.yh-notice.is-in{transform:none;opacity:1}
+.yh-notice.is-out{transform:translateY(-130%);opacity:0;transition:transform 300ms cubic-bezier(.32,.72,0,1),opacity 200ms ease}
+.yh-notice:active{scale:.98}
+.yh-notice:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:2px}
+.yh-notice-t{flex:1;min-width:0}
+.yh-notice-t b{display:block;font:600 14px/1.4 var(--font-sans)}
+.yh-notice-t b small{font:500 12px/1 var(--font-sans);color:var(--color-fg-muted);margin-left:2px}
+.yh-notice-t q{display:block;margin-top:2px;font:400 12px/1.5 var(--font-sans);color:var(--color-fg-tertiary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;quotes:none}
+.yh-notice time{flex:none;align-self:flex-start;margin-top:2px;font:400 11px/1.4 var(--font-sans);color:var(--color-fg-muted)}
+.yh-notice-grab{position:absolute;left:50%;bottom:5px;width:32px;height:4px;margin-left:-16px;border-radius:2px;background:color-mix(in srgb,var(--color-shadow-default) 16%,transparent)}
+.cx-cmt.is-new{border-radius:12px;animation:cxNewFlash 1.6s ease-out}
+@keyframes cxNewFlash{0%,30%{background:var(--sky-50)}100%{background:transparent}}
+@media (prefers-reduced-motion:reduce){.yh-notice,.yh-notice.is-out{transform:none;transition:opacity 200ms ease}.cx-cmt.is-new{animation:none;background:var(--sky-50)}}
+@media (prefers-reduced-transparency:reduce){.yh-notice{background:var(--color-bg-surface);-webkit-backdrop-filter:none;backdrop-filter:none}}
 .nt-tx{flex:1;min-width:0}
 .nt-tx b{display:block;font:400 14px/1.45 var(--font-sans);color:var(--color-fg-secondary)}
 .is-unread .nt-tx{padding-right:16px}.is-unread .nt-tx b{font-weight:600;color:var(--color-fg-primary)}
@@ -1602,3 +1626,6 @@ body.cloud-edition .phone{margin:0!important;border-radius:32px;box-shadow:0 8px
 #letter-chat #chat-form::before{content:"";position:absolute;left:calc(var(--layout-gutter) * -1);right:calc(var(--layout-gutter) * -1);bottom:0;height:calc(100% + 40px);z-index:-1;pointer-events:none;background:linear-gradient(color-mix(in srgb,var(--color-bg-page) 0%,transparent),var(--color-bg-page) 40px)}
 @media (prefers-reduced-transparency:reduce){#letter-chat .ob-top::before{-webkit-backdrop-filter:none;backdrop-filter:none;background:linear-gradient(var(--sky-50) 0%,var(--paper) 60%,color-mix(in srgb,var(--paper) 0%,transparent) 100%)}}
 @media (prefers-reduced-motion:reduce){#letter-chat .ob-top::before{transition:none}}
+
+/* 공유 링크(Artifact)는 페이지에 img{max-width:100%}를 깔아요. 웰컴 사진처럼 칸보다 크게(140%) 그린 이미지가 줄어들지 않게 앱 안 이미지는 원래대로 (2026-11-13) */
+.phone img{max-width:none}

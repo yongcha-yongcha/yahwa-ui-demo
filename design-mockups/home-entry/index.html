@@ -1,0 +1,54 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>인연 홈 입장 모션</title>
+<style>
+@font-face{font-family:"PJ";src:url(PretendardVariable.woff2) format("woff2");font-weight:100 900}
+:root{--bg:#F4F3EF;--ink:#262C31;--sub:#5F6A72;--line:#E1E0D9;--card:#fff;--chip:#ECEEEF;--pick:#0F766E}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#16181A;--ink:#ECEDEE;--sub:#A2A9AF;--line:#2E3237;--card:#1F2225;--chip:#2A2E33;--pick:#5EEAD4}}
+:root[data-theme="dark"]{--bg:#16181A;--ink:#ECEDEE;--sub:#A2A9AF;--line:#2E3237;--card:#1F2225;--chip:#2A2E33;--pick:#5EEAD4}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.65 "PJ",system-ui,sans-serif;word-break:keep-all}
+main{max-width:1240px;margin:0 auto;padding:40px 20px 96px}h1{font-size:26px;margin:0 0 8px}.lead{color:var(--sub);margin:0 0 16px;max-width:880px}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0 12px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.tg{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--sub)}.tg input{width:18px;height:18px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:16px}
+.opt{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;min-width:0}
+.opt h3{margin:0 0 10px;font-size:16px;display:flex;gap:8px;align-items:center}.tag{font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;background:var(--chip);color:var(--sub)}.tag.rec{color:var(--pick)}
+.opt p{margin:12px 0 0;font-size:13.5px;color:var(--sub)}.opt p b{color:var(--ink)}
+.play{display:block;margin:12px auto 0;min-height:40px;padding:0 16px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);font:600 13px "PJ";cursor:pointer}
+.play:focus-visible{outline:2px solid var(--pick);outline-offset:2px}
+.ph{position:relative;width:100%;max-width:300px;margin:0 auto;aspect-ratio:720/1560;overflow:hidden;border-radius:32px;background:linear-gradient(#ECF5FC,#F8F9F6 28%);box-shadow:0 0 0 1px rgba(0,0,0,.06),0 14px 32px rgba(0,0,0,.08);cursor:pointer}
+.ph img{position:absolute;left:0;width:100%;display:block;pointer-events:none}
+.ph .home{top:0;height:100%}
+.ph .s-top,.ph .s-card,.ph .s-bot{top:0;height:100%}.ph .s-top{clip-path:inset(0 0 84.6% 0)}.ph .s-card{clip-path:inset(15.4% 0 16% 0)}.ph .s-bot{clip-path:inset(84% 0 0 0)}.ph .s-rest{clip-path:inset(0 0 16% 0)}
+.ph .done{top:0;height:100%;z-index:3}
+.hint{position:absolute;left:50%;bottom:5.5%;z-index:4;transform:translateX(-50%);width:84%;height:7%;border-radius:12px;box-shadow:0 0 0 2px rgba(15,118,110,.0);pointer-events:none}
+</style></head><body><main>
+<h1>소개 완성 → 인연 홈 입장 모션</h1>
+<p class="lead">“오늘의 인연 만나보기”를 누르면 지금은 인연 홈이 그냥 바뀌어 나타나요. 처음 인연을 만나는 순간이라, 화면이 한 장씩 도착하듯 부드럽게 들어오게 하는 시안이에요. 앱은 아직 바꾸지 않았어요. 폰을 누르거나 “다시 보기”를 누르면 재생돼요. 폰 화면은 실제 앱을 찍은 거예요.</p>
+<div class="bar"><label class="tg"><input type="checkbox" id="slow"> 느리게 보기 (×3)</label><button type="button" class="play" id="all" style="margin:0">셋 다 재생</button></div>
+<div class="opts">
+<section class="opt"><h3>E1 · 한 장씩 도착 <span class="tag rec">추천</span></h3><div class="ph" data-e="e1"><img class="s-top" src="img/home.jpg" alt=""><img class="s-card" src="img/home.jpg" alt="인연 홈 카드"><img class="s-bot" src="img/home.jpg" alt=""><img class="done" src="img/complete.jpg" alt="소개 완성 화면"></div><button type="button" class="play" data-e="e1">다시 보기</button>
+<p><b>완성 화면이 살짝 위로 옅어지고(0.26초)</b>, 인연 홈이 위에서부터 차례로 떠올라요. 제목(16px) → 인연 카드(28px · 0.98에서 1로) → 하단 메뉴(아래에서 밀려 올라옴), 각 0.08초 간격. 가입 단계에서 내용이 떠오르던 것과 같은 튕김 없는 곡선이라 흐름이 이어져요. 전체 약 1초.</p></section>
+<section class="opt"><h3>E2 · 현상되듯 선명해지기</h3><div class="ph" data-e="e2"><img class="home s-rest" src="img/home.jpg" alt="인연 홈"><img class="s-bot" src="img/home.jpg" alt=""><img class="done" src="img/complete.jpg" alt="소개 완성 화면"></div><button type="button" class="play" data-e="e2">다시 보기</button>
+<p>완성 화면이 옅어지는 동안 인연 홈 전체가 살짝 흐리고 밝은 상태(흐림 8 · 1.04배)에서 선명해지며 자리 잡아요. 필름이 현상되는 느낌이라 웰컴 사진 모션과 어울리지만, 흐림 효과라 낮은 사양 폰에서는 끊길 수 있어요.</p></section>
+<section class="opt"><h3>E3 · 조용한 교차 페이드</h3><div class="ph" data-e="e3"><img class="home" src="img/home.jpg" alt="인연 홈"><img class="done" src="img/complete.jpg" alt="소개 완성 화면"></div><button type="button" class="play" data-e="e3">다시 보기</button>
+<p>두 화면을 0.32초 동안 겹쳐 바꿔요. 가장 단순하고 빠르지만, 지금과 차이가 작아 “도착했다”는 느낌은 약해요.</p></section>
+</div>
+</main><script>
+const EO='cubic-bezier(.23,1,.32,1)',DR='cubic-bezier(.32,.72,0,1)';
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const k=()=>document.getElementById('slow').checked?3:1;
+function play(e){const ph=document.querySelector('.ph[data-e="'+e+'"]');ph.getAnimations({subtree:true}).forEach(a=>a.cancel());const q=s=>ph.querySelector(s),m=k();
+ const a=(el,kf,o)=>el&&el.animate(kf,{fill:'both',...o,duration:o.duration*m,delay:(o.delay||0)*m});
+ const done=q('.done');
+ if(reduce){a(done,[{opacity:1},{opacity:0}],{duration:240});return;}
+ a(done,[{opacity:1,transform:'none'},{opacity:0,transform:'translateY(-12px)'}],{duration:260,easing:EO,delay:120});
+ if(e==='e1'){a(q('.s-top'),[{opacity:0,transform:'translateY(16px)'},{opacity:1,transform:'none'}],{duration:700,delay:200,easing:EO});
+  a(q('.s-card'),[{opacity:0,transform:'translateY(28px) scale(.98)'},{opacity:1,transform:'none'}],{duration:800,delay:280,easing:EO});
+  a(q('.s-bot'),[{transform:'translateY(17%)'},{transform:'none'}],{duration:520,delay:440,easing:DR});}
+ if(e==='e2'){a(q('.home'),[{opacity:0,transform:'scale(1.04)',filter:'blur(8px) brightness(1.08)'},{opacity:1,transform:'none',filter:'none'}],{duration:760,delay:160,easing:EO});
+  a(q('.s-bot'),[{transform:'translateY(17%)'},{transform:'none'}],{duration:520,delay:420,easing:DR});}
+ if(e==='e3'){a(q('.home'),[{opacity:0},{opacity:1}],{duration:320,delay:120,easing:'ease'});}
+}
+document.querySelectorAll('[data-e]').forEach(el=>el.addEventListener('click',()=>play(el.dataset.e)));
+document.getElementById('all').onclick=()=>['e1','e2','e3'].forEach(play);
+setTimeout(()=>['e1','e2','e3'].forEach(play),700);
+</script></body></html>
