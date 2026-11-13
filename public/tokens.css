@@ -648,6 +648,9 @@
   --xc-pill-ghost-press:var(--color-bg-muted);   /* 거절 누르는 동안 연한 회색 알약 (시안 G1 · 2026-11-13) */
   --xc-pill-ghost-press-fg:var(--color-fg-secondary);
   --xc-pill-pri-press:var(--sky-600);            /* 수락 누르는 동안 한 단계 진한 파랑 */
+  --xc-tab-new-bg:var(--color-bg-danger);        /* 교환 탭 · 안 본 요청 숫자 칩, 목록 "새로" 칩 */
+  --xc-tab-new-fg:var(--color-fg-inverse);
+  --xc-tab-dot:var(--gnb-badge-bg);              /* 교환 기록 탭 옆 새 결과 점 (하단 메뉴 알림과 같은 빨강) */
   /* Tab Title · 하단 메뉴 다섯 탭 제목 (인연 홈 기준: 고운바탕 26 / 줄 40, 가운데가 화면 위에서 50) */
   --tab-title-size:26px;
   --tab-title-lh:40px;

@@ -1,0 +1,46 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>교환 탭 새 소식 표시</title>
+<style>
+@font-face{font-family:"PJ";src:url(PretendardVariable.woff2) format("woff2");font-weight:100 900}
+:root{--bg:#F4F3EF;--ink:#262C31;--sub:#5F6A72;--line:#E1E0D9;--card:#fff;--chip:#ECEEEF;--pick:#0F766E;--warn:#B4531A}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#16181A;--ink:#ECEDEE;--sub:#A2A9AF;--line:#2E3237;--card:#1F2225;--chip:#2A2E33;--pick:#5EEAD4;--warn:#FDBA74}}
+:root[data-theme="dark"]{--bg:#16181A;--ink:#ECEDEE;--sub:#A2A9AF;--line:#2E3237;--card:#1F2225;--chip:#2A2E33;--pick:#5EEAD4;--warn:#FDBA74}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.65 "PJ",system-ui,sans-serif;word-break:keep-all}
+main{max-width:1200px;margin:0 auto;padding:40px 20px 96px}h1{font-size:26px;margin:0 0 8px}h2{font-size:19px;margin:36px 0 8px}.lead{color:var(--sub);margin:0 0 16px;max-width:880px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;font-size:14px}.box ol{margin:0;padding-left:20px}.box li+li{margin-top:6px}
+.row{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start}.now img{width:280px;max-width:100%;border-radius:24px;border:1px solid var(--line)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,370px),1fr));gap:16px}
+.opt{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;min-width:0}.opt h3{margin:0 0 12px;font-size:16px;display:flex;gap:8px;align-items:center}.opt>p{margin:12px 0 0;font-size:13.5px;color:var(--sub)}.opt>p b{color:var(--ink)}
+.tag{font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;background:var(--chip);color:var(--sub)}.tag.rec{color:var(--pick)}
+/* 앱 조각 A */
+.sc{margin-top:12px}.sl{margin:0 0 6px;font-size:12px;color:var(--sub)}
+.tabs,.lst{--fg:#39444D;--fg2:#505C65;--fgm:#818C94;--acc:#4E8AB0;--acc2:#377398;--line:#E3E7EA;--muted:#E3E7EA;--sky100:#D6EAF8;--red:#CF5C65;
+ display:flex;background:#F8F9F6;border-radius:14px;box-shadow:inset 0 -1px 0 var(--line),0 0 0 1px rgba(0,0,0,.05);color-scheme:light;font-family:"PJ"}
+.tb{position:relative;flex:1;display:flex;align-items:center;justify-content:center;gap:6px;height:44px;font:500 14px/1 "PJ";color:var(--fg2)}
+.tb.on{color:var(--acc2);font-weight:600;box-shadow:inset 0 -2px 0 var(--acc)}
+.c{display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 5px;border-radius:9px;font:600 11px/18px "PJ";font-variant-numeric:tabular-nums}
+.c.old{background:var(--muted);color:var(--fgm)}.tb.on .c.old{background:var(--sky100);color:var(--acc2)}
+.c.new{background:var(--red);color:#fff}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--red);margin-left:-2px;align-self:flex-start;margin-top:13px}
+.lst{display:block;padding:4px 16px;border-radius:16px;box-shadow:0 0 0 1px rgba(0,0,0,.05)}
+.it{display:flex;gap:12px;padding:14px 0}.it+.it{box-shadow:0 -1px 0 var(--line)}
+.av{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#F6E9EC;color:#7D3749}.av svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.av.ph{background:linear-gradient(135deg,#BFD7EA,#F2D7C9);color:transparent;font-size:0}
+.bd{flex:1;min-width:0}.who{display:flex;align-items:center;gap:6px}.who b{font:600 14px/1.4 "PJ";color:var(--fg)}.g{height:20px;padding:0 6px;border-radius:10px;background:#F6E9EC;color:#7D3749;font:500 11px/20px "PJ"}
+.nw{height:20px;padding:0 6px;border-radius:10px;background:var(--red);color:#fff;font:600 11px/20px "PJ"}
+.who time{margin-left:auto;font:400 11px/1 "PJ";color:var(--fgm)}.msg{margin:4px 0 0;font:400 14px/1.55 "PJ";color:var(--fg)}.st{margin:6px 0 0;font:400 12px/1.5 "PJ";color:var(--fgm)}.st.ok{color:var(--acc2);font-weight:600}
+</style></head><body><main>
+<h1>이야기에서 시작한 인연 · 새 소식 탭 표시</h1>
+<p class="lead">프로필 교환 화면의 세 탭이에요. 앱은 아직 바꾸지 않았어요. 시연 도구의 “교환 요청 받기”는 바로 앱에 넣었어요(아래 설명).</p>
+<h2>지금 어떻게 표시되나요</h2>
+<div class="row"><div class="now"><img src="img/now.jpg" alt="새 요청이 하나 도착한 지금 받은 요청 화면"></div><div class="box" style="flex:1 1 360px"><ol>
+<li><b>받은 요청</b>: 기다리는 요청 수 칩만 있어요(0이면 사라짐). 새로 온 요청인지, 이미 본 요청인지는 탭에서 구분이 안 되고, 목록 안 얼굴에 작은 파란 점으로만 보여요(왼쪽 화면 첫 줄).</li>
+<li><b>보낸 요청 · 교환 기록</b>: 아무 표시가 없어요. 내 요청이 수락되거나 거절돼 교환 기록으로 옮겨가도 탭에서는 알 수 없어요.</li>
+<li><b>시연 도구</b>: “익명 커뮤니티”에 <b>교환 요청 받기</b>를 추가했어요. 누르면 익명의 누군가가 나에게 요청을 보내고, 위에서 “프로필 교환 요청이 왔어요” 소식 카드가 내려와요. 누르면 받은 요청으로 가요.</li></ol></div></div>
+<h2>개선안</h2>
+<div class="grid">
+<section class="opt"><h3>K1 · 받은 요청은 숫자, 기록은 점 <span class="tag rec">추천</span></h3><div class="sc"><p class="sl">평소 · 받은 요청 2개 기다리는 중</p><div class="tabs"><span class="tb">받은 요청<small class="c old">2</small></span><span class="tb on">보낸 요청</span><span class="tb">교환 기록</span></div></div><div class="sc"><p class="sl">새 요청이 왔을 때 · 다른 탭을 보는 중</p><div class="tabs"><span class="tb">받은 요청<small class="c new">3</small></span><span class="tb on">보낸 요청</span><span class="tb">교환 기록</span></div></div><div class="sc"><p class="sl">내가 보낸 요청이 수락 · 거절됐을 때</p><div class="tabs"><span class="tb">받은 요청<small class="c old">2</small></span><span class="tb on">보낸 요청</span><span class="tb">교환 기록<i class="dot" aria-hidden="true"></i></span></div></div><div class="sc"><p class="sl">받은 요청 탭을 열면 · 빨강이 하늘로</p><div class="tabs"><span class="tb on">받은 요청<small class="c old">3</small></span><span class="tb">보낸 요청</span><span class="tb">교환 기록<i class="dot" aria-hidden="true"></i></span></div></div><p><b>받은 요청</b>은 기다리는 수를 그대로 두되, 아직 안 본 요청이 있으면 칩이 <b>빨강</b>(하단 메뉴 알림과 같은 색)이 되고, 탭을 열면 평소 색으로 돌아와요. <b>교환 기록</b>은 내 요청이 수락 · 거절돼 새 결과가 생기면 글자 옆에 작은 빨간 점(6)이 붙고, 열면 사라져요. 보낸 요청은 내가 한 일이라 표시하지 않아요.</p></section>
+<section class="opt"><h3>K2 · 세 탭 모두 숫자</h3><div class="sc"><p class="sl">평소</p><div class="tabs"><span class="tb">받은 요청<small class="c old">2</small></span><span class="tb on">보낸 요청<small class="c old">1</small></span><span class="tb">교환 기록<small class="c old">4</small></span></div></div><div class="sc"><p class="sl">새 요청이 왔을 때</p><div class="tabs"><span class="tb">받은 요청<small class="c new">3</small></span><span class="tb on">보낸 요청<small class="c old">1</small></span><span class="tb">교환 기록<small class="c old">4</small></span></div></div><div class="sc"><p class="sl">보낸 요청이 수락됐을 때</p><div class="tabs"><span class="tb">받은 요청<small class="c old">2</small></span><span class="tb on">보낸 요청</span><span class="tb">교환 기록<small class="c new">5</small></span></div></div><p>세 탭에 모두 개수를 두고, 새로 생긴 쪽만 빨강으로 바꿔요. 한눈에 전체 양을 알 수 있지만, 기록 수는 계속 늘어나기만 해서 의미가 약하고 탭 줄이 무거워져요.</p></section>
+<section class="opt"><h3>K3 · 숫자 없이 점만</h3><div class="sc"><p class="sl">평소</p><div class="tabs"><span class="tb">받은 요청</span><span class="tb on">보낸 요청</span><span class="tb">교환 기록</span></div></div><div class="sc"><p class="sl">새 요청이 왔을 때</p><div class="tabs"><span class="tb">받은 요청<i class="dot" aria-hidden="true"></i></span><span class="tb on">보낸 요청</span><span class="tb">교환 기록</span></div></div><div class="sc"><p class="sl">보낸 요청이 수락됐을 때</p><div class="tabs"><span class="tb">받은 요청</span><span class="tb on">보낸 요청</span><span class="tb">교환 기록<i class="dot" aria-hidden="true"></i></span></div></div><p>새 것이 있는 탭에만 빨간 점을 붙여요. 가장 가볍지만, 받은 요청이 몇 개 기다리는지는 탭에서 사라져요.</p></section>
+<section class="opt"><h3>목록 안 표시 (세 안 공통)</h3><div class="lst"><div class="it"><span class="av ph">하늘</span><div class="bd"><div class="who"><b>하늘조각</b><span class="g">여성</span><span class="nw">새로</span><time>방금</time></div><p class="msg">산책 이야기가 반가웠어요.</p><p class="st ok">서로 프로필을 교환했어요</p></div></div>
+<div class="it"><span class="av"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0M4 21c0-9 16-9 16 0"/></svg></span><div class="bd"><div class="who"><b>익명</b><span class="g">남성</span><time>3일 전</time></div><p class="msg">전시 취향이 비슷한 것 같아요.</p><p class="st">상대가 정중히 거절했어요</p></div></div></div><p>교환 기록을 열었을 때 새로 생긴 결과에는 이름 옆에 작은 “새로” 칩을 한 번 보여 줘요. 받은 요청은 지금처럼 얼굴 위 파란 점.</p></section>
+</div></main></body></html>

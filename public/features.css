@@ -773,3 +773,7 @@
 #mypage .fx-point-row>button:last-child{width:28px;height:28px;padding:0}
 #mypage .my-cert-invite{margin:16px 0 28px}
 #mypage #my-story-section{margin-top:0}
+
+/* 처음부터 다시 시작 · 되돌리기 옆 (2026-11-13) */
+.demo-lab .demo-restart{display:block;margin-top:8px;color:var(--color-fg-danger)}
+.demo-lab .demo-restart[data-armed]{background:var(--color-bg-danger);border-color:var(--color-bg-danger);color:var(--color-fg-inverse)}

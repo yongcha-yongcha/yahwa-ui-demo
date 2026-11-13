@@ -1662,3 +1662,8 @@ body.cloud-edition .phone{margin:0!important;border-radius:32px;box-shadow:0 8px
 #discovery .rv-link .chev{width:16px;height:16px;color:currentColor}
 #discovery .rv-ghost:focus-visible,#discovery .rv-link:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:2px;border-radius:12px}
 @media (prefers-reduced-motion:reduce){.is-now .rv-mk i{animation:none}#discovery .rv-ghost:active{transform:none}}
+
+/* 교환 탭 새 소식 K1 (2026-11-13): 안 본 받은 요청이 있으면 숫자 칩이 빨강, 내 요청의 새 결과는 교환 기록 옆 빨간 점, 목록엔 "새로" 칩 */
+#features .xc-tabs button small.is-new,#features .xc-tabs button[aria-selected="true"] small.is-new{background:var(--xc-tab-new-bg);color:var(--xc-tab-new-fg)}
+.xc-tdot{flex:none;align-self:flex-start;width:6px;height:6px;margin:12px 0 0 -2px;border-radius:50%;background:var(--xc-tab-dot)}
+.xc-nw{height:20px;padding:0 6px;border-radius:10px;background:var(--xc-tab-new-bg);color:var(--xc-tab-new-fg);font:600 11px/20px var(--font-sans)}
