@@ -56,7 +56,7 @@ window.revealDiscoveryCard=function(card,cover){
   const iRise=num('--reveal-info-rise',16),iBlur=num('--reveal-info-blur',6),iMs=num('--reveal-info-ms',900);
   /* 덮개: 같은 사진을 흐린 채로 맨 아래에 (작게 시작해도 가장자리가 비지 않게) */
   cover.querySelectorAll('.locked-overlay,.rv-blobs,.rv-breath,.card-blur-layer,.card-tint').forEach(e=>e.remove());
-  cover.className='match-sheet-thumb rv-cover';const cp=cover.querySelector('.fx-batch-image');if(cp)cp.style.filter=`blur(${B}px)`;cover.setAttribute('aria-hidden','true');
+  cover.className='match-sheet-thumb rv-cover';const cp=cover.querySelector('.fx-batch-image');/* 뒤 덮개는 --reveal-cover-scale만큼 키워 흐림이 투명하게 번지는 가장자리를 카드 밖으로 밀어내요 (2026-11-13) */if(cp){cp.style.filter=`blur(${B}px)`;cp.style.transform=`scale(${num('--reveal-cover-scale',1)})`;}cover.setAttribute('aria-hidden','true');
   thumb.prepend(cover);
   const anims=[];
   let ended=false;const done=()=>{if(ended)return;ended=true;anims.forEach(a=>{try{a.cancel()}catch(e){}});cover.remove();leaving.forEach(e=>e.remove());photo.style.transform='';photo.style.filter='none';delete card.dataset.opening;};
@@ -72,6 +72,8 @@ window.revealDiscoveryCard=function(card,cover){
   anims.push(photo.animate([{filter:`blur(${B}px) saturate(${1-dev}) brightness(${1+dev})`},{filter:'blur(0px) saturate(1) brightness(1)'}],{duration:clear,delay:120,easing:E,fill:'both'}));
   anims.push(photo.animate([{transform:`scale(${from})`},{transform:'scale(1)'}],{duration:zoom,delay:120,easing:E,fill:'both'}));
   anims.push(cover.animate([{opacity:1},{opacity:0}],{duration:clear,delay:120+clear*.35,easing:E,fill:'forwards'}));
+  /* 아래쪽 사진 색 번짐 · 흐림 층은 열리는 순간 한 번에 켜지지 않고 사진 흐림이 걷히는 속도로 스며들어요 (2026-11-13) */
+  thumb.querySelectorAll(':scope>.card-tint,:scope>.card-blur-layer').forEach(e=>anims.push(e.animate([{opacity:0},{opacity:1}],{duration:clear,delay:120+clear*.35,easing:E,fill:'backwards'})));
   /* 글자: 사진처럼 흐린 채로 아래에서 떠오르며 선명해져요 (이름 · 지역 · 한 장면 제목 · 한 장면 글) */
   /* 열자마자 앱이 글자를 새로 그려(novDeck 등) 모션이 붙은 글자가 바뀌어요.
      그래서 글자가 바뀔 때마다 지난 시간만큼 앞당겨서 새 글자에 다시 붙여요. */

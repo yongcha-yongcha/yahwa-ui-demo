@@ -1,0 +1,14 @@
+{
+  "name": "야화",
+  "short_name": "야화",
+  "description": "야화 UI 시연본",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F8F9F6",
+  "theme_color": "#F8F9F6",
+  "icons": [
+    { "src": "yahwa-icon-180.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "yahwa-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

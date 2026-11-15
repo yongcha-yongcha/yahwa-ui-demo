@@ -335,14 +335,15 @@
   --reveal-blob-speed:11s;
   --reveal-blob-opacity:.6;
   --reveal-lock-blur:17px;
-  --reveal-ready-blur:14px;
+  --reveal-ready-blur:12px;          /* 2026-11-13 시안 reveal-tune에서 고른 값 (예전 14) */
   --reveal-breath-amp:6px;
   --reveal-breath-speed:4s;
   --reveal-clear-ms:1200;
-  --reveal-scale-from:1.01;
+  --reveal-scale-from:1.1;           /* 끝 1.06보다 크게 시작해 살짝 물러나며 자리 잡아요. 흐린 가장자리가 카드 밖에 있어 번짐이 안 보여요 (2026-11-13 시안 reveal-tune, 예전 1.01) */
   --reveal-scale-to:1.06;
   --reveal-zoom-ms:1850;
-  --reveal-develop:.06;
+  --reveal-develop:0;                /* 흐릴 때 밝게 하지 않아요 (예전 .06) */
+  --reveal-cover-scale:1.25;         /* 뒤 덮개(흐린 사진) 확대. 덮개 가장자리 번짐을 카드 밖으로 */
   --reveal-ease:cubic-bezier(0.23, 1, 0.32, 1);
   --reveal-info-delay:650;
   --reveal-info-gap:70;

@@ -1678,3 +1678,28 @@ body.cloud-edition .phone{width:100%!important;max-width:none!important;height:7
 /* 웰컴 · 사진 · 로고 · 하트 한 장 묶음 (시안 W1 · 2026-11-13). 크기와 위치는 welcome-fit.js가 정해요 */
 .welcome-stage{position:absolute;left:0;top:0;width:360px;height:596px;transform-origin:0 0;transform:translate(var(--wl-x,0px),var(--wl-y,0px)) scale(var(--wl-k,1))}
 .welcome-stage .welcome-photo-motion{height:100%}
+
+/* 마음함 카드 · 사파리에서 0 × 0으로 사라지던 문제 (2026-11-13). 위쪽 정렬 + 3:4 비율이 함께 걸리면 사파리는 폭을 칸에 맞춰 늘리지 않고
+   내용 크기(안쪽은 모두 띄워 배치라 0)로 잡아요. 폭을 칸 너비로 정해 높이가 비율대로 나오게 해요 */
+#heartbox .heart-person{width:100%;justify-self:stretch}
+
+/* 홈 화면 앱 · 상태 표시줄 뒤까지 화면 바탕 채우기 (2026-11-13)
+   앱이 상태 표시줄 뒤(위 --sat, iPhone 17은 62)부터 그려지고, 화면마다 위 테두리를 투명하게 --sat만큼 둬요.
+   바탕(그라데이션 · 사진)은 테두리 밑까지 칠해지고, 안의 내용은 테두리 아래부터 놓여 지금 자리 그대로예요.
+   웰컴 사진 묶음은 테두리 위까지 끌어올려요. 사파리 탭 · PC에서는 --sat이 0이라 바뀌는 게 없어요 */
+:root{--sat:env(safe-area-inset-top,0px)}
+@media (display-mode:standalone) and (max-width:759px){
+body.cloud-edition .phone{height:calc(max(780px, 100dvh - var(--sat)) + var(--sat))!important}
+.phone>.screen{border-top:var(--sat) solid transparent;background-origin:border-box!important}
+.phone #welcome .welcome-visual{top:calc(var(--sat) * -1)}
+.phone #welcome .welcome-visual h1{top:calc(51px + var(--sat))}
+}
+
+/* 사진 더보기 시트 · 아이콘이 가운데로 밀리던 문제 (2026-11-13). 글자 칸을 넓히는 `.photo-sheet-row>span{flex:1}`이
+   아이콘(span.ic)에도 걸려 아이콘 칸이 늘어나고 글자가 오른쪽 끝으로 밀렸어요. 아이콘 칸은 24 그대로 */
+.photo-sheet-row>span.ic{flex:none}
+
+/* iPhone 사파리 기본 탭 하이라이트(누른 요소 위 회색 막)를 꺼요 (2026-11-13). 인연 카드를 열 때 카드 전체가 한 프레임 어두워지며 반짝였어요.
+   버튼마다 눌림 효과가 따로 있어 기본 하이라이트는 필요 없어요 */
+/* 빠르게 두 번 누르면 화면이 확대되던 것도 막아요(다음 카드 › 를 연달아 누를 때). 두 손가락 확대는 그대로 돼요 */
+html{-webkit-tap-highlight-color:transparent;touch-action:manipulation}

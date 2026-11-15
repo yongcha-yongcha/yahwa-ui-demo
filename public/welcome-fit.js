@@ -7,12 +7,14 @@
   const visual=document.querySelector('#welcome .welcome-visual'),stage=visual?.querySelector('.welcome-stage');
   if(!stage)return;
   const fit=()=>{
-    const w=visual.clientWidth,a=visual.clientHeight-SHEET;
+    /* 홈 화면 앱에서는 그림 영역이 상태 표시줄 뒤까지 올라가요(offsetTop 음수). 구도는 상태 표시줄 아래 영역 기준으로 맞추고,
+       사진은 묶음 밖으로 넉넉히 넘치게 그려져 있어 상태 표시줄 칸도 덮어요 (2026-11-13) */
+    const off=Math.max(0,-visual.offsetTop),w=visual.clientWidth,a=visual.clientHeight-SHEET-off;
     if(!w||a<=0)return;
     const k=Math.max(w/DESIGN_W,a/DESIGN_H);
     stage.style.setProperty('--wl-k',k);
     stage.style.setProperty('--wl-x',(w-DESIGN_W*k)/2+'px');
-    stage.style.setProperty('--wl-y',(a-DESIGN_H*k)/2+'px');
+    stage.style.setProperty('--wl-y',off+(a-DESIGN_H*k)/2+'px');
   };
   new ResizeObserver(fit).observe(visual);
   fit();
