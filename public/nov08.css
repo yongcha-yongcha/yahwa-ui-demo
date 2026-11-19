@@ -2361,3 +2361,7 @@ html[data-bg="white"] #features.has-page-head .ob-top::before,html[data-bg="whit
 #features .cf-wrap .cf-l{margin:28px 0 8px}
 #features .cf-wrap .cf-steps+.cf-l{margin-top:0}
 #features .cf-wrap>.ip-dock{padding-top:24px}
+/* 공개 칩: 점과 글자 사이 8 (예전 6이라 둘레 빛이 글자에 붙어 보였어요, 2026-11-20) */
+#mypage .mp-vis{gap:4px;padding-left:14px}
+#mypage .mp-vis i{margin-right:4px}
+#mypage .mp-vis .chev,#mypage .mp-vis svg{margin-left:2px}
