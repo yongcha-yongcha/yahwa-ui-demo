@@ -1,0 +1,46 @@
+/* ─────────────────────────────────────────────────────────────
+   1차 피드백 F1~F4 비교용 (2026-11-15, 시안 design-mockups/base-tone/)
+   - 배경(F2): 시연 도구에서 위쪽 하늘 그라데이션 켜기(예전 그대로) / 끄기(전부 흰 배경)
+   - 버튼 색(F1·F3): 진한 파랑(지금) / B7D7EC · 92C0DF 바탕 + 남색 글씨
+   - 제목 글꼴(F4): 서정적 명조 그대로
+   - 인연 열어보기(F6): 흰 + 파랑 글씨 / 진한 파랑 / sky200 / sky300
+   - html[data-bg] · html[data-btn]은 tone.js가 붙여요. 배경은 A 컨셉에만 적용해요.
+   ───────────────────────────────────────────────────────────── */
+
+/* 배경 · 하늘 그라데이션 켬: 예전 그라데이션 그대로(덮어쓰지 않아요). 2026-11-16에 진한 B7D7EC 그라데이션은 너무 진해서 되돌렸어요 */
+
+/* 배경 · 끔: 원래 그라데이션이 있던 화면만 흰 바탕으로. 그라데이션이 없던 화면(가입 흐름 등)은 그대로 (tone.js가 화면마다 확인해요) */
+
+/* 버튼 · 메인 파랑 B7D7EC: 흰 글씨는 1.5:1이라 읽히지 않아서 남색 글씨(6.7:1) */
+html[data-btn="soft"]{
+  --color-bg-button-primary:var(--sky-200);
+  --color-bg-button-primary-active:var(--sky-300);
+  --color-fg-button-primary:var(--sky-800);
+  --btn-secondary-bg:var(--sky-50);--btn-secondary-press:var(--sky-100)}
+
+/* 버튼 · 메인 파랑 92C0DF: 흰 글씨는 1.9:1이라 남색 글씨(5.2:1) */
+html[data-btn="mid"]{
+  --color-bg-button-primary:var(--sky-300);
+  --color-bg-button-primary-active:var(--sky-200);
+  --color-fg-button-primary:var(--sky-800);
+  --btn-secondary-bg:var(--sky-50);--btn-secondary-press:var(--sky-100)}
+
+/* 버튼 · 진한 파랑 + sky200 쪽 보조(2026-11-16): Primary는 진한 파랑 그대로, Secondary만 sky50 바탕 + sky700 글씨 */
+html[data-btn="deep50"]{--btn-secondary-bg:var(--sky-50);--btn-secondary-press:var(--sky-100)}
+
+/* 인연 열어보기 버튼(F6, 시안 design-mockups/open-btn/) · 네 가지 */
+html[data-open="white"]{--reveal-btn-fg:var(--sky-700)}
+html[data-open="deep"]{--reveal-btn-bg:var(--sky-600);--reveal-btn-fg:var(--white)}
+html[data-open="sky200"]{--reveal-btn-bg:var(--sky-200);--reveal-btn-fg:var(--sky-800)}
+html[data-open="sky300"]{--reveal-btn-bg:var(--sky-300);--reveal-btn-fg:var(--sky-800)}
+
+/* 시연 도구 · 배경 / 버튼 색 고르기 (디자인 컨셉과 같은 모양) */
+.demo-dock .dock-tone{display:grid;gap:8px}
+.demo-dock .time-demo .dock-tone-row{flex-basis:100%;margin-top:8px}
+.demo-dock .time-demo .dock-tone-row .dock-concept-seg span{flex-basis:auto;font-size:inherit;color:inherit}
+.demo-dock .dock-tone .dock-concept-seg button span{white-space:nowrap}
+.demo-dock .dock-tone .dock-concept-seg:has(> :nth-child(3)){grid-template-columns:repeat(3,1fr)}
+.demo-dock .dock-tone .dock-concept-seg:has(> :nth-child(4)){grid-template-columns:repeat(2,1fr)}
+/* 버튼 색 고르기: 위에 토큰 이름, 아래에 hex */
+.demo-dock .dock-tone .dock-concept-seg button.tone-2l{flex-direction:column;gap:2px;min-height:52px}
+.demo-dock .dock-tone .dock-concept-seg button.tone-2l small{font:400 11px/1.2 var(--font-sans);color:var(--color-fg-tertiary);letter-spacing:.2px;font-variant-numeric:tabular-nums}

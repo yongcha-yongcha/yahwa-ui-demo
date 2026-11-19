@@ -1,0 +1,38 @@
+<meta charset="utf-8">
+<title>프로필 수정 뉴트럴</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리(고른 조합 · 바뀐 점) → 부분마다 지금 · 고른 조합 두 장 */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:24px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px;text-wrap:balance}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:82ch}
+ul b{color:var(--ink);font-weight:600}
+section{display:grid;gap:10px}
+h2{font:700 18px/1.4 var(--sans);margin:0}h3{font:600 15px/1.4 var(--sans);margin:14px 0 0}h3 small{font-weight:400;color:var(--ink-2);font-size:13px;margin-left:6px}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,260px));gap:16px}
+figure{margin:0;display:grid;gap:6px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:18px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2)}
+.tag.new{background:var(--tag-new);color:#fff}
+@media (max-width:640px){.row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<div class="wrap">
+  <header>
+    <h1>프로필 수정 · 뉴트럴 (고른 조합)</h1>
+    <ul>
+      <li><b>고른 표시:</b> 시트 칩 · 해시태그는 <b>진한 채움</b>(cool-neutral-900 + 흰 글자), 이름 고치기의 성별 칸은 <b>진한 테두리</b>(흰 바탕 + 1.5). 이야기 맨 위 "기본 소개 · 필수"는 지금 그대로.</li>
+      <li><b>해시태그 분류 줄:</b> 줄 바탕이 화면 바탕과 달라 띠처럼 보이던 걸 화면 바탕과 같게 맞췄어요. 아래 구분선만 옅게(cool-neutral-100).</li>
+      <li><b>더 찾아서 고친 것:</b> 스크롤하면 머리 줄 뒤에 깔리는 흐림 막이 흰 배경에서도 하늘색이던 것 → 흰색. 가입 화면들의 진행 막대 · "만 29세" · 날짜 화살표 · 고른 성별 동그라미 · 사진 "대표" 표시 · "이야기 3" · "+ 더하기" · "4 / 5 골랐어요" 숫자와 점 → 뉴트럴. 남은 파랑은 누르는 버튼 · "미리보기" · 일부러 둔 "기본 소개 · 필수"뿐이에요.</li>
+      <li><b>하단 띠:</b> 앞 시안에서 버튼 뒤에 보이던 회색 띠는 제가 찍을 때 쓴 흰 배경 방식 탓이었어요(데모엔 없음). 이번엔 시연 도구의 실제 "끄기(흰 배경)"로 찍었어요. 그래서 가입 화면(사진 · 이름 · 이야기 · 해시태그 고치기)은 데모 그대로 종이색 바탕이에요.</li>
+      <li><b>그 밖은 앞 시안과 같아요:</b> 연한 파랑 → 쿨 뉴트럴, 카드 · 이야기 상자 · 입력 칸은 회색 바탕(테두리 없음), 파랑은 누르는 버튼 · "미리보기"에만. "고치기" 대신 카드 통째로 누르기, "53자" 빼기, 맨 아래 여백 40.</li>
+    </ul>
+  </header>
+  <section><h3>위쪽 <small>소개 채움 카드 · 사진</small></h3><div class="row"><figure><img src="img/now_top.jpg" alt="위쪽 now" loading="lazy"><figcaption><span class="tag">지금</span></figcaption></figure><figure><img src="img/F_top.jpg" alt="위쪽 F" loading="lazy"><figcaption><span class="tag new">고른 조합</span></figcaption></figure></div><h3>가운데 <small>기본 정보 · 일상 목록</small></h3><div class="row"><figure><img src="img/now_mid.jpg" alt="가운데 now" loading="lazy"><figcaption><span class="tag">지금</span></figcaption></figure><figure><img src="img/F_mid.jpg" alt="가운데 F" loading="lazy"><figcaption><span class="tag new">고른 조합</span></figcaption></figure></div><h3>아래 <small>나의 이야기 · 해시태그를 카드 통째로 누르는 칸으로</small></h3><div class="row"><figure><img src="img/now_low.jpg" alt="아래 now" loading="lazy"><figcaption><span class="tag">지금</span></figcaption></figure><figure><img src="img/F_low.jpg" alt="아래 F" loading="lazy"><figcaption><span class="tag new">고른 조합</span></figcaption></figure></div><h3>시트 · 하나 고르기 <small>진한 채움</small></h3><div class="row"><figure><img src="img/now_job.jpg" alt="시트 · 하나 고르기 now" loading="lazy"><figcaption><span class="tag">지금</span></figcaption></figure><figure><img src="img/F_job.jpg" alt="시트 · 하나 고르기 F" loading="lazy"><figcaption><span class="tag new">고른 조합</span></figcaption></figure></div><h3>시트 · MBTI <small>진한 채움</small></h3><div class="row"><figure><img src="img/now_mbti.jpg" alt="시트 · MBTI now" loading="lazy"><figcaption><span class="tag">지금</span></figcaption></figure><figure><img src="img/F_mbti.jpg" alt="시트 · MBTI F" loading="lazy"><figcaption><span class="tag new">고른 조합</span></figcaption></figure></div><h3>시트 · 숫자 쓰기 <small>입력 칸 회색 · 쓰는 중엔 진한 테두리</small></h3><div class="row"><figure><img src="img/now_height.jpg" alt="시트 · 숫자 쓰기 now" loading="lazy"><figcaption><span class="tag">지금</span></figcaption></figure><figure><img src="img/F_height.jpg" alt="시트 · 숫자 쓰기 F" loading="lazy"><figcaption><span class="tag new">고른 조합</span></figcaption></figure></div><h3>시트 · 사진 누르기 <small>그대로</small></h3><div class="row"><figure><img src="img/now_photo.jpg" alt="시트 · 사진 누르기 now" loading="lazy"><figcaption><span class="tag">지금</span></figcaption></figure><figure><img src="img/F_photo.jpg" alt="시트 · 사진 누르기 F" loading="lazy"><figcaption><span class="tag new">고른 조합</span></figcaption></figure></div><h3>사진 고치기 <small>빈 칸 회색</small></h3><div class="row"><figure><img src="img/now_photos.jpg" alt="사진 고치기 now" loading="lazy"><figcaption><span class="tag">지금</span></figcaption></figure><figure><img src="img/F_photos.jpg" alt="사진 고치기 F" loading="lazy"><figcaption><span class="tag new">고른 조합</span></figcaption></figure></div><h3>이름 고치기 <small>성별 고른 칸은 진한 테두리</small></h3><div class="row"><figure><img src="img/now_profile.jpg" alt="이름 고치기 now" loading="lazy"><figcaption><span class="tag">지금</span></figcaption></figure><figure><img src="img/F_profile.jpg" alt="이름 고치기 F" loading="lazy"><figcaption><span class="tag new">고른 조합</span></figcaption></figure></div><h3>나의 이야기 고치기 <small>"기본 소개 · 필수"는 지금 그대로</small></h3><div class="row"><figure><img src="img/now_story.jpg" alt="나의 이야기 고치기 now" loading="lazy"><figcaption><span class="tag">지금</span></figcaption></figure><figure><img src="img/F_story.jpg" alt="나의 이야기 고치기 F" loading="lazy"><figcaption><span class="tag new">고른 조합</span></figcaption></figure></div><h3>해시태그 고치기 <small>진한 채움 · 분류 줄 바탕을 화면 바탕과 같게</small></h3><div class="row"><figure><img src="img/now_tags.jpg" alt="해시태그 고치기 now" loading="lazy"><figcaption><span class="tag">지금</span></figcaption></figure><figure><img src="img/F_tags.jpg" alt="해시태그 고치기 F" loading="lazy"><figcaption><span class="tag new">고른 조합</span></figcaption></figure></div></section>
+</div>

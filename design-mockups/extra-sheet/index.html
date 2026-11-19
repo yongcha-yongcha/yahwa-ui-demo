@@ -1,0 +1,48 @@
+<meta charset="utf-8">
+<title>2명 더 소개받기 시트</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리(바뀌는 점) → 바텀시트 A~C → 지금 · 팀 링크 */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:28px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px;text-wrap:balance}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:78ch}
+ul b{color:var(--ink);font-weight:600}
+section{display:grid;gap:12px}
+h2{font:700 18px/1.4 var(--sans);margin:0}
+.row{display:grid;grid-template-columns:repeat(4,minmax(0,240px));gap:20px}
+figure{margin:0;display:grid;gap:8px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:20px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+figcaption b{color:var(--ink)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+@media (max-width:900px){.row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<div class="wrap">
+  <header>
+    <h1>2명 더 소개받기 · 페이지 대신 바텀시트</h1>
+    <ul>
+      <li><b>피드백:</b> "2명 더 소개받기"를 누르면 새 페이지로 넘어가지 말고, 인연 홈(뒤 그림)이 보이는 채로 아래에서 시트가 화면 중간까지 올라와요.</li>
+      <li><b>모든 안 공통:</b> 제목 "2명 더 소개받을까요?" · "오늘의 인연에 두 명이 더해져요." · 사용할 리프 / 보유 리프 · 취소 / 소개받기. 편지 "답장을 쓸까요?" 시트와 같은 부품이에요. 리프가 모자라면 "N리프 더 필요해요" + "리프 충전하기"로 바뀌어요.</li>
+      <li><b>가격:</b> 지금 데모는 3리프, 팀 링크는 20리프예요. 시안은 팀 링크대로 20으로 찍었어요.</li>
+    </ul>
+  </header>
+  <section><h2>바텀시트</h2>
+    <div class="row">
+    <figure><img src="img/A.jpg" alt="A"><figcaption><span class="tag new">A</span><b>글 + 리프 상자</b> · 답장 확인 시트와 똑같은 모양. 가장 짧아요</figcaption></figure>
+    <figure><img src="img/B.jpg" alt="B"><figcaption><span class="tag new">B</span><b>위에 해 그림</b> · 카드의 해 그림을 시트 위에 한 번 더. 눌렀던 카드와 이어져 보여요</figcaption></figure>
+    <figure><img src="img/C.jpg" alt="C"><figcaption><span class="tag new">C</span><b>흐린 두 사람</b> · 새로 올 두 사람 사진을 흐리게 겹쳐서. 무엇을 받는지 바로 보여요</figcaption></figure>
+  </div></section>
+  <section><h2>지금 · 팀 링크</h2>
+    <div class="row">
+    <figure><img src="img/now0.jpg" alt="지금 카드"><figcaption><span class="tag">지금</span>마지막 카드 "2명 더 소개받기"</figcaption></figure>
+    <figure><img src="img/now1.jpg" alt="지금 페이지"><figcaption><span class="tag">지금</span>누르면 새 페이지 "새로운 인연을 만나볼까요?"</figcaption></figure>
+    <figure><img src="img/team.jpg" alt="팀 링크"><figcaption><span class="tag">팀 링크</span>바텀시트 · 리프 20 · 소개받기 / 취소</figcaption></figure>
+  </div></section>
+</div>

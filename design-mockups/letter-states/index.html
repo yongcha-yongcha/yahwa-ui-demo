@@ -1,0 +1,75 @@
+<meta charset="utf-8">
+<title>편지함 상태 표시</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 설명 → 편지함 지금 · 2차 → 마음함 지금 · 받은 · 보낸 → 서로 호감 세 가지 → 1차(접힘) */
+:root{
+  --page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--panel:#FFFFFF;--chip:#E9EDF1;--tag-new:#377398;
+  --sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:32px}
+header h1{font:700 24px/1.35 var(--sans);margin:0 0 6px;letter-spacing:-.3px;text-wrap:balance}
+header p{margin:0;color:var(--ink-2);max-width:72ch}
+section{display:grid;gap:12px}
+h2{font:700 18px/1.4 var(--sans);margin:0}
+.row{display:grid;grid-template-columns:repeat(3,minmax(0,340px));gap:24px}
+figure{margin:0;display:grid;gap:8px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:22px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+figcaption b{color:var(--ink)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+details{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 20px}
+summary{cursor:pointer;font-weight:600;min-height:28px}
+details .row{margin-top:16px}
+@media (max-width:900px){.row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.row{grid-template-columns:1fr;max-width:360px}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>편지함 · 마음함 상태 표시 <span class="tag new" style="vertical-align:4px">4차</span></h1>
+    <p>탭 1(글만) · 서로 호감 편지 아이콘은 인연 홈 "편지 보내기"와 같은 아이콘.</p>
+  </header>
+
+  <section>
+    <h2>마음함 · 4차</h2>
+    <div class="row">
+      <figure><img src="img/v4_recv.jpg" alt="받은 마음"><figcaption><span class="tag new">받은</span></figcaption></figure>
+      <figure><img src="img/v4_sent.jpg" alt="보낸 마음"><figcaption><span class="tag new">보낸</span></figcaption></figure>
+      <figure><img src="img/v4_mutual.jpg" alt="서로 호감"><figcaption><span class="tag new">서로</span></figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>탭 · 네 가지 (3차)</h2>
+    <div class="row" style="grid-template-columns:repeat(4,minmax(0,280px))">
+      <figure><img src="img/v3_recv_T1.jpg" alt="탭 1"><figcaption><b>1 · 글만</b> 받은 · 보낸 · 서로, 숫자 대신 새 소식 점</figcaption></figure>
+      <figure><img src="img/v3_recv_T2.jpg" alt="탭 2"><figcaption><b>2 · 지금 모양 뉴트럴</b> 검정 밑줄 · 회색 숫자</figcaption></figure>
+      <figure><img src="img/v3_recv_T3.jpg" alt="탭 3"><figcaption><b>3 · 세그먼트</b> 회색 틀 안 흰 칸</figcaption></figure>
+      <figure><img src="img/v3_recv_T4.jpg" alt="탭 4"><figcaption><b>4 · 칩</b> 고른 탭만 검정</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>편지함 · 2차</h2>
+    <div class="row">
+      <figure><img src="img/now.jpg" alt="지금 편지함"><figcaption><span class="tag">지금</span></figcaption></figure>
+      <figure><img src="img/v2_letters.jpg" alt="2차 편지함"><figcaption><span class="tag new">2차</span><b>받은 편지</b> 굵게 + 점 · <b>보낸 편지</b> 연한 회색 · <b>서로 연결됨</b> 장미색</figcaption></figure>
+    </div>
+  </section>
+
+  <details>
+    <summary>이전 시안 보기 (지금 마음함 · 2차 마음함 · 1차 편지함)</summary>
+    <div class="row">
+      <figure><img src="img/now_heart.jpg" alt="지금 마음함"><figcaption><span class="tag">지금</span>마음함</figcaption></figure>
+      <figure><img src="img/v2_recv.jpg" alt="2차 받은 마음"><figcaption>2차 받은 마음</figcaption></figure>
+      <figure><img src="img/new.jpg" alt="1차 편지함 시안"><figcaption>1차 편지함</figcaption></figure>
+    </div>
+  </details>
+</div>

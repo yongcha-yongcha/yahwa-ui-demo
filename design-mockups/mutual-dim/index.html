@@ -1,0 +1,61 @@
+<meta charset="utf-8">
+<title>서로 호감 모션 막</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리(같이 고친 점) → 지금 · A · B · C 네 장 */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:22px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:76ch}
+ul b{color:var(--ink);font-weight:600}
+.row{display:grid;grid-template-columns:repeat(4,minmax(0,270px));gap:20px}
+figure{margin:0;display:grid;gap:8px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:20px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+figcaption b{color:var(--ink)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+@media (max-width:900px){.row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{height:40px;padding:0 16px;border:0;border-radius:12px;background:#377398;color:#fff;font:600 14px/1 var(--sans);cursor:pointer}
+.btn.ghost{background:var(--chip);color:var(--ink)}
+.phones{display:grid;grid-template-columns:repeat(4,260px);gap:24px;justify-content:start}
+@media (max-width:1180px){.phones{grid-template-columns:repeat(2,260px)}}
+@media (max-width:600px){.phones{grid-template-columns:260px;justify-content:center}}
+.ph{display:grid;gap:10px;align-content:start;min-width:0}
+.ph-box{width:260px;height:563px;border-radius:24px;overflow:hidden;border:1px solid var(--line);background:#fff}
+.phone{position:relative;width:360px;height:780px;overflow:hidden;transform:scale(.7222);transform-origin:0 0;--font-sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;--layout-gutter:20px}
+.phone img.scene{position:absolute;inset:0;width:100%;height:100%;display:block;border:0;border-radius:0}
+.ph .btn{justify-self:start}
+.ph figcaption{min-height:40px}
+.v-B .lb-heart svg path{fill:#B26073}
+.v-B .lb-spark svg path{fill:#DDAFB7}
+.v-B .lb-msg b{color:#273037}
+.v-B .lb-msg small{color:#377398}
+.lb-card{position:absolute;left:50%;width:232px;height:236px;margin-left:-116px;border-radius:28px;background:#fff;box-shadow:0 20px 48px -12px rgba(26,33,38,.4),0 2px 8px rgba(26,33,38,.12)}
+</style>
+<div class="wrap">
+  <header>
+    <h1>서로 호감이에요 · 막 색 (모션)</h1>
+    <ul>
+      <li><b>받은 피드백:</b> 모션은 확실해서 좋지만 화면 전체를 덮는 장미 막이 너무 쨍해요. 뒤가 잠깐 어두워지고 가운데만 떠도 충분해요.</li>
+      <li>앱의 실제 모션 코드(like-burst.js) 그대로 재생해요. 바뀌는 건 막 색과 가운데 모양뿐이고, 줌 스루 · 하트 스프링 · 머무는 시간은 같아요. 막을 누르면 바로 걷혀요.</li>
+    </ul>
+  </header>
+  <div class="bar"><button class="btn" type="button" id="all">네 개 함께 보기</button></div>
+  <div class="phones"><figure class="ph"><div class="ph-box"><div class="phone v-now" data-v="now"><img class="scene" src="img/scene.jpg" alt=""></div></div><figcaption><span class="tag">지금</span>장미 방사형 막 100%</figcaption><button class="btn ghost" type="button" data-play="now">다시 보기</button></figure><figure class="ph"><div class="ph-box"><div class="phone v-A" data-v="A"><img class="scene" src="img/scene.jpg" alt=""></div></div><figcaption><span class="tag new">A</span><b>어두운 막만</b> · cool-neutral-900 58%, 흰 하트 · 글 그대로</figcaption><button class="btn ghost" type="button" data-play="A">다시 보기</button></figure><figure class="ph"><div class="ph-box"><div class="phone v-B" data-v="B"><img class="scene" src="img/scene.jpg" alt=""></div></div><figcaption><span class="tag new">B</span><b>어두운 막 + 가운데 흰 카드</b> · 막 42%, 장미는 하트에만</figcaption><button class="btn ghost" type="button" data-play="B">다시 보기</button></figure><figure class="ph"><div class="ph-box"><div class="phone v-C" data-v="C"><img class="scene" src="img/scene.jpg" alt=""></div></div><figcaption><span class="tag new">C</span><b>어두운 막 + 가운데만 옅은 장미 빛</b> · 막 55%</figcaption><button class="btn ghost" type="button" data-play="C">다시 보기</button></figure></div>
+</div>
+<script src="motion.js"></script>
+<script>
+const CFG={"now": {"veil": "", "card": ""}, "A": {"veil": "rgba(26,33,38,.58)", "card": ""}, "B": {"veil": "rgba(26,33,38,.42)", "card": "card"}, "C": {"veil": "radial-gradient(circle at 50% 44%,rgba(214,150,166,.42) 0,rgba(214,150,166,.16) 120px,rgba(214,150,166,0) 200px),rgba(26,33,38,.55)", "card": ""}};
+function run(k){const ph=document.querySelector('.phone[data-v="'+k+'"]');const c=CFG[k];
+  yhLikeBurst.play({mutual:true,leaf:5,phone:ph,veil:c.veil||undefined,onStart:c.card?(fx,CY)=>{const d=document.createElement('div');d.className='lb-card';d.style.top=(CY-90)+'px';fx.querySelector('.lb-veil').after(d);d.animate([{transform:'scale(.9)',opacity:0},{transform:'none',opacity:1}],{duration:320,easing:'cubic-bezier(0.22,1,0.36,1)',fill:'forwards'});}:undefined});}
+document.querySelectorAll('[data-play]').forEach(b=>b.addEventListener('click',()=>run(b.dataset.play)));
+document.getElementById('all').addEventListener('click',()=>Object.keys(CFG).forEach(run));
+setTimeout(()=>Object.keys(CFG).forEach(run),700);
+</script>

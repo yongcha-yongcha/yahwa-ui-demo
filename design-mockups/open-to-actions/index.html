@@ -1,0 +1,150 @@
+<meta charset="utf-8">
+<title>인연 열어보기 자리 · 모션</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 설명 + 고르기(모션 · 열어보기 색) → 같은 카드를 세 모션으로 나란히 → 메모 */
+:root{
+  --page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--panel:#FFFFFF;--chip:#E9EDF1;--chip-on:#1F2328;--chip-on-ink:#FFFFFF;
+  --sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;--serif:'Gowun Batang','AppleMyungjo',serif;
+  --ease:cubic-bezier(0.23,1,0.32,1);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--chip-on:#EEF1F4;--chip-on-ink:#14171A;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--chip-on:#EEF1F4;--chip-on-ink:#14171A;color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1200px;margin:0 auto;display:grid;gap:20px}
+header h1{font:700 24px/1.35 var(--sans);margin:0 0 6px;letter-spacing:-.3px}
+header p{margin:0;color:var(--ink-2);max-width:80ch}
+.pick{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pick b{font-weight:600;width:96px}
+.pick button{font:500 13px/1.2 var(--sans);border:0;border-radius:999px;padding:9px 14px;min-height:38px;background:var(--chip);color:var(--ink);cursor:pointer}
+.pick button[aria-pressed="true"]{background:var(--chip-on);color:var(--chip-on-ink)}
+.pick button:focus-visible,.replay:focus-visible{outline:2px solid #377398;outline-offset:2px}
+.replay{font:600 13px var(--sans);border:0;border-radius:999px;padding:10px 16px;min-height:40px;background:#377398;color:#fff;cursor:pointer}
+.opts{display:flex;flex-wrap:wrap;gap:24px;justify-content:center}
+.opt{display:grid;gap:10px;width:360px;max-width:100%;align-content:start}
+.opt h2{margin:0;font:700 16px/1.4 var(--sans)}
+.opt p.d{margin:0;color:var(--ink-2);font-size:13px;min-height:62px}
+
+/* 앱 화면 360 × 780 (라이트 전용, 지금 시연본 "카드 아래" 배치 값) */
+.phone{
+  --sky-50:#ECF5FC;--sky-100:#D6EAF8;--sky-200:#B7D7EC;--sky-600:#377398;--sky-700:#245D7E;--n-200:#CFD5DA;--n-900:#273037;
+  --p-bg:var(--sky-600);--p-fg:#fff;--s-bg:var(--sky-100);--s-fg:var(--sky-700);
+  width:360px;max-width:100%;height:780px;border-radius:34px;overflow:hidden;position:relative;color:#273037;
+  background:linear-gradient(180deg,#ECF5FC 0px,#F8F9F6 105px);box-shadow:0 18px 40px -18px rgba(20,40,60,.35);border:1px solid rgba(0,0,0,.06)}
+.top{position:absolute;left:20px;right:20px;top:46px}
+.ttl{font:400 29px/1.25 var(--serif);letter-spacing:-.5px;margin:0}
+.sub{font-size:13px;color:#6B727A;margin:6px 0 0}
+.card{position:absolute;left:20px;right:20px;top:124px;height:464px;border-radius:22px;overflow:hidden;color:#fff;cursor:pointer}
+.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 28%;filter:blur(12px);transform:scale(1.1)}
+.card .shade{position:absolute;inset:auto 0 0 0;height:58%;background:linear-gradient(to bottom,transparent,rgba(26,33,38,.42) 60%)}
+.arrive{position:absolute;top:22px;left:0;right:0;text-align:center;font:600 13px var(--sans);text-shadow:0 1px 6px rgba(0,0,0,.25)}
+.preview{position:absolute;left:20px;right:20px;bottom:20px}
+.preview small{display:block;font-size:12px;opacity:.88;margin-bottom:6px}
+.preview p{margin:0;font:500 14px/24px var(--sans)}
+.who{position:absolute;left:20px;right:20px;bottom:20px;opacity:0}
+.who .nm{font:700 24px/1.2 var(--sans)}
+.who .loc{font-size:14px;opacity:.88;margin-top:4px}
+.who small{display:block;font-size:12px;opacity:.88;margin:12px 0 4px}
+.who p{margin:0;font:500 14px/24px var(--sans)}
+.row{position:absolute;left:20px;right:20px;top:600px;height:52px}
+.b{position:absolute;top:0;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:6px;font:600 15px/1 var(--sans);white-space:nowrap;border:0;overflow:hidden}
+.b svg{width:18px;height:18px;flex:none}
+.b .t{display:flex;align-items:center;gap:6px}
+.open{left:0;width:100%;cursor:pointer}
+.phone[data-open="primary"] .open{background:var(--p-bg);color:var(--p-fg)}
+.phone[data-open="secondary"] .open{background:var(--s-bg);color:var(--s-fg)}
+.phone[data-open="tertiary"] .open{background:#fff;color:var(--n-900);box-shadow:inset 0 0 0 1px var(--n-200)}
+.heart{left:0;width:calc(50% - 4px);background:var(--p-bg);color:var(--p-fg);opacity:0}
+.letter{right:0;width:calc(50% - 4px);background:var(--s-bg);color:var(--s-fg);opacity:0}
+.pager{position:absolute;left:0;right:0;top:664px;display:flex;justify-content:center;gap:32px;align-items:center;font:600 15px var(--sans);color:#98A2AA}
+.pager b{color:#273037}
+.nav{position:absolute;left:16px;right:16px;bottom:16px;height:62px;border-radius:24px;background:rgba(255,255,255,.94);box-shadow:0 6px 20px -8px rgba(20,40,60,.25);display:flex;justify-content:space-around;align-items:center}
+.nav i{width:56px;height:46px;border-radius:16px;display:grid;place-items:center;color:#273037}
+.nav i.on{background:#E3EFF7;color:#245D7E}
+.nav svg{width:22px;height:22px}
+.nav img{width:30px;height:30px;border-radius:50%;object-fit:cover}
+.hint{position:absolute;left:0;right:0;top:568px;text-align:center;font:500 11px var(--sans);color:#fff;opacity:.0}
+
+.notes{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 20px;display:grid;gap:8px}
+.notes h2{font:700 16px var(--sans);margin:0}
+.notes ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:6px}
+.notes b{color:var(--ink)}
+@media (prefers-reduced-motion:reduce){.replay::after{content:" (움직임 줄이기 켜짐 · 짧은 크로스페이드로 보여요)";font-weight:400}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>인연 열어보기를 카드 밖으로 · 열릴 때 모션</h1>
+    <p>인연 열어보기를 카드 안에서 꺼내 호감 · 편지 버튼이 생길 자리(카드 바로 아래)에 두었어요. 열면 같은 자리에서 버튼이 호감 · 편지 두 개로 바뀌어서 이질감이 없어요. 카드나 버튼을 누르거나 "다시 보기"로 세 모션을 같이 재생해 보세요.</p>
+  </header>
+  <div class="pick" id="pick-open" role="group" aria-label="열어보기 버튼 색"><b>열어보기 색</b>
+    <button id="o-p" data-v="primary" aria-pressed="true">Primary · 진한 파랑</button>
+    <button id="o-s" data-v="secondary" aria-pressed="false">Secondary · 연한 파랑</button>
+    <button id="o-t" data-v="tertiary" aria-pressed="false">Tertiary · 흰 + 선</button>
+  </div>
+  <div class="pick"><b>재생</b><button class="replay" id="replay">다시 보기</button></div>
+  <section class="opts" id="opts"></section>
+  <section class="notes">
+    <h2>세 모션의 차이</h2>
+    <ul>
+      <li><b>A · 갈라지기</b>: 열어보기 버튼이 왼쪽 반으로 줄어들며 그대로 "호감 보내기"가 되고, 오른쪽에서 "편지 보내기"가 피어나요. 버튼이 이어지는 느낌이 가장 커요. 0.42초.</li>
+      <li><b>B · 바꿔 떠오르기</b>: 열어보기가 살짝 가라앉으며 사라지고, 호감 → 편지 순서로 아래에서 떠올라요. 가볍고 깔끔해요. 0.4초.</li>
+      <li><b>C · 바로 바뀜</b>: 비교용으로 모션 없이 바로 바뀌는 모습이에요.</li>
+      <li>세 안 모두 사진 흐림이 걷히는 동안(1.2초) 버튼이 바뀌고, 이름 · 사는 곳 · 한 장면 글은 지금처럼 0.65초 뒤 아래에서 떠올라요. 움직임 줄이기 설정이면 짧은 크로스페이드로만 바뀌어요.</li>
+      <li>열기 전 버튼 색은 위에서 바꿔 볼 수 있어요. A는 열어보기가 그대로 호감 버튼이 되니 <b>Primary</b>일 때 가장 자연스러워요.</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+const IC={heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg>',
+ letter:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M4 7l8 6 8-6"/></svg>'};
+const NAV=`<nav class="nav"><i class="on"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg></i><i>${IC.heart}</i><i>${IC.letter}</i><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 5h14v10H10l-5 4z"/><path d="M9 9h6M9 12h4"/></svg></i><i><img src="img/me.jpg" alt=""></i></nav>`;
+const OPTS=[{k:'A',t:'A · 갈라지기',d:'열어보기 버튼이 줄어들며 그대로 호감 보내기가 되고, 옆에서 편지 보내기가 피어나요.'},
+            {k:'B',t:'B · 바꿔 떠오르기',d:'열어보기가 살짝 가라앉으며 사라지고, 두 버튼이 차례로 떠올라요.'},
+            {k:'C',t:'C · 바로 바뀜 (비교용)',d:'모션 없이 바로 바뀌어요.'}];
+document.getElementById('opts').innerHTML=OPTS.map(o=>`<div class="opt"><h2>${o.t}</h2><p class="d">${o.d}</p><div class="phone" data-m="${o.k}" data-open="primary">
+<div class="top"><h3 class="ttl">오늘의 인연</h3><p class="sub">매일 12시 · 15시 · 18시 · 21시, 두 명씩</p></div>
+<div class="card" role="button" tabindex="0" aria-label="인연 열어보기"><img src="img/p.jpg" alt=""><div class="shade"></div><div class="arrive">18:00에 도착한 인연</div>
+<div class="preview"><small>☼ 이 사람의 한 장면</small><p>주말 아침에는 커피 한 잔을 들고 동네를 걷거나 작은 서점에 들러요.</p></div>
+<div class="who"><div class="nm">봄빛 · 26세</div><div class="loc">서울 마포구</div><small>✦ 이 사람의 한 장면</small><p>주말 아침에는 커피 한 잔을 들고 동네를 걷거나 작은 서점에 들러요.</p></div></div>
+<div class="row"><button class="b open" type="button"><span class="t">인연 열어보기</span></button><span class="b heart"><span class="t">${IC.heart}호감 보내기</span></span><span class="b letter"><span class="t">${IC.letter}편지 보내기</span></span></div>
+<div class="pager"><span>‹</span><span><b>3</b> / 8</span><span>›</span></div>${NAV}</div></div>`).join('');
+
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const E='cubic-bezier(0.23, 1, 0.32, 1)';
+function reset(ph){ph.getAnimations({subtree:true}).forEach(a=>a.cancel());ph.dataset.state='ready';
+ const q=s=>ph.querySelector(s);q('.card img').style.cssText='';q('.preview').style.opacity='';q('.arrive').style.opacity='';q('.who').style.opacity='0';
+ const o=q('.open');o.style.cssText='';o.hidden=false;q('.open .t').style.opacity='';q('.heart').style.opacity='0';q('.letter').style.opacity='0';q('.heart').style.cssText='opacity:0';q('.letter').style.cssText='opacity:0';}
+function play(ph){if(ph.dataset.state==='open')return;ph.dataset.state='open';const q=s=>ph.querySelector(s),m=ph.dataset.m;
+ const img=q('.card img'),pv=q('.preview'),ar=q('.arrive'),who=q('.who'),open=q('.open'),ot=q('.open .t'),heart=q('.heart'),letter=q('.letter');
+ const F=(el,k,o)=>el.animate(k,{fill:'forwards',easing:E,...o});
+ /* 사진: 흐림이 걷히며 살짝 물러남 (지금 시연본과 같은 값) */
+ F(img,[{filter:'blur(12px)',transform:'scale(1.1)'},{filter:'blur(0px)',transform:'scale(1.06)'}],{duration:reduce?200:1200});
+ F(pv,[{opacity:1},{opacity:0}],{duration:240});F(ar,[{opacity:1},{opacity:0}],{duration:240});
+ F(who,reduce?[{opacity:0},{opacity:1}]:[{opacity:0,transform:'translateY(16px)',filter:'blur(6px)'},{opacity:1,transform:'none',filter:'blur(0)'}],{duration:reduce?200:900,delay:reduce?0:650});
+ if(m==='C'||reduce){
+   if(m==='C'){open.hidden=true;heart.style.opacity='1';letter.style.opacity='1';return;}
+   F(open,[{opacity:1},{opacity:0}],{duration:160});F(heart,[{opacity:0},{opacity:1}],{duration:200,delay:120});F(letter,[{opacity:0},{opacity:1}],{duration:200,delay:120});return;}
+ if(m==='A'){
+   /* 열어보기가 그대로 호감 버튼이 돼요: 글자 먼저 사라지고 → 폭이 왼쪽 반으로 · 색은 Primary로 → 호감 글자 · 편지 버튼이 들어와요 */
+   const bg=getComputedStyle(heart).backgroundColor,fg=getComputedStyle(heart).color;
+   F(ot,[{opacity:1},{opacity:0}],{duration:120,easing:'ease-out'});
+   F(open,[{width:'100%'},{width:'calc(50% - 4px)',backgroundColor:bg,color:fg,boxShadow:'none'}],{duration:420,delay:180});
+   F(heart,[{opacity:0},{opacity:1}],{duration:160,delay:520});
+   F(open,[{opacity:1},{opacity:0}],{duration:80,delay:690});
+   F(letter,[{opacity:0,transform:'translateX(-12px) scale(.96)'},{opacity:1,transform:'none'}],{duration:340,delay:360});
+ }else{
+   /* B: 열어보기가 살짝 가라앉으며 사라지고, 두 버튼이 차례로 떠올라요 */
+   F(open,[{opacity:1,transform:'none'},{opacity:0,transform:'translateY(4px) scale(.97)'}],{duration:180,delay:150,easing:'ease-out'});
+   F(heart,[{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:320,delay:300});
+   F(letter,[{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:320,delay:360});
+ }}
+document.querySelectorAll('.phone').forEach(ph=>{reset(ph);const go=()=>play(ph);ph.querySelector('.open').addEventListener('click',go);const c=ph.querySelector('.card');c.addEventListener('click',go);c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});});
+document.getElementById('replay').addEventListener('click',()=>{document.querySelectorAll('.phone').forEach(ph=>{reset(ph);});requestAnimationFrame(()=>setTimeout(()=>document.querySelectorAll('.phone').forEach(play),250));});
+document.getElementById('pick-open').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;document.querySelectorAll('.phone').forEach(ph=>{ph.dataset.open=b.dataset.v;reset(ph);});document.querySelectorAll('#pick-open button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));});
+</script>

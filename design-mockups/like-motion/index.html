@@ -1,0 +1,294 @@
+<meta charset="utf-8">
+<title>호감 보내기 모션</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 왼쪽 실제 크기 휴대폰(인연 홈) · 오른쪽 모션 8개 + 세부 조절 */
+:root{
+  --page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--panel:#FFFFFF;--chip:#E9EDF1;
+  --sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;--serif:'Gowun Batang','AppleMyungjo',serif;
+  --rose:#B26073;--sky-600:#377398;--sky-100:#D6EAF8;--sky-700:#245D7E;
+  --n200:#CFD5DA;--n500:#818C94;--n700:#505C65;--n800:#39444D;--n900:#273037;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1040px;margin:0 auto;display:grid;grid-template-columns:360px minmax(0,1fr);gap:40px;align-items:start}
+@media (max-width:860px){.wrap{grid-template-columns:1fr;justify-items:center}.side{width:100%;max-width:440px}}
+
+/* 휴대폰 (앱 화면 · 라이트 고정) */
+.phone{position:sticky;top:20px;width:360px;height:780px;max-width:100%;border-radius:36px;overflow:hidden;background:#F7F8F9;color:var(--n800);box-shadow:0 30px 60px -30px rgba(26,33,38,.35),0 0 0 1px rgba(26,33,38,.06);isolation:isolate;-webkit-tap-highlight-color:transparent;user-select:none}
+@media (max-width:860px){.phone{position:relative;top:0}}
+.scene{position:absolute;inset:0;background:linear-gradient(180deg,#ECF5FC 0,#F7F8F9 220px);transform-origin:50% 45%;will-change:transform,filter}
+.ph-head{position:absolute;left:20px;right:20px;top:44px;display:flex;align-items:center;justify-content:space-between}
+.ph-head h1{margin:0;font:400 26px/40px var(--serif);color:var(--n800)}
+.ph-head span{display:flex;align-items:center;gap:6px;font:600 14px/1 var(--sans);color:var(--n700)}
+.ph-sub{position:absolute;left:20px;top:86px;font:400 12px/1 var(--sans);color:var(--n500)}
+.card{position:absolute;left:20px;width:300px;top:120px;height:470px;border-radius:22px;overflow:hidden;background:#cfd8df url(card.jpg) 50% 30%/cover}
+.card::after{content:"";position:absolute;inset:auto 0 0;height:55%;background:linear-gradient(transparent,rgba(26,33,38,.62))}
+.peek{position:absolute;left:330px;width:300px;top:120px;height:470px;border-radius:22px;background:#9aa7b0}
+.card-copy{position:absolute;z-index:1;left:20px;right:20px;bottom:22px;color:#fff}
+.card-copy b{display:block;font:700 24px/1.3 var(--sans);letter-spacing:-.3px}
+.card-copy small{display:block;margin-top:4px;font:400 13px/1.4 var(--sans);opacity:.86}
+.card-copy p{margin:10px 0 0;font:500 13px/21px var(--sans);opacity:.94}
+.acts{position:absolute;left:20px;right:40px;top:602px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn{position:relative;height:52px;border:0;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:6px;font:600 15px/1 var(--sans);cursor:pointer;transition:transform 120ms cubic-bezier(.23,1,.32,1),background-color 200ms ease,color 200ms ease,box-shadow 200ms ease;touch-action:manipulation}
+.btn svg{width:18px;height:18px;flex:none}
+.btn:active,.btn.is-press{transform:scale(.96)}
+.btn:focus-visible{outline:2px solid var(--sky-600);outline-offset:2px}
+.b-like{background:var(--sky-600);color:#fff}
+.b-letter{background:var(--sky-100);color:var(--sky-700)}
+.b-like.is-done{background:#fff;color:var(--n900);box-shadow:inset 0 0 0 1px var(--n200)}
+.b-like.is-done svg path{fill:var(--rose);stroke:var(--rose)}
+.gnb{position:absolute;left:20px;right:20px;bottom:24px;height:64px;border-radius:32px;background:rgba(255,255,255,.86);box-shadow:0 8px 24px -12px rgba(26,33,38,.25);display:flex;align-items:center;justify-content:space-around}
+.gnb i{width:22px;height:22px;border-radius:6px;border:1.8px solid var(--n700);opacity:.8}
+.gnb i:first-child{background:var(--sky-600);border-color:var(--sky-600)}
+.fx{position:absolute;inset:0;z-index:20;pointer-events:none;overflow:hidden}
+.fx>*{position:absolute}
+.msg{left:0;right:0;text-align:center;font:600 17px/1.4 var(--sans);letter-spacing:-.2px;opacity:0}
+
+/* 오른쪽 */
+.side{display:grid;gap:20px}
+.side h1{margin:0;font:700 22px/1.35 var(--sans);letter-spacing:-.3px}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.opt{display:grid;grid-template-columns:26px 1fr;gap:2px 10px;align-items:start;text-align:left;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer;font:inherit;min-height:44px}
+.opt b{font:700 14px/1.4 var(--sans)}
+.opt span{grid-column:2;color:var(--ink-2);font-size:12px;line-height:1.45}
+.opt i{grid-row:1/3;width:26px;height:26px;border-radius:8px;background:var(--chip);display:grid;place-items:center;font:700 12px/1 var(--sans);font-style:normal;color:var(--ink-2)}
+.opt[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.opt[aria-pressed="true"] i{background:var(--ink);color:var(--page)}
+.opt:focus-visible,.row button:focus-visible{outline:2px solid #377398;outline-offset:2px}
+@media (max-width:480px){.opts{grid-template-columns:1fr}}
+.tune{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;display:grid;gap:12px}
+.tune h2{margin:0;font:700 15px/1.4 var(--sans);display:flex;justify-content:space-between;align-items:center}
+.tune h2 button{font:500 12px/1 var(--sans);border:0;background:none;color:var(--ink-2);cursor:pointer;min-height:32px;padding:0 4px}
+.sl{display:grid;grid-template-columns:84px 1fr 52px;gap:10px;align-items:center;font-size:13px}
+.sl input{width:100%;accent-color:var(--ink)}
+.sl output{font:600 12.5px ui-monospace,Menlo,monospace;text-align:right}
+.row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px}
+.row>b{font-weight:600;width:84px}
+.row button{font:500 13px/1 var(--sans);border:0;border-radius:999px;padding:0 12px;height:34px;background:var(--chip);color:var(--ink);cursor:pointer}
+.row button[aria-pressed="true"]{background:var(--ink);color:var(--page)}
+.row .play{background:var(--ink);color:var(--page);font-weight:600;padding:0 16px}
+.vals{font:12.5px ui-monospace,Menlo,monospace;background:var(--chip);border-radius:10px;padding:10px 12px;word-break:break-all;color:var(--ink)}
+</style>
+
+<div class="wrap">
+  <div class="phone" id="phone" aria-label="인연 홈 화면">
+    <div class="scene" id="scene">
+      <div class="ph-head"><h1>오늘의 인연</h1><span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 18C3 7 12 3 21 3c0 10-5 17-13 16M4 22 16 9"/></svg>90</span></div>
+      <div class="ph-sub">매일 12시 · 15시 · 18시 · 21시, 두 명씩</div>
+      <div class="peek"></div>
+      <div class="card"><div class="card-copy"><b>봄빛, 26세</b><small>서울 마포구</small><p>출판사에서 책을 만드는 일을 해요. 주말 아침에는 커피 한 잔을 들고 동네를 걸어요.</p></div></div>
+      <div class="acts">
+        <button class="btn b-like" id="like" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg><span>호감 보내기</span></button>
+        <button class="btn b-letter" type="button" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M4 7l8 6 8-6"/></svg>편지 보내기</button>
+      </div>
+      <div class="gnb" aria-hidden="true"><i></i><i></i><i></i><i></i><i style="border-radius:50%"></i></div>
+    </div>
+    <div class="fx" id="fx" aria-hidden="true"></div>
+  </div>
+
+  <div class="side">
+    <h1>호감 보내기 모션 · 8가지</h1>
+    <div class="opts" id="opts">
+      <button class="opt" data-v="pop" aria-pressed="true"><i>1</i><b>막 + 하트 팝</b><span>화면이 덮이고 하트가 튕기며 등장</span></button>
+      <button class="opt" data-v="zoom" aria-pressed="false"><i>2</i><b>줌 스루</b><span>뒤 화면이 앞으로 다가오며 흐려지고, 하트가 앞에서 날아와 맺힘</span></button>
+      <button class="opt" data-v="rise" aria-pressed="false"><i>3</i><b>차오름</b><span>아래에서 위로 색이 차오르고 하트가 떠오름</span></button>
+      <button class="opt" data-v="iris" aria-pressed="false"><i>4</i><b>가운데 원</b><span>화면 가운데에서 원이 퍼져 덮음</span></button>
+      <button class="opt" data-v="heartmask" aria-pressed="false"><i>5</i><b>하트로 덮기</b><span>가운데 하트가 커지며 화면 전체가 됨</span></button>
+      <button class="opt" data-v="draw" aria-pressed="false"><i>6</i><b>선으로 그리기</b><span>하트가 한 붓으로 그려진 뒤 채워짐</span></button>
+      <button class="opt" data-v="beat" aria-pressed="false"><i>7</i><b>심장 박동</b><span>화면과 하트가 쿵 · 쿵 함께 뛰고 고리가 퍼짐</span></button>
+      <button class="opt" data-v="shower" aria-pressed="false"><i>8</i><b>하트 비</b><span>작은 하트들이 아래에서 떠오르고 가운데 큰 하트</span></button>
+    </div>
+
+    <div class="tune">
+      <h2>세부 조절 <button type="button" id="reset">기본값</button></h2>
+      <div class="row" role="group" aria-label="막 색"><b>막 색</b>
+        <button data-tone="rose" aria-pressed="true">장미</button><button data-tone="ink" aria-pressed="false">진한 회색</button><button data-tone="glass" aria-pressed="false">흰 유리</button>
+      </div>
+      <label class="sl">막 진하기<input type="range" id="dim" min="40" max="100" step="2"><output id="o-dim"></output></label>
+      <label class="sl">하트 크기<input type="range" id="size" min="56" max="160" step="4"><output id="o-size"></output></label>
+      <label class="sl">튕김<input type="range" id="bounce" min="0" max="60" step="5"><output id="o-bounce"></output></label>
+      <label class="sl">반응<input type="range" id="resp" min="25" max="90" step="5"><output id="o-resp"></output></label>
+      <label class="sl">머무는 시간<input type="range" id="hold" min="500" max="2200" step="100"><output id="o-hold"></output></label>
+      <label class="sl">작은 하트<input type="range" id="count" min="0" max="30" step="2"><output id="o-count"></output></label>
+      <div class="vals" id="vals"></div>
+      <div class="row" role="group" aria-label="재생"><button class="play" id="play">▶ 재생</button>
+        <b style="width:auto;margin-left:6px">속도</b><button data-s="1" aria-pressed="true">1×</button><button data-s="0.5" aria-pressed="false">0.5×</button><button data-s="0.25" aria-pressed="false">0.25×</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+const phone = document.getElementById('phone'), scene = document.getElementById('scene'), fx = document.getElementById('fx'), like = document.getElementById('like');
+const W = 360, H = 780, CX = 180, CY = 340;
+const DEF = { tone: 'rose', dim: 92, size: 96, bounce: 40, resp: 50, hold: 1200, count: 14 };
+let P = Object.assign({}, DEF), V = 'pop', S = 1, busy = false, raf = 0;
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* Apple 스프링: 감쇠(1 − 튕김) · 반응(초) → CSS linear() */
+function spring(damping, response) {
+  const w = 2 * Math.PI / response, z = Math.min(1, Math.max(.2, damping));
+  const f = t => { if (z >= 1) return 1 - Math.exp(-w * t) * (1 + w * t); const wd = w * Math.sqrt(1 - z * z); return 1 - Math.exp(-z * w * t) * (Math.cos(wd * t) + (z * w / wd) * Math.sin(wd * t)); };
+  let T = 0; for (let t = 0; t < 4; t += 0.004) if (Math.abs(1 - f(t)) > 0.0015) T = t;
+  T += 0.02; const N = Math.min(100, Math.max(32, Math.round(T * 70))), pts = [];
+  for (let i = 0; i <= N; i++) pts.push(+f(T * i / N).toFixed(4)); pts[N] = 1;
+  return { easing: 'linear(' + pts.join(',') + ')', ms: T * 1000 };
+}
+const SP = () => spring(1 - P.bounce / 100, P.resp / 100);
+const OUT = 'cubic-bezier(0.22, 1, 0.36, 1)', EIN = 'cubic-bezier(0.55, 0, 0.75, 0.2)';
+const wait = ms => new Promise(r => setTimeout(r, ms / S));
+const anim = (el, kf, o = {}) => el.animate(kf, Object.assign({ fill: 'forwards' }, o, { duration: (o.duration || 300) / S, delay: (o.delay || 0) / S })).finished.catch(() => {});
+const HEART = 'M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z';
+const svgH = (s, fill, stroke = 'none', sw = 0, extra = '') => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" style="display:block;overflow:visible"><path d="${HEART}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round" stroke-linecap="round" ${extra}/></svg>`;
+function el(html, css) { const d = document.createElement('div'); d.innerHTML = html || ''; Object.assign(d.style, css || {}); fx.append(d); return d; }
+
+/* 막 색 */
+function tone() {
+  const a = P.dim / 100;
+  if (P.tone === 'ink') return { bg: `rgba(26,33,38,${a})`, fg: '#fff', heart: '#fff', dot: 'rgba(255,255,255,.9)', glass: false };
+  if (P.tone === 'glass') return { bg: `rgba(255,255,255,${a * .7})`, fg: '#273037', heart: '#B26073', dot: 'rgba(178,96,115,.7)', glass: true };
+  return { bg: `radial-gradient(120% 80% at 50% 42%, rgba(199,122,140,${a}) 0%, rgba(178,96,115,${a}) 48%, rgba(150,74,93,${a}) 100%)`, fg: '#fff', heart: '#fff', dot: 'rgba(255,255,255,.92)', glass: false };
+}
+function veil(css = {}) { const t = tone(); const v = el('', Object.assign({ inset: 0, background: t.bg }, t.glass ? { backdropFilter: 'blur(20px) saturate(160%)', WebkitBackdropFilter: 'blur(20px) saturate(160%)' } : {}, css)); return v; }
+function heart(css = {}) { const t = tone(), s = P.size; return el(svgH(s, t.heart), Object.assign({ left: (CX - s / 2) + 'px', top: (CY - s / 2) + 'px' }, css)); }
+function msg() { const t = tone(); const m = el('호감을 보냈어요', { top: (CY + P.size / 2 + 22) + 'px', color: t.fg }); m.className = 'msg'; return m; }
+const showMsg = (m, d = 120) => anim(m, [{ transform: 'translateY(8px)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 420, easing: OUT, delay: d });
+const pop = (h, from = .25, d = 0) => { const sp = SP(); return anim(h, [{ transform: `scale(${from})`, opacity: 0 }, { transform: 'scale(1)', opacity: 1, offset: .25 }, { transform: 'scale(1)', opacity: 1 }], { duration: sp.ms, easing: sp.easing, delay: d }); };
+function haptic(p) { try { navigator.vibrate && navigator.vibrate(p); } catch (e) {} }
+
+/* 작은 하트: 처음 속도 → 공기 저항 · 살짝 위로 뜸 */
+function burst(n, color) {
+  if (!n) return; const ps = [];
+  for (let i = 0; i < n; i++) { const a = (i / n) * Math.PI * 2 + (Math.random() - .5) * .5, sp = 280 + Math.random() * 280, s = 8 + Math.random() * 10;
+    const d = el(svgH(s, color), { left: (CX - s / 2) + 'px', top: (CY - s / 2) + 'px' });
+    ps.push({ d, x: 0, y: 0, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, r: 0, vr: (Math.random() - .5) * 360, life: 0, max: .9 + Math.random() * .4 }); }
+  run(ps, (p, dt) => { const drag = Math.pow(.04, dt); p.vx *= drag; p.vy = p.vy * drag - 90 * dt; });
+}
+function shower(n, color) {
+  const ps = [];
+  for (let i = 0; i < n; i++) { const s = 10 + Math.random() * 18, x = 20 + Math.random() * (W - 40);
+    const d = el(svgH(s, color), { left: (x - s / 2) + 'px', top: (H + 10) + 'px' });
+    ps.push({ d, x: 0, y: 0, vx: 0, vy: -(220 + Math.random() * 260), r: (Math.random() - .5) * 30, vr: (Math.random() - .5) * 60, life: -Math.random() * .5, max: 1.6 + Math.random() * .6, ph: Math.random() * 6, amp: 10 + Math.random() * 18 }); }
+  run(ps, (p, dt) => { p.vx = Math.cos(p.life * 4 + p.ph) * p.amp; p.vy *= Math.pow(.6, dt); });
+}
+function run(ps, force) {
+  let last = performance.now();
+  const step = now => { const dt = Math.min(.033, (now - last) / 1000) * S; last = now; let alive = false;
+    for (const p of ps) { p.life += dt; if (p.life < 0) { alive = true; continue; } if (p.life > p.max) { p.d.style.opacity = 0; continue; } alive = true; force(p, dt);
+      p.x += p.vx * dt; p.y += p.vy * dt; p.r += p.vr * dt; const k = p.life / p.max, sc = k < .12 ? .4 + k / .12 * .6 : 1 - (k - .12) * .4;
+      p.d.style.transform = `translate(${p.x}px,${p.y}px) rotate(${p.r}deg) scale(${sc})`; p.d.style.opacity = k < .65 ? 1 : 1 - (k - .65) / .35; }
+    if (alive) raf = requestAnimationFrame(step); };
+  raf = requestAnimationFrame(step);
+}
+async function leave(v, h, m, extra) { /* 공통 퇴장: 하트 · 글은 살짝 작아지며 먼저, 막은 뒤따라 */
+  anim(m, [{ opacity: 1 }, { opacity: 0 }], { duration: 160 });
+  anim(h, [{ transform: 'scale(1)', opacity: 1 }, { transform: 'scale(.86)', opacity: 0 }], { duration: 240, easing: EIN });
+  if (extra) await extra(); else await anim(v, [{ opacity: 1 }, { opacity: 0 }], { duration: 320, delay: 80, easing: 'ease-out' });
+}
+
+const RUN = {
+  /* 1 막 + 하트 팝 */
+  async pop() { const v = veil({ opacity: 0 }), h = heart({ opacity: 0 }), m = msg();
+    await anim(v, [{ opacity: 0 }, { opacity: 1 }], { duration: 200, easing: 'ease-out' });
+    haptic(14); pop(h); burst(P.count, tone().dot); showMsg(m);
+    await wait(P.hold); await leave(v, h, m); },
+  /* 2 줌 스루: 뒤 화면이 1.06배로 다가오며 흐려지고, 하트는 1.8배 흐린 상태에서 제자리로 맺힘 */
+  async zoom() { const v = veil({ opacity: 0 }), h = heart({ opacity: 0 }), m = msg(), sp = SP();
+    anim(scene, [{ transform: 'scale(1)', filter: 'blur(0px)' }, { transform: 'scale(1.06)', filter: 'blur(6px)' }], { duration: 420, easing: OUT });
+    anim(v, [{ opacity: 0 }, { opacity: 1 }], { duration: 300, easing: 'ease-out' });
+    haptic(14);
+    anim(h, [{ transform: 'scale(1.9)', opacity: 0, filter: 'blur(10px)' }, { transform: 'scale(1)', opacity: 1, filter: 'blur(0px)' }], { duration: sp.ms, easing: sp.easing, delay: 80 });
+    burst(P.count, tone().dot); showMsg(m, 200);
+    await wait(P.hold);
+    await leave(v, h, m, async () => { anim(scene, [{ transform: 'scale(1.06)', filter: 'blur(6px)' }, { transform: 'scale(1)', filter: 'blur(0px)' }], { duration: 420, easing: OUT }); await anim(v, [{ opacity: 1 }, { opacity: 0 }], { duration: 340, easing: 'ease-out' }); });
+    scene.getAnimations().forEach(a => a.cancel()); },
+  /* 3 차오름: 아래에서 위로 채워짐(강한 감속), 하트가 아래에서 떠오름 */
+  async rise() { const v = veil({ clipPath: 'inset(100% 0 0 0)' }), h = heart({ opacity: 0 }), m = msg(), sp = SP();
+    haptic(14);
+    await anim(v, [{ clipPath: 'inset(100% 0 0 0)' }, { clipPath: 'inset(0% 0 0 0)' }], { duration: 480, easing: OUT });
+    anim(h, [{ transform: 'translateY(60px) scale(.6)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: sp.ms, easing: sp.easing });
+    burst(P.count, tone().dot); showMsg(m);
+    await wait(P.hold);
+    await leave(v, h, m, () => anim(v, [{ clipPath: 'inset(0% 0 0 0)' }, { clipPath: 'inset(0 0 100% 0)' }], { duration: 420, easing: 'cubic-bezier(0.65,0,0.35,1)', delay: 60 })); },
+  /* 4 가운데 원 */
+  async iris() { const R = Math.hypot(W / 2, Math.max(CY, H - CY)) + 10, v = veil({ clipPath: `circle(0px at ${CX}px ${CY}px)` }), h = heart({ opacity: 0 }), m = msg();
+    haptic(14);
+    anim(v, [{ clipPath: `circle(0px at ${CX}px ${CY}px)` }, { clipPath: `circle(${R}px at ${CX}px ${CY}px)` }], { duration: 560, easing: OUT });
+    await wait(110); pop(h); burst(P.count, tone().dot); showMsg(m, 160);
+    await wait(P.hold);
+    await leave(v, h, m, () => anim(v, [{ clipPath: `circle(${R}px at ${CX}px ${CY}px)` }, { clipPath: `circle(0px at ${CX}px ${CY}px)` }], { duration: 420, easing: 'cubic-bezier(0.65,0,0.35,1)', delay: 60 })); },
+  /* 5 하트로 덮기: 막 색의 큰 하트가 가운데에서 커져 화면을 덮고, 그 안에 하트가 맺힘 */
+  async heartmask() { const t = tone(), big = el(`<svg width="120" height="120" viewBox="0 0 24 24" style="display:block;overflow:visible"><path d="${HEART}" fill="${P.tone === 'ink' ? `rgba(26,33,38,${P.dim / 100})` : P.tone === 'glass' ? `rgba(255,255,255,${P.dim / 100 * .7})` : `rgba(178,96,115,${P.dim / 100})`}"/></svg>`, { left: (CX - 60) + 'px', top: (CY - 66) + 'px', transformOrigin: '60px 66px' });
+    const v = veil({ opacity: 0 }), h = heart({ opacity: 0 }), m = msg();
+    haptic(14);
+    await anim(big, [{ transform: 'scale(0)' }, { transform: 'scale(1.1)', offset: .3 }, { transform: 'scale(26)' }], { duration: 760, easing: 'cubic-bezier(0.7,0,0.25,1)' });
+    v.style.opacity = 1; big.remove();
+    pop(h, .5); burst(P.count, t.dot); showMsg(m);
+    await wait(P.hold); await leave(v, h, m); },
+  /* 6 선으로 그리기 */
+  async draw() { const t = tone(), s = P.size, L = 46, v = veil({ opacity: 0 });
+    const h = el(svgH(s, t.heart, t.heart, 1.3, `fill-opacity="0" stroke-dasharray="${L}" stroke-dashoffset="${L}"`), { left: (CX - s / 2) + 'px', top: (CY - s / 2) + 'px' }), m = msg(), p = h.querySelector('path');
+    await anim(v, [{ opacity: 0 }, { opacity: 1 }], { duration: 220, easing: 'ease-out' });
+    await anim(p, [{ strokeDashoffset: L }, { strokeDashoffset: 0 }], { duration: 560, easing: 'cubic-bezier(.45,0,.2,1)' });
+    haptic(16); const sp = SP();
+    anim(p, [{ fillOpacity: 0 }, { fillOpacity: 1 }], { duration: 200, easing: 'ease-out' });
+    anim(h, [{ transform: 'scale(.86)' }, { transform: 'scale(1)' }], { duration: sp.ms, easing: sp.easing });
+    burst(P.count, t.dot); showMsg(m, 60);
+    await wait(P.hold); await leave(v, h, m); },
+  /* 7 심장 박동: 막과 하트가 같은 박자로(쿵 크게 · 쿵 작게 · 쉼) 두 번, 박동마다 고리 */
+  async beat() { const t = tone(), v = veil({ opacity: 0 }), h = heart({ opacity: 0 }), m = msg();
+    await anim(v, [{ opacity: 0 }, { opacity: 1 }], { duration: 200, easing: 'ease-out' });
+    pop(h, .4); showMsg(m, 200); await wait(320);
+    const kf = [{ transform: 'scale(1)' }, { transform: 'scale(1.18)', offset: .1 }, { transform: 'scale(1)', offset: .22 }, { transform: 'scale(1.09)', offset: .32 }, { transform: 'scale(1)', offset: .46 }, { transform: 'scale(1)' }];
+    for (let i = 0; i < 2; i++) {
+      haptic([12, 110, 8]);
+      const ring = el('', { left: (CX - P.size / 2) + 'px', top: (CY - P.size / 2) + 'px', width: P.size + 'px', height: P.size + 'px', borderRadius: '50%', boxShadow: `0 0 0 2px ${t.dot}` });
+      anim(ring, [{ transform: 'scale(.9)', opacity: .9 }, { transform: 'scale(3.4)', opacity: 0 }], { duration: 820, easing: OUT });
+      anim(v, [{ opacity: 1 }, { opacity: .82, offset: .1 }, { opacity: 1, offset: .22 }, { opacity: .9, offset: .32 }, { opacity: 1, offset: .46 }, { opacity: 1 }], { duration: 900, fill: 'none' });
+      await anim(h, kf, { duration: 900, easing: 'ease-in-out', fill: 'none' });
+    }
+    await wait(Math.max(0, P.hold - 1500)); await leave(v, h, m); },
+  /* 8 하트 비 */
+  async shower() { const t = tone(), v = veil({ opacity: 0 }), h = heart({ opacity: 0 }), m = msg();
+    anim(v, [{ opacity: 0 }, { opacity: 1 }], { duration: 260, easing: 'ease-out' });
+    shower(Math.max(10, P.count * 2), t.dot); haptic(14);
+    await wait(220); pop(h, .3); showMsg(m);
+    await wait(P.hold + 300); await leave(v, h, m); }
+};
+
+function setDone() { like.classList.add('is-done'); like.querySelector('span').textContent = '호감 보냄'; const sp = spring(.6, .35); like.animate([{ transform: 'scale(.92)' }, { transform: 'scale(1)' }], { duration: sp.ms / S, easing: sp.easing }); }
+function reset() { cancelAnimationFrame(raf); fx.replaceChildren(); scene.getAnimations().forEach(a => a.cancel()); like.classList.remove('is-done', 'is-press'); like.querySelector('span').textContent = '호감 보내기'; }
+async function calm() { const v = veil({ opacity: 0 }), h = heart({ opacity: 0 }), m = msg(); await Promise.all([anim(v, [{ opacity: 0 }, { opacity: 1 }], { duration: 200 }), anim(h, [{ opacity: 0 }, { opacity: 1 }], { duration: 200 }), anim(m, [{ opacity: 0 }, { opacity: 1 }], { duration: 200 })]); await wait(P.hold); await anim(fx, [{ opacity: 1 }, { opacity: 0 }], { duration: 200 }); }
+async function play() {
+  if (busy) return; busy = true; reset(); await new Promise(r => requestAnimationFrame(r));
+  try { await (reduce ? calm : RUN[V])(); setDone(); } finally { cancelAnimationFrame(raf); fx.getAnimations({ subtree: true }).forEach(a => a.cancel()); fx.replaceChildren(); busy = false; }
+}
+
+/* 조절 */
+const IDS = ['dim', 'size', 'bounce', 'resp', 'hold', 'count'];
+const FMT = { dim: v => v + '%', size: v => v + 'px', bounce: v => (v / 100).toFixed(2), resp: v => (v / 100).toFixed(2) + 's', hold: v => (v / 1000).toFixed(1) + 's', count: v => v + '개' };
+const TONE = { rose: '장미', ink: '진한 회색', glass: '흰 유리' };
+function sync() {
+  IDS.forEach(k => { document.getElementById(k).value = P[k]; document.getElementById('o-' + k).textContent = FMT[k](P[k]); });
+  document.querySelectorAll('[data-tone]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.tone === P.tone)));
+  const n = document.querySelector('.opt[aria-pressed="true"] i').textContent;
+  document.getElementById('vals').textContent = `${n}번 · 막 ${TONE[P.tone]} ${P.dim}% · 하트 ${P.size} · 튕김 ${FMT.bounce(P.bounce)} · 반응 ${FMT.resp(P.resp)} · 머묾 ${FMT.hold(P.hold)} · 작은 하트 ${P.count}`;
+}
+IDS.forEach(k => document.getElementById(k).addEventListener('input', e => { P[k] = +e.target.value; sync(); }));
+IDS.forEach(k => document.getElementById(k).addEventListener('change', play));
+document.querySelector('.tune').addEventListener('click', e => { const t = e.target.closest('[data-tone]'); if (t) { P.tone = t.dataset.tone; sync(); play(); } const s = e.target.closest('[data-s]'); if (s) { S = +s.dataset.s; document.querySelectorAll('[data-s]').forEach(x => x.setAttribute('aria-pressed', String(x === s))); } });
+document.getElementById('reset').addEventListener('click', () => { P = Object.assign({}, DEF); sync(); });
+document.getElementById('opts').addEventListener('click', e => { const b = e.target.closest('.opt'); if (!b) return; V = b.dataset.v; document.querySelectorAll('.opt').forEach(x => x.setAttribute('aria-pressed', String(x === b))); sync(); play(); });
+document.getElementById('play').addEventListener('click', play);
+like.addEventListener('pointerdown', () => like.classList.add('is-press'));
+['pointerup', 'pointerleave', 'pointercancel'].forEach(t => like.addEventListener(t, () => like.classList.remove('is-press')));
+like.addEventListener('click', () => { if (like.classList.contains('is-done')) { reset(); return; } play(); });
+sync();
+})();
+</script>

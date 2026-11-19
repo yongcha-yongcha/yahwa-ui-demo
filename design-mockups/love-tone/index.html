@@ -1,0 +1,62 @@
+<meta charset="utf-8">
+<title>호감 버튼 · 칩 톤</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리(바뀐 원칙) → 상태 표(지금 · A · B × 보내기 전 · 호감 보냄 · 서로 호감) → 호감 보냄 화면 전체 세 장 */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--panel:#FFFFFF;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:1000px;margin:0 auto;display:grid;gap:32px}
+header h1{font:700 24px/1.35 var(--sans);margin:0 0 8px;letter-spacing:-.3px}
+header ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:76ch}
+header b{color:var(--ink);font-weight:600}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:720px;background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+th,td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle;font-size:13px}
+th{font-weight:600;color:var(--ink-2)}
+tr:last-child td{border-bottom:0}
+td img{display:block;width:240px;max-width:100%;border-radius:12px;border:1px solid var(--line)}
+td b{display:block;font-size:14px;color:var(--ink);margin-bottom:4px}
+td small{display:block;color:var(--ink-2);font-size:12.5px;line-height:1.55;max-width:24ch}
+.row{display:grid;grid-template-columns:repeat(3,minmax(0,260px));gap:20px}
+figure{margin:0;display:grid;gap:8px;min-width:0}
+figure img{width:100%;border-radius:20px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+h2{font:700 18px/1.4 var(--sans);margin:0}
+@media (max-width:760px){.row{grid-template-columns:1fr;max-width:300px}}
+.mini{display:flex;gap:8px;width:300px}
+.mb{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;height:40px;border-radius:12px;font:600 13px/1 var(--sans);white-space:nowrap}
+.mb svg{width:14px;height:14px}
+.mb.done{background:#fff;color:#245D7E;box-shadow:inset 0 0 0 1px #CFD5DA}
+.mb.pri{background:#377398;color:#fff}.mb.sec{background:#DCEBF5;color:#245D7E}
+.mb.s{flex:0 0 76px}
+</style>
+<div class="wrap">
+  <header>
+    <h1>호감 버튼 · 칩 톤 (팀 피드백 3)</h1>
+    <ul>
+      <li><b>받은 피드백:</b> 연한 바탕에 같은 색 진한 글자를 쓰면 유아틱해 보여요. 진한 바탕 + 흰 글자가 깔끔해요.</li>
+      <li><b>바꾸는 곳:</b> 홈 "서로 연결됨 · 편지함에서 이어가기", 상대 프로필 칩 "나에게 호감을 보냈어요" · "서로 호감이 있어요" · "OO 님에게 호감을 보냈어요".</li>
+      <li><b>A로 데모에 넣었어요:</b> 장미 rose-500 · 회색 cool-neutral-600 바탕 + 흰 글자. 오른쪽 칸은 데모에서 찍은 실제 화면이에요.</li>
+    </ul>
+  </header>
+  <div class="tbl"><table>
+    <thead><tr><th>자리</th><th>예전</th><th>A · 데모에 넣음</th></tr></thead>
+    <tbody>
+      <tr><td><b>홈 · 서로 연결됨</b><small>연 카드 안 버튼</small></td><td><img src="img/h_now.jpg" alt=""></td><td><img src="img/app_h.jpg" alt=""></td></tr>
+      <tr><td><b>프로필 · 받은 호감</b><small>"나에게 호감을 보냈어요"</small></td><td><img src="img/p_recv_now.jpg" alt=""></td><td><img src="img/app_recv.jpg" alt=""></td></tr>
+      <tr><td><b>프로필 · 서로 호감</b><small>"서로 호감이 있어요"</small></td><td><img src="img/p_mut_now.jpg" alt=""></td><td><img src="img/app_mut.jpg" alt=""></td></tr>
+      <tr><td><b>프로필 · 보낸 호감</b><small>"OO 님에게 호감을 보냈어요" · 회색</small></td><td><img src="img/p_sent_now.jpg" alt=""></td><td><img src="img/app_sent.jpg" alt=""></td></tr>
+    </tbody>
+  </table></div>
+  <section style="display:grid;gap:12px">
+    <h2>보냄 상태 글자</h2>
+    <p style="margin:0;color:var(--ink-2);font-size:13px;max-width:76ch">지금은 하나만 보내면 "보냄"으로 줄어 왼쪽에 작게 붙고, 둘 다 보내면 "호감 보냄 · 편지 보냄"이 돼서 경우마다 모양이 달라요. 바꾼 안은 항상 반반, 끝난 칸은 "호감 보냄" · "편지 보냄"으로 같은 이름이고, 자리도 호감 왼쪽 · 편지 오른쪽으로 고정이에요. 색은 실제 버튼과 같게: 흰 바탕 + cool-neutral-200 선 + sky-700 글자, 하트는 장미 · 체크는 sky-700. <b>다만 방금 홈 카드에서 호감 · 편지 버튼을 뺐기 때문에, 지금 데모에서는 이 줄이 나오는 화면이 없어요.</b> 나중에 다시 쓰게 되면 이 규칙으로 할게요.</p>
+    <div class="tbl"><table style="min-width:640px"><thead><tr><th>상황</th><th>지금</th><th>바꾼 안</th></tr></thead><tbody><tr><td><b>호감만 보냄</b></td><td><div class="mini"><span class="mb done s"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z" fill="#B26073"/></svg>보냄</span><span class="mb sec"><svg viewBox="0 0 24 24"><path d="M3 6Q12 5 21 6V19H3Z M3 7L12 14L21 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>편지 보내기</span></div></td><td><div class="mini"><span class="mb done"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z" fill="#B26073"/></svg>호감 보냄</span><span class="mb sec"><svg viewBox="0 0 24 24"><path d="M3 6Q12 5 21 6V19H3Z M3 7L12 14L21 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>편지 보내기</span></div></td></tr><tr><td><b>편지만 보냄</b></td><td><div class="mini"><span class="mb done s"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#245D7E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>보냄</span><span class="mb pri"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>호감 보내기</span></div></td><td><div class="mini"><span class="mb pri"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>호감 보내기</span><span class="mb done"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#245D7E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>편지 보냄</span></div></td></tr><tr><td><b>둘 다 보냄</b></td><td><div class="mini"><span class="mb done"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z" fill="#B26073"/></svg>호감 보냄</span><span class="mb done"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#245D7E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>편지 보냄</span></div></td><td><div class="mini"><span class="mb done"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z" fill="#B26073"/></svg>호감 보냄</span><span class="mb done"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#245D7E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>편지 보냄</span></div></td></tr></tbody></table></div>
+  </section>
+</div>

@@ -1,0 +1,72 @@
+<meta charset="utf-8">
+<title>양옆 잘림 고치기</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리(원인 · 고치는 법) → 잘림 두 곳 확대 before · after → 전체 화면 → 다른 화면 영향 표 */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--panel:#FFFFFF;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:1000px;margin:0 auto;display:grid;gap:32px}
+header h1{font:700 24px/1.35 var(--sans);margin:0 0 8px;letter-spacing:-.3px}
+header p{margin:0 0 6px;color:var(--ink-2);max-width:72ch}
+code{font:500 12.5px/1.5 var(--mono);background:var(--chip);padding:1px 6px;border-radius:5px;color:var(--ink)}
+h2{font:700 18px/1.4 var(--sans);margin:0}
+section{display:grid;gap:12px;min-width:0}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,420px));gap:20px}
+.shots{display:grid;grid-template-columns:repeat(4,minmax(0,220px));gap:16px}
+figure{margin:0;display:grid;gap:6px;min-width:0}
+figure img{width:100%;border-radius:14px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:12px;color:var(--ink-2)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px;background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;font-size:13px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line)}
+th{font-weight:600;color:var(--ink-2)}
+tr:last-child td{border-bottom:0}
+@media (max-width:760px){.pair{grid-template-columns:1fr}.shots{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>안쪽 화면 양옆 잘림 · 개선안</h1>
+    <p><b>원인</b> · 안쪽 화면의 스크롤 영역(<code>#features .detail-scroll</code>)이 휴대폰 양끝에서 20px 안쪽에 놓이고, 가로로 넘치는 걸 숨겨요. 내용이 영역 끝에 딱 붙어 있어서 여백선 밖으로 조금 걸치는 장식(글쓴이 얼굴 고리 3.5px, 새 요청 점 2px)이 잘려요.</p>
+    <p><b>고치는 법</b> · 해시태그 화면과 같게, 스크롤 영역은 휴대폰 폭 전체로(<code>left:0; right:0</code>) 넓히고 20px 여백은 안쪽 여백(<code>padding</code>)으로 옮겨요. 내용 자리는 그대로이고, 양옆에 장식이 걸칠 20px이 생겨요.</p>
+  </header>
+
+  <section>
+    <h2>잘리던 두 곳 · 확대</h2>
+    <div class="pair">
+      <figure><img src="img/zm_b.jpg" alt="글쓴이 고리 지금"><figcaption><span class="tag">지금</span>글쓴이 얼굴 고리 왼쪽이 잘림</figcaption></figure>
+      <figure><img src="img/zm_a.jpg" alt="글쓴이 고리 고친 뒤"><figcaption><span class="tag new">after</span>고리가 둥글게 다 보여요</figcaption></figure>
+      <figure><img src="img/zr_b.jpg" alt="새 요청 점 지금"><figcaption><span class="tag">지금</span>빨간 점 오른쪽이 잘림</figcaption></figure>
+      <figure><img src="img/zr_a.jpg" alt="새 요청 점 고친 뒤"><figcaption><span class="tag new">after</span>점이 동그랗게 다 보여요</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>전체 화면</h2>
+    <div class="shots">
+      <figure><img src="img/mineB.jpg" alt=""><figcaption><span class="tag">지금</span>내 글 · 글쓴이 댓글</figcaption></figure>
+      <figure><img src="img/mineA.jpg" alt=""><figcaption><span class="tag new">after</span></figcaption></figure>
+      <figure><img src="img/reqB.jpg" alt=""><figcaption><span class="tag">지금</span>요청이 와 있는 글</figcaption></figure>
+      <figure><img src="img/reqA.jpg" alt=""><figcaption><span class="tag new">after</span></figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>같은 틀을 쓰는 다른 화면 · 바뀌는지 확인</h2>
+    <p style="margin:0;color:var(--ink-2);font-size:13px">고치기 전과 후를 같은 높이로 찍어 픽셀을 비교했어요. "같음"은 차이 0, "눈에 안 보임"은 이미지 압축 수준의 차이예요.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>화면</th><th>결과</th></tr></thead>
+      <tbody>
+        <tr><td>무료 리프 받기 · 리프 충전 · 친구 초대 · 배지 · 인증 · 교환 요청 · 지인 차단 · 매장 포인트</td><td>같음</td></tr>
+        <tr><td>익명 이야기 · 편지 쓰기 · 받은 편지 · 알림 설정 · 인연 공개 · 취향 설정 · 새로운 소식 · 플레이스</td><td>눈에 안 보임</td></tr>
+        <tr><td>이야기에서 시작한 인연(교환)</td><td>레이아웃은 같음 · 처음 볼 때만 뜨는 새 요청 점이 두 번째 캡처에서 읽음 처리된 차이</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+</div>

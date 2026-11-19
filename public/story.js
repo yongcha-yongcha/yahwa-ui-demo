@@ -51,7 +51,7 @@ function renderMain(){
   root.classList.remove('is-writing');
   hint.hidden=!passed();hint.textContent='이야기는 나중에 내 프로필에서도 고칠 수 있어요.';
   swapBtn.hidden=true;
-  next.textContent=passed()?'다음':`이야기 ${3-n}장을 더 담아 주세요`;next.disabled=!passed();next.onclick=()=>{if(passed())show('hashtags');};
+  next.textContent=passed()?'다음':`이야기 ${3-n}장을 더 담아 주세요`;next.disabled=!passed();next.onclick=()=>{if(passed())show('preview');};/* 2026-11-19 팀 링크처럼 해시태그 단계 뺌 */
   fitScroll();
 }
 

@@ -34,8 +34,8 @@ function showTip(target,html,{ms,small,keep}){
   tip=t;hideTimer=setTimeout(hide,ms);
 }
 
-/* 리프 적립 토스트(.fx-toast)가 떠 있으면 같은 자리라 사라진 뒤 200ms에 보여요 */
-function afterToast(cb){const t=document.querySelector('.fx-toast');if(!t){cb();return;}
+/* 호감 보내기 모션 막(.lb-fx)이나 리프 적립 토스트(.fx-toast)가 떠 있으면 같은 자리라 사라진 뒤 200ms에 보여요 */
+function afterToast(cb){const t=document.querySelector('.lb-fx')||document.querySelector('.fx-toast');if(!t){cb();return;}
   const mo=new MutationObserver(()=>{if(!t.isConnected){mo.disconnect();clearTimeout(cap);setTimeout(cb,200);}});mo.observe(t.parentNode||document.body,{childList:true});
   const cap=setTimeout(()=>{mo.disconnect();cb();},4000);}
 
@@ -53,7 +53,7 @@ function onProfileOpen(){
   if(mutual()){if(noLetter()&&!letterSeen())openTimer=setTimeout(()=>{if(profile.hidden||!mutual()||!noLetter())return;letterTip();},reduce()?0:600);return;}
   if(read().profile||typeof sentInterests==='undefined'||sentInterests.has(matchIndex))return;
   openTimer=setTimeout(()=>{if(profile.hidden||sentInterests.has(matchIndex)||read().profile)return;
-    showTip(like,'마음이 가면 관심을 보내 보세요.',{ms:4000,keep:true});mark('profile');},reduce()?0:600);
+    showTip(like,'마음이 가면 호감을 보내 보세요.',{ms:4000,keep:true});mark('profile');},reduce()?0:600);
 }
 /* 2) 마음함 안내 */
 let tabTimer=0;
@@ -66,7 +66,7 @@ like.addEventListener('click',()=>{
     if(read().hearts)return;
     mark('hearts');clearTimeout(tabTimer);
     tabTimer=setTimeout(()=>afterToast(()=>{const tab=document.querySelector('#gnb-layer [data-go="heartbox"]')||document.querySelector('.home-nav [data-go="heartbox"]');if(profile.hidden||!tab)return;
-      showTip(tab,'<span class="yh-tip-heart" aria-hidden="true"></span>보낸 관심은 마음함에 모여요',{ms:3000,small:true});
+      showTip(tab,'<span class="yh-tip-heart" aria-hidden="true"></span>보낸 호감은 마음함에 모여요',{ms:3000,small:true});
       if(!reduce()){const s=tab.querySelector('.nav-symbol')||tab;s.animate([{transform:'scale(1)'},{transform:'scale(1.18)',offset:.4},{transform:'scale(1)'}],{duration:420,easing:'cubic-bezier(0.23, 1, 0.32, 1)'});}
     }),reduce()?0:1400);
   },0);

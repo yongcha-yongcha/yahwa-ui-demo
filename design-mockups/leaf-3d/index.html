@@ -1,0 +1,41 @@
+<meta charset="utf-8">
+<title>리프 3D 아이콘</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리(고른 조합 · 바뀐 점) → 부분마다 지금 · 고른 조합 두 장 */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:24px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px;text-wrap:balance}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:82ch}
+ul b{color:var(--ink);font-weight:600}
+section{display:grid;gap:10px}
+h2{font:700 18px/1.4 var(--sans);margin:0}h3{font:600 15px/1.4 var(--sans);margin:14px 0 0}h3 small{font-weight:400;color:var(--ink-2);font-size:13px;margin-left:6px}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,260px));gap:16px}
+figure{margin:0;display:grid;gap:6px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:18px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2)}
+.tag.new{background:var(--tag-new);color:#fff}
+@media (max-width:640px){.row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<style>.big{display:grid;grid-template-columns:repeat(3,minmax(0,340px));gap:16px}@media(max-width:760px){.big{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.mini{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:16px;background:#F1F4F7;max-width:340px}.mini img{border-radius:0;border:0;background:none;width:40px;height:40px;object-fit:cover}.mini .t{display:grid;gap:2px}.mini small{font-size:12px;color:var(--ink-2)}.mini b{font:600 22px/1.2 var(--sans);color:#1F2328}.mini b span{font:500 14px var(--sans);color:#5B636B;margin-left:2px}
+.chip{display:inline-flex;align-items:center;gap:4px;height:28px;padding:0 10px;border-radius:14px;background:#F1F4F7;font:600 13px/1 var(--sans);color:#1F2328}.chip img{width:20px;height:20px;border:0;border-radius:0;background:none}
+.minis{display:grid;gap:8px}</style><div class="wrap">
+  <header>
+    <h1>리프 3D 아이콘 · 광택 · 시네마틱 (Higgsfield)</h1>
+    <ul>
+      <li><b>바탕:</b> 지금 리프 줄 아이콘(잎 테두리 + 비스듬한 잎자루)을 참고 이미지로 넣고, 모양 · 각도는 그대로 두고 재질과 빛만 바꿨어요. 모델 GPT Image 2.6 · 1:1.</li>
+      <li><b>여섯 가지 결:</b> 도자기 · 유리 · 야화 달밤 · 진주 필름 · 젤리 · 금속. 시네마틱 전용 모델(Cinema Studio) 두 장은 Higgsfield 안전 필터에 막혀서 빠졌어요(잎 그림인데 잘못 걸림).</li>
+      <li><b>아래 칸:</b> 실제로 쓰이는 크기(지갑 40 · 칩 20)로 줄여 본 모습. 작게 보면 배경이 있는 L2 · L3은 정리(배경 지우기)가 필요해요.</li>
+    </ul>
+  </header>
+  <section><h2>참고로 넣은 지금 아이콘</h2><div class="row" style="grid-template-columns:minmax(0,160px)"><figure><img src="img/ref.jpg" alt="지금 리프 아이콘"><figcaption><span class="tag">지금</span></figcaption></figure></div></section>
+  <section><h2>3D 시안</h2><div class="big"><figure><img src="img/L0.jpg" alt="도자기 · 파스텔" loading="lazy"><figcaption><span class="tag new">L0 도자기 · 파스텔</span> 매끈한 하늘색 도자기 + 진주빛 하이라이트, 흰 배경</figcaption></figure><figure><img src="img/L1.jpg" alt="유리 · 이슬" loading="lazy"><figcaption><span class="tag new">L1 유리 · 이슬</span> 투명한 하늘색 유리, 빛 굴절 · 물방울, 시네마틱 테두리 빛</figcaption></figure><figure><img src="img/L2.jpg" alt="야화 · 달밤" loading="lazy"><figcaption><span class="tag new">L2 야화 · 달밤</span> 밤에 피는 꽃의 잎 — 어두운 청록 광택 + 달빛 · 이슬 · 보케</figcaption></figure><figure><img src="img/L3.jpg" alt="진주 · 여름 필름" loading="lazy"><figcaption><span class="tag new">L3 진주 · 여름 필름</span> 하늘 · 라일락 · 민트로 바뀌는 진주빛, 크림 바탕 + 빛번짐</figcaption></figure><figure><img src="img/L4.jpg" alt="젤리 · 장난감" loading="lazy"><figcaption><span class="tag new">L4 젤리 · 장난감</span> 도톰한 광택 플라스틱, 하늘 → 민트 그라데이션</figcaption></figure><figure><img src="img/L5.jpg" alt="새틴 금속" loading="lazy"><figcaption><span class="tag new">L5 새틴 금속</span> 은빛 파랑 금속 + 잎맥 새김, 고급 아이콘 느낌</figcaption></figure></div></section>
+  <section><h2>앱 크기로 줄여 보기</h2><div class="minis"><div class="mini"><img src="img/s0.jpg" alt=""><span class="t"><small>L0 · 보유 리프</small><b>130<span>리프</span></b></span><span class="chip" style="margin-left:auto"><img src="img/s0.jpg" alt="">+20</span></div><div class="mini"><img src="img/s1.jpg" alt=""><span class="t"><small>L1 · 보유 리프</small><b>130<span>리프</span></b></span><span class="chip" style="margin-left:auto"><img src="img/s1.jpg" alt="">+20</span></div><div class="mini"><img src="img/s2.jpg" alt=""><span class="t"><small>L2 · 보유 리프</small><b>130<span>리프</span></b></span><span class="chip" style="margin-left:auto"><img src="img/s2.jpg" alt="">+20</span></div><div class="mini"><img src="img/s3.jpg" alt=""><span class="t"><small>L3 · 보유 리프</small><b>130<span>리프</span></b></span><span class="chip" style="margin-left:auto"><img src="img/s3.jpg" alt="">+20</span></div><div class="mini"><img src="img/s4.jpg" alt=""><span class="t"><small>L4 · 보유 리프</small><b>130<span>리프</span></b></span><span class="chip" style="margin-left:auto"><img src="img/s4.jpg" alt="">+20</span></div><div class="mini"><img src="img/s5.jpg" alt=""><span class="t"><small>L5 · 보유 리프</small><b>130<span>리프</span></b></span><span class="chip" style="margin-left:auto"><img src="img/s5.jpg" alt="">+20</span></div></div></section>
+</div>

@@ -1,0 +1,86 @@
+<meta charset="utf-8">
+<title>탭 화면 제목 정리</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 설명 → 화면별 지금/바뀐 모습 3쌍 → 부제목 색 3단계 비교 → 바뀌는 값 · 메모 */
+:root{
+  --page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--panel:#FFFFFF;--chip:#E9EDF1;--tag-new:#377398;
+  --sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:28px}
+header h1{font:700 24px/1.35 var(--sans);margin:0 0 6px;letter-spacing:-.3px;text-wrap:balance}
+header p{margin:0;color:var(--ink-2);max-width:72ch}
+h2{font:700 17px/1.4 var(--sans);margin:0}
+.screen{display:grid;gap:12px}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,360px));gap:20px}
+.shade{display:grid;grid-template-columns:repeat(3,minmax(0,300px));gap:20px}
+figure{margin:0;display:grid;gap:8px;min-width:0}
+figure img{width:100%;border-radius:18px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+figcaption b{color:var(--ink);font-weight:600}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2)}
+.tag.new{background:var(--tag-new);color:#fff}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 20px;display:grid;gap:10px}
+.box ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:6px}
+.box b{color:var(--ink)}
+code{font:12.5px ui-monospace,Menlo,monospace;background:var(--chip);border-radius:6px;padding:1px 6px;word-break:break-all}
+.sw{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;margin-right:4px;border:1px solid var(--line)}
+@media (max-width:760px){.pair{grid-template-columns:1fr 1fr;gap:12px}.shade{grid-template-columns:1fr;max-width:360px}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>탭 화면 제목 · 아이콘 빼고 부제목은 회색으로</h1>
+    <p>인연 홈을 뺀 하단 메뉴 화면의 위쪽만 바꿨어요. 제목 옆 손그림 아이콘을 빼고, 파란 부제목을 쿨 뉴트럴 600 회색으로 바꿨어요. 글씨 크기와 간격, 아래 내용은 그대로예요.</p>
+  </header>
+
+  <section class="screen">
+    <h2>마음함</h2>
+    <div class="pair">
+      <figure><img src="img/heartbox_before.jpg" alt="지금 마음함: 제목 옆 하트 손그림, 파란 부제목"><figcaption><span class="tag">지금</span>하트 손그림 · 파란 부제목</figcaption></figure>
+      <figure><img src="img/heartbox_after.jpg" alt="바뀐 마음함: 아이콘 없음, 회색 부제목"><figcaption><span class="tag new">바뀐 모습</span>아이콘 없음 · 회색 부제목</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="screen">
+    <h2>편지함</h2>
+    <div class="pair">
+      <figure><img src="img/chats_before.jpg" alt="지금 편지함: 제목 옆 편지봉투 손그림, 파란 부제목"><figcaption><span class="tag">지금</span>편지봉투 손그림 · 파란 부제목</figcaption></figure>
+      <figure><img src="img/chats_after.jpg" alt="바뀐 편지함: 아이콘 없음, 회색 부제목"><figcaption><span class="tag new">바뀐 모습</span>아이콘 없음 · 회색 부제목</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="screen">
+    <h2>익명 이야기</h2>
+    <div class="pair">
+      <figure><img src="img/community_before.jpg" alt="지금 익명 이야기: 제목 옆 말풍선 손그림, 파란 부제목"><figcaption><span class="tag">지금</span>말풍선 손그림 · 파란 부제목</figcaption></figure>
+      <figure><img src="img/community_after.jpg" alt="바뀐 익명 이야기: 아이콘 없음, 회색 부제목"><figcaption><span class="tag new">바뀐 모습</span>아이콘 없음 · 회색 부제목 · 알림 종은 그대로</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="screen">
+    <h2>부제목 회색 · 세 단계 비교</h2>
+    <p style="margin:0;color:var(--ink-2)">시안은 600으로 맞췄어요. 더 옅게 하려면 500, 더 또렷하게 하려면 700이에요.</p>
+    <div class="shade">
+      <figure><img src="img/heartbox_500.jpg" alt="부제목 쿨 뉴트럴 500"><figcaption><b><span class="sw" style="background:#818C94"></span>500</b> #818C94 · 가장 옅음</figcaption></figure>
+      <figure><img src="img/heartbox_after.jpg" alt="부제목 쿨 뉴트럴 600"><figcaption><b><span class="sw" style="background:#69757E"></span>600</b> #69757E · 시안 값 <span class="tag new">추천</span></figcaption></figure>
+      <figure><img src="img/heartbox_700.jpg" alt="부제목 쿨 뉴트럴 700"><figcaption><b><span class="sw" style="background:#505C65"></span>700</b> #505C65 · 가장 또렷함</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="box">
+    <h2>바뀌는 것 · 메모</h2>
+    <ul>
+      <li><b>아이콘</b>: 세 화면 제목 옆 손그림(<code>.category-sketch</code>)을 숨겨요. 그림 파일은 지우지 않고 안 보이게만 해서 나중에 되살리기 쉬워요.</li>
+      <li><b>부제목</b>: <code>.category-subtitle</code> 색이 파랑(<code>--color-fg-accent</code>)에서 <code>--cool-neutral-600</code>으로 바뀌어요. 크기 12px와 위아래 간격은 그대로예요.</li>
+      <li><b>600을 추천하는 이유</b>: 회색 600은 바로 아래 탭 글씨(보낸 마음 · 서로 호감)와 같은 색이라 위아래가 한 톤으로 묶여요. 500은 하늘 배경 위에서 12px 글씨가 조금 흐려 보여요.</li>
+      <li><b>마이페이지</b>: 원래 제목 옆 아이콘과 부제목이 없어서 바뀌는 게 없어요.</li>
+    </ul>
+    <figure style="max-width:300px"><img src="img/mypage_before.jpg" alt="마이페이지 위쪽, 아이콘과 부제목 없음"><figcaption><span class="tag">그대로</span>마이페이지</figcaption></figure>
+  </section>
+</div>

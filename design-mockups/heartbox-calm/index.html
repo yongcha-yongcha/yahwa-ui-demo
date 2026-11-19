@@ -1,0 +1,67 @@
+<meta charset="utf-8">
+<title>마음함 하트 줄이기</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 설명 → 탭 고르기 → 지금 · 시안 두 화면 나란히 → 바뀌는 것 */
+:root{
+  --page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--panel:#FFFFFF;--chip:#E9EDF1;--tag-new:#377398;
+  --sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:780px;margin:0 auto;display:grid;gap:24px}
+header h1{font:700 24px/1.35 var(--sans);margin:0 0 6px;letter-spacing:-.3px;text-wrap:balance}
+header p{margin:0;color:var(--ink-2);max-width:72ch}
+h2{font:700 16px/1.4 var(--sans);margin:0;display:flex;gap:8px;align-items:center}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,360px));gap:24px}
+figure{margin:0;display:grid;gap:10px;min-width:0}
+figure img{width:100%;border-radius:22px;border:1px solid var(--line);display:block;background:#fff}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2)}
+.tag.new{background:var(--tag-new);color:#fff}
+.pick{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pick b{font-weight:600;margin-right:4px}
+.pick button{font:500 13px/1.2 var(--sans);border:0;border-radius:999px;padding:9px 14px;min-height:38px;background:var(--chip);color:var(--ink);cursor:pointer}
+.pick button[aria-pressed="true"]{background:var(--ink);color:var(--page)}
+.pick button:focus-visible{outline:2px solid #377398;outline-offset:2px}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 20px;display:grid;gap:10px}
+.box ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:6px}
+.box b{color:var(--ink)}
+@media (max-width:620px){.pair{grid-template-columns:1fr 1fr;gap:12px}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>마음함 · 분홍 하트 표시 줄이기</h1>
+    <p>F14. 사진 카드 모양은 그대로 두고, 분홍 칩과 분홍 탭만 뉴트럴로 바꿨어요.</p>
+  </header>
+
+  <div class="pick" id="pick-tab" role="group" aria-label="탭"><b>탭</b>
+    <button data-t="sent" aria-pressed="false">보낸 마음</button>
+    <button data-t="received" aria-pressed="true">받은 마음</button>
+    <button data-t="mutual" aria-pressed="false">서로 호감</button>
+  </div>
+
+  <section class="pair">
+    <figure><h2><span class="tag">지금</span></h2><img id="img-now" src="img/now_received.jpg" alt="지금 마음함"></figure>
+    <figure><h2><span class="tag new">시안</span></h2><img id="img-new" src="img/new_received.jpg" alt="바뀐 마음함"></figure>
+  </section>
+
+  <section class="box">
+    <h2>바뀌는 것</h2>
+    <ul>
+      <li><b>분홍 칩</b>("관심이 도착했어요" · "관심 보냄" · "서로 호감")을 뺐어요.</li>
+      <li>그 자리(오른쪽 위)에 <b>남은 기간 D-n</b>을 어두운 반투명 칩으로. 인연 홈 넘김 숫자 칩과 같은 모양이에요. 서로 호감은 기한이 없어서 칩도 없어요.</li>
+      <li><b>새로 온 마음</b>만 이름 옆에 장미색 점 하나.</li>
+      <li><b>탭</b>: 고른 탭은 검정 글자 + 검정 밑줄, 숫자는 회색 글자만(바탕 없음).</li>
+      <li>아래 메뉴 하트는 그대로예요.</li>
+    </ul>
+  </section>
+</div>
+<script>
+document.getElementById('pick-tab').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const t=b.dataset.t;
+ document.querySelectorAll('#pick-tab button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
+ document.getElementById('img-now').src='img/now_'+t+'.jpg';document.getElementById('img-new').src='img/new_'+t+'.jpg';});
+</script>

@@ -1,0 +1,111 @@
+<meta charset="utf-8">
+<title>F16 화면 검토</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리 → 묶음 4개(캡처 가로 줄 → 번호 목록, 문제 부분 잘라낸 사진) → 다음 시안 순서 */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--panel:#FFFFFF;--chip:#E9EDF1;--mark:#B26073;--mark-fg:#fff;
+  --sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--mark:#D78A9C;--mark-fg:#14171A;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--mark:#D78A9C;--mark-fg:#14171A;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:40px}
+header h1{font:700 24px/1.35 var(--sans);margin:0 0 8px;letter-spacing:-.3px;text-wrap:balance}
+header p{margin:0;color:var(--ink-2);max-width:68ch}
+section{display:grid;gap:16px;min-width:0}
+h2{font:700 19px/1.4 var(--sans);margin:0;display:flex;align-items:baseline;gap:10px}
+h2 small{font:500 13px var(--sans);color:var(--ink-2)}
+.shots{display:flex;gap:16px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x proximity}
+.shots figure{flex:none;width:220px;margin:0;display:grid;gap:6px;scroll-snap-align:start}
+.shots img{width:100%;border-radius:16px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:12px;color:var(--ink-2)}
+ol{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:start;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+li>i{font:700 12px/24px var(--sans);font-style:normal;width:24px;height:24px;border-radius:12px;text-align:center;background:var(--mark);color:var(--mark-fg)}
+li b{font-weight:600}
+li p{margin:2px 0 0;color:var(--ink-2);font-size:13px}
+li img{display:block;max-width:min(100%,360px);border-radius:10px;border:1px solid var(--line);margin-top:10px;background:#fff}
+.next{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px 20px;display:grid;gap:10px}
+.next h2{font-size:17px}
+.next ul{margin:0;padding-left:18px;display:grid;gap:6px}
+.next li{display:list-item;background:none;border:0;padding:0}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>F16 · 한 번 더 들어간 화면 검토</h1>
+    <p>편지 · 프로필 교환 · MY 상세를 시연본에서 한 장씩 찍었어요. 크게 보면 두 가지예요. 일을 끝낸 순간(보냄 · 수락)에 반응이 알림 한 줄뿐이고, 안쪽 화면 몇 개가 아직 예전 틀(큰 명조 제목 + 회색 상자 + 파란 버튼)로 남아 있어요.</p>
+  </header>
+
+  <section>
+    <h2>편지 <small>편지함 → 받은 편지 → 편지 쓰기 → 보낸 직후</small></h2>
+    <div class="shots">
+      <figure><img src="img/chats.jpg" alt="편지함"><figcaption>편지함</figcaption></figure>
+      <figure><img src="img/l_row0.jpg" alt="받은 편지"><figcaption>받은 편지</figcaption></figure>
+      <figure><img src="img/compose_filled.jpg" alt="편지 쓰기"><figcaption>편지 쓰기</figcaption></figure>
+      <figure><img src="img/sent.jpg" alt="보낸 직후"><figcaption>보낸 직후</figcaption></figure>
+    </div>
+    <ol>
+      <li><i>1</i><div><b>보낸 순간이 없어요</b><p>누르면 바로 보낸 편지 화면으로 넘어가고, 검은 알림 "시연 편지를 보냈어요."가 아래 안내 줄을 가려요. 40리프를 쓰는 가장 큰 행동인데 반응이 가장 작아요.</p><img src="img/crop_sent_toast.jpg" alt="보낸 직후 알림이 안내를 가림"></div></li>
+      <li><i>2</i><div><b>보낸 편지 화면은 "프로필 보기"가 가장 커요</b><p>답장을 기다리는 화면이라 할 일이 없는데, 회색 큰 버튼이 아래를 차지해요.</p></div></li>
+      <li><i>3</i><div><b>편지 쓰기는 안내가 겹겹이에요</b><p>보유 리프 줄 · 자물쇠 안내 · "둘 중 하나는 적어 주세요."까지 연락처 쪽에 글이 많고, 편지 종류 카드 두 개가 파란 테두리로 먼저 눈에 들어와요.</p><img src="img/crop_compose_contact.jpg" alt="연락처 칸 주변 안내"></div></li>
+      <li><i>4</i><div><b>받은 편지는 아래가 비어 있어요</b><p>편지지 아래 회색 안내 두 줄 뒤로 큰 빈 공간. "당신에게"만 파란 글씨라 뉴트럴 원칙에서 색이 하나 더 들어가 있어요.</p></div></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>프로필 교환 <small>요청 → 받은 요청 → 수락 직후 · 보낸 요청</small></h2>
+    <div class="shots">
+      <figure><img src="img/request.jpg" alt="교환 요청"><figcaption>교환 요청</figcaption></figure>
+      <figure><img src="img/ex_recv.jpg" alt="받은 요청"><figcaption>받은 요청</figcaption></figure>
+      <figure><img src="img/ex_accept.jpg" alt="수락 직후"><figcaption>수락 직후</figcaption></figure>
+      <figure><img src="img/ex_sent.jpg" alt="보낸 요청"><figcaption>보낸 요청</figcaption></figure>
+    </div>
+    <ol>
+      <li><i>5</i><div><b>요청 화면이 예전 틀이에요</b><p>머리 줄 없이 큰 명조 제목 + 회색 상자 + 파란 버튼만. 누구에게, 어떤 글에서 요청하는지도 안 보여요.</p></div></li>
+      <li><i>6</i><div><b>요청 보낸 직후 · 수락 직후도 알림 한 줄</b><p>수락은 줄이 왼쪽으로 빠지고 "프로필을 교환했어요 · 교환 기록에서 볼 수 있어요" 알림만. 서로의 프로필이 열리는 순간인데 조용해요.</p><img src="img/crop_accept_toast.jpg" alt="수락 직후 알림"></div></li>
+      <li><i>7</i><div><b>탭 색이 마음함과 달라요</b><p>마음함은 검정 글씨 · 검정 밑줄로 바꿨는데, 여기는 파랑 글씨 · 파랑 밑줄 · 하늘 숫자칩이에요.</p></div></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>MY 상세 <small>마이페이지에서 들어가는 화면</small></h2>
+    <div class="shots">
+      <figure><img src="img/my.jpg" alt="마이페이지"><figcaption>마이페이지</figcaption></figure>
+      <figure><img src="img/visibility.jpg" alt="인연 공개"><figcaption>인연 공개</figcaption></figure>
+      <figure><img src="img/contactblock.jpg" alt="지인 차단"><figcaption>지인 차단</figcaption></figure>
+      <figure><img src="img/invite.jpg" alt="친구 초대"><figcaption>친구 초대</figcaption></figure>
+      <figure><img src="img/credentials.jpg" alt="배지 · 인증"><figcaption>배지 · 인증</figcaption></figure>
+      <figure><img src="img/prefs.jpg" alt="취향 설정"><figcaption>취향 설정</figcaption></figure>
+      <figure><img src="img/settings.jpg" alt="알림 설정"><figcaption>알림 설정</figcaption></figure>
+      <figure><img src="img/savedcontacts.jpg" alt="내 연락처"><figcaption>내 연락처</figcaption></figure>
+      <figure><img src="img/mysettings.jpg" alt="설정 · 도움말"><figcaption>설정 · 도움말</figcaption></figure>
+      <figure><img src="img/ledger.jpg" alt="매장 포인트"><figcaption>매장 포인트 내역</figcaption></figure>
+    </div>
+    <ol>
+      <li><i>8</i><div><b>머리 모양이 두 가지로 섞여 있어요</b><p>취향 설정 · 교환은 가운데 제목 머리 줄, 나머지는 왼쪽 큰 명조 제목. 한쪽으로 맞추면 안쪽 화면이 한 앱처럼 보여요.</p></div></li>
+      <li><i>9</i><div><b>인연 공개 · 지인 차단 · 친구 초대가 빈약해요</b><p>셋 다 명조 제목 + 회색 상자 + 파란 버튼뿐이에요. 인연 공개는 지금 공개 중인지도 안 보이고 "잠시 쉬어갈까요?"부터 나와요.</p></div></li>
+      <li><i>10</i><div><b>배지 · 인증은 단계 표시가 흩어져 있어요</b><p>"1 정보 입력 · 2 확인 요청 · 3 승인·배지"가 작은 파란 글씨로 벌어져 있고, 빈 "나의 인증 내역" 칸과 아래 안내 덧글이 길어요.</p><img src="img/crop_cert_steps.jpg" alt="인증 단계 표시"></div></li>
+      <li><i>11</i><div><b>취향 설정 소제목이 엉뚱한 자리에 있어요</b><p>"생활 방식"이 거리 아래에, "믿음"이 정치 성향 아래에 붙어 있어요. "인증한 인연 먼저 보기"는 체크 아이콘과 토글이 둘 다예요.</p><img src="img/crop_prefs_labels.jpg" alt="생활 방식 소제목 위치"><img src="img/crop_prefs_toggle.jpg" alt="체크와 토글이 함께"></div></li>
+      <li><i>12</i><div><b>마이페이지 두 버튼 짝이 안 맞아요</b><p>"프로필 수정"은 하늘 바탕, "내 소개 보기"는 흰 바탕 + 선이에요.</p><img src="img/crop_my_btns.jpg" alt="프로필 수정과 내 소개 보기"></div></li>
+      <li><i>13</i><div><b>알림 설정 끝에 다른 설정이 섞여 있어요</b><p>"프로필 공개 설정 · 최근 활동 표시"가 알림 목록 뒤에 붙어 있고, 시연 안내 덧글이 두 군데 있어요.</p></div></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>말투</h2>
+    <ol>
+      <li><i>14</i><div><b>"관심"과 "호감"이 섞여 있어요</b><p>버튼은 호감으로 바꿨는데, 프로필 툴팁 "마음이 가면 관심을 보내 보세요."와 무료 리프 미션 "첫 관심 보내기"는 아직 관심이에요.</p><img src="img/crop_profile_tip.jpg" alt="관심 툴팁"></div></li>
+    </ol>
+  </section>
+
+  <div class="next">
+    <h2>시안 순서 제안</h2>
+    <ul>
+      <li><b>A. 끝낸 순간 3개</b>: 편지 보냄 · 교환 요청 보냄 · 교환 수락 (1, 6). 호감 보내기 줌 스루와 같은 틀로 하고, 무엇을 했는지만 다르게.</li>
+      <li><b>B. 머리 모양 맞추기 + 예전 틀 화면</b>: 교환 요청 · 인연 공개 · 지인 차단 · 친구 초대 · 배지 · 인증 (5, 8, 9, 10).</li>
+      <li><b>C. 작은 정리</b>: 편지 화면 2 · 3 · 4, 교환 탭 색 7, 취향 설정 11, 마이페이지 버튼 12, 알림 설정 13, 말투 14.</li>
+    </ul>
+  </div>
+</div>

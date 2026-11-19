@@ -1,0 +1,80 @@
+<meta charset="utf-8">
+<title>무료 답장 바꾸기 버튼</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리(바뀌는 점) → 아이콘 없는 카드 버튼 X1~X4 → 카드 전체 버튼 W1~W4 → J 뉴트럴 N1~N4 → D 묶음 + 교체 아이콘 E~J → 앞서 본 안(지금 · A~D) */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:28px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px;text-wrap:balance}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:78ch}
+ul b{color:var(--ink);font-weight:600}
+section{display:grid;gap:12px}
+h2{font:700 18px/1.4 var(--sans);margin:0}
+.row{display:grid;grid-template-columns:repeat(5,minmax(0,220px));gap:20px}
+figure{margin:0;display:grid;gap:8px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:20px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+figcaption b{color:var(--ink)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+@media (max-width:900px){.row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<div class="wrap">
+  <header>
+    <h1>보낸 편지 · 무료 답장으로 바꾸기 버튼</h1>
+    <ul>
+      <li><b>지금:</b> 맨 아래 회색 글자 "무료 답장으로 바꾸기 · 40리프"라 버튼으로 잘 안 보여요.</li>
+      <li><b>모든 안 공통:</b> 버튼을 편지 바로 아래로 올리고, "답장이 오면 서로의 연락처가 공개돼요" · "읽지 않으면 3일 뒤 쓴 리프가 돌아와요"는 버튼 아래로 내려요.</li>
+      <li><b>교체 아이콘:</b> 새 안 E~J는 모두 교체 아이콘이 들어가요.</li>
+      <li><b>공통 버튼:</b> 버튼 시스템(<code>buttons.css</code>)의 <code>.btn</code>을 그대로 써요. A · B · D는 Secondary(연한 파랑 바탕 + 파랑 글자), C는 Tertiary(흰 바탕 + 회색 선).</li>
+    </ul>
+  </header>
+  <section><h2>카드 전체가 버튼 · 아이콘 없이</h2>
+    <p style="margin:0;color:var(--ink-2);font-size:13px;max-width:78ch">교체 아이콘을 빼고 글 · 리프 · 꺾쇠(›)만. 색은 모두 뉴트럴, 누르는 동안 바탕 cool-neutral-50 → 100.</p>
+    <div class="row" style="grid-template-columns:repeat(5,minmax(0,220px))">
+    <figure><img src="img/X1.jpg" alt="X1"><figcaption><span class="tag new">X1</span><b>두 줄</b> · 회색 카드 · "특별편지로 바꾸기" + "잎 추가 25리프" + ›</figcaption></figure>
+    <figure><img src="img/X1p.jpg" alt="X1 누름"><figcaption><span class="tag">X1 누름</span>누르는 동안 바탕 cool-neutral-100</figcaption></figure>
+    <figure><img src="img/X2.jpg" alt="X2"><figcaption><span class="tag new">X2</span><b>혜택 두 줄</b> · 회색 체크 두 줄 + 오른쪽 "잎 25 ›"</figcaption></figure>
+    <figure><img src="img/X3.jpg" alt="X3"><figcaption><span class="tag new">X3</span><b>흰 카드</b> · X1과 같고 흰 바탕 + 얇은 선</figcaption></figure>
+    <figure><img src="img/X4.jpg" alt="X4"><figcaption><span class="tag new">X4</span><b>한 줄</b> · "특별편지로 바꾸기" + 오른쪽 "잎 25 ›". 가장 짧아요</figcaption></figure>
+  </div></section>
+  <section><h2>카드 전체가 버튼 · 뉴트럴</h2>
+    <p style="margin:0;color:var(--ink-2);font-size:13px;max-width:78ch">따로 있던 "바꾸기" 버튼을 빼고 카드 어디를 눌러도 바뀌어요. 오른쪽 꺾쇠(›)로 누를 수 있다는 걸 보여주고, 누르는 동안은 바탕이 한 단계 진해져요(cool-neutral-50 → 100).</p>
+    <div class="row" style="grid-template-columns:repeat(5,minmax(0,220px))">
+    <figure><img src="img/W1.jpg" alt="W1"><figcaption><span class="tag new">W1</span><b>제목 앞 교체 아이콘</b> · 회색 카드 · "교체 특별편지로 바꾸기" + "잎 추가 25리프" + ›</figcaption></figure>
+    <figure><img src="img/W2.jpg" alt="W2"><figcaption><span class="tag new">W2</span><b>흰 아이콘 타일</b> · 회색 카드 안 흰 타일 40에 교체 아이콘, 제목 · 추가 25리프 · ›</figcaption></figure>
+    <figure><img src="img/W2p.jpg" alt="W2 누름"><figcaption><span class="tag">W2 누름</span>누르는 동안 바탕 cool-neutral-100</figcaption></figure>
+    <figure><img src="img/W3.jpg" alt="W3"><figcaption><span class="tag new">W3</span><b>혜택 두 줄</b> · 회색 체크 두 줄, 오른쪽 "잎 25 ›"</figcaption></figure>
+    <figure><img src="img/W4.jpg" alt="W4"><figcaption><span class="tag new">W4</span><b>흰 카드 + 회색 타일</b> · 흰 바탕 + 얇은 선, 타일만 회색</figcaption></figure>
+  </div></section>
+  <section><h2>J · 뉴트럴 색 (특별편지 25 기준)</h2>
+    <p style="margin:0;color:var(--ink-2);font-size:13px;max-width:78ch">파랑을 빼고 카드 바탕 · 버튼 · 아이콘을 모두 cool-neutral로. 글은 "특별편지로 바꾸기"(보낸 일반 편지 → 특별편지, 추가 25리프).</p>
+    <div class="row" style="grid-template-columns:repeat(4,minmax(0,240px))">
+    <figure><img src="img/N1.jpg" alt="N1"><figcaption><span class="tag new">N1</span><b>회색 카드 + 흰 버튼</b> · 카드 cool-neutral-50(선 없음), 버튼은 공통 Tertiary S(흰 바탕 + 회색 선). 아래 "잎 추가 25리프"</figcaption></figure>
+    <figure><img src="img/N2.jpg" alt="N2"><figcaption><span class="tag new">N2</span><b>흰 카드 + 회색 버튼</b> · 카드 흰 바탕 + cool-neutral-100 선, 버튼 cool-neutral-100 바탕 + 900 글자(새 Neutral 버튼)</figcaption></figure>
+    <figure><img src="img/N3.jpg" alt="N3"><figcaption><span class="tag new">N3</span><b>N1 + 혜택 두 줄</b> · 보내기 시트와 같은 체크 두 줄(회색), 버튼에 "바꾸기 · 25"</figcaption></figure>
+    <figure><img src="img/N4.jpg" alt="N4"><figcaption><span class="tag new">N4</span><b>N2 + 혜택 두 줄</b> · 흰 카드 + 회색 버튼, 체크 두 줄</figcaption></figure>
+  </div></section>
+  <section><h2>D 묶음 + 교체 아이콘 · 새 안</h2>
+    <p style="margin:0;color:var(--ink-2);font-size:13px;max-width:78ch">D처럼 한 카드에 묶고, 교체 아이콘은 앱 아이콘 세트의 <b style="color:var(--ink)">repeat</b>(<code>ic-repeat</code>, 화살표 두 개가 도는 모양)를 써요. 버튼은 모두 공통 <code>.btn</code>.</p>
+    <div class="row" style="grid-template-columns:repeat(3,minmax(0,240px))">
+    <figure><img src="img/E.jpg" alt="E"><figcaption><span class="tag new">E</span><b>아이콘 타일 + 40 버튼</b> · 왼쪽 연한 파랑 타일 40에 교체 아이콘, 오른쪽 Secondary S "잎 40"</figcaption></figure>
+    <figure><img src="img/F.jpg" alt="F"><figcaption><span class="tag new">F</span><b>제목 앞 작은 아이콘</b> · 타일 없이 제목 앞에 16 아이콘. D와 가장 비슷하고 가벼워요</figcaption></figure>
+    <figure><img src="img/G.jpg" alt="G"><figcaption><span class="tag new">G</span><b>카드 안 큰 버튼</b> · 위에 아이콘 타일 + 안내, 아래 꽉 찬 Secondary M "(교체) 바꾸기 · 잎 40"</figcaption></figure>
+    <figure><img src="img/H.jpg" alt="H"><figcaption><span class="tag new">H</span><b>연한 파랑 카드 + 진한 버튼</b> · 카드 바탕 sky-50, 오른쪽 Primary S "잎 40". 가장 눈에 띄어요</figcaption></figure>
+    <figure><img src="img/I.jpg" alt="I"><figcaption><span class="tag new">I</span><b>카드 전체가 버튼</b> · 타일 + 안내 + 오른쪽 "잎 40 ›". 어디를 눌러도 돼요</figcaption></figure>
+    <figure><img src="img/J.jpg" alt="J"><figcaption><span class="tag new">J</span><b>가격은 설명 줄, 버튼은 "바꾸기"</b> · 설명 "잎 40리프 · 상대는 무료로 답장해요", 오른쪽 Secondary S "(교체) 바꾸기"</figcaption></figure>
+  </div></section>
+  <section><h2>앞서 본 안</h2><div class="row">
+    <figure><img src="img/now.jpg" alt="지금"><figcaption><span class="tag">지금</span>맨 아래 회색 글자</figcaption></figure>
+    <figure><img src="img/A.jpg" alt="A"><figcaption><span class="tag new">A</span><b>Secondary L · 꽉 찬 폭</b> · 글자 + 리프 40 칩. 받은 편지 "답장 쓰기 40"과 같은 구성</figcaption></figure>
+    <figure><img src="img/B.jpg" alt="B"><figcaption><span class="tag new">B</span><b>Secondary M · 글자만큼</b> · 44 높이로 가운데. 덜 무겁고 고를 수 있는 일이라는 느낌</figcaption></figure>
+    <figure><img src="img/C.jpg" alt="C"><figcaption><span class="tag new">C</span><b>Tertiary L · 흰 바탕</b> · 왼쪽 글자 · 오른쪽 리프 40. 차분하지만 바탕색은 흰색</figcaption></figure>
+    <figure><img src="img/D.jpg" alt="D"><figcaption><span class="tag new">D</span><b>카드 줄 + Secondary S</b> · 무엇이 바뀌는지 한 줄 + 오른쪽 "40" 버튼</figcaption></figure>
+  </div></section>
+</div>

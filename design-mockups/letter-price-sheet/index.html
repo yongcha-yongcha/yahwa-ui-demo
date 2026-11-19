@@ -1,0 +1,49 @@
+<meta charset="utf-8">
+<title>편지 보내기 가격 시트</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리(피드백 · 같이 고친 점) → 편지 쓸 때(지금 · 바뀐 화면) → 보내기 누르면(A · B 시트) → 이미 보낸 편지(지금 · 바뀐 안) */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:28px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px;text-wrap:balance}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:78ch}
+ul b{color:var(--ink);font-weight:600}
+section{display:grid;gap:12px}
+h2{font:700 18px/1.4 var(--sans);margin:0}
+.row{display:grid;grid-template-columns:repeat(4,minmax(0,250px));gap:20px}
+figure{margin:0;display:grid;gap:8px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:20px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+figcaption b{color:var(--ink)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+@media (max-width:900px){.row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<div class="wrap">
+  <header>
+    <h1>편지 쓰기 · 가격은 보낼 때 (팀 피드백 6)</h1>
+    <ul>
+      <li><b>받은 피드백 1:</b> 이미 보낸 편지가 있을 때 "거절되거나 기간이 지나면 다시 쓸 수 있어요"는 빼요. 거절되면 편지는 아예 지워져요.</li>
+      <li><b>받은 피드백 2:</b> 위에 "편지 40 · 무료 답장 편지 80"이 먼저 있으면 쓰기 전에 가격부터 읽혀요. 다 쓰고 "편지 보내기"를 누르면 아래에서 중간까지 올라오는 시트로 가격을 안내해요.</li>
+      <li><b>바뀐 화면:</b> 위 종류 카드 · 보유 리프 줄을 빼고, 버튼의 리프 꼬리표도 빼서 "편지 보내기"만. 편지지가 화면 맨 위로 올라와요.</li>
+      <li><b>시트는 두 안:</b> 누르면 고른 종류 · 보유 리프를 보여주고 "보내기"를 누르면 지금처럼 편지가 날아가요. 리프가 모자라면 "리프 충전하기"로 바뀌어요.</li>
+    </ul>
+  </header>
+  <section><h2>편지 쓸 때</h2><div class="row">
+    <figure><img src="img/n1.jpg" alt="지금 편지 쓰기"><figcaption><span class="tag">지금</span>위에 종류 카드(40 · 80) + 보유 리프, 버튼에 리프 40</figcaption></figure>
+    <figure><img src="img/a0.jpg" alt="바뀐 편지 쓰기"><figcaption><span class="tag new">바뀐 화면</span>편지지 · 내 연락처 · "편지 보내기"만. 가격은 아직 안 보여요</figcaption></figure>
+  </div></section>
+  <section><h2>"편지 보내기"를 누르면</h2><div class="row">
+    <figure><img src="img/sA.jpg" alt="A안 종류 두 줄"><figcaption><span class="tag new">A</span><b>종류 두 줄에서 고르기</b> · "어떤 편지로 보낼까요?" 편지 40 · 무료 답장 편지 80, 아래 보유 · 남는 리프</figcaption></figure>
+    <figure><img src="img/sB.jpg" alt="B안 가격 상자 + 스위치"><figcaption><span class="tag new">B</span><b>가격 상자 + 스위치</b> · 답장 쓰기 확인 창과 같은 리프 상자. "무료 답장 편지로"를 켜면 80리프로 바뀌어요</figcaption></figure>
+  </div></section>
+  <section><h2>이미 보낸 편지가 있을 때</h2><div class="row">
+    <figure><img src="img/t0.jpg" alt="지금 이미 보낸 편지"><figcaption><span class="tag">지금</span>"…거절되거나 기간이 지나면 다시 쓸 수 있어요" + 흐린 종류 카드</figcaption></figure>
+    <figure><img src="img/t1.jpg" alt="바뀐 이미 보낸 편지"><figcaption><span class="tag new">바뀐 안</span>"답장을 기다리는 동안에는 한 통만 보낼 수 있어요."만 남기고 종류 카드도 빠져요</figcaption></figure>
+  </div></section>
+</div>

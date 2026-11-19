@@ -1,0 +1,226 @@
+<meta charset="utf-8">
+<title>야화 기준 색 고르기</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 위에 고르는 줄, 아래에 같은 선택이 적용된 휴대폰 세 대, 맨 아래 색 기준표 */
+:root{
+  --page:#F3F5F7; --ink:#1F2328; --ink-2:#5B636B; --line:#DDE2E7; --panel:#FFFFFF; --chip:#E9EDF1; --chip-on:#1F2328; --chip-on-ink:#FFFFFF;
+  --sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;
+  --serif:'Gowun Batang','AppleMyungjo',serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--chip-on:#EEF1F4;--chip-on-ink:#14171A;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--chip-on:#EEF1F4;--chip-on-ink:#14171A;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:28px}
+header h1{font:700 24px/1.35 var(--sans);margin:0 0 6px;letter-spacing:-.3px;text-wrap:balance}
+header p{margin:0;color:var(--ink-2);max-width:68ch}
+.controls{display:grid;gap:14px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.row{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:start}
+.row>b{font-weight:600;padding-top:8px}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.seg button{font:500 13px/1 var(--sans);border:0;border-radius:999px;padding:10px 14px;background:var(--chip);color:var(--ink);cursor:pointer;min-height:36px}
+.seg button[aria-pressed="true"]{background:var(--chip-on);color:var(--chip-on-ink)}
+.seg button:focus-visible{outline:2px solid #377398;outline-offset:2px}
+.hint{margin:-6px 0 0 132px;color:var(--ink-2);font-size:13px}
+@media (max-width:640px){.row{grid-template-columns:1fr}.hint{margin-left:0}.row>b{padding-top:0}}
+
+.phones{display:flex;flex-wrap:wrap;gap:24px;justify-content:center}
+.ph-col{display:grid;gap:10px;justify-items:center}
+.ph-col>span{font-size:13px;color:var(--ink-2)}
+
+/* ---- 앱 화면: 앱은 라이트 전용이라 색을 직접 정해 둠 ---- */
+.phone{
+  --white:#FFFFFF; --g50:#F6F7F8; --g100:#EEF0F2; --g200:#E1E4E8; --g400:#A3A9B0; --g600:#6B727A; --g900:#1F2328;
+  --b200:#B7D7EC; --b300:#92C0DF; --b600:#377398; --b700:#245D7E; --b800:#154662; --rose:#B4566B;
+  --title-font:var(--serif);
+  width:360px;max-width:100%;height:740px;border-radius:36px;overflow:hidden;position:relative;
+  background:var(--white);color:var(--g900);box-shadow:0 1px 0 rgba(0,0,0,.04),0 18px 40px -18px rgba(20,40,60,.35);border:1px solid rgba(0,0,0,.06);
+  font-family:var(--sans);
+}
+.phone[data-bg="sky"]{background:linear-gradient(180deg,#B7D7EC 0px,#D9EAF5 120px,#F4F9FC 260px,#FFFFFF 380px)}
+.phone[data-bg="white"]{background:#FFFFFF}
+.phone[data-title="sans"]{--title-font:var(--sans)}
+.scr{position:absolute;inset:0;padding:22px 20px 0;display:flex;flex-direction:column}
+.top{display:flex;align-items:flex-start;justify-content:space-between;padding-top:24px}
+.ttl{font:400 29px/1.25 var(--title-font);letter-spacing:-.5px;margin:0}
+.phone[data-title="sans"] .ttl{font-weight:700;font-size:26px;letter-spacing:-.6px}
+.sub{font-size:13px;color:var(--g600);margin:6px 0 0}
+.leaf{display:flex;align-items:center;gap:4px;font:600 15px var(--sans);color:var(--g900)}
+.ic{width:22px;height:22px;flex:none}
+.card{margin-top:22px;height:452px;border-radius:22px;position:relative;overflow:hidden;background:#cfd8df}
+.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 35%}
+.card.locked img{filter:blur(14px);transform:scale(1.12)}
+.card .shade{position:absolute;inset:auto 0 0 0;height:60%;background:linear-gradient(to top,rgba(15,25,35,.62),rgba(15,25,35,0))}
+.arrive{position:absolute;top:22px;left:0;right:0;text-align:center;color:#fff;font:600 13px var(--sans);text-shadow:0 1px 6px rgba(0,0,0,.25)}
+.scene{position:absolute;left:22px;right:22px;bottom:96px;color:#fff}
+.scene small{display:block;font-size:12px;opacity:.85;margin-bottom:4px}
+.scene p{margin:0;font-size:15px;line-height:1.55}
+.open-btn{position:absolute;left:22px;right:22px;bottom:22px;height:52px;border-radius:16px;border:0;font:600 16px var(--sans);cursor:default}
+.who{position:absolute;left:22px;right:22px;bottom:22px;color:#fff}
+.who .nm{display:flex;align-items:center;gap:6px;font:700 24px/1.2 var(--sans)}
+.who .nm span{font-weight:400;font-size:17px}
+.who .loc{font-size:13px;opacity:.9;margin-top:4px;display:flex;align-items:center;gap:4px}
+.badge{width:22px;height:22px}
+.pager{display:flex;justify-content:center;align-items:center;gap:22px;margin-top:12px;font:600 15px var(--sans);color:var(--g400)}
+.pager b{color:var(--g900)}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.act{height:50px;border-radius:14px;border:0;font:600 15px var(--sans);display:flex;align-items:center;justify-content:center;gap:6px;cursor:default}
+.nav{position:absolute;left:16px;right:16px;bottom:16px;height:62px;border-radius:24px;background:rgba(255,255,255,.94);box-shadow:0 6px 20px -8px rgba(20,40,60,.25);display:flex;justify-content:space-around;align-items:center}
+.phone[data-bg="white"] .nav{box-shadow:0 0 0 1px var(--g100),0 6px 20px -10px rgba(20,40,60,.2)}
+.nav i{width:56px;height:46px;border-radius:16px;display:grid;place-items:center;position:relative;color:var(--g900)}
+.nav i.on{background:var(--nav-on-bg);color:var(--nav-on-fg)}
+.nav i .dot{position:absolute;top:8px;right:12px;width:7px;height:7px;border-radius:50%;background:var(--rose)}
+.nav img{width:30px;height:30px;border-radius:50%;object-fit:cover}
+
+/* 편지함 */
+.list{margin-top:18px;display:grid}
+.it{display:grid;grid-template-columns:52px 1fr auto;gap:12px;align-items:center;padding:14px 4px;border-bottom:1px solid var(--g100)}
+.it img{width:52px;height:52px;border-radius:50%;object-fit:cover}
+.it .n{font:600 15px var(--sans);display:flex;align-items:center;gap:6px}
+.it .n i{width:6px;height:6px;border-radius:50%;background:var(--rose)}
+.it .m{font-size:13px;color:var(--g600);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.it .m b{font-weight:600;color:var(--g900)}
+.it .d{font-size:12px;color:var(--g400);align-self:start;padding-top:2px}
+.it.new{background:var(--row-new);border-radius:14px;border-bottom-color:transparent;padding-inline:10px;margin-inline:-6px}
+.conn{color:var(--b700);font-weight:600}
+
+/* ---- 버튼 3안 ---- */
+.phone[data-btn="blue"]{--open-bg:#377398;--open-fg:#FFFFFF;--a1-bg:#377398;--a1-fg:#FFFFFF;--a2-bg:#FFFFFF;--a2-fg:#245D7E;--a2-bd:#B7D7EC;--nav-on-bg:#E3EFF7;--nav-on-fg:#245D7E;--row-new:#EEF5FA}
+.phone[data-btn="ink"]{--open-bg:#1F2328;--open-fg:#FFFFFF;--a1-bg:#1F2328;--a1-fg:#FFFFFF;--a2-bg:#FFFFFF;--a2-fg:#1F2328;--a2-bd:#E1E4E8;--nav-on-bg:#EEF0F2;--nav-on-fg:#1F2328;--row-new:#F3F7FA}
+.phone[data-btn="soft"]{--open-bg:#B7D7EC;--open-fg:#154662;--a1-bg:#92C0DF;--a1-fg:#154662;--a2-bg:#FFFFFF;--a2-fg:#154662;--a2-bd:#B7D7EC;--nav-on-bg:#E3EFF7;--nav-on-fg:#154662;--row-new:#EEF5FA}
+.open-btn{background:var(--open-bg);color:var(--open-fg)}
+.act.a1{background:var(--a1-bg);color:var(--a1-fg)}
+.act.a2{background:var(--a2-bg);color:var(--a2-fg);box-shadow:inset 0 0 0 1px var(--a2-bd)}
+
+/* 색 기준표 */
+.swatches{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;display:grid;gap:14px}
+.swatches h2{font:700 17px var(--sans);margin:0}
+.sw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.sw{display:grid;grid-template-rows:56px auto;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+.sw div{display:grid;place-items:center;font:600 13px var(--sans)}
+.sw p{margin:0;padding:8px 10px;font-size:12px;line-height:1.5;color:var(--ink-2)}
+.sw p b{color:var(--ink);font-weight:600}
+.notes{display:grid;gap:8px;margin:0;padding-left:18px;color:var(--ink-2);max-width:80ch}
+.notes b{color:var(--ink)}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>1차 피드백 기준 잡기 · F1~F4</h1>
+    <p>배경, 버튼 색, 제목 글꼴을 골라 보세요. 세 화면에 같은 선택이 함께 바뀌어요. 바탕은 흰·회색으로 두고 파랑은 꼭 필요한 곳에만 썼어요.</p>
+  </header>
+
+  <section class="controls" aria-label="고르기">
+    <div class="row"><b>배경 (F2)</b>
+      <div class="seg" data-key="bg">
+        <button id="bg-sky" data-v="sky" aria-pressed="true">A · 위쪽 하늘 그라데이션</button>
+        <button id="bg-white" data-v="white" aria-pressed="false">B · 전부 흰 배경</button>
+      </div>
+    </div>
+    <p class="hint" id="hint-bg"></p>
+    <div class="row"><b>버튼 색 (F1·F3)</b>
+      <div class="seg" data-key="btn">
+        <button id="btn-blue" data-v="blue" aria-pressed="true">① 진한 파랑</button>
+        <button id="btn-ink" data-v="ink" aria-pressed="false">② 검정 + 파랑은 표시만</button>
+        <button id="btn-soft" data-v="soft" aria-pressed="false">③ 옅은 파랑 바탕 + 남색 글씨</button>
+      </div>
+    </div>
+    <p class="hint" id="hint-btn"></p>
+    <div class="row"><b>제목 글꼴 (F4)</b>
+      <div class="seg" data-key="title">
+        <button id="title-serif" data-v="serif" aria-pressed="true">서정적 명조 (지금)</button>
+        <button id="title-sans" data-v="sans" aria-pressed="false">제목도 고딕</button>
+      </div>
+    </div>
+    <p class="hint" id="hint-title"></p>
+  </section>
+
+  <section class="phones" aria-label="화면 미리보기">
+    <!-- 1. 홈 · 열기 전 -->
+    <div class="ph-col"><span>홈 · 카드 열기 전</span>
+    <div class="phone"><div class="scr">
+      <div class="top"><div><h2 class="ttl">오늘의 인연</h2><p class="sub">매일 12시 · 15시 · 18시 · 21시, 두 명씩</p></div>
+        <div class="leaf"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14"/><path d="M5 19l8-8"/></svg>100</div></div>
+      <div class="card locked"><img src="img/p.jpg" alt=""><div class="shade"></div>
+        <div class="arrive">12:00에 도착한 인연</div>
+        <div class="scene"><small>이 사람의 한 장면</small><p>주말 아침에는 커피 한 잔을 들고 동네를 걷거나 작은 서점에 들러요.</p></div>
+        <button class="open-btn" tabindex="-1">인연 열어보기</button></div>
+      <div class="pager"><span>‹</span><span><b>1</b> / 8</span><span>›</span></div>
+    </div><nav class="nav"></nav></div></div>
+
+    <!-- 2. 홈 · 연 뒤 -->
+    <div class="ph-col"><span>홈 · 카드 연 뒤</span>
+    <div class="phone"><div class="scr">
+      <div class="top"><div><h2 class="ttl">오늘의 인연</h2><p class="sub">매일 12시 · 15시 · 18시 · 21시, 두 명씩</p></div>
+        <div class="leaf"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14"/><path d="M5 19l8-8"/></svg>100</div></div>
+      <div class="card" style="height:400px"><img src="img/p.jpg" alt="봄빛 사진"><div class="shade"></div>
+        <div class="who"><div class="nm">봄빛 <span>26세</span>
+          <svg class="badge" viewBox="0 0 24 24"><path d="M12 2l2.4 1.8 3-.2.9 2.9 2.5 1.7-1 2.8 1 2.8-2.5 1.7-.9 2.9-3-.2L12 22l-2.4-1.8-3 .2-.9-2.9-2.5-1.7 1-2.8-1-2.8 2.5-1.7.9-2.9 3 .2z" fill="var(--badge,#92C0DF)"/><path d="M8 12.2l2.6 2.6L16.2 9" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="loc"><svg class="ic" style="width:15px;height:15px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11l8-7 8 7v9H4z"/></svg>서울 마포구 · 출판 편집자</div></div></div>
+      <div class="acts">
+        <button class="act a1" tabindex="-1"><svg class="ic" style="width:18px;height:18px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg>호감 보내기</button>
+        <button class="act a2" tabindex="-1"><svg class="ic" style="width:18px;height:18px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M4 7l8 6 8-6"/></svg>편지 보내기</button>
+      </div>
+    </div><nav class="nav"></nav></div></div>
+
+    <!-- 3. 편지함 -->
+    <div class="ph-col"><span>편지함 목록</span>
+    <div class="phone" data-tab="2"><div class="scr">
+      <div class="top"><div><h2 class="ttl">편지함</h2><p class="sub">편지에서 이어지는 이야기</p></div></div>
+      <div class="list">
+        <div class="it new"><img src="img/a01-1.jpg" alt=""><div style="min-width:0"><div class="n">지우<i></i></div><div class="m"><b>받은 편지</b> · 프로필에 적어주신 책 이야기가 반가웠어요</div></div><span class="d">D-3</span></div>
+        <div class="it"><img src="img/a02-1.jpg" alt=""><div style="min-width:0"><div class="n">도윤</div><div class="m">받은 편지 · 전시를 보고 작은 카페에 들르는 하루가</div></div><span class="d">D-3</span></div>
+        <div class="it"><img src="img/a03-1.jpg" alt=""><div style="min-width:0"><div class="n">준서</div><div class="m">보낸 편지 · 안 읽음 · 산책 이야기가 마음에 남았어요</div></div><span class="d">D-3</span></div>
+        <div class="it"><img src="img/a05-1.jpg" alt=""><div style="min-width:0"><div class="n">봄빛</div><div class="m"><span class="conn">서로 연결됨</span> · 연락처를 확인해 보세요</div></div><span class="d">D-7</span></div>
+      </div>
+    </div><nav class="nav"></nav></div></div>
+  </section>
+
+  <section class="swatches" aria-label="색 기준">
+    <h2>색 기준</h2>
+    <div class="sw-grid">
+      <div class="sw"><div style="background:#FFFFFF;color:#1F2328">흰 #FFFFFF</div><p><b>바탕</b> · 화면, 카드 바탕</p></div>
+      <div class="sw"><div style="background:#F6F7F8;color:#1F2328">회 50 #F6F7F8</div><p><b>면</b> · 입력칸, 칩, 구분 면</p></div>
+      <div class="sw"><div style="background:#6B727A;color:#FFFFFF">회 600 #6B727A</div><p><b>보조 글씨</b> · 흰 바탕에서 4.8 : 1</p></div>
+      <div class="sw"><div style="background:#1F2328;color:#FFFFFF">검 #1F2328</div><p><b>본문 글씨</b> · 흰 바탕에서 15.8 : 1</p></div>
+      <div class="sw"><div style="background:#B7D7EC;color:#154662">파랑 B7D7EC</div><p><b>메인 파랑 ①</b> · 바탕·표시용. 흰 글씨는 1.5 : 1이라 못 씀, 남색 글씨는 6.7 : 1</p></div>
+      <div class="sw"><div style="background:#92C0DF;color:#154662">파랑 92C0DF</div><p><b>메인 파랑 ②</b> · 배지·알약. 흰 글씨 1.9 : 1, 남색 글씨 5.2 : 1</p></div>
+      <div class="sw"><div style="background:#377398;color:#FFFFFF">진한 파랑 #377398</div><p><b>글씨가 올라가는 버튼</b> · 흰 글씨 5.2 : 1</p></div>
+      <div class="sw"><div style="background:#B4566B;color:#FFFFFF">장미 #B4566B</div><p><b>새 소식 점</b> · 알림 점에만</p></div>
+    </div>
+    <ul class="notes">
+      <li><b>메인 파랑 두 색은 이미 우리 팔레트에 있어요</b> (sky-200, sky-300). 그대로 기준 파랑으로 올리면 돼요.</li>
+      <li>두 색은 너무 옅어서 <b>흰 글씨를 올리면 읽히지 않아요.</b> 그래서 ①은 같은 계열의 진한 파랑, ③은 옅은 파랑 바탕에 남색 글씨로 풀었어요.</li>
+      <li>②는 링크 버전처럼 버튼을 검정으로 두고 파랑은 인증 배지·선택된 탭·새 편지 줄에만 써요. 가장 간결하지만 파랑 존재감은 약해요.</li>
+      <li>인연 열어보기(F6)도 버튼 색 선택을 그대로 따라가요.</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+const NAV=`<i class="t0"><svg class="ic" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg><span class="dot"></span></i>
+<i class="t1"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg><span class="dot"></span></i>
+<i class="t2"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M4 7l8 6 8-6"/></svg></i>
+<i class="t3"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 5h14v10H10l-5 4z"/><path d="M9 9h6M9 12h4"/></svg><span class="dot"></span></i>
+<i class="t4"><img src="img/a01-1.jpg" alt=""></i>`;
+document.querySelectorAll('.phone').forEach(p=>{const n=p.querySelector('.nav');n.innerHTML=NAV;n.querySelector('.t'+(p.dataset.tab||0)).classList.add('on');});
+const HINT={
+ bg:{sky:'맨 위 B7D7EC에서 시작해 380px 안에서 흰색으로 끝나요. 지금 시연본(하늘 → 미색)보다 파랑이 진하고 끝이 순백이에요.',white:'바탕은 순백, 구분은 회색 면과 선으로만 해요. 하단 탭에 얇은 테두리를 더했어요.'},
+ btn:{blue:'글씨가 올라가는 버튼은 진한 파랑, 두 번째 버튼은 흰 바탕에 옅은 파랑 테두리.',ink:'버튼은 검정, 파랑은 인증 배지·선택된 탭·새 편지 줄에만. 링크 버전에 가장 가까워요.',soft:'피드백 색을 버튼 바탕에 그대로 쓰고 글씨를 남색으로. 가장 하늘하늘하지만 버튼 힘은 약해요.'},
+ title:{serif:'화면 제목만 고운바탕, 부제목·본문·버튼은 Pretendard. 지금 시연본·링크와 같은 짝이에요.',sans:'제목까지 Pretendard 굵게. 더 깔끔하지만 야화다운 결은 줄어요.'}
+};
+const state={bg:'sky',btn:'blue',title:'serif'};
+try{Object.assign(state,JSON.parse(localStorage.getItem('yh-base-tone')||'{}'))}catch(e){}
+function apply(){
+  document.querySelectorAll('.phone').forEach(p=>{p.dataset.bg=state.bg;p.dataset.btn=state.btn;p.dataset.title=state.title;});
+  document.querySelectorAll('.seg').forEach(s=>s.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===state[s.dataset.key]))));
+  for(const k of ['bg','btn','title'])document.getElementById('hint-'+k).textContent=HINT[k][state[k]];
+  try{localStorage.setItem('yh-base-tone',JSON.stringify(state))}catch(e){}
+}
+document.querySelectorAll('.seg').forEach(s=>s.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;state[s.dataset.key]=b.dataset.v;apply();}));
+apply();
+</script>

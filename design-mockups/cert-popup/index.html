@@ -1,0 +1,64 @@
+<meta charset="utf-8">
+<title>인증 정보 · 배지</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리 → 1 인증 정보 팝업(지금 · A 시트 · B 가운데) → 2 인증 여러 개 배지(표: 안 × 홈 카드 2개 · 3개 · 프로필 3개) */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--panel:#FFFFFF;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:1100px;margin:0 auto;display:grid;gap:40px}
+header h1{font:700 24px/1.35 var(--sans);margin:0 0 6px;letter-spacing:-.3px}
+header p{margin:0;color:var(--ink-2);max-width:72ch}
+section{display:grid;gap:14px;min-width:0}
+h2{font:700 19px/1.4 var(--sans);margin:0}
+.row{display:grid;grid-template-columns:repeat(3,minmax(0,280px));gap:20px}
+figure{margin:0;display:grid;gap:8px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:20px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+figcaption b{color:var(--ink)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:760px;background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+th,td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle;font-size:13px}
+th{font-weight:600;color:var(--ink-2)}
+tr:last-child td{border-bottom:0}
+td img{display:block;width:220px;max-width:100%;border-radius:10px;border:1px solid var(--line)}
+td b{display:block;font-size:14px;color:var(--ink);margin-bottom:2px}
+td small{color:var(--ink-2);font-size:12.5px;line-height:1.5;display:block;max-width:26ch}
+.note{margin:0;color:var(--ink-2);font-size:13px;max-width:76ch}
+@media (max-width:900px){.row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<div class="wrap">
+  <header>
+    <h1>인증 정보 팝업 · 인증 배지</h1>
+    <p>배지 모양(톱니 + 체크, 채운 파랑)과 선 굵기는 그대로 두고 정리했어요. 예시는 인증 3개(나이 · 전화번호, 직장, 학력)로 그렸어요.</p>
+  </header>
+
+  <section>
+    <h2>1 · 배지를 누르면 나오는 인증 정보</h2>
+    <div class="row">
+      <figure><img src="img/pop0.jpg" alt="지금"><figcaption><span class="tag">지금</span>가운데 상자 · 하늘 칸마다 "✓ 직장 인증" · 동그라미 닫기 · 시연 안내 줄</figcaption></figure>
+      <figure><img src="img/popA.jpg" alt="A"><figcaption><span class="tag new">A</span><b>바텀 시트</b> · 머리에 큰 배지 + "봄빛님의 인증 · 3개 확인됐어요", 종류마다 아이콘 줄 + 오른쪽 "✓ 인증됨"(하늘), 아래 "확인". 다른 시트들과 같은 틀</figcaption></figure>
+      <figure><img src="img/popB.jpg" alt="B"><figcaption><span class="tag new">B</span><b>가운데 상자 정리</b> · 같은 내용, 닫기는 오른쪽 위 X(44 터치)만, 칸 배경 대신 얇은 구분선</figcaption></figure>
+    </div>
+    <p class="note">공통으로 뺀 것: 하늘 칸 배경, 글자로 쓴 ✓, "시연 승인된 예시 정보예요." 줄. 종류 아이콘은 배지 · 인증 화면과 같은 그림(전화 · 가방 · 책 · 동전)이에요.</p>
+  </section>
+
+  <section>
+    <h2>2 · 인증이 여러 개일 때 배지</h2>
+    <div class="tbl"><table>
+      <thead><tr><th>안</th><th>홈 카드 · 2개</th><th>홈 카드 · 3개</th><th>프로필 · 3개</th></tr></thead>
+      <tbody>
+        <tr><td><b>지금</b><small>개수와 상관없이 같은 배지 하나</small></td><td><img src="img/h_now.jpg" alt=""></td><td><img src="img/h_now.jpg" alt=""></td><td><img src="img/p_now.jpg" alt=""></td></tr>
+        <tr><td><b>1 · 숫자</b><small>2개부터 체크 대신 개수. 1개면 지금처럼 체크</small></td><td><img src="img/h_num2.jpg" alt=""></td><td><img src="img/h_num3.jpg" alt=""></td><td><img src="img/p_num3.jpg" alt=""></td></tr>
+        <tr><td><b>2 · 겹친 배지</b><small>뒤에 연한 하늘 배지가 개수만큼(최대 3) 비켜 겹쳐요</small></td><td><img src="img/h_stack2.jpg" alt=""></td><td><img src="img/h_stack3.jpg" alt=""></td><td><img src="img/p_stack3.jpg" alt=""></td></tr>
+        <tr><td><b>3 · 체크 + 개수 점</b><small>체크 배지 그대로, 오른쪽 아래 작은 점에 개수</small></td><td><img src="img/h_dot2.jpg" alt=""></td><td><img src="img/h_dot3.jpg" alt=""></td><td><img src="img/p_dot3.jpg" alt=""></td></tr>
+        <tr><td><b>4 · 바깥 고리</b><small>2개 이상이면 같은 톱니 모양 바깥 고리(sky-300, 선 1.6)가 한 겹. 개수는 팝업에서</small></td><td><img src="img/h_ring2.jpg" alt=""></td><td><img src="img/h_ring3.jpg" alt=""></td><td><img src="img/p_ring3.jpg" alt=""></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+</div>

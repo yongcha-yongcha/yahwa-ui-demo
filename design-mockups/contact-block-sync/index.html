@@ -1,0 +1,41 @@
+<meta charset="utf-8">
+<title>지인 차단 씽크</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리(고른 조합 · 바뀐 점) → 부분마다 지금 · 고른 조합 두 장 */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:24px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px;text-wrap:balance}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:82ch}
+ul b{color:var(--ink);font-weight:600}
+section{display:grid;gap:10px}
+h2{font:700 18px/1.4 var(--sans);margin:0}h3{font:600 15px/1.4 var(--sans);margin:14px 0 0}h3 small{font-weight:400;color:var(--ink-2);font-size:13px;margin-left:6px}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,260px));gap:16px}
+figure{margin:0;display:grid;gap:6px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:18px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2)}
+.tag.new{background:var(--tag-new);color:#fff}
+@media (max-width:640px){.row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<div class="wrap">
+  <header>
+    <h1>지인 차단 · 팀 링크에 맞추기</h1>
+    <ul>
+      <li><b>팀 링크:</b> 일러스트 + "편안하게, 새로운 인연만" → 카드 "휴대전화 연락처 · 24개 등록" + 오른쪽 "업데이트". 불러온 뒤 상태가 화면에 남아요.</li>
+      <li><b>우리 · 빠진 것:</b> "연락처 불러오기"를 눌러도 알림 한 줄("실제 앱에서…")뿐이고 화면이 그대로예요. 카드는 "차단한 연락처 0명"으로만 보여요. → <b>불러온 뒤 상태가 있는데 빠졌어요.</b></li>
+      <li><b>J1:</b> 지금 모양 그대로 + 카드를 "휴대전화 연락처"로. 불러오기 전 "아직 불러오지 않았어요" · 아래 버튼 "연락처 불러오기", 불러온 뒤 "24개 · 11월 20일 불러옴" + 카드 안 "업데이트"(흰 알약), 아래 버튼은 사라져요.</li>
+      <li><b>J2:</b> J1 + 위 안내를 회색 카드로 묶고 아이콘을 방패 · 사람(Figma Line Duocolor shield-user, 뉴트럴)으로. 팀 링크 첫 카드 결.</li>
+      <li><b>J3 (덧붙임):</b> 불러오기 전에 짧은 시트 "연락처를 불러올까요?" — 번호는 비교에만 · 상대에게 알리지 않아요 · 불러오기 / 다음에 할게요. J1 · J2 어느 쪽에도 붙일 수 있어요.</li>
+    </ul>
+  </header>
+  <section><h2>팀 링크 · 지금 우리</h2><div class="row" style="grid-template-columns:repeat(4,minmax(0,220px))"><figure><img src="img/t0.jpg" alt="팀" loading="lazy"><figcaption><span class="tag">팀</span></figcaption></figure><figure><img src="img/t_sync1.jpg" alt="팀 · 업데이트 누름" loading="lazy"><figcaption><span class="tag">팀 · 업데이트 누름</span></figcaption></figure><figure><img src="img/o0.jpg" alt="지금 우리" loading="lazy"><figcaption><span class="tag">지금 우리</span></figcaption></figure><figure><img src="img/o1.jpg" alt="우리 · 불러오기 누름" loading="lazy"><figcaption><span class="tag">우리 · 불러오기 누름</span></figcaption></figure></div></section>
+  <section><h2>J1 · 지금 모양 + 불러온 뒤 상태</h2><div class="row" style="grid-template-columns:repeat(2,minmax(0,220px))"><figure><img src="img/J1a.jpg" alt="불러오기 전" loading="lazy"><figcaption><span class="tag new">불러오기 전</span></figcaption></figure><figure><img src="img/J1b.jpg" alt="불러온 뒤" loading="lazy"><figcaption><span class="tag new">불러온 뒤</span></figcaption></figure></div></section>
+  <section><h2>J2 · 안내를 회색 카드로 + 방패 아이콘</h2><div class="row" style="grid-template-columns:repeat(2,minmax(0,220px))"><figure><img src="img/J2a.jpg" alt="불러오기 전" loading="lazy"><figcaption><span class="tag new">불러오기 전</span></figcaption></figure><figure><img src="img/J2b.jpg" alt="불러온 뒤" loading="lazy"><figcaption><span class="tag new">불러온 뒤</span></figcaption></figure></div></section>
+  <section><h2>J3 · 불러오기 전 확인 시트</h2><div class="row" style="grid-template-columns:repeat(1,minmax(0,220px))"><figure><img src="img/J3s.jpg" alt="연락처 불러오기 누름" loading="lazy"><figcaption><span class="tag new">연락처 불러오기 누름</span></figcaption></figure></div></section>
+</div>

@@ -224,12 +224,15 @@ const sections=lab?[...lab.querySelectorAll('.demo-groups>section')]:[];
 sections.forEach(s=>{const h=s.querySelector('h3');if(h)h.textContent=h.textContent.replace(/^\d+\.\s*/,'')});
 
 const select=$('dock-screen');
-const flowOptions=[...document.querySelectorAll('nav.categories [data-screen]')].filter(b=>b.dataset.screen!=='discovery').map(b=>[b.dataset.screen,b.textContent.trim()]);
-const appOptions=[['discovery','인연 홈'],['match-profile','상대 프로필'],['heartbox','마음함'],['chats','편지함'],['letter-chat','편지'],['community','커뮤니티'],['mypage','마이페이지']];
+const flowOptions=[...document.querySelectorAll('nav.categories [data-screen]')].filter(b=>b.dataset.screen!=='discovery'&&!b.hidden).map(b=>[b.dataset.screen,b.textContent.trim()]);
+const appOptions=[['discovery','인연 홈'],['match-profile','상대 프로필'],['heartbox','마음함'],['chats','편지함'],['community','커뮤니티'],['mypage','마이페이지']];
 /* 화면 이동: 드롭다운 대신 바로 누르는 버튼 (2026-11-13) */
-const group=(l,o)=>`<p class="dock-screens-h">${l}</p><div class="dock-chips">${o.map(([v,t])=>`<button type="button" data-dock-go="${v}">${t}</button>`).join('')}</div>`;
-select.innerHTML=group('앱 화면',appOptions)+group('가입 흐름',flowOptions);
+/* 2026-11-16 정리: "앱 화면 / 가입 흐름" 탭으로 한 묶음씩만 보여 주고, 버튼은 3열 격자 */
+const group=(k,o)=>`<div class="dock-chips" data-dock-group="${k}"${k==='flow'?' hidden':''}>${o.map(([v,t])=>`<button type="button" data-dock-go="${v}">${t}</button>`).join('')}</div>`;
+select.innerHTML=`<div class="dock-concept-seg dock-screen-tabs" role="tablist" aria-label="화면 묶음"><button type="button" role="tab" data-dock-tab="app" aria-pressed="true">앱 화면 <small>${appOptions.length}</small></button><button type="button" role="tab" data-dock-tab="flow" aria-pressed="false">가입 흐름 <small>${flowOptions.length}</small></button></div>`+group('app',appOptions)+group('flow',flowOptions);
+const dockTab=k=>{select.querySelectorAll('[data-dock-tab]').forEach(t=>t.setAttribute('aria-pressed',String(t.dataset.dockTab===k)));select.querySelectorAll('[data-dock-group]').forEach(g=>g.hidden=g.dataset.dockGroup!==k);};
 select.addEventListener('click',e=>{
+  const tab=e.target.closest('[data-dock-tab]');if(tab){dockTab(tab.dataset.dockTab);return;}
   const b=e.target.closest('[data-dock-go]');if(!b)return;
   const v=b.dataset.dockGo;
   if(v==='community'){nav.querySelector('[data-feature-tab="community"]').click();return;}
@@ -253,6 +256,7 @@ function updateDock(name){
   const cur=name==='features'?(COMMUNITY.includes(fxView)?'community':''):name;
   let curBtn=null;select.querySelectorAll('[data-dock-go]').forEach(b=>{const on=b.dataset.dockGo===cur;b.toggleAttribute('aria-current',on);if(on){b.setAttribute('aria-current','page');curBtn=b;}});
   $('dock-title').textContent=curBtn?curBtn.textContent:'';
+  if(curBtn&&curBtn.closest('[data-dock-group]')?.hidden)dockTab(curBtn.closest('[data-dock-group]').dataset.dockGroup);
   const ctx=contextFor(name);
   sections.forEach((s,i)=>{s.hidden=!ctx.includes(i)});
   if(lab){
@@ -291,7 +295,7 @@ function placeToast(el){
   const scr=cur&&!cur.hidden?cur:[...phone.querySelectorAll(':scope>.screen:not([hidden]):not(.gnb-layer)')].pop();
   const cands=[...(scr?scr.children:[])];
   /* 편지 보내기 · 답장의 아래 고정 버튼(.lt-dock), 글 상세의 이야기 입력 막대(.cx-bar)처럼 스크롤 칸 안에 붙은 아래 영역도 기준에 넣어요 (2026-11-13) */
-  if(scr)cands.push(...scr.querySelectorAll('.lt-dock,.cx-bar'));
+  if(scr)cands.push(...scr.querySelectorAll('.lt-dock,.cx-bar,.ip-dock'));
   if(!layer.classList.contains('is-off'))cands.push(nav);
   let top=pr.bottom;
   cands.forEach(n=>{if(!n.getClientRects().length)return;const cs=getComputedStyle(n);if(!/absolute|fixed|sticky/.test(cs.position))return;if(!n.querySelector('button,a,[role=button]'))return;const r=(n.classList.contains('lt-dock')&&n.querySelector('button')||n.classList.contains('cx-bar')&&n.firstElementChild||n).getBoundingClientRect();if((r.bottom<pr.bottom-64*z&&!n.classList.contains('ob-bottom'))||r.top<pr.top+pr.height*.4)return;top=Math.min(top,r.top);});

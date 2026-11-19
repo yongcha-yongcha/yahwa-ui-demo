@@ -1,0 +1,236 @@
+<meta charset="utf-8">
+<title>야화 버튼 시스템</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 위 설명 + Primary 색 고르기 → 1 위계 4가지 → 2 크기 → 3 상태 → 4 화면 예시(휴대폰 3대) → 5 규칙 */
+:root{
+  --page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--panel:#FFFFFF;--chip:#E9EDF1;--chip-on:#1F2328;--chip-on-ink:#FFFFFF;
+  --sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;--serif:'Gowun Batang','AppleMyungjo',serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--chip-on:#EEF1F4;--chip-on-ink:#14171A;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--chip-on:#EEF1F4;--chip-on-ink:#14171A;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:28px}
+header h1{font:700 26px/1.3 var(--sans);margin:0 0 6px;letter-spacing:-.4px}
+header p{margin:0;color:var(--ink-2);max-width:74ch}
+.pick{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px}
+.pick b{font-weight:600;margin-right:6px}
+.pick button{font:500 13px/1.2 var(--sans);border:0;border-radius:999px;padding:8px 14px;min-height:40px;background:var(--chip);color:var(--ink);cursor:pointer;display:grid;text-align:center}
+.pick button small{font-size:10px;opacity:.7}
+.pick button[aria-pressed="true"]{background:var(--chip-on);color:var(--chip-on-ink)}
+.pick button:focus-visible{outline:2px solid #377398;outline-offset:2px}
+section>h2{font:700 18px/1.4 var(--sans);margin:0 0 4px}
+section>p.lead{margin:0 0 14px;color:var(--ink-2);max-width:74ch}
+.board{background:#FFFFFF;border:1px solid #E1E4E8;border-radius:18px;padding:20px;color:#1F2328}
+.board .cap{font-size:12px;color:#6B727A}
+.board code{font:12px/1.5 var(--mono);color:#505C65;background:#F1F4F6;border-radius:6px;padding:1px 6px;white-space:nowrap}
+
+/* ── 앱 버튼 (앱은 라이트 전용이라 색을 직접 지정) ── */
+.app{
+  --sky-50:#ECF5FC;--sky-100:#D6EAF8;--sky-200:#B7D7EC;--sky-300:#92C0DF;--sky-600:#377398;--sky-700:#245D7E;--sky-800:#154662;
+  --n-100:#E3E7EA;--n-200:#CFD5DA;--n-500:#818C94;--n-900:#273037;
+  --btn-primary-bg:var(--sky-600);--btn-primary-fg:#FFFFFF;--btn-primary-press:var(--sky-700);
+  --btn-secondary-bg:var(--sky-100);--btn-secondary-fg:var(--sky-700);--btn-secondary-press:var(--sky-200);
+  --btn-tertiary-bg:#FFFFFF;--btn-tertiary-fg:var(--n-900);--btn-tertiary-line:var(--n-200);--btn-tertiary-press:#F1F4F6;
+  --btn-text-fg:var(--sky-700);
+  --btn-disabled-bg:var(--n-100);--btn-disabled-fg:var(--n-500);
+}
+.app[data-p="sky200"]{--btn-primary-bg:var(--sky-200);--btn-primary-fg:var(--sky-800);--btn-primary-press:var(--sky-300);--btn-secondary-bg:var(--sky-50);--btn-secondary-press:var(--sky-100)}
+.app[data-p="sky300"]{--btn-primary-bg:var(--sky-300);--btn-primary-fg:var(--sky-800);--btn-primary-press:var(--sky-200);--btn-secondary-bg:var(--sky-50);--btn-secondary-press:var(--sky-100)}
+.btn{--h:52px;--r:12px;--fs:15px;--px:20px;height:var(--h);border-radius:var(--r);padding:0 var(--px);border:0;display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  font:600 var(--fs)/1 var(--sans);cursor:pointer;white-space:nowrap;transition:background-color 160ms ease,transform 120ms ease,color 160ms ease}
+.btn svg{width:18px;height:18px;flex:none}
+.btn:active,.btn.is-press{transform:scale(.97)}
+.btn:focus-visible{outline:2px solid #245D7E;outline-offset:2px}
+.btn.L{--h:52px;--r:12px;--fs:15px}
+.btn.M{--h:44px;--r:12px;--fs:14px;--px:16px}
+.btn.S{--h:34px;--r:10px;--fs:13px;--px:12px}
+.btn.S svg{width:15px;height:15px}
+.btn.icon{width:var(--h);padding:0;border-radius:50%}
+.btn.block{width:100%}
+.b-primary{background:var(--btn-primary-bg);color:var(--btn-primary-fg)}
+.b-primary:active,.b-primary.is-press{background:var(--btn-primary-press)}
+.b-secondary{background:var(--btn-secondary-bg);color:var(--btn-secondary-fg)}
+.b-secondary:active,.b-secondary.is-press{background:var(--btn-secondary-press)}
+.b-tertiary{background:var(--btn-tertiary-bg);color:var(--btn-tertiary-fg);box-shadow:inset 0 0 0 1px var(--btn-tertiary-line)}
+.b-tertiary:active,.b-tertiary.is-press{background:var(--btn-tertiary-press)}
+.b-text{background:none;color:var(--btn-text-fg);--px:12px}
+.b-text:active,.b-text.is-press{background:var(--sky-50)}
+.b-text.S{--px:8px}
+.btn:disabled,.btn.is-disabled{background:var(--btn-disabled-bg);color:var(--btn-disabled-fg);box-shadow:none;transform:none;cursor:not-allowed}
+.b-text:disabled,.b-text.is-disabled{background:none;color:var(--btn-disabled-fg)}
+.btn.is-done{background:var(--btn-secondary-bg);color:var(--btn-secondary-fg);cursor:default;transform:none}
+@media (prefers-reduced-motion:reduce){.btn{transition:none}.btn:active{transform:none}}
+
+/* 1 위계 */
+.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.tier{border:1px solid #E1E4E8;border-radius:14px;padding:16px;display:grid;gap:10px;align-content:start}
+.tier h3{margin:0;font:700 15px var(--sans);display:flex;gap:8px;align-items:baseline}
+.tier h3 span{font:500 12px var(--sans);color:#6B727A}
+.tier p{margin:0;font-size:13px;color:#505C65;line-height:1.55}
+.tier .btn{justify-self:start}
+/* 2 크기 */
+.sizes{display:grid;gap:14px}
+.size-row{display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:center}
+.size-row .cell{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+@media (max-width:600px){.size-row{grid-template-columns:1fr}}
+/* 3 상태 */
+.states{width:100%;border-collapse:separate;border-spacing:0 10px}
+.states-wrap{overflow-x:auto}
+.states th{font:600 12px var(--sans);color:#6B727A;text-align:left;padding:0 8px;white-space:nowrap}
+.states td{padding:0 8px;vertical-align:middle}
+/* 4 화면 예시 */
+.phones{display:flex;flex-wrap:wrap;gap:22px;justify-content:center}
+.ph-col{display:grid;gap:8px;justify-items:center;width:330px;max-width:100%}
+.ph-col>span{font-size:13px;color:var(--ink-2)}
+.phone{width:330px;max-width:100%;height:600px;border-radius:30px;overflow:hidden;position:relative;color:#1F2328;
+  background:linear-gradient(180deg,#B7D7EC 0px,#D9EAF5 120px,#F4F9FC 260px,#FFFFFF 380px);box-shadow:0 18px 40px -18px rgba(20,40,60,.35);border:1px solid rgba(0,0,0,.06)}
+.scr{position:absolute;inset:0;padding:38px 18px 0}
+.ttl{font:400 26px/1.25 var(--serif);letter-spacing:-.5px;margin:0}
+.sub{font-size:12px;color:#6B727A;margin:4px 0 0}
+.card{margin-top:16px;height:380px;border-radius:22px;position:relative;overflow:hidden}
+.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%}
+.card .shade{position:absolute;inset:auto 0 0 0;height:55%;background:linear-gradient(to top,rgba(15,25,35,.62),rgba(15,25,35,0))}
+.who{position:absolute;left:20px;right:20px;bottom:16px;color:#fff}
+.who .nm{font:700 22px/1.2 var(--sans)}.who .nm span{font-weight:400;font-size:16px;margin-left:4px}
+.who .loc{font-size:12px;opacity:.9;margin-top:3px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.pair.one{grid-template-columns:1fr}
+.state-pick{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.state-pick button{font:500 12px/1 var(--sans);border:0;border-radius:999px;padding:8px 11px;min-height:32px;background:var(--chip);color:var(--ink);cursor:pointer}
+.state-pick button[aria-pressed="true"]{background:var(--chip-on);color:var(--chip-on-ink)}
+.dim{position:absolute;inset:0;background:rgba(17,24,32,.42)}
+.dlg{position:absolute;left:24px;right:24px;top:170px;background:#fff;border-radius:20px;padding:22px 20px 18px;display:grid;gap:8px;text-align:center}
+.dlg h4{margin:0;font:700 17px/1.4 var(--sans)}
+.dlg p{margin:0 0 10px;font-size:13px;color:#6B727A}
+.dlg .pair{margin-top:4px}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:22px 22px 0 0;padding:22px 20px 26px;display:grid;gap:10px}
+.sheet h4{margin:0;font:700 17px/1.4 var(--sans)}
+.sheet p{margin:0 0 6px;font-size:13px;color:#6B727A}
+.letter-preview{margin-top:16px;background:#fff;border:1px solid #E3E7EA;border-radius:16px;padding:16px;font-size:14px;line-height:1.7;color:#39444D}
+.letter-preview b{font:400 15px var(--serif);display:block;margin-bottom:6px;color:#1F2328}
+
+/* 5 규칙 */
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.rule{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.rule b{display:block;margin-bottom:4px}
+.rule p{margin:0;color:var(--ink-2);font-size:13px}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>야화 버튼 시스템</h1>
+    <p>버튼을 네 단계 위계로 나눴어요. 한 화면에서 가장 중요한 행동 하나만 Primary(진한 바탕)이고, 그 옆 행동은 Secondary(연한 바탕 + Primary 색 글씨)예요. 이렇게 나누면 호감과 편지처럼 나란히 놓인 버튼도 무엇이 먼저인지 바로 보여요.</p>
+    <div class="pick" role="group" aria-label="Primary 색">
+      <b>Primary 색</b>
+      <button id="p-deep" data-p="deep" aria-pressed="true">진한 파랑<small>#377398</small></button>
+      <button id="p-200" data-p="sky200" aria-pressed="false">sky200<small>#B7D7EC</small></button>
+      <button id="p-300" data-p="sky300" aria-pressed="false">sky300<small>#92C0DF</small></button>
+    </div>
+  </header>
+
+  <section>
+    <h2>1. 위계 4가지</h2>
+    <p class="lead">위에서 아래로 갈수록 덜 중요한 행동이에요. 한 영역에는 Primary를 하나만 둬요.</p>
+    <div class="board app">
+      <div class="tiers">
+        <div class="tier"><h3>Primary <span>진한 바탕</span></h3><p>화면의 핵심 행동 하나. 다음, 시작하기, 호감 보내기, 수락하기.</p><button class="btn L b-primary">호감 보내기</button><span class="cap"><code>--btn-primary-bg</code> <code>--btn-primary-fg</code></span></div>
+        <div class="tier"><h3>Secondary <span>연한 바탕 + Primary 색 글씨</span></h3><p>Primary 옆의 두 번째 행동, 이미 한 일(보냄). 편지 보내기, 프로필 보기.</p><button class="btn L b-secondary">편지 보내기</button><span class="cap"><code>--btn-secondary-bg</code> sky100 · <code>--btn-secondary-fg</code> sky700</span></div>
+        <div class="tier"><h3>Tertiary <span>흰 바탕 + 회색 선</span></h3><p>되돌리기 쉬운 선택, 확인 창의 취소, 필터·정렬.</p><button class="btn L b-tertiary">취소</button><span class="cap"><code>--btn-tertiary-line</code> neutral200 · 글씨 neutral900</span></div>
+        <div class="tier"><h3>Text <span>바탕 없음</span></h3><p>버튼 아래 보조 이동, 건너뛰기, 나중에 하기. 높이와 누르는 영역은 다른 버튼과 같고, 좌우 여백만 좁아요.</p><button class="btn L b-text">나중에 할게요</button><span class="cap"><code>--btn-text-fg</code> sky700 · 누르면 sky50 바탕</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>2. 크기</h2>
+    <p class="lead">L은 화면 아래 큰 버튼, M은 카드·시트 안의 버튼, S는 줄 안의 작은 버튼이에요. 네 위계 모두 같은 높이를 써서 한 줄에 놓여도 맞아요. Text는 바탕이 없어서 좌우 여백만 좁혀요(L·M 12, S 8). S도 손가락이 닿는 영역은 44px로 넓혀요.</p>
+    <div class="board app sizes">
+      <div class="size-row"><span class="cap"><b>L</b> · 높이 52 · 모서리 12 · 15px</span><div class="cell"><button class="btn L b-primary">다음</button><button class="btn L b-secondary">편지 보내기</button><button class="btn L b-tertiary">취소</button><button class="btn L b-text">나중에 할게요</button></div></div>
+      <div class="size-row"><span class="cap"><b>M</b> · 높이 44 · 모서리 12 · 14px</span><div class="cell"><button class="btn M b-primary">수락하기</button><button class="btn M b-secondary">프로필 보기</button><button class="btn M b-tertiary">필터</button><button class="btn M b-text">전체 보기</button></div></div>
+      <div class="size-row"><span class="cap"><b>S</b> · 높이 34 · 모서리 10 · 13px</span><div class="cell"><button class="btn S b-primary">보내기</button><button class="btn S b-secondary">변경</button><button class="btn S b-tertiary">복사</button><button class="btn S b-text">더보기</button></div></div>
+      <div class="size-row"><span class="cap"><b>아이콘</b> · 원 52 / 44</span><div class="cell">
+        <button class="btn L icon b-primary" aria-label="호감 보내기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
+        <button class="btn L icon b-secondary" aria-label="편지 보내기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M4 7l8 6 8-6"/></svg></button>
+        <button class="btn M icon b-tertiary" aria-label="더보기"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/></svg></button></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>3. 상태</h2>
+    <p class="lead">누르면 3% 작아지고 한 단계 진해져요. 아직 못 누를 때는 회색, 이미 한 일(호감 보냄 · 편지 보냄)은 Secondary 모양에 체크나 채운 아이콘을 붙이고 누를 수 없게 해요.</p>
+    <div class="board app states-wrap">
+      <table class="states">
+        <thead><tr><th></th><th>기본</th><th>누름</th><th>비활성</th><th>완료</th></tr></thead>
+        <tbody>
+          <tr><th>Primary</th><td><button class="btn M b-primary">호감 보내기</button></td><td><button class="btn M b-primary is-press">호감 보내기</button></td><td><button class="btn M b-primary" disabled>리프가 부족해요</button></td><td><span class="btn M is-done"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg>호감 보냄</span></td></tr>
+          <tr><th>Secondary</th><td><button class="btn M b-secondary">편지 보내기</button></td><td><button class="btn M b-secondary is-press">편지 보내기</button></td><td><button class="btn M b-secondary" disabled>편지 보내기</button></td><td><span class="btn M is-done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>편지 보냄</span></td></tr>
+          <tr><th>Tertiary</th><td><button class="btn M b-tertiary">취소</button></td><td><button class="btn M b-tertiary is-press">취소</button></td><td><button class="btn M b-tertiary" disabled>취소</button></td><td><span class="cap">쓰지 않아요</span></td></tr>
+          <tr><th>Text</th><td><button class="btn M b-text">나중에 할게요</button></td><td><button class="btn M b-text is-press">나중에 할게요</button></td><td><button class="btn M b-text" disabled>나중에 할게요</button></td><td><span class="cap">쓰지 않아요</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>4. 화면에 놓으면</h2>
+    <p class="lead">F7 홈 상태 줄, 확인 창, 결정 시트에 같은 규칙을 적용했어요. 위의 Primary 색을 바꾸면 여기도 같이 바뀌어요.</p>
+    <div class="phones">
+      <div class="ph-col"><span>홈 · 카드 연 뒤 (F7)</span>
+        <div class="state-pick" role="group" aria-label="홈 상태">
+          <button id="h-none" data-s="none" aria-pressed="true">보내기 전</button><button id="h-heart" data-s="heart" aria-pressed="false">호감 보냄</button><button id="h-letter" data-s="letter" aria-pressed="false">편지 보냄</button><button id="h-both" data-s="both" aria-pressed="false">둘 다</button><button id="h-conn" data-s="conn" aria-pressed="false">서로 연결됨</button>
+        </div>
+        <div class="phone app" id="home-phone"></div></div>
+      <div class="ph-col"><span>확인 창 · Primary + Tertiary</span><div class="phone app">
+        <div class="scr"><h3 class="ttl">오늘의 인연</h3><p class="sub">매일 12시 · 15시 · 18시 · 21시, 두 명씩</p><div class="card"><img src="img/p.jpg" alt=""><div class="shade"></div></div></div>
+        <div class="dim"></div>
+        <div class="dlg"><h4>리프 5개로 호감을 보낼까요?</h4><p>봄빛 님에게 호감이 전해져요. 지금 리프 100개</p>
+          <div class="pair"><button class="btn L b-tertiary">취소</button><button class="btn L b-primary">보내기</button></div></div>
+      </div></div>
+      <div class="ph-col"><span>결정 시트 · Primary + Text</span><div class="phone app">
+        <div class="scr"><h3 class="ttl">편지함</h3><p class="sub">편지에서 이어지는 이야기</p><div class="letter-preview"><b>봄빛님에게</b>주말에 작은 서점에 들르신다는 이야기가 반가웠어요. 요즘 마음에 남은 책이 있나요?</div></div>
+        <div class="dim"></div>
+        <div class="sheet"><h4>지우 님의 편지를 수락할까요?</h4><p>수락하면 서로의 연락처가 열려요.</p>
+          <button class="btn L block b-primary">수락하기</button><button class="btn L block b-text">나중에 할게요</button></div>
+      </div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>5. 놓는 규칙</h2>
+    <div class="rules">
+      <div class="rule"><b>한 영역에 Primary는 하나</b><p>나란히 놓인 두 버튼은 Primary + Secondary. 호감 보내기가 Primary, 편지 보내기가 Secondary예요.</p></div>
+      <div class="rule"><b>확인 창은 오른쪽이 Primary</b><p>취소(Tertiary) 왼쪽, 실행(Primary) 오른쪽. 같은 너비로 나눠요.</p></div>
+      <div class="rule"><b>이미 한 일은 Secondary로 가라앉혀요</b><p>보냄 상태는 Secondary 바탕 + 채운 아이콘 · 체크. 누를 수 없고 회색이 아니라 "끝났다"는 색이에요.</p></div>
+      <div class="rule"><b>회색은 아직 못 하는 일에만</b><p>비활성은 이유를 글자로 써요. 예: "리프가 부족해요", "사진을 1장 올려 주세요".</p></div>
+      <div class="rule"><b>서로 연결됨은 다시 Primary</b><p>연결은 새로 할 수 있는 행동(편지함에서 이어가기)이 생긴 순간이라 한 줄 Primary로 올려요.</p></div>
+      <div class="rule"><b>세로로 쌓으면 너비를 맞춰요</b><p>시트처럼 버튼을 위아래로 쌓을 때는 Text 버튼도 Primary와 같은 L 높이 · 가득 찬 너비예요. 누르는 영역과 눌림 바탕이 줄 전체에 깔려요.</p></div>
+      <div class="rule"><b>사진 위 버튼은 예외</b><p>인연 열어보기처럼 사진 위에 뜨는 버튼은 시연 도구에서 따로 고른 색(F6)을 써요.</p></div>
+    </div>
+  </section>
+</div>
+
+<script>
+const IC={
+ heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg>',
+ heartF:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg>',
+ letter:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M4 7l8 6 8-6"/></svg>',
+ check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+ two:'<svg viewBox="0 0 28 24" fill="currentColor" style="width:22px"><path d="M10 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0117 10c0 5.6-7 10-7 10z" opacity=".95"/><path d="M18 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0125 10c0 5.6-7 10-7 10z" opacity=".6"/></svg>'
+};
+function homeRow(s){
+ if(s==='conn')return `<div class="pair one"><button class="btn L block b-primary">${IC.two}서로 연결됨 · 편지함에서 이어가기</button></div>`;
+ const h=(s==='heart'||s==='both')?`<span class="btn L is-done">${IC.heartF}호감 보냄</span>`:`<button class="btn L b-primary">${IC.heart}호감 보내기</button>`;
+ const l=(s==='letter'||s==='both')?`<span class="btn L is-done">${IC.check}편지 보냄</span>`:`<button class="btn L b-secondary">${IC.letter}편지 보내기</button>`;
+ return `<div class="pair">${h}${l}</div>`;
+}
+function home(s){document.getElementById('home-phone').innerHTML=`<div class="scr"><h3 class="ttl">오늘의 인연</h3><p class="sub">매일 12시 · 15시 · 18시 · 21시, 두 명씩</p><div class="card"><img src="img/p.jpg" alt="봄빛 사진"><div class="shade"></div><div class="who"><div class="nm">봄빛<span>26세</span></div><div class="loc">서울 마포구 · 출판 편집자</div></div></div>${homeRow(s)}</div>`;
+ document.querySelectorAll('.state-pick button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.s===s)));}
+document.querySelector('.state-pick').addEventListener('click',e=>{const b=e.target.closest('button');if(b)home(b.dataset.s);});
+home('none');
+document.querySelector('.pick').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;document.querySelectorAll('.app').forEach(a=>a.dataset.p=b.dataset.p);document.querySelectorAll('.pick button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));});
+</script>

@@ -1,0 +1,91 @@
+<meta charset="utf-8">
+<title>공개할 연락처 고르기</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리 → 답장 쓸 때(지금 · A · B · F · G · H, 각각 둘 다 / 하나) → 연결된 뒤(지금 · B 고름) */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1240px;margin:0 auto;display:grid;gap:28px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px;text-wrap:balance}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:78ch}
+ul b{color:var(--ink);font-weight:600}
+section{display:grid;gap:16px}
+h2{font:700 18px/1.4 var(--sans);margin:0}
+h3{font:600 15px/1.4 var(--sans);margin:0}
+.opts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px 28px;align-items:start}
+.opt{display:grid;gap:10px;min-width:0;align-content:start}
+.opt p{margin:0;font-size:13px;color:var(--ink-2);min-height:42px}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.row.one{grid-template-columns:minmax(0,1fr);max-width:50%}
+.row.t{grid-template-columns:repeat(2,minmax(0,260px));gap:20px}
+figure{margin:0;display:grid;gap:6px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:18px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:12.5px;color:var(--ink-2)}
+figcaption b{color:var(--ink)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+@media (max-width:1000px){.opts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.opts{grid-template-columns:1fr}}
+</style>
+<div class="wrap">
+  <header>
+    <h1>편지함 · 공개할 연락처 고르기 (팀 피드백 5)</h1>
+    <ul>
+      <li><b>모든 안 공통:</b> 고른 연락처만 답장과 함께 공개되고, 하나는 꼭 골라야 해요. 처음에는 "내 연락처"에 저장한 값이 들어가 있어요.</li>
+      <li><b>A · B</b>는 처음 시안, <b>F · G · H</b>는 새로 더한 안이에요. 안마다 "둘 다"와 "카카오톡만"을 같이 찍었어요.</li>
+      <li><b>연결된 뒤:</b> 고르신 B(색 아이콘 + 이름)로 갈게요. G는 이 모양과 같은 줄이라 답장 → 연결이 한 결로 이어져요.</li>
+    </ul>
+  </header>
+  <section><h2>답장 쓸 때 · H 바꾼 안</h2>
+    <p style="margin:0;color:var(--ink-2);font-size:13px;max-width:78ch">H 모양 그대로, 아이콘만 G처럼 카카오톡 노랑 · 전화 파랑으로 바꿨어요. 체크를 끈 줄은 아이콘이 흐려지고 칸이 비어요. 위 제목은 자물쇠 + "답장을 보내면 공개할 연락처" 대신 <b style="color:var(--ink)">내 연락처 *</b>(빨간 별, 꼭 하나는 골라야 한다는 뜻). 연결된 뒤 B와 아이콘이 같아요.</p>
+    <div class="row t" style="grid-template-columns:repeat(3,minmax(0,240px))">
+      <figure><img src="img/cI.jpg" alt="H 바꾼 안 둘 다"><figcaption><span class="tag new">H′</span>둘 다</figcaption></figure>
+      <figure><img src="img/cI1.jpg" alt="H 바꾼 안 카카오톡만"><figcaption><span class="tag new">H′</span>카카오톡만</figcaption></figure>
+      <figure><img src="img/cI2.jpg" alt="H 바꾼 안 전화번호만"><figcaption><span class="tag new">H′</span>전화번호만</figcaption></figure>
+    </div>
+  </section>
+  <section><h2>H′ · 입력할 때</h2>
+    <p style="margin:0;color:var(--ink-2);font-size:13px;max-width:78ch">줄마다 칸이라 바로 눌러서 쓸 수 있어요. 쓰는 줄에만 검정 밑줄(cool-neutral-900)이 글자 바로 아래 붙고 커서가 생겨요. 꺼진 줄을 누르면 체크가 저절로 켜지고 빈 칸에 "010-0000-0000"이 보여요. 번호가 맞지 않은 채 보내면 그 줄이 빨개지고 토스트로 알려줘요(넣을 때 문구는 "전화번호를 확인해주세요"로 줄일게요).</p>
+    <div class="row t" style="grid-template-columns:repeat(4,minmax(0,220px))">
+      <figure><img src="img/tk.jpg" alt="카카오톡 ID 쓰는 중"><figcaption><span class="tag new">1</span>카카오톡 ID 고치는 중</figcaption></figure>
+      <figure><img src="img/tp0.jpg" alt="전화번호 줄 누름"><figcaption><span class="tag new">2</span>꺼진 전화번호 줄을 누름 · 체크 켜짐</figcaption></figure>
+      <figure><img src="img/tp1.jpg" alt="전화번호 쓰는 중"><figcaption><span class="tag new">3</span>전화번호 쓰는 중</figcaption></figure>
+      <figure><img src="img/terr.jpg" alt="번호 틀림"><figcaption><span class="tag new">4</span>틀린 번호로 보내기 누름</figcaption></figure>
+    </div>
+  </section>
+  <section><h2>답장 쓸 때 · 앞서 본 안</h2>
+    <div class="opts">
+      <div class="opt"><h3><span class="tag">지금</span></h3><p>카카오톡 ID 칸 + 전화번호 "선택" 칸. 고를 수 있다는 게 안 보여요.</p><div class="row one">
+        <figure><img src="img/c0.jpg" alt="지금 답장 화면"></figure>
+      </div></div>
+      <div class="opt"><h3><span class="tag new">A</span>칩으로 고르기</h3><p>칩을 켜면 아래에 아이콘 붙은 칸이 열려요. 공간을 적게 써요.</p><div class="row">
+        <figure><img src="img/cA.jpg" alt="A안 둘 다"><figcaption>둘 다</figcaption></figure>
+        <figure><img src="img/cA1.jpg" alt="A안 카카오톡만"><figcaption>카카오톡만</figcaption></figure>
+      </div></div>
+      <div class="opt"><h3><span class="tag new">B</span>체크 카드</h3><p>카드마다 아이콘 · 이름 · 체크. 고르면 카드 안에 칸이 열리고, 안 고른 카드는 접혀요.</p><div class="row">
+        <figure><img src="img/cB.jpg" alt="B안 둘 다"><figcaption>둘 다</figcaption></figure>
+        <figure><img src="img/cB1.jpg" alt="B안 카카오톡만"><figcaption>카카오톡만</figcaption></figure>
+      </div></div>
+      <div class="opt"><h3><span class="tag new">F</span>세 칸 중 하나</h3><p>카카오톡 ID · 전화번호 · 둘 다 중 하나를 눌러요. 고르는 경우가 세 가지라는 게 바로 보여요.</p><div class="row">
+        <figure><img src="img/cF.jpg" alt="F안 둘 다"><figcaption>둘 다</figcaption></figure>
+        <figure><img src="img/cF1.jpg" alt="F안 카카오톡만"><figcaption>카카오톡만</figcaption></figure>
+      </div></div>
+      <div class="opt"><h3><span class="tag new">G</span>스위치 줄</h3><p>저장한 연락처를 보여주고 스위치로 공개만 켜고 꺼요. 색 아이콘이 연결된 뒤 B와 같아요. 값을 바꾸려면 줄을 눌러요.</p><div class="row">
+        <figure><img src="img/cG.jpg" alt="G안 둘 다"><figcaption>둘 다</figcaption></figure>
+        <figure><img src="img/cG1.jpg" alt="G안 카카오톡만"><figcaption>카카오톡만</figcaption></figure>
+      </div></div>
+      <div class="opt"><h3><span class="tag new">H</span>한 카드 · 오른쪽 체크</h3><p>카드 하나에 두 줄. 아이콘 · 바로 쓰는 칸 · 오른쪽 체크. 가장 짧아요.</p><div class="row">
+        <figure><img src="img/cH.jpg" alt="H안 둘 다"><figcaption>둘 다</figcaption></figure>
+        <figure><img src="img/cH1.jpg" alt="H안 카카오톡만"><figcaption>카카오톡만</figcaption></figure>
+      </div></div>
+    </div>
+  </section>
+  <section><h2>연결된 뒤 · 편지 위 연락처</h2><div class="row t">
+    <figure><img src="img/t0.jpg" alt="지금 연결된 화면"><figcaption><span class="tag">지금</span>한 사람에 한 줄 · 이름이 늘 "카카오톡 ID"</figcaption></figure>
+    <figure><img src="img/tB.jpg" alt="B안 색 아이콘"><figcaption><span class="tag new">B · 고름</span><b>색 아이콘 + 이름</b> · 상대 · 나로 나누고, 카카오톡 노랑 · 전화 파랑</figcaption></figure>
+  </div></section>
+</div>

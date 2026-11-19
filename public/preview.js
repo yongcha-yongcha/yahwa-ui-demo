@@ -19,6 +19,7 @@ const ART={
 };
 const icon=k=>`<svg class="pv-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="${ART[k]}"/></svg>`;
 const KEY=[['job','하는 일'],['height','키'],['mbti','성격']];
+
 const LIFE=[['smoking','담배'],['drinking','술'],['religion','종교'],['education','학력']];
 const VLINE='<svg class="pv-vline" viewBox="0 0 6 60" preserveAspectRatio="none" aria-hidden="true"><path d="M3 4q-1.6 13 .2 26t-.4 26"/></svg>';
 const clean=v=>{v=String(v??'').trim();return !v||v==='잘 모르겠어요'?'':v;};
@@ -63,15 +64,23 @@ let rz;const ro=new ResizeObserver(()=>{clearTimeout(rz);rz=setTimeout(drawAll,4
 
 /* ── 공통 소개 본문: 두 화면이 이 함수 하나를 써요 */
 function factsHTML(d){
-  const key=d.key.filter(x=>x[2]),life=d.life.filter(x=>x[2]);
+  /* F11 새 안 (2026-11-16, 시안 design-mockups/job-first-v2/): 이름 ・나이 + 인증 → 직업 → 사는 곳 → 해시태그 → 정보 목록.
+     정보(키 · MBTI · 담배 · 술 · 종교 · 학력)는 상자 · 빗금 타일 없이 우리 손그림 아이콘 + 글자 두 줄. 성별은 보여 주지 않아요(소개 상대 성별이 이미 정해져 있어서).
+     색은 쿨 뉴트럴: 값 900 · 직업 · 사는 곳 700 · 아이콘 500, 강조색 없음. */
+  const facts=(d.facts||[]).filter(x=>x[1]);
   const Name=d.heading||'h2';
-  return `<div class="pv-name-row"><${Name} class="pv-name">${esc(d.name)}</${Name}></div>`
-   +(d.meta.length?`<p class="pv-meta"><span class="ic ic-map-pin-fill" aria-hidden="true"></span>${d.meta.map(esc).join('<i aria-hidden="true"></i>')}</p>`:'')
-   +(d.tags.length?`<ul class="pv-tags" aria-label="해시태그">${d.tags.map(t=>`<li>#${esc(t)}</li>`).join('')}</ul>`:'')
-   +(key.length?`<div class="pv-key" role="list" aria-label="${esc(d.keyLabel||'나에 대해')}" style="--n:${key.length}">${key.map(([id,l,v])=>`<div role="listitem" data-k="${id}">${icon(id)}<b>${esc(v)}</b><small>${l}</small></div>`).join(VLINE)}</div>`:'')
-   +(life.length?`<ul class="pv-life${life.length%2?' is-odd':''}" aria-label="생활">${life.map(([id,l,v])=>`<li>${icon(id)}<span><small>${l}</small><b>${esc(v)}</b></span></li>`).join('')}</ul>`:'')
-   +(!key.length&&!life.length&&d.empty?`<p class="pv-empty">${esc(d.empty)}</p>`:'');
+  return `<div class="pv-name-row"><${Name} class="pv-name">${esc(d.name)}</${Name}>${d.age?`<span class="pv-age"><span class="pv-age-dot" aria-hidden="true">・</span>${esc(d.age)}</span>`:''}</div>`
+   +(d.job?`<p class="pv-line pv-job">${icon('job')}<span>${esc(d.job)}</span></p>`:'')
+   +(d.region?`<p class="pv-line pv-region"><span class="ic ic-map-pin-fill" aria-hidden="true"></span><span>${esc(d.region)}</span></p>`:'')
+   +(SHOW_TAGS&&d.tags?.length?`<ul class="pv-tags" aria-label="해시태그">${d.tags.map(t=>`<li>#${esc(t)}</li>`).join('')}</ul>`:'')
+   +(facts.length?`<ul class="pv-mini" aria-label="정보">${facts.map(([id,v,l])=>`<li>${icon(id)}<span>${esc(v)}</span><span class="sr-only">${esc(l)}</span></li>`).join('')}</ul>`:'')
+   +(!d.job&&!facts.length&&d.empty?`<p class="pv-empty">${esc(d.empty)}</p>`:'');
 }
+/* 정보 목록 순서: 키 · MBTI · 담배 · 술 · 종교 · 학력. 술은 값만으로 뜻이 약해 "술 가끔"처럼 앞에 붙여요 */
+/* 2026-11-16 F12: 해시태그는 소개 본문에서 숨겨요(팀 링크에도 없음). 다시 보이려면 true로 */
+const SHOW_TAGS=false;
+const drinkText=v=>v&&!/술|마시|음주/.test(v)?'술 '+v:v;
+const miniFacts=(h,mbti,smoke,drink,rel,edu)=>[['height',h,'키'],['mbti',mbti,'성격'],['smoking',smoke,'흡연'],['drinking',drinkText(drink),'음주'],['religion',rel,'종교'],['education',edu,'학력']];
 function mount(box,d,badges){
   box.innerHTML=factsHTML(d);
   if(badges?.length)box.querySelector('.pv-name-row').append(...badges);
@@ -102,7 +111,7 @@ function buildMine(){
   let box=$('pv-me');
   if(!box){box=document.createElement('section');box.id='pv-me';box.className='pv-me';box.setAttribute('aria-label','나의 정보');preview.querySelector('.photo-carousel').after(box);}
   const cred=$('preview-credentials');
-  mount(box,{name,meta,tags,key:KEY.map(([id,l])=>[id,l,val(id)]),life:LIFE.map(([id,l])=>[id,l,val(id)]),empty:'상세 정보를 아직 입력하지 않았어요.'},cred?[cred]:[]);
+  mount(box,{name,age:age?age+'세':'',job:val('job'),region:$('region')?.value||'',tags,facts:miniFacts(val('height'),val('mbti'),val('smoking'),val('drinking'),val('religion'),val('education')),empty:'상세 정보를 아직 입력하지 않았어요.'},cred?[cred]:[]);
   dots($('preview-photo'),preview.querySelector('.photo-carousel'));
   /* 이야기 사이 사진은 index.html 쪽에서 이미 넣어요(.story-photo-frame, 상대 프로필 .match-story-photo와 같은 1:1 · 모서리 12) */
 }
@@ -124,9 +133,9 @@ function buildTheirs(){
   const recent=head?.querySelector('.recent-activity');
   gallery.querySelectorAll('.recent-activity').forEach(e=>{if(e!==recent)e.remove();});
   if(recent){recent.classList.add('pv-recent');gallery.append(recent);}
-  mount(box,{name:m.name,heading:'h1',keyLabel:m.name+'에 대해',meta:[age,...parts,m.gender].filter(Boolean),tags:m.tags||[],
-    key:[['job','하는 일',clean(f['하는 일'])],['height','키',clean(f['키'])],['mbti','성격',clean(f['나의 성격'])]],
-    life:[['smoking','담배',clean(f['흡연'])],['drinking','술',clean(f['음주'])],['religion','종교',clean(f['종교'])],['education','학력',clean(f['학력'])]]},badges);
+  const hv=clean(f['키']);
+  mount(box,{name:m.name,heading:'h1',age,job:clean(f['하는 일']),region:parts.join(' · '),tags:m.tags||[],
+    facts:miniFacts(hv&&!/cm$/.test(hv)?hv+'cm':hv,clean(f['나의 성격']),clean(f['흡연']),clean(f['음주']),clean(f['종교']),clean(f['학력']))},badges);
   /* 이야기 연결점(맞춤 인연)은 소개 본문 뒤에 */
   const reason=match.querySelector('.story-match-reason');if(reason)box.after(reason);
   dots($('match-gallery'),gallery);

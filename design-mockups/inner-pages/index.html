@@ -1,0 +1,116 @@
+<meta charset="utf-8">
+<title>안쪽 화면 정리</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리 → 화면 6묶음, 각각 before 한 장 → after 한두 장 + 바뀐 점 목록 */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--panel:#FFFFFF;--chip:#E9EDF1;--tag-new:#377398;
+  --sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:48px}
+header h1{font:700 24px/1.35 var(--sans);margin:0 0 6px;letter-spacing:-.3px}
+header p{margin:0;color:var(--ink-2);max-width:66ch}
+section{display:grid;gap:14px;min-width:0}
+h2{font:700 19px/1.4 var(--sans);margin:0}
+.row{display:flex;gap:16px;align-items:flex-start;overflow-x:auto;padding-bottom:6px}
+figure{flex:none;width:240px;margin:0;display:grid;gap:6px}
+figure img{width:100%;border-radius:20px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:12px;color:var(--ink-2)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+.arrow{flex:none;align-self:center;color:var(--ink-2);font-size:20px;padding:0 2px}
+ul{margin:0;padding-left:18px;display:grid;gap:4px;color:var(--ink-2);max-width:72ch}
+ul b{color:var(--ink);font-weight:600}
+@media (max-width:560px){figure{width:200px}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>B · 안쪽 화면 정리 · before · after</h1>
+    <p>안쪽(눌러서 들어간) 화면은 모두 공용 머리 줄로 맞췄어요. 뒤로 + 가운데 제목이고, 본문의 큰 명조 제목은 없앴어요. 예전 틀(명조 제목 + 회색 상자 + 파란 버튼)이던 다섯 화면은 내용부터 다시 짰어요.</p>
+  </header>
+
+  <section>
+    <h2>1 · 프로필 교환 요청</h2>
+    <div class="row">
+      <figure><img src="img/b_request.jpg" alt="지금"><figcaption><span class="tag">before</span></figcaption></figure><span class="arrow" aria-hidden="true">→</span>
+      <figure><img src="img/a_request.jpg" alt="바꾼 뒤"><figcaption><span class="tag new">after</span></figcaption></figure>
+    </div>
+    <ul>
+      <li><b>누구에게 보내는지</b> 먼저 보여요. 익명 · 성별과 함께 이야기한 글 한 줄이에요.</li>
+      <li>회색 상자 문단은 <b>아이콘 세 줄</b>로 나눴어요. 무엇이 열리는지, 연락처는 비공개, 리프는 돌아오지 않는다는 것.</li>
+      <li>버튼은 아래에 붙였어요. "교환 요청하기"에 리프 10 칩을 달아 편지 보내기 버튼과 같은 모양이에요.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>2 · 인연 공개</h2>
+    <div class="row">
+      <figure><img src="img/b_vis.jpg" alt="지금"><figcaption><span class="tag">before</span></figcaption></figure><span class="arrow" aria-hidden="true">→</span>
+      <figure><img src="img/a_visOn.jpg" alt="공개 중"><figcaption><span class="tag new">after</span>공개 중</figcaption></figure>
+      <figure><img src="img/a_visOff.jpg" alt="쉬는 중"><figcaption><span class="tag new">after</span>쉬는 중</figcaption></figure>
+    </div>
+    <ul>
+      <li>맨 위에 <b>지금 상태와 스위치</b>를 두었어요. 공개 중(초록 점) · 쉬는 중(날짜).</li>
+      <li>"잠시 쉬어갈까요?" 큰 제목과 버튼 대신, 끄면 무엇이 달라지는지 아이콘 줄로 보여요. 스위치를 끌 때는 확인 시트를 한 번 띄울 생각이에요.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>3 · 지인 차단</h2>
+    <div class="row">
+      <figure><img src="img/b_block.jpg" alt="지금"><figcaption><span class="tag">before</span></figcaption></figure><span class="arrow" aria-hidden="true">→</span>
+      <figure><img src="img/a_block.jpg" alt="바꾼 뒤"><figcaption><span class="tag new">after</span></figcaption></figure>
+    </div>
+    <ul>
+      <li>"시연본은 연락처를 읽지 않아요" 덧글 대신 <b>무엇을 해 주는 기능인지</b> 한 줄로 적었어요.</li>
+      <li>차단 목록(0명)을 줄로 보여 주고, 아래에 "연락처 불러오기" 버튼이에요. 시연에서는 누르면 알림 한 줄만 떠요.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>4 · 친구 초대</h2>
+    <div class="row">
+      <figure><img src="img/b_invite.jpg" alt="지금"><figcaption><span class="tag">before</span></figcaption></figure><span class="arrow" aria-hidden="true">→</span>
+      <figure><img src="img/a_invite.jpg" alt="바꾼 뒤"><figcaption><span class="tag new">after</span></figcaption></figure>
+    </div>
+    <ul>
+      <li>받을 리프 <b>140</b>을 크게 하늘색으로 보여 줘요. 무료 리프 받기 화면과 같은 색이에요.</li>
+      <li>링크 보내기 → 친구 가입 → 승인되면 적립, 세 단계를 보여 주고 초대 코드 복사 · 초대한 친구 수를 더했어요. "실제 지급되지 않아요" 덧글은 뺐어요.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>5 · 배지 · 인증</h2>
+    <div class="row">
+      <figure><img src="img/b_cert.jpg" alt="지금"><figcaption><span class="tag">before</span></figcaption></figure><span class="arrow" aria-hidden="true">→</span>
+      <figure><img src="img/a_cert.jpg" alt="목록"><figcaption><span class="tag new">after</span>배지 목록</figcaption></figure>
+      <figure><img src="img/a_certForm.jpg" alt="인증 입력"><figcaption><span class="tag new">after</span>학력 인증 들어가면</figcaption></figure>
+    </div>
+    <ul>
+      <li>첫 화면은 <b>배지 세 칸</b>(학력 · 직장 · 소득)으로 바꿨어요. 받을 리프(+20 · +30)나 "확인 중" 상태가 칸마다 보여요. 아래는 인증 종류별 줄이에요.</li>
+      <li>긴 입력 양식은 한 단계 안쪽(예: 학력 인증)으로 옮겼어요. 흩어져 있던 "1 정보 입력 · 2 확인 · 3 배지"는 숫자 동그라미 단계로 묶었어요.</li>
+      <li>아래 시연 안내 덧글은 "승인된 배지만 프로필에 보여요" 한 줄로 줄였어요.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>6 · 머리 모양만 맞춘 화면</h2>
+    <div class="row">
+      <figure><img src="img/b_settings.jpg" alt="알림 설정 지금"><figcaption><span class="tag">before</span>알림 설정</figcaption></figure><span class="arrow" aria-hidden="true">→</span>
+      <figure><img src="img/a_settings.jpg" alt="알림 설정 바꾼 뒤"><figcaption><span class="tag new">after</span></figcaption></figure>
+      <figure><img src="img/b_saved.jpg" alt="내 연락처 지금"><figcaption><span class="tag">before</span>내 연락처</figcaption></figure><span class="arrow" aria-hidden="true">→</span>
+      <figure><img src="img/a_saved.jpg" alt="내 연락처 바꾼 뒤"><figcaption><span class="tag new">after</span></figcaption></figure>
+      <figure><img src="img/b_mysettings.jpg" alt="설정 지금"><figcaption><span class="tag">before</span>설정 · 도움말</figcaption></figure><span class="arrow" aria-hidden="true">→</span>
+      <figure><img src="img/a_mysettings.jpg" alt="설정 바꾼 뒤"><figcaption><span class="tag new">after</span></figcaption></figure>
+    </div>
+    <ul>
+      <li>큰 명조 제목을 빼고 <b>가운데 제목 머리 줄</b>로 바꿨어요. 내용이 한 줄 위에서 시작해요.</li>
+      <li>같은 규칙을 매장 포인트 내역 · 차단 관리 · 계정 관리 같은 나머지 안쪽 화면에도 똑같이 적용해요.</li>
+      <li>내 연락처의 회색 안내 상자는 회색 글 한 줄로 바꿨어요.</li>
+    </ul>
+  </section>
+</div>

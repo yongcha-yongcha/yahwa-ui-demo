@@ -1,0 +1,41 @@
+<meta charset="utf-8">
+<title>설정 · 도움말 씽크</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리(고른 조합 · 바뀐 점) → 부분마다 지금 · 고른 조합 두 장 */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:24px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px;text-wrap:balance}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:82ch}
+ul b{color:var(--ink);font-weight:600}
+section{display:grid;gap:10px}
+h2{font:700 18px/1.4 var(--sans);margin:0}h3{font:600 15px/1.4 var(--sans);margin:14px 0 0}h3 small{font-weight:400;color:var(--ink-2);font-size:13px;margin-left:6px}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,260px));gap:16px}
+figure{margin:0;display:grid;gap:6px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:18px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2)}
+.tag.new{background:var(--tag-new);color:#fff}
+@media (max-width:640px){.row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<div class="wrap">
+  <header>
+    <h1>설정 · 도움말 · 팀 링크에 맞추기</h1>
+    <ul>
+      <li><b>팀 링크:</b> 계정 관리 · 문의하기 · 약관 세 줄. <b>우리:</b> 다섯 줄 — "알림 설정"은 마이페이지에도 있어 겹치고, "차단 관리"는 우리만 있어요.</li>
+      <li><b>모두 같게:</b> 줄 선 목록 → 회색 묶음 카드(알림 설정 · 내 연락처와 같은 B). 알림 설정 줄은 빼요.</li>
+      <li><b>더 찾아서 고친 것:</b> 계정 관리 머리 제목이 "계정 · 도움말"로 잘못 떠 있음 → "계정 관리". 차단 관리 안 "연락처로 지인 차단"은 마이페이지 지인 차단과 겹쳐서 빼요. 문의하기는 시연 덧글 한 줄 빼고, 흰 칸 + 테두리 → 회색 칸(쓰는 중엔 진한 테두리), 버튼 "시연 문의 등록" → "문의 보내기".</li>
+      <li><b>그대로 둔 것:</b> 닉네임 변경(팀엔 없지만 우리 기능), 인연 쉬어가기(팀도 계정 관리에 있어요).</li>
+    </ul>
+  </header>
+  <section><h2>팀 링크 · 지금 우리</h2><div class="row" style="grid-template-columns:repeat(4,minmax(0,220px))"><figure><img src="img/t_ms.jpg" alt="팀 · 설정" loading="lazy"><figcaption><span class="tag">팀 · 설정</span></figcaption></figure><figure><img src="img/t_account.jpg" alt="팀 · 계정 관리" loading="lazy"><figcaption><span class="tag">팀 · 계정 관리</span></figcaption></figure><figure><img src="img/t_inquiry.jpg" alt="팀 · 문의하기" loading="lazy"><figcaption><span class="tag">팀 · 문의하기</span></figcaption></figure><figure><img src="img/n_ms.jpg" alt="지금 우리" loading="lazy"><figcaption><span class="tag">지금 우리</span></figcaption></figure></div></section>
+  <section><h2>설정 · 도움말 목록</h2><p style="margin:0;color:var(--ink-2)">차단 관리를 어디에 둘지만 달라요.</p><div class="row" style="grid-template-columns:repeat(3,minmax(0,220px))"><figure><img src="img/X1.jpg" alt="X1 두 묶음 · 계정 · 차단 / 문의 · 약관" loading="lazy"><figcaption><span class="tag new">X1 두 묶음 · 계정 · 차단 / 문의 · 약관</span></figcaption></figure><figure><img src="img/X2.jpg" alt="X2 팀처럼 세 줄 · 차단은 계정 관리 안으로" loading="lazy"><figcaption><span class="tag new">X2 팀처럼 세 줄 · 차단은 계정 관리 안으로</span></figcaption></figure><figure><img src="img/X3.jpg" alt="X3 한 묶음 네 줄" loading="lazy"><figcaption><span class="tag new">X3 한 묶음 네 줄</span></figcaption></figure></div></section>
+  <section><h2>계정 관리</h2><div class="row" style="grid-template-columns:repeat(3,minmax(0,220px))"><figure><img src="img/n_acc.jpg" alt="지금" loading="lazy"><figcaption><span class="tag">지금</span></figcaption></figure><figure><img src="img/A1.jpg" alt="A1 · X1 · X3일 때" loading="lazy"><figcaption><span class="tag new">A1 · X1 · X3일 때</span></figcaption></figure><figure><img src="img/A2.jpg" alt="A2 · X2일 때 (차단 관리 포함)" loading="lazy"><figcaption><span class="tag new">A2 · X2일 때 (차단 관리 포함)</span></figcaption></figure></div></section>
+  <section><h2>차단 관리</h2><div class="row" style="grid-template-columns:repeat(3,minmax(0,220px))"><figure><img src="img/n_blk.jpg" alt="지금" loading="lazy"><figcaption><span class="tag">지금</span></figcaption></figure><figure><img src="img/B1.jpg" alt="차단한 사람 없을 때" loading="lazy"><figcaption><span class="tag new">차단한 사람 없을 때</span></figcaption></figure><figure><img src="img/B2.jpg" alt="차단한 사람 있을 때" loading="lazy"><figcaption><span class="tag new">차단한 사람 있을 때</span></figcaption></figure></div></section>
+  <section><h2>문의하기 · 약관</h2><div class="row" style="grid-template-columns:repeat(5,minmax(0,220px))"><figure><img src="img/n_inq.jpg" alt="문의 · 지금" loading="lazy"><figcaption><span class="tag">문의 · 지금</span></figcaption></figure><figure><img src="img/Q1.jpg" alt="문의 · 빈 칸" loading="lazy"><figcaption><span class="tag new">문의 · 빈 칸</span></figcaption></figure><figure><img src="img/Q2.jpg" alt="문의 · 쓰는 중" loading="lazy"><figcaption><span class="tag new">문의 · 쓰는 중</span></figcaption></figure><figure><img src="img/n_trm.jpg" alt="약관 · 지금" loading="lazy"><figcaption><span class="tag">약관 · 지금</span></figcaption></figure><figure><img src="img/T1.jpg" alt="약관 · 묶음" loading="lazy"><figcaption><span class="tag new">약관 · 묶음</span></figcaption></figure></div></section>
+</div>

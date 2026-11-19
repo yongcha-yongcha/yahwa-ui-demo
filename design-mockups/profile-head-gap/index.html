@@ -1,0 +1,31 @@
+<meta charset="utf-8">
+<title>프로필 이름 줄 여백</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 제목 → 지금 · A · B · C 네 장 (이름 줄 부분만) */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1040px;margin:0 auto;display:grid;gap:20px}
+h1{font:700 22px/1.35 var(--sans);margin:0}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,480px));gap:24px}
+figure{margin:0;display:grid;gap:8px;min-width:0}
+figure img{width:100%;border-radius:18px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+figcaption b{color:var(--ink)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+@media (max-width:760px){.row{grid-template-columns:1fr}}
+</style>
+<div class="wrap">
+  <h1>상대 프로필 · 이름 → 호감 칩 → 직업 · 사는 곳 여백</h1>
+  <div class="row">
+    <figure><img src="img/s0b.jpg" alt="지금"><figcaption><span class="tag">지금</span>이름→칩 12 · 칩→직업 6 · 직업→사는 곳 6</figcaption></figure>
+    <figure><img src="img/sA.jpg" alt="A"><figcaption><span class="tag new">A</span><b>12 · 12 · 6</b> · 칩 아래만 두 배</figcaption></figure>
+    <figure><img src="img/sB.jpg" alt="B"><figcaption><span class="tag new">B</span><b>16 · 16 · 8</b> · 전체를 고르게 넓게</figcaption></figure>
+    <figure><img src="img/sC.jpg" alt="C"><figcaption><span class="tag new">C</span><b>12 · 20 · 8</b> · 이름+칩을 한 묶음, 직업 · 사는 곳을 다른 묶음으로</figcaption></figure>
+  </div>
+</div>

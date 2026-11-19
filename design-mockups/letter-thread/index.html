@@ -1,0 +1,43 @@
+<meta charset="utf-8">
+<title>연결된 편지 대화</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리(같이 고친 점) → 지금 · A · B · C 네 장 */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:22px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:76ch}
+ul b{color:var(--ink);font-weight:600}
+.row{display:grid;grid-template-columns:repeat(4,minmax(0,270px));gap:20px}
+figure{margin:0;display:grid;gap:8px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:20px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+figcaption b{color:var(--ink)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.arrow{align-self:center;font:600 13px/1.5 var(--sans);color:var(--ink-2);text-align:center}
+.flow{display:grid;grid-template-columns:minmax(0,270px) 90px minmax(0,270px);gap:16px}
+@media (max-width:700px){.flow{grid-template-columns:1fr}}
+.tag.new{background:var(--tag-new);color:#fff}
+@media (max-width:900px){.row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<div class="wrap">
+  <header>
+    <h1>연결된 편지 · 헤더에 프로필</h1>
+    <ul>
+      <li><b>헤더:</b> 뒤로 ‹ 옆에 사진 32 + "하늘조각님과 나눈 편지"(16 SemiBold). 사진과 제목을 함께 누르면 프로필로 가요(터치 높이 44).</li>
+      <li><b>프로필에서 뒤로:</b> 다시 이 편지 화면으로 돌아와요.</li>
+      <li><b>바로 아래 서로의 ID:</b> 라벨 위 · ID 아래 두 줄, 오른쪽 복사 아이콘.</li>
+      <li><b>편지:</b> A 그대로 — 내 편지 연한 하늘 · 오른쪽, 상대 편지 흰색 · 왼쪽, Pretendard 15 / 28.</li>
+    </ul>
+  </header>
+  <div class="flow">
+    <figure><img src="img/H.jpg" alt="편지 화면"><figcaption><span class="tag new">새로</span>편지 화면</figcaption></figure>
+    <div class="arrow">사진 · 제목 누름 →<br><br>← 뒤로</div>
+    <figure><img src="img/H_profile.jpg" alt="하늘조각 프로필"><figcaption><span class="tag">그대로</span>하늘조각 프로필</figcaption></figure>
+  </div>
+</div>

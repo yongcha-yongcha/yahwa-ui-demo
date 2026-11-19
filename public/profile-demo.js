@@ -15,7 +15,7 @@ Object.entries(read()).forEach(([i,on])=>{i=+i;if(on)incomingInterestIds.add(i);
 
 const STATES=[['none','아무도 안 보냄'],['in','상대가 먼저 보냄'],['sent','내가 먼저 보냄'],['mutual','서로 호감']];
 const box=document.createElement('div');box.className='dock-story dock-interest';box.id='dock-interest';box.hidden=true;
-box.innerHTML=`<p class="dock-sub">이 사람과의 관심 상황</p><div class="dock-motion" role="group" aria-label="이 사람과의 관심 상황">${STATES.map(([k,l])=>`<button type="button" data-interest="${k}" aria-pressed="false">${l}</button>`).join('')}</div>
+box.innerHTML=`<p class="dock-sub">이 사람과의 호감 상황</p><div class="dock-motion" role="group" aria-label="이 사람과의 호감 상황">${STATES.map(([k,l])=>`<button type="button" data-interest="${k}" aria-pressed="false">${l}</button>`).join('')}</div>
 <div class="dock-motion"><button type="button" data-tips-reset>안내 툴팁 처음부터</button></div>
 <p class="dock-note dock-letter-why" id="dock-letter-why" role="status"></p>
 <p class="dock-note">지금 보고 있는 사람에게만 적용돼요. 서로 호감은 편지를 아직 주고받지 않았으면 편지 안내가 다시 떠요.</p>`;

@@ -1,0 +1,122 @@
+<meta charset="utf-8">
+<title>직업 먼저 보이기</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 설명 → 지금 + 세 안을 나란히(좁으면 세로) → 비교 메모 */
+:root{
+  --page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--panel:#FFFFFF;
+  --sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;--serif:'Gowun Batang','AppleMyungjo',serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1560px;margin:0 auto;display:grid;gap:22px}
+header h1{font:700 24px/1.35 var(--sans);margin:0 0 6px;letter-spacing:-.3px}
+header p{margin:0;color:var(--ink-2);max-width:80ch}
+.opts{display:flex;flex-wrap:wrap;gap:24px;justify-content:center}
+.opt{display:grid;gap:10px;width:360px;max-width:100%;align-content:start}
+.opt h2{margin:0;font:700 16px/1.4 var(--sans)}
+.opt p.d{margin:0;color:var(--ink-2);font-size:13px;min-height:84px}
+
+/* 앱 화면 (라이트 전용) */
+.phone{--ink:#1F2328;--sub:#505C65;--mute:#818C94;--line:#E3E7EA;--sky-50:#ECF5FC;--sky-100:#D6EAF8;--sky-600:#377398;--sky-700:#245D7E;
+  width:360px;max-width:100%;height:780px;border-radius:32px;overflow:hidden;position:relative;color:var(--ink);background:#F8F9F6;
+  box-shadow:0 18px 40px -18px rgba(20,40,60,.35);border:1px solid rgba(0,0,0,.06);padding:52px 20px 0}
+.photo{height:300px;border-radius:24px;overflow:hidden;position:relative}
+.photo img{width:100%;height:100%;object-fit:cover;object-position:50% 35%}
+.act{position:absolute;left:12px;bottom:12px;font:500 12px/18px var(--sans);background:rgba(240,251,245,.95);color:#1F6B4A;border-radius:12px;padding:3px 9px;display:flex;gap:5px;align-items:center}
+.act i{width:6px;height:6px;border-radius:50%;background:#3DBE8B}
+.nm{display:flex;align-items:center;gap:8px;margin-top:22px}
+.nm b{font:400 34px/1.2 var(--serif);letter-spacing:-.5px}
+.nm .age{font:500 18px/1 var(--sans);color:var(--sub)}
+.badge{width:22px;height:22px}
+.ic{width:16px;height:16px;flex:none;color:var(--mute)}
+.meta{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:15px;color:var(--sub)}
+.meta .dot{color:#B5BDC4}
+.tags{display:flex;gap:12px;margin-top:10px;font:500 14px var(--sans);color:var(--sky-600)}
+.job{display:flex;align-items:center;gap:8px;margin-top:10px;font:600 17px/1.4 var(--sans);color:var(--ink)}
+.job .ic{width:19px;height:19px;color:var(--sky-600)}
+.line2{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:15px;color:var(--sub)}
+/* 지금: 3칸 띠 + 빗금 타일 */
+.strip{margin-top:22px;background:#fff;border-radius:18px;display:grid;grid-template-columns:repeat(3,1fr);padding:16px 0}
+.strip div{display:grid;justify-items:center;gap:2px;border-left:1px solid var(--line)}
+.strip div:first-child{border-left:0}
+.strip b{font:700 15px/1.4 var(--sans)}
+.strip small{font-size:11px;color:var(--mute)}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.tile{border-radius:14px;padding:10px 12px;display:flex;gap:10px;align-items:center;
+  background:repeating-linear-gradient(-55deg,rgba(255,255,255,.0) 0 5px,rgba(255,255,255,.65) 5px 7px),var(--tc,#E9F1F8)}
+.tile small{display:block;font-size:11px;color:var(--mute)}
+.tile b{font:600 14px var(--sans)}
+.tiles.three{grid-template-columns:repeat(3,1fr)}
+/* 링크 결: 기본정보 아이콘 목록 */
+.sec-h{font:700 16px var(--sans);margin:24px 0 12px}
+.facts{display:grid;grid-template-columns:1fr 1fr;row-gap:14px;column-gap:12px}
+.facts span{display:flex;align-items:center;gap:8px;font-size:15px;color:var(--ink)}
+/* C: 한 줄 칩 */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px}
+.chips span{display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:10px;background:#fff;box-shadow:inset 0 0 0 1px var(--line);font-size:14px;color:var(--ink)}
+.chips span .ic{width:15px;height:15px}
+.chips + .tags{margin-top:14px}
+
+.mark{position:absolute;right:16px;top:16px;font:600 11px var(--sans);color:#fff;background:#273037;border-radius:8px;padding:3px 8px}
+.notes{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 20px;display:grid;gap:8px}
+.notes h2{font:700 16px var(--sans);margin:0}
+.notes ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:6px}
+.notes b{color:var(--ink)}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>F11 · 직업 먼저 보이기</h1>
+    <p>상대 프로필에서 사진 바로 아래 정보 순서를 바꾼 세 가지 안이에요. 지금은 직업이 아래 "하는 일" 칸 안에 있어서 스크롤해야 보여요. 세 안 모두 이름 바로 아래에서 직업이 먼저 보여요. 자기소개 색(F12)은 이번에 건드리지 않았어요.</p>
+  </header>
+  <section class="opts" id="opts"></section>
+  <section class="notes">
+    <h2>고를 때 볼 점</h2>
+    <ul>
+      <li><b>A</b>는 지금 화면을 가장 적게 바꿔요. 직업만 이름 아래로 올리고, 아래 칸에서는 "하는 일"을 빼서 겹치지 않게 했어요.</li>
+      <li><b>B</b>는 링크(팀 버전)의 순서를 그대로 따랐어요. 성별과 해시태그를 빼고, 정보는 아이콘 + 값만 두 줄로 보여요. 이름표("키", "성격")가 없어 가장 간결해요. 빗금 타일도 사라져서 F12(색 줄이기)와 방향이 같아요.</li>
+      <li><b>C</b>는 그 사이예요. 직업 · 사는 곳을 이름 아래 두 줄로 두고, 나머지 정보는 흰 칩 한 묶음으로. 해시태그는 남기고 성별은 뺐어요.</li>
+      <li>성별은 소개받는 상대가 이미 정해져 있어서 프로필에서 빼도 정보가 줄지 않아요. 해시태그는 야화다운 표현이라 남길지 고민이 필요해요.</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+const IC={
+ pin:'<svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 00-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg>',
+ bag:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3.5" y="7" width="17" height="12.5" rx="2.5"/><path d="M9 7V5.5A1.5 1.5 0 0110.5 4h3A1.5 1.5 0 0115 5.5V7M3.5 12.5h17"/></svg>',
+ home:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M3.5 10.5L12 3.5l8.5 7M6 9v11h12V9"/></svg>',
+ mbti:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg>',
+ ruler:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="7" y="3" width="10" height="18" rx="1.5"/><path d="M7 7h4M7 11h3M7 15h4"/></svg>',
+ cap:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M2.5 9.5L12 5l9.5 4.5L12 14z"/><path d="M6.5 11.5V16c1.5 1.6 3.4 2.4 5.5 2.4s4-.8 5.5-2.4v-4.5"/></svg>',
+ faith:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M12 3v18M7 8h10"/></svg>',
+ smoke:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3" y="13" width="14" height="4" rx="1"/><path d="M19.5 13v4M17 6c0 2 2 2 2 4"/></svg>',
+ glass:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M7 3.5h10l-1 7a4 4 0 01-8 0zM12 14.5V20M8.5 20.5h7"/></svg>'
+};
+const badge='<svg class="badge" viewBox="0 0 24 24"><path d="M12 2l2.4 1.8 3-.2.9 2.9 2.5 1.7-1 2.8 1 2.8-2.5 1.7-.9 2.9-3-.2L12 22l-2.4-1.8-3 .2-.9-2.9-2.5-1.7 1-2.8-1-2.8 2.5-1.7.9-2.9 3 .2z" fill="#4E8AB0"/><path d="M8 12.2l2.6 2.6L16.2 9" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const photo='<div class="photo"><img src="img/p.jpg" alt="봄빛 사진"><span class="act"><i></i>최근활동</span></div>';
+const tags='<div class="tags"><span>#산책메이트</span><span>#독서취향</span><span>#다정한사람</span></div>';
+const tile=(ic,k,v,c)=>`<div class="tile" style="--tc:${c}">${ic}<span><small>${k}</small><b>${v}</b></span></div>`;
+const OPTS=[
+ {k:'now',t:'지금',d:'직업은 아래 "하는 일" 칸 안에 있어요. 사진 아래 첫 줄은 나이 · 사는 곳 · 성별이에요.',h:
+  `${photo}<div class="nm"><b>봄빛</b>${badge}</div><div class="meta">${IC.pin}26세 <span class="dot">·</span> 서울 마포구 <span class="dot">·</span> 여성</div>${tags}
+  <div class="strip"><div>${IC.bag}<b>출판 편집자</b><small>하는 일</small></div><div>${IC.ruler}<b>163cm</b><small>키</small></div><div>${IC.mbti}<b>INFP</b><small>성격</small></div></div>
+  <div class="tiles">${tile(IC.smoke,'담배','비흡연','#E3EEF7')}${tile(IC.glass,'술','가끔','#F6E6E9')}${tile(IC.faith,'종교','무교','#F5EEDC')}${tile(IC.cap,'학력','대학교 졸업','#E6F0E4')}</div>`},
+ {k:'A',t:'A · 직업만 위로',d:'이름 아래 첫 줄이 직업이에요. 나이 · 사는 곳 · 성별, 해시태그는 그대로. 아래 칸은 하는 일 대신 학력이 들어가요.',h:
+  `${photo}<div class="nm"><b>봄빛</b>${badge}</div><div class="job">${IC.bag}출판 편집자</div><div class="meta">${IC.pin}26세 <span class="dot">·</span> 서울 마포구 <span class="dot">·</span> 여성</div>${tags}
+  <div class="strip"><div>${IC.ruler}<b>163cm</b><small>키</small></div><div>${IC.mbti}<b>INFP</b><small>성격</small></div><div>${IC.cap}<b>대학교 졸업</b><small>학력</small></div></div>
+  <div class="tiles three">${tile(IC.smoke,'담배','비흡연','#E3EEF7')}${tile(IC.glass,'술','가끔','#F6E6E9')}${tile(IC.faith,'종교','무교','#F5EEDC')}</div>`},
+ {k:'B',t:'B · 링크 결 그대로',d:'이름, 나이 + 인증 → 직업 → 사는 곳. 성별과 해시태그는 빼고, "기본정보" 아래 아이콘 + 값 두 줄 목록.',h:
+  `${photo}<div class="nm"><b>봄빛</b><span class="age">26세</span>${badge}</div><div class="job">${IC.bag}출판 편집자</div><div class="line2">${IC.home}서울 마포구</div>
+  <div class="sec-h">기본정보</div><div class="facts"><span>${IC.mbti}INFP</span><span>${IC.ruler}163cm</span><span>${IC.cap}대학교 졸업</span><span>${IC.faith}무교</span><span>${IC.smoke}비흡연</span><span>${IC.glass}가끔</span></div>`},
+ {k:'C',t:'C · 직업 · 사는 곳 두 줄 + 칩',d:'이름, 나이 + 인증 → 직업 → 사는 곳. 나머지 정보는 흰 칩 한 묶음, 해시태그는 그 아래에 남겨요. 성별만 빼요.',h:
+  `${photo}<div class="nm"><b>봄빛</b><span class="age">26세</span>${badge}</div><div class="job">${IC.bag}출판 편집자</div><div class="line2">${IC.home}서울 마포구</div>
+  <div class="chips"><span>${IC.mbti}INFP</span><span>${IC.ruler}163cm</span><span>${IC.cap}대학교 졸업</span><span>${IC.faith}무교</span><span>${IC.smoke}비흡연</span><span>${IC.glass}술 가끔</span></div>${tags}`}
+];
+document.getElementById('opts').innerHTML=OPTS.map(o=>`<div class="opt"><h2>${o.t}</h2><p class="d">${o.d}</p><div class="phone">${o.k==='now'?'<span class="mark">지금</span>':''}${o.h}</div></div>`).join('');
+</script>

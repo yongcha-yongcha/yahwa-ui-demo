@@ -1,0 +1,130 @@
+<meta charset="utf-8">
+<title>직업 먼저 보이기 · 원래 디자인</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 설명 + "바뀐 곳 표시" 켜기 → 원래 · 추천 · 대안 세 화면을 나란히 → 메모 */
+:root{
+  --page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--panel:#FFFFFF;--chip:#E9EDF1;--chip-on:#1F2328;--chip-on-ink:#FFFFFF;
+  --sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;--serif:'Gowun Batang','AppleMyungjo',serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--chip-on:#EEF1F4;--chip-on-ink:#14171A;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--chip-on:#EEF1F4;--chip-on-ink:#14171A;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:900px;margin:0 auto;display:grid;gap:20px}
+header h1{font:700 24px/1.35 var(--sans);margin:0 0 6px;letter-spacing:-.3px}
+header p{margin:0;color:var(--ink-2);max-width:80ch}
+.toggle{display:flex;align-items:center;gap:8px}
+.toggle button{font:500 13px/1 var(--sans);border:0;border-radius:999px;padding:10px 14px;min-height:38px;background:var(--chip);color:var(--ink);cursor:pointer}
+.toggle button[aria-pressed="true"]{background:var(--chip-on);color:var(--chip-on-ink)}
+.toggle button:focus-visible{outline:2px solid #377398;outline-offset:2px}
+.opts{display:flex;flex-wrap:wrap;gap:24px;justify-content:center}
+.opt{display:grid;gap:10px;width:360px;max-width:100%;align-content:start}
+.opt h2{margin:0;font:700 16px/1.4 var(--sans)}
+.opt p.d{margin:0;color:var(--ink-2);font-size:13px;min-height:64px}
+
+/* 앱 화면 (라이트 전용) · 원래 소개 본문 값: 이름 고운바탕 30, 세 칸 상자 흰 바탕 모서리 20, 아이콘 하늘색, 타일 높이 56 · 모서리 16 · 색연필 빗금 */
+.phone{--ink:#273037;--sub:#505C65;--mute:#98A2AA;--line:#E3E7EA;--accent:#4E8AB0;--tag:#377398;
+  width:360px;max-width:100%;height:760px;border-radius:32px;overflow:hidden;position:relative;color:var(--ink);background:#FFFFFF;
+  box-shadow:0 18px 40px -18px rgba(20,40,60,.35);border:1px solid rgba(0,0,0,.06);padding:52px 20px 0}
+.photo{height:250px;border-radius:90px 90px 24px 24px;overflow:hidden;position:relative}
+.photo img{width:100%;height:100%;object-fit:cover;object-position:50% 30%}
+.act{position:absolute;left:12px;bottom:12px;font:500 12px/18px var(--sans);background:rgba(240,251,245,.95);color:#1F6B4A;border-radius:12px;padding:3px 9px;display:flex;gap:5px;align-items:center}
+.act i{width:6px;height:6px;border-radius:50%;background:#3DBE8B}
+.nm{display:flex;align-items:center;gap:8px;margin-top:24px}
+.nm b{font:400 30px/1.3 var(--serif);letter-spacing:-.5px}
+.cert{width:22px;height:22px}
+.bag-badge{width:20px;height:20px;border-radius:5px;background:#4F7E62;display:grid;place-items:center}
+.bag-badge::after{content:"";width:10px;height:7px;border:2px solid #fff;border-radius:2px}
+.meta{display:flex;align-items:center;gap:4px;margin-top:8px;font-size:14px;line-height:20px;color:var(--sub)}
+.meta .pin{width:16px;height:16px;color:#818C94}
+.meta i{width:2px;height:2px;border-radius:50%;background:#B5BDC4;margin:0 4px}
+.job{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:14px;line-height:20px;color:var(--sub)}
+.job svg{width:16px;height:16px;flex:none;fill:none;stroke:#818C94;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.nm+.job{margin-top:8px}
+.tags{display:flex;gap:12px;margin-top:12px;font:500 14px/22px var(--sans);color:var(--tag)}
+.key{display:flex;margin-top:28px;padding:18px 0;border-radius:20px;background:#fff}
+.key>div{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;border-left:1px solid var(--line)}
+.key>div:first-child{border-left:0}
+.key svg{width:18px;height:18px;fill:none;stroke:var(--accent);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin-bottom:3px}
+.key b{font:600 15px/1.4 var(--sans)}
+.key small{font-size:11px;line-height:16px;color:#B5BDC4}
+.life{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.life.odd>div:last-child{grid-column:1/-1}
+.life>div{height:56px;border-radius:16px;padding:8px 16px;display:flex;align-items:center;gap:12px;
+  background:repeating-linear-gradient(-58deg,transparent 0 3px,var(--h) 3px 4.6px),#FBFBF9;color:var(--fg)}
+.life svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.life span{display:flex;flex-direction:column;line-height:1.35}
+.life small{font-size:11px;opacity:.75}
+.life b{font:500 14px var(--sans)}
+.c1{--h:rgba(146,192,223,.45);--fg:#245D7E}.c2{--h:rgba(221,175,183,.45);--fg:#7D3749}.c3{--h:rgba(222,196,130,.45);--fg:#7A5B1E}.c4{--h:rgba(166,196,160,.45);--fg:#3F6046}
+/* 새 안: 이름 ・나이, 직업 · 사는 곳 두 줄, 정보는 아이콘 + 글자 2열 */
+.nm .age{font:500 18px/1.3 var(--sans);color:var(--sub);margin-left:-2px}
+.place{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:14px;line-height:20px;color:var(--sub)}
+.place .pin{width:16px;height:16px;color:#818C94;flex:none}
+.mini{display:grid;grid-template-columns:1fr 1fr;gap:14px 12px;margin-top:28px}
+.mini span{display:flex;align-items:center;gap:8px;font-size:15px;line-height:22px;color:var(--ink)}
+.mini svg{width:18px;height:18px;flex:none;fill:none;stroke:var(--mini-ic,#818C94);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.opts[data-ic="n400"] .mini{--mini-ic:#98A2AA}
+.opts[data-ic="n600"] .mini{--mini-ic:#69757E}
+.place .pin,.meta .pin{color:var(--mini-ic,#818C94)}
+.job svg{stroke:var(--mini-ic,#818C94)}
+.opts[data-ic="n400"]{--mini-ic:#98A2AA}.opts[data-ic="n600"]{--mini-ic:#69757E}
+/* 바뀐 곳 표시 */
+.show-diff .chg{outline:2px dashed #E0732C;outline-offset:3px;border-radius:8px;position:relative}
+.show-diff .chg::before{content:"바뀐 곳";position:absolute;right:-2px;top:-22px;font:600 10px/1 var(--sans);color:#fff;background:#E0732C;border-radius:6px;padding:4px 6px;z-index:2}
+.badge-now{position:absolute;right:16px;top:16px;font:600 11px var(--sans);color:#fff;background:#273037;border-radius:8px;padding:3px 8px}
+
+.notes{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 20px;display:grid;gap:8px}
+.notes h2{font:700 16px var(--sans);margin:0}
+.notes ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:6px}
+.notes b{color:var(--ink)}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>F11 · 직업 먼저 보이기 · 새 안</h1>
+    <p>말씀하신 대로 바꿨어요. 이름 옆에 ・나이, 그 아래 직업, 그 아래 사는 곳. 키 · MBTI · 담배 · 술 · 종교 · 학력은 상자와 빗금 타일 없이 아이콘 + 글자로 두 줄 정렬했어요. 사진 · 이름 글꼴 · 인증 배지 · 해시태그는 그대로예요. 두 화면 모두 흰 바탕, 쿨 뉴트럴 글자 · 아이콘 기준이에요. 바뀐 곳은 주황 점선이에요.</p>
+  </header>
+  <div class="toggle"><button id="diff-toggle" aria-pressed="true">바뀐 곳 표시</button><button id="ic-400" data-ic="n400" aria-pressed="false">아이콘 cool-neutral 400</button><button id="ic-500" data-ic="n500" aria-pressed="true">500</button><button id="ic-600" data-ic="n600" aria-pressed="false">600</button></div>
+  <section class="opts show-diff" id="opts" data-ic="n500"></section>
+  <section class="notes">
+    <h2>정해 주실 것</h2>
+    <ul>
+      <li><b>성별</b>: 뺐어요. 소개받는 상대의 성별은 이미 정해져 있어서(남성이면 여성만, 여성이면 남성만) 프로필에 없어도 돼요.</li>
+      <li><b>술</b>: 값이 "가끔"뿐이라 아이콘만으로는 뜻이 약해서 "술 가끔"으로 적었어요. 다른 값은 글자만으로 뜻이 보여요.</li>
+      <li><b>색</b>: 화면 바탕은 흰색(#FFFFFF), 글자는 cool-neutral 900(값) · 700(직업 · 사는 곳), 아이콘은 cool-neutral 500(#818C94)이 기본이에요. 위 버튼으로 아이콘을 400(#98A2AA, 더 옅게) · 600(#69757E, 더 진하게)으로 바꿔 볼 수 있어요.</li>
+      <li>해시태그는 말씀이 없어서 원래 자리(사는 곳 아래)에 그대로 뒀어요.</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+const ART={job:'M4 8h16v11H4ZM9 8V5h6v3M4 13h16',height:'M7 3h10v18H7ZM7 7h4M7 11h6M7 15h4',mbti:'M4 5h16v12H9l-5 4ZM8 9h8M8 13h5',education:'m2 8 10-5 10 5-10 5ZM6 11v6q6 5 12 0v-6',religion:'M12 3v18M6 9h12',smoking:'M3 13h18v5H3ZM16 13v5M7 3q-3 3 0 5M12 3q-3 3 0 5',drinking:'M7 3h10v5a5 5 0 0 1-10 0ZM12 13v8M8 21h8'};
+const ic=k=>`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${ART[k]}"/></svg>`;
+const cert='<svg class="cert" viewBox="0 0 24 24"><path d="M12 2l2.4 1.8 3-.2.9 2.9 2.5 1.7-1 2.8 1 2.8-2.5 1.7-.9 2.9-3-.2L12 22l-2.4-1.8-3 .2-.9-2.9-2.5-1.7 1-2.8-1-2.8 2.5-1.7.9-2.9 3 .2z" fill="#4E8AB0"/><path d="M8 12.2l2.6 2.6L16.2 9" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const pin='<svg class="pin" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 00-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg>';
+const head=(job)=>`<div class="photo"><img src="img/p.jpg" alt="봄빛 사진"><span class="act"><i></i>최근활동</span></div>
+<div class="nm"><b>봄빛</b>${cert}<span class="bag-badge" aria-hidden="true"></span></div>${job?`<div class="job chg">${ic('job')}출판 편집자</div>`:''}
+<div class="meta">${pin}26세<i></i>서울 마포구<i></i>여성</div><div class="tags"><span>#산책메이트</span><span>#독서취향</span><span>#다정한사람</span></div>`;
+const key=(items,chg)=>`<div class="key${chg?' chg':''}">${items.map(([k,v,l])=>`<div>${ic(k)}<b>${v}</b><small>${l}</small></div>`).join('')}</div>`;
+const life=(items,chg)=>`<div class="life${items.length%2?' odd':''}${chg?' chg':''}">${items.map(([k,l,v,c])=>`<div class="${c}">${ic(k)}<span><small>${l}</small><b>${v}</b></span></div>`).join('')}</div>`;
+const T={smoke:['smoking','담배','비흡연','c1'],drink:['drinking','술','가끔','c2'],rel:['religion','종교','무교','c3'],edu:['education','학력','대학교 졸업','c4']};
+const NEW=`<div class="photo"><img src="img/p.jpg" alt="봄빛 사진"><span class="act"><i></i>최근활동</span></div>
+<div class="nm"><b>봄빛</b><span class="age chg">・26세</span>${cert}<span class="bag-badge" aria-hidden="true"></span></div>
+<div class="job chg">${ic('job')}출판 편집자</div>
+<div class="place chg">${pin}서울 마포구</div>
+<div class="tags"><span>#산책메이트</span><span>#독서취향</span><span>#다정한사람</span></div>
+<div class="mini chg"><span>${ic('height')}163cm</span><span>${ic('mbti')}INFP</span><span>${ic('smoking')}비흡연</span><span>${ic('drinking')}술 가끔</span><span>${ic('religion')}무교</span><span>${ic('education')}대학교 졸업</span></div>`;
+const OPTS=[
+ {t:'원래 (B 적용 전)',d:'이름 아래 한 줄에 나이 · 사는 곳 · 성별, 직업은 아래 세 칸 상자 안. 정보는 흰 상자 + 색연필 빗금 타일.',now:true,
+  h:head(false)+key([['job','출판 편집자','하는 일'],['height','163cm','키'],['mbti','INFP','성격']])+life([T.smoke,T.drink,T.rel,T.edu])},
+ {t:'새 안',d:'이름 옆 ・26세 → 직업 → 사는 곳. 키 · MBTI · 담배 · 술 · 종교 · 학력은 상자와 타일 없이 아이콘 + 글자 두 줄로.',h:NEW}
+];
+document.getElementById('opts').innerHTML=OPTS.map(o=>`<div class="opt"><h2>${o.t}</h2><p class="d">${o.d}</p><div class="phone">${o.now?'<span class="badge-now">원래</span>':''}${o.h}</div></div>`).join('');
+document.querySelectorAll('[data-ic]').forEach(b=>b.addEventListener('click',()=>{document.getElementById('opts').dataset.ic=b.dataset.ic;document.querySelectorAll('[data-ic]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));}));
+const tg=document.getElementById('diff-toggle');
+tg.addEventListener('click',()=>{const on=tg.getAttribute('aria-pressed')!=='true';tg.setAttribute('aria-pressed',String(on));document.getElementById('opts').classList.toggle('show-diff',on);});
+</script>

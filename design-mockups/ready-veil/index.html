@@ -1,0 +1,100 @@
+<meta charset="utf-8">
+<title>열기 전 카드 덮개 농도</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 설명 + 사진 고르기 → 농도 안 다섯 개를 카드로 나란히 → 직접 조절 카드 → 메모 */
+:root{
+  --page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--panel:#FFFFFF;--chip:#E9EDF1;--chip-on:#1F2328;--chip-on-ink:#FFFFFF;
+  --sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--chip-on:#EEF1F4;--chip-on-ink:#14171A;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--chip-on:#EEF1F4;--chip-on-ink:#14171A;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1320px;margin:0 auto;display:grid;gap:20px}
+header h1{font:700 24px/1.35 var(--sans);margin:0 0 6px;letter-spacing:-.3px}
+header p{margin:0;color:var(--ink-2);max-width:82ch}
+.pick{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pick b{font-weight:600;margin-right:4px}
+.pick button{font:500 13px/1.2 var(--sans);border:0;border-radius:999px;padding:9px 14px;min-height:38px;background:var(--chip);color:var(--ink);cursor:pointer}
+.pick button[aria-pressed="true"]{background:var(--chip-on);color:var(--chip-on-ink)}
+.pick button:focus-visible{outline:2px solid #377398;outline-offset:2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(236px,1fr));gap:18px}
+.opt{display:grid;gap:8px;align-content:start}
+.opt h2{margin:0;font:700 15px/1.4 var(--sans)}
+.opt>p{margin:0;color:var(--ink-2);font-size:12.5px;min-height:38px}
+.opt code{font:11.5px ui-monospace,Menlo,monospace;color:var(--ink-2)}
+
+/* 카드 (앱 값: 모서리 22, 흐림 12, 흰 글씨) */
+.card{position:relative;aspect-ratio:320/464;border-radius:22px;overflow:hidden;color:#fff;background:#cfd8df;max-width:100%}
+.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%;filter:blur(12px);transform:scale(1.1)}
+.card .veil{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(26,33,38,var(--t)) 0%,rgba(26,33,38,var(--m)) 45%,rgba(26,33,38,var(--b)) 100%)}
+.arrive{position:absolute;top:18px;left:0;right:0;text-align:center;font:600 12px var(--sans);text-shadow:0 1px 6px rgba(0,0,0,.25)}
+.scene{position:absolute;left:16px;right:16px;bottom:76px}
+.scene small{display:block;font-size:11px;opacity:.9;margin-bottom:4px}
+.scene p{margin:0;font:500 13px/21px var(--sans)}
+.open{position:absolute;left:16px;right:16px;bottom:16px;height:44px;border-radius:12px;background:rgba(255,255,255,.94);color:#245D7E;display:grid;place-items:center;font:600 14px var(--sans)}
+.custom{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;display:grid;grid-template-columns:240px 1fr;gap:20px;align-items:start}
+.sliders{display:grid;gap:14px}
+.sliders label{display:grid;grid-template-columns:110px 1fr 44px;gap:10px;align-items:center;font-size:13px}
+.sliders output{font:600 13px ui-monospace,Menlo,monospace;text-align:right}
+.sliders input{width:100%}
+.out{font:12.5px ui-monospace,Menlo,monospace;background:var(--chip);border-radius:10px;padding:10px 12px;word-break:break-all}
+@media (max-width:640px){.custom{grid-template-columns:1fr}}
+.notes{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 20px;display:grid;gap:8px}
+.notes h2{font:700 16px var(--sans);margin:0}
+.notes ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:6px}
+.notes b{color:var(--ink)}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>열기 전 카드 덮개 · 얼마나 어둡게</h1>
+    <p>흐린 사진 위에 까는 어두운 덮개의 농도를 다섯 가지로 비교해요. 값은 위 · 가운데 · 아래 세 곳의 어둡기(%)예요. 지금 로컬에 들어간 건 E(14 · 18 · 52)라 너무 어두웠어요. 사진을 바꿔 밝은 사진과 보통 사진에서 같이 보세요.</p>
+  </header>
+  <div class="pick" id="pick-photo" role="group" aria-label="사진"><b>사진</b>
+    <button id="ph-beach" data-v="beach" aria-pressed="true">밝은 사진 (바다)</button>
+    <button id="ph-bom" data-v="bom" aria-pressed="false">보통 사진 (봄빛)</button>
+  </div>
+  <section class="grid" id="grid"></section>
+  <section class="custom" aria-label="직접 조절">
+    <div class="card" id="custom-card"></div>
+    <div class="sliders">
+      <h2 style="margin:0;font:700 15px var(--sans)">직접 조절해 보기</h2>
+      <label for="s-t">위 (도착 시간)<input id="s-t" type="range" min="0" max="40" value="6"><output id="o-t">6</output></label>
+      <label for="s-m">가운데<input id="s-m" type="range" min="0" max="40" value="8"><output id="o-m">8</output></label>
+      <label for="s-b">아래 (한 장면 글)<input id="s-b" type="range" min="0" max="70" value="34"><output id="o-b">34</output></label>
+      <div class="out" id="out"></div>
+    </div>
+  </section>
+  <section class="notes">
+    <h2>고를 때 볼 점</h2>
+    <ul>
+      <li>글씨가 놓이는 곳은 <b>위(도착 시간)</b>와 <b>아래(한 장면 글)</b>뿐이라, 가운데는 거의 안 어둡게 해도 돼요. 그래야 사진 느낌이 덜 죽어요.</li>
+      <li><b>B</b>와 <b>C</b>가 링크의 "살짝 어두운 흐림"에 가까워요. B는 전체가 고르게 한 톤 내려가고, C는 위아래만 어두워서 가운데 사진이 더 밝게 남아요.</li>
+      <li>마음에 드는 값이 있으면 아래 "직접 조절"에서 맞춘 뒤 숫자를 알려 주세요. 그 값으로 로컬에 넣을게요.</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+const OPTS=[
+ {k:'0',t:'없음 (덮개 전)',d:'덮개 없이 흐린 사진만. 밝은 사진이면 흰 글씨가 묻혀요.',v:[0,0,0]},
+ {k:'A',t:'A · 아주 옅게',d:'거의 티 나지 않게. 아래 한 장면 글만 살짝 받쳐 줘요.',v:[4,4,26]},
+ {k:'B',t:'B · 고르게 한 톤',d:'전체가 살짝 내려가고 아래가 조금 더. 링크와 비슷한 느낌.',v:[8,10,34]},
+ {k:'C',t:'C · 위아래만',d:'가운데는 그대로 밝고, 도착 시간 · 한 장면 글 자리만 어둡게.',v:[10,0,38]},
+ {k:'E',t:'E · 지금 로컬 값',d:'너무 어둡다고 하신 지금 값이에요.',v:[14,18,52]}
+];
+let PH='beach';
+const card=(v,id)=>`<div class="card"${id?` id="${id}"`:''} style="--t:${v[0]/100};--m:${v[1]/100};--b:${v[2]/100}"><img src="img/${PH}.jpg" alt=""><div class="veil"></div><div class="arrive">15:00에 도착한 인연</div><div class="scene"><small>☼ 이 사람의 한 장면</small><p>퇴근 후 바다를 걷고 주말에는 도자기 공방에서 서툰 그릇을 만들어요.</p></div><div class="open">인연 열어보기</div></div>`;
+function render(){
+ document.getElementById('grid').innerHTML=OPTS.map(o=>`<div class="opt"><h2>${o.t}</h2><p>${o.d}</p>${card(o.v)}<code>위 ${o.v[0]} · 가운데 ${o.v[1]} · 아래 ${o.v[2]}</code></div>`).join('');
+ const c=document.getElementById('custom-card');c.outerHTML=card(vals(),'custom-card');sync();
+ document.querySelectorAll('#pick-photo button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===PH)));}
+const vals=()=>['t','m','b'].map(k=>+document.getElementById('s-'+k).value);
+function sync(){const v=vals();['t','m','b'].forEach((k,i)=>document.getElementById('o-'+k).textContent=v[i]);const c=document.getElementById('custom-card');c.style.setProperty('--t',v[0]/100);c.style.setProperty('--m',v[1]/100);c.style.setProperty('--b',v[2]/100);document.getElementById('out').textContent=`위 ${v[0]} · 가운데 ${v[1]} · 아래 ${v[2]}`;}
+['t','m','b'].forEach(k=>document.getElementById('s-'+k).addEventListener('input',sync));
+document.getElementById('pick-photo').addEventListener('click',e=>{const b=e.target.closest('button');if(b){PH=b.dataset.v;render();}});
+render();
+</script>

@@ -1,0 +1,127 @@
+<meta charset="utf-8">
+<title>인연 넘김 표시</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 설명 → 지금 + 다섯 안 휴대폰을 나란히(좁으면 세로) → 메모. 각 휴대폰 아래 ‹ › 로 넘겨 볼 수 있어요 */
+:root{
+  --page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--panel:#FFFFFF;--chip:#E9EDF1;--chip-on:#1F2328;--chip-on-ink:#FFFFFF;
+  --sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;--serif:'Gowun Batang','AppleMyungjo',serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--chip-on:#EEF1F4;--chip-on-ink:#14171A;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--chip-on:#EEF1F4;--chip-on-ink:#14171A;color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1200px;margin:0 auto;display:grid;gap:22px}
+header h1{font:700 24px/1.35 var(--sans);margin:0 0 6px;letter-spacing:-.3px}
+header p{margin:0;color:var(--ink-2);max-width:82ch}
+.opts{display:flex;flex-wrap:wrap;gap:26px;justify-content:center}
+.opt{display:grid;gap:10px;width:340px;max-width:100%;align-content:start}
+.opt h2{margin:0;font:700 16px/1.4 var(--sans)}
+.opt>p{margin:0;color:var(--ink-2);font-size:13px;min-height:62px}
+.flip{display:flex;gap:8px;justify-content:center}
+.flip button{font:600 13px var(--sans);border:0;border-radius:999px;min-width:44px;min-height:38px;padding:0 14px;background:var(--chip);color:var(--ink);cursor:pointer}
+.flip button:focus-visible{outline:2px solid #377398;outline-offset:2px}
+
+/* 앱 화면 340 × 740 (라이트 전용, 시연본 "카드 아래" 배치 기준) */
+.phone{--sky-100:#D6EAF8;--sky-600:#377398;--sky-700:#245D7E;--n-200:#CFD5DA;--n-400:#98A2AA;--n-700:#505C65;--n-900:#273037;
+  width:340px;max-width:100%;height:740px;border-radius:32px;overflow:hidden;position:relative;color:var(--n-900);
+  background:linear-gradient(180deg,#ECF5FC 0px,#F8F9F6 105px);box-shadow:0 18px 40px -18px rgba(20,40,60,.35);border:1px solid rgba(0,0,0,.06)}
+.top{position:absolute;left:18px;right:18px;top:42px}
+.ttl{font:400 27px/1.25 var(--serif);letter-spacing:-.5px;margin:0}
+.sub{font-size:12px;color:#6B727A;margin:5px 0 0;display:flex;justify-content:space-between;align-items:center}
+.tools{position:absolute;right:0;top:4px;display:flex;gap:14px;align-items:center;font:600 14px var(--sans)}
+.tools svg{width:20px;height:20px}
+.track{position:absolute;left:18px;right:18px;top:var(--card-top,112px);height:var(--card-h,440px);display:flex;gap:var(--gap,40px);transition:transform 380ms cubic-bezier(0.23,1,0.32,1)}
+.track .c{flex:0 0 100%;height:100%;border-radius:22px;overflow:hidden;position:relative;color:#fff}
+/* 1 · 옆 카드: 지금 카드는 가운데, 양옆으로 이전 · 다음 카드가 같은 폭(20)만큼 보여요. 카드 280 = 340 - 양옆 30, 그중 간격 10 · 보이는 폭 20 */
+.peek .track{left:30px;right:auto;width:280px;--gap:10px}
+.peek .row{left:30px;right:30px}
+.peek .track .c{flex:0 0 100%}
+.c img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 28%;filter:blur(12px);transform:scale(1.1)}
+.c .veil{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(26,33,38,.02),transparent 45%,rgba(26,33,38,.48))}
+.c .arrive{position:absolute;top:18px;left:0;right:0;text-align:center;font:600 12px var(--sans);text-shadow:0 1px 6px rgba(0,0,0,.25)}
+.c .scene{position:absolute;left:18px;right:18px;bottom:18px}
+.c .scene small{display:block;font-size:11px;opacity:.9;margin-bottom:4px}
+.c .scene p{margin:0;font:500 13px/21px var(--sans)}
+.c .chip{position:absolute;top:14px;right:14px;font:600 11px/1 var(--sans);background:rgba(26,33,38,.42);color:#fff;border-radius:10px;padding:5px 8px;font-variant-numeric:tabular-nums}
+.row{position:absolute;left:18px;right:18px;top:var(--row-top,564px);height:50px}
+.open{height:50px;border-radius:12px;display:grid;place-items:center;font:600 15px var(--sans);background:#fff;color:var(--sky-700);box-shadow:inset 0 0 0 1px var(--n-200)}
+.pager{position:absolute;left:0;right:0;top:626px;display:flex;justify-content:center;gap:30px;align-items:center;font:600 15px var(--sans);color:var(--n-400)}
+.pager b{color:var(--n-900)}
+.nav{position:absolute;left:14px;right:14px;bottom:14px;height:60px;border-radius:24px;background:rgba(255,255,255,.94);box-shadow:0 6px 20px -8px rgba(20,40,60,.25);display:flex;justify-content:space-around;align-items:center}
+.nav i{width:54px;height:44px;border-radius:16px;display:grid;place-items:center;color:#273037}
+.nav i.on{background:#E3EFF7;color:#245D7E}
+.nav svg{width:22px;height:22px}
+.nav img{width:28px;height:28px;border-radius:50%;object-fit:cover}
+/* 위쪽 표시들 */
+.ind{position:absolute;left:18px;right:18px;top:110px;height:20px;display:flex;align-items:center}
+.ind.count{justify-content:space-between;font-size:12px;color:var(--n-700)}
+.ind.count b{font-weight:600;color:var(--n-900);font-variant-numeric:tabular-nums}
+.ind.bars{gap:4px}
+.ind.bars i{flex:1;height:3px;border-radius:2px;background:var(--n-200);transition:background-color 200ms}
+.ind.bars i.on{background:var(--n-900)}
+.ind.bars i.done{background:var(--n-400)}
+.ind.dots{justify-content:center;gap:6px;font-size:0;line-height:0}
+.ind.dots .dot{width:6px;height:6px;border-radius:3px;background:var(--n-200);transition:width 240ms cubic-bezier(0.23,1,0.32,1),background-color 200ms}
+.ind.dots .dot.on{width:18px;background:var(--n-900)}
+.sub .num{font-size:12px;color:var(--n-700);font-variant-numeric:tabular-nums}
+.sub .num b{color:var(--n-900);font-weight:600}
+
+.notes{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 20px;display:grid;gap:8px}
+.notes h2{font:700 16px var(--sans);margin:0}
+.notes ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:6px}
+.notes b{color:var(--ink)}
+@media (prefers-reduced-motion:reduce){.track{transition:none}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>인연 넘김 표시 · 아래 ‹ 1 / 8 › 대신</h1>
+    <p>카드 아래 ‹ 1 / 8 ›를 없애고 다른 방법으로 "몇 번째 인연인지"를 보여 주는 안이에요. 1번은 숫자 없이 옆 카드가 살짝 보여서 넘길 수 있다는 걸 알려 주고, 2~5번은 숫자나 표시를 위쪽에 둬요. 각 휴대폰 아래 ‹ › 로 넘겨 보세요. 아래 버튼은 지금 시연본 "카드 아래" 배치예요.</p>
+  </header>
+  <section class="opts" id="opts"></section>
+  <section class="notes">
+    <h2>고를 때 볼 점</h2>
+    <ul>
+      <li><b>1 · 옆 카드 살짝</b>는 숫자가 없어서 가장 간결해요. 다음 카드가 보이니 "옆으로 넘긴다"는 게 바로 읽혀요. 대신 몇 명 남았는지는 알 수 없어요.</li>
+      <li><b>2 · 부제목 줄 숫자</b>는 지금 화면에서 숫자 자리만 위로 옮긴 거예요. 화면 구성이 가장 적게 바뀌어요.</li>
+      <li><b>3 · 진행 막대</b>는 8칸 중 지나온 칸이 채워져서 "오늘 어디까지 봤는지"가 한눈에 보여요. 인스타 스토리처럼 익숙해요.</li>
+      <li><b>4 · 점</b>은 가장 조용해요. 지금 카드 점만 길어져요.</li>
+      <li><b>5 · 사진 위 숫자</b>는 사진 오른쪽 위에 작게. 위쪽 공간을 따로 쓰지 않아요.</li>
+      <li>아래 숫자가 빠진 자리만큼 카드가 커지거나(1 · 5) 위쪽 표시 자리가 생겨요(2 · 3 · 4). 1번은 다른 안과 같이 쓸 수도 있어요(예: 1 + 4).</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+const N=8,PH=['c1','c2','c3','c4'],TIMES=['12:00','12:00','15:00','15:00','18:00','18:00','21:00','21:00'];
+const SC=['주말 아침에는 커피 한 잔을 들고 동네를 걷거나 작은 서점에 들러요.','퇴근 후 바다를 걷고 주말에는 도자기 공방에서 서툰 그릇을 만들어요.','새로운 전시를 보고 마음에 드는 공간을 사진으로 남겨요.','달리기를 하고 나서 동네 빵집에 들르는 게 작은 행복이에요.'];
+const IC={heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg>',letter:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M4 7l8 6 8-6"/></svg>'};
+const NAV=`<nav class="nav"><i class="on"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg></i><i>${IC.heart}</i><i>${IC.letter}</i><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 5h14v10H10l-5 4z"/><path d="M9 9h6M9 12h4"/></svg></i><i><img src="img/me.jpg" alt=""></i></nav>`;
+const OPTS=[
+ {k:'now',t:'지금',d:'카드 아래 ‹ 1 / 8 ›. 버튼 줄과 하단 메뉴 사이에 하나가 더 끼어 있어요.',top:112,h:440,row:564},
+ {k:'peek',t:'1 · 옆 카드 살짝',d:'숫자 없이 지금 카드는 가운데, 이전 · 다음 카드 끝이 양옆에 같은 폭으로 보여요. 버튼도 카드 폭에 맞춰요.',top:112,h:468,row:592},
+ {k:'sub',t:'2 · 부제목 줄 숫자',d:'"매일 12시 · …" 줄 오른쪽 끝에 1 / 8. 숫자 자리만 위로 옮긴 안.',top:112,h:468,row:592},
+ {k:'bars',t:'3 · 진행 막대',d:'카드 위에 8칸 막대. 지나온 칸은 회색, 지금 칸은 진하게.',top:136,h:444,row:592},
+ {k:'dots',t:'4 · 점',d:'카드 위 가운데 점 8개, 지금 카드 점만 길어져요. 숫자 없이 가장 조용해요.',top:136,h:444,row:592},
+ {k:'chip',t:'5 · 사진 위 숫자',d:'사진 오른쪽 위에 작은 1 / 8. 위쪽 공간을 따로 쓰지 않아요.',top:112,h:468,row:592}
+];
+function cards(o){return Array.from({length:N},(_,i)=>`<div class="c"><img src="img/${PH[i%4]}.jpg" alt=""><div class="veil"></div><div class="arrive">${TIMES[i]}에 도착한 인연</div>${o.k==='chip'?`<span class="chip">${i+1} / ${N}</span>`:''}<div class="scene"><small>☼ 이 사람의 한 장면</small><p>${SC[i%4]}</p></div></div>`).join('');}
+function ind(o){if(o.k==='bars')return `<div class="ind bars">${'<i></i>'.repeat(N)}</div>`;if(o.k==='dots')return `<div class="ind dots">${'<span class="dot"></span>'.repeat(N)}</div>`;return '';}
+document.getElementById('opts').innerHTML=OPTS.map(o=>`<div class="opt"><h2>${o.t}</h2><p>${o.d}</p>
+<div class="phone ${o.k==='peek'?'peek':''}" data-k="${o.k}" data-i="0" style="--card-top:${o.top}px;--card-h:${o.h}px;--row-top:${o.row}px">
+<div class="top"><h3 class="ttl">오늘의 인연</h3><p class="sub"><span>매일 12시 · 15시 · 18시 · 21시, 두 명씩</span>${o.k==='sub'?'<span class="num"><b>1</b> / 8</span>':''}</p>
+<div class="tools"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14"/><path d="M5 19l8-8"/></svg>100<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h5m4 0h7M4 17h9m4 0h3M11 4v6M15 14v6"/></svg></div></div>
+${ind(o)}<div class="track">${cards(o)}</div>
+<div class="row"><div class="open">인연 열어보기</div></div>
+${o.k==='now'?'<div class="pager"><span>‹</span><span><b>1</b> / 8</span><span>›</span></div>':''}${NAV}</div>
+<div class="flip"><button data-d="-1" aria-label="이전 인연">‹</button><button data-d="1" aria-label="다음 인연">›</button></div></div>`).join('');
+function sync(ph){const i=+ph.dataset.i,k=ph.dataset.k,tr=ph.querySelector('.track'),w=tr.querySelector('.c').offsetWidth+parseFloat(getComputedStyle(tr).columnGap||40);tr.style.transform=`translateX(${-i*w}px)`;
+ ph.querySelectorAll('.ind.bars i').forEach((b,j)=>{b.classList.toggle('on',j===i);b.classList.toggle('done',j<i);});
+ ph.querySelectorAll('.ind.dots .dot').forEach((b,j)=>b.classList.toggle('on',j===i));
+ const num=ph.querySelector('.sub .num b');if(num)num.textContent=i+1;const pg=ph.querySelector('.pager b');if(pg)pg.textContent=i+1;}
+document.querySelectorAll('.opt').forEach(op=>{const ph=op.querySelector('.phone');sync(ph);op.querySelector('.flip').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;ph.dataset.i=Math.max(0,Math.min(N-1,+ph.dataset.i+ +b.dataset.d));sync(ph);});});
+</script>

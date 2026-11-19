@@ -1,0 +1,137 @@
+<meta charset="utf-8">
+<title>홈 상태 포인트 색</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 설명 → 상태 고르기 → 세 안(휴대폰 + 다섯 상태 한눈에)을 나란히 → 메모 */
+:root{
+  --page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--panel:#FFFFFF;--chip:#E9EDF1;--chip-on:#1F2328;--chip-on-ink:#FFFFFF;
+  --sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;--serif:'Gowun Batang','AppleMyungjo',serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--chip-on:#EEF1F4;--chip-on-ink:#14171A;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--chip-on:#EEF1F4;--chip-on-ink:#14171A;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:22px}
+header h1{font:700 24px/1.35 var(--sans);margin:0 0 6px;letter-spacing:-.3px}
+header p{margin:0;color:var(--ink-2);max-width:72ch}
+.states{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.states b{font-weight:600;margin-right:6px}
+.states button{font:500 13px/1 var(--sans);border:0;border-radius:999px;padding:10px 14px;min-height:38px;background:var(--chip);color:var(--ink);cursor:pointer}
+.states button[aria-pressed="true"]{background:var(--chip-on);color:var(--chip-on-ink)}
+.states button:focus-visible{outline:2px solid #377398;outline-offset:2px}
+.opts{display:flex;flex-wrap:wrap;gap:24px;justify-content:center}
+.opt{display:grid;gap:12px;width:340px;max-width:100%;align-content:start}
+.opt h2{font:700 16px/1.4 var(--sans);margin:0}
+.opt p.desc{margin:0;color:var(--ink-2);font-size:13px;min-height:62px}
+
+/* 앱 화면 (라이트 전용) */
+.phone{width:340px;max-width:100%;height:560px;border-radius:30px;overflow:hidden;position:relative;color:#1F2328;
+  background:linear-gradient(180deg,#B7D7EC 0px,#D9EAF5 120px,#F4F9FC 260px,#FFFFFF 380px);
+  box-shadow:0 18px 40px -18px rgba(20,40,60,.35);border:1px solid rgba(0,0,0,.06)}
+.scr{position:absolute;inset:0;padding:40px 18px 0}
+.ttl{font:400 27px/1.25 var(--serif);letter-spacing:-.5px;margin:0}
+.sub{font-size:12px;color:#6B727A;margin:4px 0 0}
+.card{margin-top:18px;height:360px;border-radius:22px;position:relative;overflow:hidden}
+.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%}
+.card .shade{position:absolute;inset:auto 0 0 0;height:55%;background:linear-gradient(to top,rgba(15,25,35,.62),rgba(15,25,35,0))}
+.who{position:absolute;left:20px;right:20px;bottom:18px;color:#fff}
+.who .nm{font:700 22px/1.2 var(--sans)}.who .nm span{font-weight:400;font-size:16px;margin-left:4px}
+.who .loc{font-size:12px;opacity:.9;margin-top:3px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.row.one{grid-template-columns:1fr}
+.st{height:48px;border-radius:14px;border:0;display:flex;align-items:center;justify-content:center;gap:6px;font:600 14px/1 var(--sans);cursor:default;transition:background-color 200ms ease,color 200ms ease}
+.st svg{width:18px;height:18px;flex:none}
+
+/* 다섯 상태 한눈에 */
+.glance{display:grid;gap:6px;background:#FFFFFF;border:1px solid #E1E4E8;border-radius:14px;padding:12px}
+.glance h3{margin:0 0 2px;font:600 12px var(--sans);color:#5B636B}
+.glance .st{height:38px;font-size:13px;border-radius:11px}
+.glance .lbl{display:grid;grid-template-columns:76px 1fr;gap:8px;align-items:center;font-size:12px;color:#5B636B}
+
+/* ── A · 파랑 한 계열: 행동은 진하게, 결과는 옅게 ── */
+.A .s-heart{background:#377398;color:#fff}
+.A .s-letter{background:#154662;color:#fff}
+.A .s-heart-done{background:#D6EAF8;color:#245D7E}
+.A .s-letter-done{background:#E6EEF4;color:#154662}
+.A .s-conn{background:#92C0DF;color:#0F3A52}
+/* ── B · 호감은 장미, 편지는 파랑, 연결은 둘이 만나요 ── */
+.B .s-heart{background:#994A5D;color:#fff}
+.B .s-letter{background:#377398;color:#fff}
+.B .s-heart-done{background:#F6E9EC;color:#7D3749}
+.B .s-letter-done{background:#D6EAF8;color:#154662}
+.B .s-conn{background:#fff;color:#1F2328;box-shadow:inset 0 0 0 1.5px #B7D7EC}
+.B .s-conn .h1{color:#994A5D}.B .s-conn .h2{color:#377398}
+/* ── C · 행동은 흰·검, 파랑은 결과에만 ── */
+.C .s-heart{background:#1F2328;color:#fff}
+.C .s-letter{background:#fff;color:#1F2328;box-shadow:inset 0 0 0 1px #E1E4E8}
+.C .s-heart-done,.C .s-letter-done{background:#D6EAF8;color:#245D7E}
+.C .s-conn{background:#92C0DF;color:#0F3A52}
+
+.notes{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 20px;display:grid;gap:8px}
+.notes h2{font:700 16px var(--sans);margin:0}
+.notes ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:6px}
+.notes b{color:var(--ink)}
+@media (prefers-reduced-motion:reduce){.st{transition:none}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>F7 · 홈 상태별 포인트 색</h1>
+    <p>카드를 연 뒤 사진 아래에 지금 상태를 보여 주는 줄이에요. 보내기 전에는 행동 버튼, 보낸 뒤에는 결과 표시로 바뀌어요. 링크 버전처럼 홈에서 바로 상태를 알 수 있게 했어요. 아래 상태를 눌러 세 안을 같이 바꿔 보세요.</p>
+  </header>
+
+  <div class="states" role="group" aria-label="상태 고르기">
+    <b>상태</b>
+    <button id="st-none" data-s="none" aria-pressed="true">보내기 전</button>
+    <button id="st-heart" data-s="heart" aria-pressed="false">호감 보냄</button>
+    <button id="st-letter" data-s="letter" aria-pressed="false">편지 보냄</button>
+    <button id="st-both" data-s="both" aria-pressed="false">호감 + 편지</button>
+    <button id="st-conn" data-s="conn" aria-pressed="false">서로 연결됨</button>
+  </div>
+
+  <section class="opts">
+    <div class="opt A"><h2>A · 파랑 한 계열</h2><p class="desc">호감은 진한 파랑, 편지는 남색. 보낸 뒤에는 같은 색의 옅은 바탕으로 가라앉고, 서로 연결되면 메인 파랑(sky300)으로 채워져요.</p><div class="phone"></div><div class="glance"></div></div>
+    <div class="opt B"><h2>B · 호감은 장미, 편지는 파랑</h2><p class="desc">지금 프로필의 장미색 하트를 살려요. 보낸 뒤에는 각자 옅은 바탕, 서로 연결되면 흰 바탕 위에 장미·파랑 하트가 겹쳐요.</p><div class="phone"></div><div class="glance"></div></div>
+    <div class="opt C"><h2>C · 행동은 흰·검, 파랑은 결과에만</h2><p class="desc">보내기 버튼은 검정과 흰색으로 담백하게. 보냄 · 연결 같은 결과에만 파랑이 들어가서 "이미 한 일"이 바로 보여요.</p><div class="phone"></div><div class="glance"></div></div>
+  </section>
+
+  <section class="notes">
+    <h2>고를 때 볼 점</h2>
+    <ul>
+      <li><b>A</b>는 흰·검·회 + 파랑 포인트라는 큰 방향에 가장 충실해요. 호감과 편지가 같은 계열이라 아이콘으로 구분해요.</li>
+      <li><b>B</b>는 호감과 편지의 차이가 색만 봐도 보여요. 대신 장미색이 하나 더 들어가요(채도를 낮춘 rose600).</li>
+      <li><b>C</b>는 링크 버전의 담백한 결과 가장 비슷해요. 행동 버튼의 파랑이 빠지는 대신 결과가 눈에 띄어요.</li>
+      <li>모든 글씨 대비는 4.5 : 1 이상이에요. 이 색은 홈 상태 줄과 프로필의 호감·편지 버튼에 함께 쓸 수 있어요.</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+const IC={
+ heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg>',
+ heartF:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg>',
+ letter:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M4 7l8 6 8-6"/></svg>',
+ check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+ two:'<svg viewBox="0 0 28 24" fill="currentColor" style="width:22px"><path class="h1" d="M10 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0117 10c0 5.6-7 10-7 10z" opacity=".9"/><path class="h2" d="M18 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0125 10c0 5.6-7 10-7 10z" opacity=".75"/></svg>'
+};
+const B={
+ heart:`<span class="st s-heart">${IC.heart}호감 보내기</span>`,
+ letter:`<span class="st s-letter">${IC.letter}편지 보내기</span>`,
+ heartDone:`<span class="st s-heart-done">${IC.heartF}호감 보냄</span>`,
+ letterDone:`<span class="st s-letter-done">${IC.check}편지 보냄</span>`,
+ conn:`<span class="st s-conn">${IC.two}서로 연결됨 · 편지함에서 이어가기</span>`
+};
+function row(s){
+ if(s==='conn')return `<div class="row one">${B.conn}</div>`;
+ const h=(s==='heart'||s==='both')?B.heartDone:B.heart, l=(s==='letter'||s==='both')?B.letterDone:B.letter;
+ return `<div class="row">${h}${l}</div>`;
+}
+function screen(s){return `<div class="scr"><h3 class="ttl">오늘의 인연</h3><p class="sub">매일 12시 · 15시 · 18시 · 21시, 두 명씩</p>
+<div class="card"><img src="img/p.jpg" alt="봄빛 사진"><div class="shade"></div><div class="who"><div class="nm">봄빛<span>26세</span></div><div class="loc">서울 마포구 · 출판 편집자</div></div></div>${row(s)}</div>`;}
+document.querySelectorAll('.glance').forEach(g=>g.innerHTML='<h3>다섯 상태 한눈에</h3>'+[['호감 보내기',B.heart],['편지 보내기',B.letter],['호감 보냄',B.heartDone],['편지 보냄',B.letterDone],['서로 연결됨',B.conn.replace(' · 편지함에서 이어가기','')]].map(([t,h])=>`<div class="lbl"><span>${t}</span>${h}</div>`).join(''));
+function apply(s){document.querySelectorAll('.phone').forEach(p=>p.innerHTML=screen(s));document.querySelectorAll('.states button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.s===s)));}
+document.querySelector('.states').addEventListener('click',e=>{const b=e.target.closest('button');if(b)apply(b.dataset.s);});
+apply('none');
+</script>

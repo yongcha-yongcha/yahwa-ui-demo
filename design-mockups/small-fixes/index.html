@@ -1,0 +1,72 @@
+<meta charset="utf-8">
+<title>작은 정리</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리 → 항목마다 before · after 한 쌍 + 바뀐 점 한두 줄 (카드 두 칸 격자) */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--panel:#FFFFFF;--chip:#E9EDF1;--tag-new:#377398;
+  --sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:28px}
+header h1{font:700 24px/1.35 var(--sans);margin:0 0 6px;letter-spacing:-.3px}
+header p{margin:0;color:var(--ink-2);max-width:66ch}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+section{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;display:grid;gap:12px;min-width:0;align-content:start}
+h2{font:700 16px/1.4 var(--sans);margin:0;display:flex;gap:8px;align-items:baseline}
+h2 i{font:600 12px/1 var(--sans);font-style:normal;color:var(--ink-2)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+figure{margin:0;display:grid;gap:6px;min-width:0}
+figure img{width:100%;border-radius:16px;border:1px solid var(--line);display:block;background:#fff}
+figcaption .tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2)}
+figcaption .tag.new{background:var(--tag-new);color:#fff}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;font-size:13px}
+ul b{color:var(--ink);font-weight:600}
+@media (max-width:860px){.grid{grid-template-columns:1fr}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>C · 작은 정리 · before · after</h1>
+    <p>F16 검토에서 나온 작은 것들이에요. 색은 뉴트럴로, 겹친 안내는 하나로, 말투는 "호감"으로 맞췄어요.</p>
+  </header>
+  <div class="grid">
+    <section><h2>받은 편지 <i>4</i></h2>
+      <div class="pair"><figure><img src="img/recv_b.jpg" alt="before"><figcaption><span class="tag">before</span></figcaption></figure><figure><img src="img/recv_a.jpg" alt="after"><figcaption><span class="tag new">after</span></figcaption></figure></div>
+      <ul><li>"당신에게" 파란 글씨 → <b>회색</b>.</li><li>"읽은 편지는 7일 동안 보관돼요"는 위 "7일 뒤 사라져요"와 같은 말이라 뺐어요.</li></ul></section>
+
+    <section><h2>보낸 편지 <i>2</i></h2>
+      <div class="pair"><figure><img src="img/sent_b.jpg" alt="before"><figcaption><span class="tag">before</span></figcaption></figure><figure><img src="img/sent_a.jpg" alt="after"><figcaption><span class="tag new">after</span></figcaption></figure></div>
+      <ul><li>회색 큰 <b>"프로필 보기" 버튼을 뺐어요</b>. 위 "프로필 ›"과 같은 일이에요.</li><li>아래엔 "무료 답장으로 바꾸기" 글자 버튼만 남아요.</li></ul></section>
+
+    <section><h2>편지 쓰기 <i>3</i></h2>
+      <div class="pair"><figure><img src="img/compose_b.jpg" alt="before"><figcaption><span class="tag">before</span></figcaption></figure><figure><img src="img/compose_a.jpg" alt="after"><figcaption><span class="tag new">after</span></figcaption></figure></div>
+      <ul><li>고른 편지 종류: 파란 테두리 → <b>검정 테두리</b>.</li><li>하늘 바탕 보유 리프 줄 → 카드 아래 오른쪽 작은 회색 글 "보유 90리프 · 보내면 50리프 남아요".</li><li>연락처 위 자물쇠 안내는 "답장하면 공개할 연락처" 소제목으로 바꾸고, "둘 중 하나는 적어 주세요." 덧글은 뺐어요(비우면 보낼 때 알림).</li></ul></section>
+
+    <section><h2>교환 탭 <i>7</i></h2>
+      <div class="pair"><figure><img src="img/ex_b.jpg" alt="before"><figcaption><span class="tag">before</span></figcaption></figure><figure><img src="img/ex_a.jpg" alt="after"><figcaption><span class="tag new">after</span></figcaption></figure></div>
+      <ul><li>마음함 탭과 같게 <b>검정 글씨 · 검정 밑줄</b>, 안 고른 탭은 연한 회색.</li><li>숫자 칩도 회색(고른 탭은 검정). 새 요청 빨강 칩은 그대로예요.</li></ul></section>
+
+    <section><h2>취향 설정 <i>11</i></h2>
+      <div class="pair"><figure><img src="img/prefs_b.jpg" alt="before"><figcaption><span class="tag">before</span></figcaption></figure><figure><img src="img/prefs_a.jpg" alt="after"><figcaption><span class="tag new">after</span></figcaption></figure></div>
+      <ul><li>"생활 방식" · "믿음" 묶음 제목 위에 <b>얇은 선</b>을 긋고 아래 묶음에 붙였어요. 이제 앞 섹션 꼬리처럼 보이지 않아요.</li><li>"인증한 인연 먼저 보기" 앞 파란 체크를 빼고 스위치만 남겼어요.</li></ul></section>
+
+    <section><h2>알림 설정 <i>13</i></h2>
+      <div class="pair"><figure><img src="img/settings_b.jpg" alt="before"><figcaption><span class="tag">before</span></figcaption></figure><figure><img src="img/settings_a.jpg" alt="after"><figcaption><span class="tag new">after</span></figcaption></figure></div>
+      <ul><li>끝에 섞인 <b>"프로필 공개 설정 · 최근 활동 표시"는 인연 공개 화면으로 옮겨요</b>(아래).</li><li>기기 권한은 "기기 알림 권한 · 미설정 ›" 한 줄로, 시연 덧글 두 개는 뺐어요.</li></ul></section>
+
+    <section><h2>인연 공개 <i>13</i></h2>
+      <div class="pair"><figure><img src="img/vis_b.jpg" alt="before"><figcaption><span class="tag">before</span></figcaption></figure><figure><img src="img/vis_a.jpg" alt="after"><figcaption><span class="tag new">after</span></figcaption></figure></div>
+      <ul><li>알림 설정에서 옮겨 온 <b>"최근 활동 표시"</b> 스위치를 인연 공개 카드 안 둘째 줄에 두었어요.</li></ul></section>
+
+    <section><h2>마이페이지 <i>12</i></h2>
+      <div class="pair"><figure><img src="img/my_b.jpg" alt="before"><figcaption><span class="tag">before</span></figcaption></figure><figure><img src="img/my_a.jpg" alt="after"><figcaption><span class="tag new">after</span></figcaption></figure></div>
+      <ul><li>"프로필 수정"(하늘 바탕)과 "내 소개 보기"를 <b>같은 흰 바탕 + 선</b>으로 맞췄어요.</li></ul></section>
+
+    <section><h2>말투 <i>14</i></h2>
+      <div class="pair"><figure><img src="img/rewards_b.jpg" alt="before"><figcaption><span class="tag">before</span></figcaption></figure><figure><img src="img/rewards_a.jpg" alt="after"><figcaption><span class="tag new">after</span></figcaption></figure></div>
+      <ul><li>"첫 관심 보내기" → <b>"첫 호감 보내기"</b>.</li><li>프로필 툴팁 "마음이 가면 관심을 보내 보세요." → "호감을". 남은 "관심"(버튼 읽어 주는 이름 · 알림 문구 등)도 같이 바꿔요.</li></ul></section>
+  </div>
+</div>

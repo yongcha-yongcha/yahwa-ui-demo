@@ -1,0 +1,272 @@
+<meta charset="utf-8">
+<title>끝낸 순간 3개</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리(속도) → 순간 3개, 각각 왼쪽 before 캡처 두 장 · 오른쪽 after 휴대폰(누르면 재생) + 막 색 */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--panel:#FFFFFF;--chip:#E9EDF1;--chip-on:#1F2328;--chip-on-fg:#fff;--tag-new:#377398;
+  --sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--chip-on:#EEF1F4;--chip-on-fg:#14171A;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--chip-on:#EEF1F4;--chip-on-fg:#14171A;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:1120px;margin:0 auto;display:grid;gap:48px}
+header{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:end;justify-content:space-between}
+header h1{font:700 24px/1.35 var(--sans);margin:0 0 6px;letter-spacing:-.3px}
+header p{margin:0;color:var(--ink-2);max-width:62ch}
+.chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.chips span{font-size:13px;color:var(--ink-2);margin-right:4px}
+.chips button{font:600 13px/1 var(--sans);min-height:36px;padding:0 14px;border-radius:18px;border:0;background:var(--chip);color:var(--ink);cursor:pointer}
+.chips button[aria-pressed="true"]{background:var(--chip-on);color:var(--chip-on-fg)}
+section{display:grid;gap:16px;min-width:0}
+h2{font:700 20px/1.4 var(--sans);margin:0}
+.pair{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:32px;align-items:start}
+.col{display:grid;gap:12px;min-width:0;align-content:start}
+.lab{font:600 12px/1 var(--sans);padding:6px 9px;border-radius:6px;background:var(--chip);color:var(--ink-2);justify-self:start}
+.lab.new{background:var(--tag-new);color:#fff}
+.before{display:grid;grid-template-columns:repeat(2,minmax(0,220px));gap:16px}
+figure{margin:0;display:grid;gap:6px;min-width:0}
+figure img{width:100%;border-radius:20px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:12px;color:var(--ink-2)}
+.note{margin:0;color:var(--ink-2);font-size:13px;max-width:56ch}
+.note b{color:var(--ink);font-weight:600}
+.phone{position:relative;width:360px;max-width:100%;aspect-ratio:360/780;border-radius:32px;overflow:hidden;background:#F7F8F9;box-shadow:0 24px 48px -28px rgba(26,33,38,.4),0 0 0 1px rgba(26,33,38,.08);cursor:pointer;isolation:isolate;-webkit-tap-highlight-color:transparent}
+.phone .scene{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:50% 45%;will-change:transform,filter}
+.phone .fx{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:2}
+.fx>*{position:absolute}
+.fx .msg{left:0;right:0;text-align:center;color:#fff;font:600 17px/1.4 var(--sans);letter-spacing:-.2px;opacity:0}
+.fx .av{border-radius:50%;background-size:cover;background-position:50% 30%;box-shadow:0 0 0 3px rgba(255,255,255,.95)}
+.fx .anon{display:grid;place-items:center;background:rgba(255,255,255,.22)}
+.tap{font:600 12px/1 var(--sans);color:var(--ink-2);margin-top:-4px}
+@media (max-width:860px){.pair{grid-template-columns:1fr}.phone{justify-self:start}}
+@media (max-width:480px){.before{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>끝낸 순간 3개 · before · after</h1>
+      <p>호감 보내기(줌 스루)와 같은 틀이에요. 뒤 화면이 다가오며 흐려지고 → 막 → 가운데 그림이 맺히고 → 막이 걷히면 다음 화면에 도착해요. 오른쪽 휴대폰을 누르면 재생돼요.</p>
+    </div>
+    <div class="chips" id="speed"><span>속도</span><button data-s="1" aria-pressed="true">1×</button><button data-s=".5" aria-pressed="false">0.5×</button><button data-s=".25" aria-pressed="false">0.25×</button></div>
+  </header>
+
+  <section data-k="letter">
+    <h2>1 · 편지 보냄</h2>
+    <div class="pair">
+      <div class="col">
+        <span class="lab">before</span>
+        <div class="before">
+          <figure><img src="img/L1.jpg" alt="편지 쓰기"><figcaption>누르기 전</figcaption></figure>
+          <figure><img src="img/L2t.jpg" alt="지금 보낸 직후"><figcaption>지금 · 누른 뒤</figcaption></figure>
+        </div>
+        <p class="note">바로 보낸 편지 화면으로 넘어가고, 검은 알림 "시연 편지를 보냈어요."가 아래 줄을 가려요.</p>
+      </div>
+      <div class="col">
+        <span class="lab new">after</span>
+        <div class="phone" data-before="img/L1.jpg" data-after="img/L2.jpg"><img class="scene" alt="편지 쓰기 화면"><div class="fx"></div></div><span class="tap">휴대폰을 누르면 재생</span>
+        <div class="chips tone"><span>막 색</span><button data-tone="blue">파랑</button><button data-tone="rose">장미</button><button data-tone="ink">진한 회색</button></div>
+        <p class="note">편지가 맺힌 뒤 <b>살짝 숨을 고르고 위로 날아가요</b>. 글 "하늘조각님에게 편지를 보냈어요". 막이 걷히면 보낸 편지 화면, 검은 알림은 없어요.</p>
+      </div>
+    </div>
+  </section>
+
+  <section data-k="req">
+    <h2>2 · 프로필 교환 요청 보냄</h2>
+    <div class="pair">
+      <div class="col">
+        <span class="lab">before</span>
+        <div class="before">
+          <figure><img src="img/R1.jpg" alt="교환 요청"><figcaption>누르기 전</figcaption></figure>
+          <figure><img src="img/R2.jpg" alt="지금 요청 직후"><figcaption>지금 · 누른 뒤</figcaption></figure>
+        </div>
+        <p class="note">아무 반응 없이 교환 화면으로 넘어가고, <b>받은 요청 탭</b>이 열려서 방금 보낸 요청이 안 보여요.</p>
+      </div>
+      <div class="col">
+        <span class="lab new">after</span>
+        <div class="phone" data-before="img/R1.jpg" data-after="img/R2s.jpg"><img class="scene" alt="교환 요청 화면"><div class="fx"></div></div><span class="tap">휴대폰을 누르면 재생</span>
+        <div class="chips tone"><span>막 색</span><button data-tone="blue">파랑</button><button data-tone="rose">장미</button><button data-tone="ink">진한 회색</button></div>
+        <p class="note">내 사진과 익명 동그라미가 다가가고, 내 쪽이 <b>톡 두드리면</b> 상대 쪽에 고리가 퍼져요. 글 "교환 요청을 보냈어요". 막이 걷히면 <b>보낸 요청 탭</b>에 방금 요청이 있어요.</p>
+      </div>
+    </div>
+  </section>
+
+  <section data-k="acc">
+    <h2>3 · 프로필 교환 수락</h2>
+    <div class="pair">
+      <div class="col">
+        <span class="lab">before</span>
+        <div class="before">
+          <figure><img src="img/X1.jpg" alt="받은 요청"><figcaption>누르기 전</figcaption></figure>
+          <figure><img src="img/X2t.jpg" alt="지금 수락 직후"><figcaption>지금 · 누른 뒤</figcaption></figure>
+        </div>
+        <p class="note">줄이 왼쪽으로 빠지고 알림 한 줄. 서로의 프로필이 열리는 순간인데 조용하고, 상대는 교환 기록 탭에 따로 가야 보여요.</p>
+      </div>
+      <div class="col">
+        <span class="lab new">after</span>
+        <div class="phone" data-before="img/X1.jpg" data-after="img/X3.jpg"><img class="scene" alt="받은 요청 화면"><div class="fx"></div></div><span class="tap">휴대폰을 누르면 재생</span>
+        <div class="chips tone"><span>막 색</span><button data-tone="blue">파랑</button><button data-tone="rose">장미</button><button data-tone="ink">진한 회색</button></div>
+        <p class="note">두 동그라미가 겹쳐지며 <b>익명이 상대 사진으로 또렷해지고</b>, 작은 하트가 퍼져요. 글 "서로의 프로필이 열렸어요". 막이 걷히면 <b>교환 기록 탭</b>에 상대가 있어요.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(() => {
+const W = 360, H = 780, CX = 180, CY = 344;
+let S = 1;
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* Apple 스프링: 감쇠(1 − 튕김) · 반응(초) → CSS linear() — 호감 보내기와 같은 값(튕김 0.40 · 반응 0.50s) */
+function spring(damping, response) {
+  const w = 2 * Math.PI / response, z = Math.min(1, Math.max(.2, damping));
+  const f = t => { if (z >= 1) return 1 - Math.exp(-w * t) * (1 + w * t); const wd = w * Math.sqrt(1 - z * z); return 1 - Math.exp(-z * w * t) * (Math.cos(wd * t) + (z * w / wd) * Math.sin(wd * t)); };
+  let T = 0; for (let t = 0; t < 4; t += .004) if (Math.abs(1 - f(t)) > .0015) T = t;
+  T += .02; const N = Math.min(100, Math.max(32, Math.round(T * 70))), pts = [];
+  for (let i = 0; i <= N; i++) pts.push(+f(T * i / N).toFixed(4)); pts[N] = 1;
+  return { easing: 'linear(' + pts.join(',') + ')', ms: T * 1000 };
+}
+const SP = spring(.6, .5), SOFT = spring(.85, .45);
+const OUT = 'cubic-bezier(0.22, 1, 0.36, 1)', EIN = 'cubic-bezier(0.55, 0, 0.75, 0.2)';
+const wait = ms => new Promise(r => setTimeout(r, ms / S));
+const anim = (el, kf, o = {}) => el.animate(kf, Object.assign({ fill: 'forwards' }, o, { duration: (o.duration || 300) / S, delay: (o.delay || 0) / S })).finished.catch(() => {});
+const HEART = 'M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z';
+const LETTER = 'M3 6Q12 5 21 6V19H3Z M3 7L12 14L21 7 M3 19L9 13 M21 19L15 13';
+const PERSON = 'M12 12a3.6 3.6 0 1 0 0-7.2 3.6 3.6 0 0 0 0 7.2Z M5 19.5c1.2-3.3 3.9-5 7-5s5.8 1.7 7 5';
+const heartSvg = (s, fill) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" style="display:block;overflow:visible"><path d="${HEART}" fill="${fill}"/></svg>`;
+const TONES = {
+  rose: a => `radial-gradient(120% 80% at 50% 42%, rgba(199,122,140,${a}) 0%, rgba(178,96,115,${a}) 48%, rgba(150,74,93,${a}) 100%)`,
+  blue: a => `radial-gradient(120% 80% at 50% 42%, rgba(78,138,176,${a}) 0%, rgba(55,115,152,${a}) 48%, rgba(36,93,126,${a}) 100%)`,
+  ink: a => `rgba(39,48,55,${a * .94})`
+};
+
+function stage(sec, run, tone) {
+  const phone = sec.querySelector('.phone'), scene = phone.querySelector('.scene'), fx = phone.querySelector('.fx');
+  const before = phone.dataset.before, after = phone.dataset.after;
+  scene.src = before; new Image().src = after;
+  let busy = false, T = tone, raf = [];
+  const tones = sec.querySelectorAll('[data-tone]');
+  const syncTone = () => tones.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.tone === T)));
+  syncTone();
+  sec.querySelector('.tone').addEventListener('click', e => { const b = e.target.closest('[data-tone]'); if (!b) return; T = b.dataset.tone; syncTone(); play(); });
+  const el = (html, css, cls) => { const d = document.createElement('div'); d.innerHTML = html || ''; if (cls) d.className = cls; Object.assign(d.style, css || {}); fx.append(d); return d; };
+  const ctx = {
+    el, fx,
+    veil: () => el('', { inset: 0, background: TONES[T](1), opacity: 0 }),
+    msg: (text, y) => el(text, { top: y + 'px' }, 'msg'),
+    sceneIn: () => anim(scene, [{ transform: 'scale(1)', filter: 'blur(0px)' }, { transform: 'scale(1.06)', filter: 'blur(6px)' }], { duration: 420, easing: OUT }),
+    /* 공통 퇴장: 글 · 그림 먼저, 막 걷힐 때 뒤 화면은 도착 화면으로 바뀌어 제자리로 */
+    leave: async (v, parts) => {
+      parts.forEach(p => anim(p, [{ opacity: 1 }, { opacity: 0 }], { duration: 200 }));
+      await wait(120);
+      scene.getAnimations().forEach(a => a.cancel()); scene.src = after;
+      anim(scene, [{ transform: 'scale(1.06)', filter: 'blur(6px)' }, { transform: 'scale(1)', filter: 'blur(0px)' }], { duration: 420, easing: OUT });
+      await anim(v, [{ opacity: 1 }, { opacity: 0 }], { duration: 340, easing: 'ease-out' });
+    },
+    burst: (n, x, y, kind, dir) => particles(fx, n, x, y, kind, dir, raf),
+    spring: SP, soft: SOFT
+  };
+  async function calm() {
+    const v = ctx.veil(), m = ctx.msg(run.text, CY + 70);
+    await Promise.all([anim(v, [{ opacity: 0 }, { opacity: 1 }], { duration: 200 }), anim(m, [{ opacity: 0 }, { opacity: 1 }], { duration: 200 })]);
+    await wait(1200); scene.src = after; await anim(fx, [{ opacity: 1 }, { opacity: 0 }], { duration: 200 });
+  }
+  async function play() {
+    if (busy) return; busy = true; 
+    raf.forEach(cancelAnimationFrame); raf.length = 0; fx.getAnimations({ subtree: true }).forEach(a => a.cancel()); fx.replaceChildren(); fx.style.opacity = '';
+    scene.getAnimations().forEach(a => a.cancel()); scene.src = before;
+    await new Promise(r => requestAnimationFrame(r)); await wait(200);
+    try { await (reduce ? calm() : run.go(ctx)); }
+    finally { fx.getAnimations({ subtree: true }).forEach(a => a.cancel()); fx.replaceChildren(); busy = false;  sec.querySelector('.tap').textContent = '다시 누르면 처음 화면'; }
+  }
+  phone.addEventListener('click', () => { if (!busy && scene.src.endsWith(after)) { scene.src = before; sec.querySelector('.tap').textContent = '휴대폰을 누르면 재생'; return; } play(); });
+}
+
+/* 작은 입자: 하트 또는 점, 처음 속도 → 공기 저항 */
+function particles(fx, n, x, y, kind, dir, raf) {
+  const ps = [];
+  for (let i = 0; i < n; i++) {
+    let a = (i / n) * Math.PI * 2 + (Math.random() - .5) * .5, sp = 280 + Math.random() * 280;
+    if (dir != null) { a = dir + (Math.random() - .5) * 1.1; sp = 120 + Math.random() * 160; }
+    const s = kind === 'dot' ? 4 + Math.random() * 4 : 8 + Math.random() * 10;
+    const d = document.createElement('div'); d.style.cssText = `position:absolute;left:${x - s / 2}px;top:${y - s / 2}px`;
+    d.innerHTML = kind === 'dot' ? `<i style="display:block;width:${s}px;height:${s}px;border-radius:50%;background:rgba(255,255,255,.9)"></i>` : heartSvg(s, 'rgba(255,255,255,.92)');
+    fx.append(d);
+    ps.push({ d, x: 0, y: 0, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, r: 0, vr: (Math.random() - .5) * 360, life: 0, max: .8 + Math.random() * .4 });
+  }
+  let last = performance.now();
+  const step = now => { const dt = Math.min(.033, (now - last) / 1000) * S; last = now; let alive = false;
+    for (const p of ps) { p.life += dt; if (p.life > p.max) { p.d.style.opacity = 0; continue; } alive = true;
+      const drag = Math.pow(.04, dt); p.vx *= drag; p.vy = p.vy * drag - 90 * dt;
+      p.x += p.vx * dt; p.y += p.vy * dt; p.r += p.vr * dt; const k = p.life / p.max, sc = k < .12 ? .4 + k / .12 * .6 : 1 - (k - .12) * .4;
+      p.d.style.transform = `translate(${p.x}px,${p.y}px) rotate(${p.r}deg) scale(${sc})`; p.d.style.opacity = k < .65 ? 1 : 1 - (k - .65) / .35; }
+    if (alive) raf.push(requestAnimationFrame(step)); };
+  raf.push(requestAnimationFrame(step));
+}
+
+const avatar = (ctx, x, size, html, cls, css) => ctx.el(html || '', Object.assign({ left: (x - size / 2) + 'px', top: (CY - size / 2) + 'px', width: size + 'px', height: size + 'px', opacity: 0 }, css || {}), 'av ' + (cls || ''));
+const anonInner = s => `<svg width="${s * .5}" height="${s * .5}" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="${PERSON}"/></svg>`;
+
+/* 1 편지 보냄: 편지가 맺힘 → 살짝 내려앉았다(숨 고르기) 위 오른쪽으로 날아감, 뒤에 점 몇 개 */
+const LETTER_RUN = { text: '하늘조각님에게 편지를 보냈어요', async go(c) {
+  const s = 92, v = c.veil();
+  const ic = c.el(`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="rgba(255,255,255,.14)" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:block;overflow:visible"><path d="${LETTER}"/></svg>`, { left: (CX - s / 2) + 'px', top: (CY - s / 2) + 'px', opacity: 0 });
+  const m = c.msg(this.text, CY + s / 2 + 22);
+  c.sceneIn(); anim(v, [{ opacity: 0 }, { opacity: 1 }], { duration: 300, easing: 'ease-out' });
+  anim(ic, [{ transform: 'scale(1.9)', opacity: 0, filter: 'blur(10px)' }, { transform: 'scale(1)', opacity: 1, filter: 'blur(0px)' }], { duration: c.spring.ms, easing: c.spring.easing, delay: 80 });
+  anim(m, [{ transform: 'translateY(8px)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 420, easing: OUT, delay: 200 });
+  await wait(720);
+  anim(ic, [{ transform: 'none', opacity: 1 }, { transform: 'translate(0,6px) scale(.96)', opacity: 1, offset: .22 }, { transform: 'translate(120px,-190px) rotate(-16deg) scale(.42)', opacity: 0 }], { duration: 560, easing: 'cubic-bezier(0.5, 0, 0.7, 0.4)' });
+  await wait(300); c.burst(9, CX + 48, CY - 76, 'dot', Math.PI * .72);
+  await wait(550);
+  await c.leave(v, [m]);
+} };
+
+/* 2 교환 요청 보냄: 두 동그라미가 다가감 → 내 쪽이 톡 → 상대 쪽 고리 */
+const REQ_RUN = { text: '교환 요청을 보냈어요', async go(c) {
+  const s = 68, v = c.veil();
+  const them = avatar(c, CX + 40, s, anonInner(s), 'anon');
+  const me = avatar(c, CX - 40, s, '', '', { backgroundImage: 'url(img/me.png)' });
+  const m = c.msg(this.text, CY + s / 2 + 26);
+  c.sceneIn(); anim(v, [{ opacity: 0 }, { opacity: 1 }], { duration: 300, easing: 'ease-out' });
+  anim(me, [{ transform: 'translateX(-46px) scale(.8)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: c.spring.ms, easing: c.spring.easing, delay: 80 });
+  anim(them, [{ transform: 'translateX(46px) scale(.8)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: c.spring.ms, easing: c.spring.easing, delay: 120 });
+  anim(m, [{ transform: 'translateY(8px)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 420, easing: OUT, delay: 220 });
+  await wait(560);
+  anim(me, [{ transform: 'none' }, { transform: 'translateX(14px)', offset: .35 }, { transform: 'none' }], { duration: 420, easing: OUT });
+  await wait(130);
+  anim(them, [{ transform: 'none' }, { transform: 'translateX(5px) scale(.97)', offset: .3 }, { transform: 'none' }], { duration: 480, easing: c.soft.easing });
+  for (let i = 0; i < 2; i++) { const r = c.el('', { left: (CX + 40 - s / 2) + 'px', top: (CY - s / 2) + 'px', width: s + 'px', height: s + 'px', borderRadius: '50%', boxShadow: '0 0 0 2px rgba(255,255,255,.85)' });
+    anim(r, [{ transform: 'scale(1)', opacity: .9 }, { transform: 'scale(1.9)', opacity: 0 }], { duration: 760, easing: OUT, delay: i * 180 }); }
+  await wait(1000);
+  await c.leave(v, [me, them, m]);
+} };
+
+/* 3 교환 수락: 두 동그라미가 겹쳐지며 익명 → 상대 사진, 작은 하트 */
+const ACC_RUN = { text: '서로의 프로필이 열렸어요', async go(c) {
+  const s = 76, v = c.veil();
+  const them = avatar(c, CX + 24, s, '', '', { backgroundImage: 'url(img/bom.png)' });
+  const anon = avatar(c, CX + 24, s, anonInner(s), 'anon', { boxShadow: 'none' });
+  const me = avatar(c, CX - 24, s, '', '', { backgroundImage: 'url(img/me.png)' });
+  const m = c.msg(this.text, CY + s / 2 + 26);
+  c.sceneIn(); anim(v, [{ opacity: 0 }, { opacity: 1 }], { duration: 300, easing: 'ease-out' });
+  anim(me, [{ transform: 'translateX(-56px) scale(.8)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: c.spring.ms, easing: c.spring.easing, delay: 80 });
+  anim(them, [{ transform: 'translateX(56px) scale(.8)', opacity: 0, filter: 'blur(12px)' }, { transform: 'none', opacity: 1, filter: 'blur(12px)' }], { duration: c.spring.ms, easing: c.spring.easing, delay: 80 });
+  anim(anon, [{ transform: 'translateX(56px) scale(.8)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: c.spring.ms, easing: c.spring.easing, delay: 80 });
+  await wait(560);
+  anim(anon, [{ opacity: 1 }, { opacity: 0 }], { duration: 260 });
+  anim(them, [{ filter: 'blur(12px)', transform: 'scale(1)' }, { filter: 'blur(0px)', transform: 'scale(1.06)', offset: .55 }, { filter: 'blur(0px)', transform: 'scale(1)' }], { duration: 620, easing: OUT });
+  await wait(180); c.burst(12, CX, CY - 8, 'heart');
+  anim(m, [{ transform: 'translateY(8px)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 420, easing: OUT });
+  await wait(1150);
+  await c.leave(v, [me, them, m]);
+} };
+
+const secs = document.querySelectorAll('section[data-k]');
+stage(secs[0], LETTER_RUN, 'blue');
+stage(secs[1], REQ_RUN, 'blue');
+stage(secs[2], ACC_RUN, 'rose');
+document.getElementById('speed').addEventListener('click', e => { const b = e.target.closest('[data-s]'); if (!b) return; S = +b.dataset.s; document.querySelectorAll('#speed [data-s]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); });
+})();
+</script>

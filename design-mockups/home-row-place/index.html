@@ -1,0 +1,156 @@
+<meta charset="utf-8">
+<title>홈 버튼 줄 자리</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 설명 + 상태·버튼 색 고르기 → A(카드 안) · B(카드 아래) 휴대폰 두 대 → 메모 */
+:root{
+  --page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--panel:#FFFFFF;--chip:#E9EDF1;--chip-on:#1F2328;--chip-on-ink:#FFFFFF;
+  --sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;--serif:'Gowun Batang','AppleMyungjo',serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--chip-on:#EEF1F4;--chip-on-ink:#14171A;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--chip-on:#EEF1F4;--chip-on-ink:#14171A;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1000px;margin:0 auto;display:grid;gap:22px}
+header h1{font:700 24px/1.35 var(--sans);margin:0 0 6px;letter-spacing:-.3px}
+header p{margin:0;color:var(--ink-2);max-width:76ch}
+.pickers{display:grid;gap:10px}
+.pick{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pick b{font-weight:600;width:72px}
+.pick button{font:500 13px/1.2 var(--sans);border:0;border-radius:999px;padding:8px 14px;min-height:38px;background:var(--chip);color:var(--ink);cursor:pointer;display:grid;text-align:center}
+.pick button small{font-size:10px;opacity:.7}
+.pick button[aria-pressed="true"]{background:var(--chip-on);color:var(--chip-on-ink)}
+.pick button:focus-visible{outline:2px solid #377398;outline-offset:2px}
+.opts{display:flex;flex-wrap:wrap;gap:28px;justify-content:center}
+.opt{display:grid;gap:10px;width:360px;max-width:100%;align-content:start}
+.opt h2{margin:0;font:700 16px/1.4 var(--sans)}
+.opt p{margin:0;color:var(--ink-2);font-size:13px;min-height:62px}
+
+/* 앱 화면 360 × 780 (라이트 전용) */
+.phone{
+  --sky-50:#ECF5FC;--sky-100:#D6EAF8;--sky-200:#B7D7EC;--sky-300:#92C0DF;--sky-600:#377398;--sky-700:#245D7E;--sky-800:#154662;
+  --n-200:#CFD5DA;--n-500:#818C94;--n-900:#273037;--rose:#C78693;
+  --p-bg:var(--sky-600);--p-fg:#fff;--s-bg:var(--sky-100);--s-fg:var(--sky-700);
+  width:360px;max-width:100%;height:780px;border-radius:34px;overflow:hidden;position:relative;color:#1F2328;
+  background:linear-gradient(180deg,#B7D7EC 0px,#D9EAF5 120px,#F4F9FC 260px,#FFFFFF 380px);
+  box-shadow:0 18px 40px -18px rgba(20,40,60,.35);border:1px solid rgba(0,0,0,.06)}
+.phone[data-p="sky200"]{--p-bg:var(--sky-200);--p-fg:var(--sky-800);--s-bg:var(--sky-50)}
+.phone[data-p="sky300"]{--p-bg:var(--sky-300);--p-fg:var(--sky-800);--s-bg:var(--sky-50)}
+.top{position:absolute;left:20px;right:20px;top:46px}
+.ttl{font:400 29px/1.25 var(--serif);letter-spacing:-.5px;margin:0}
+.sub{font-size:13px;color:#6B727A;margin:6px 0 0}
+.leaf{position:absolute;right:56px;top:4px;display:flex;gap:4px;align-items:center;font:600 15px var(--sans)}
+.card{position:absolute;left:20px;right:20px;top:124px;height:528px;border-radius:22px;overflow:hidden;color:#fff}
+.lay-out .card{height:452px}
+.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 25%}
+.card .shade{position:absolute;inset:auto 0 0 0;height:62%;background:linear-gradient(to top,rgba(20,24,30,.78),rgba(20,24,30,0))}
+.activity{position:absolute;top:16px;left:16px;font:500 12px/18px var(--sans);background:rgba(248,249,246,.93);color:#273037;border-radius:12px;padding:3px 8px;display:flex;gap:5px;align-items:center}
+.activity i{width:6px;height:6px;border-radius:50%;background:#3DBE8B}
+.copy{position:absolute;left:20px;right:20px;bottom:20px}
+.lay-in .copy{bottom:84px}
+.copy b{font:700 26px/1.2 var(--sans)}
+.copy .loc{font-size:14px;opacity:.88;margin-top:4px}
+.copy small{display:block;font-size:12px;opacity:.88;margin:12px 0 2px}
+.copy p{margin:0;font:500 14px/24px var(--sans);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.row.fold{grid-template-columns:auto 1fr}
+.row.one{grid-template-columns:1fr}
+.lay-in .row{position:absolute;left:20px;right:20px;bottom:20px}
+.lay-out .row{position:absolute;left:20px;right:20px;top:588px}
+.b{height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:6px;font:600 15px/1 var(--sans);white-space:nowrap;padding:0 12px}
+.b svg{width:18px;height:18px;flex:none}
+.b.pri{background:var(--p-bg);color:var(--p-fg)}
+.b.sec{background:var(--s-bg);color:var(--s-fg)}
+.lay-in .b.pri,.lay-in .b.sec{box-shadow:0 6px 18px rgba(20,24,30,.18)}
+.fold .b.done{padding:0 16px;font-size:14px}
+/* 끝난 일: 카드 안에서는 사진 위 흰 테두리 칩, 카드 아래에서는 흰 바탕 + 회색 선 */
+.lay-in .b.done{background:rgba(255,255,255,.18);color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.35)}
+.lay-out .b.done{background:#fff;color:var(--sky-700);box-shadow:inset 0 0 0 1px var(--n-200)}
+/* 받은 호감: 카드 위에 작은 장미 표시 */
+.got{position:absolute;top:16px;right:16px;font:600 12px/18px var(--sans);background:rgba(255,255,255,.93);color:#994A5D;border-radius:12px;padding:3px 9px;display:flex;gap:4px;align-items:center}
+.got svg{width:13px;height:13px}
+.lay-out .got-line{position:absolute;left:20px;right:20px;top:588px;display:none}
+.pager{position:absolute;left:0;right:0;top:664px;display:flex;justify-content:center;gap:32px;align-items:center;font:600 15px var(--sans);color:#98A2AA}
+.lay-out .pager{top:652px}
+.pager b{color:#273037}
+.nav{position:absolute;left:16px;right:16px;bottom:16px;height:62px;border-radius:24px;background:rgba(255,255,255,.94);box-shadow:0 6px 20px -8px rgba(20,40,60,.25);display:flex;justify-content:space-around;align-items:center}
+.nav i{width:56px;height:46px;border-radius:16px;display:grid;place-items:center;color:#273037;position:relative}
+.nav i.on{background:#E3EFF7;color:#245D7E}
+.nav i .dot{position:absolute;top:8px;right:12px;width:7px;height:7px;border-radius:50%;background:#C25B6E}
+.nav svg{width:22px;height:22px}
+.nav img{width:30px;height:30px;border-radius:50%;object-fit:cover}
+
+.notes{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 20px;display:grid;gap:8px}
+.notes h2{font:700 16px var(--sans);margin:0}
+.notes ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:6px}
+.notes b{color:var(--ink)}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>홈 버튼 줄 자리 · 카드 안 vs 카드 아래</h1>
+    <p>끝난 일은 "작게 접기"(④)로 같게 두고, 버튼 줄 자리만 바꿔 봤어요. A는 지금 시연본처럼 카드 안 아래쪽, B는 링크 버전처럼 카드 바로 아래예요. B는 버튼 줄만큼 카드가 76px 짧아져요.</p>
+  </header>
+  <div class="pickers">
+    <div class="pick" id="pick-state" role="group" aria-label="상태"><b>상태</b>
+      <button id="s-none" data-v="none" aria-pressed="true">보내기 전</button>
+      <button id="s-heart" data-v="heart" aria-pressed="false">호감 보냄</button>
+      <button id="s-letter" data-v="letter" aria-pressed="false">편지 보냄</button>
+      <button id="s-both" data-v="both" aria-pressed="false">둘 다 보냄</button>
+      <button id="s-got" data-v="got" aria-pressed="false">받은 호감</button>
+      <button id="s-conn" data-v="conn" aria-pressed="false">서로 연결됨</button>
+    </div>
+    <div class="pick" id="pick-p" role="group" aria-label="버튼 색"><b>버튼 색</b>
+      <button id="p-deep" data-v="deep" aria-pressed="true">진한 파랑<small>#377398</small></button>
+      <button id="p-200" data-v="sky200" aria-pressed="false">sky200<small>#B7D7EC</small></button>
+      <button id="p-300" data-v="sky300" aria-pressed="false">sky300<small>#92C0DF</small></button>
+    </div>
+  </div>
+  <section class="opts">
+    <div class="opt"><h2>A · 카드 안 아래쪽 (지금 시연본)</h2><p>사진이 크게 유지돼요. 버튼이 사진 위에 떠서 카드와 한 덩어리로 보여요. 끝난 일은 사진 위 흰 테두리 칩.</p><div class="phone lay-in"></div></div>
+    <div class="opt"><h2>B · 카드 바로 아래 (링크 버전 배치)</h2><p>사진은 76px 짧아지지만 버튼이 흰 바탕 위에 있어 사진 색과 상관없이 늘 같은 모습이에요. 끝난 일은 흰 바탕 + 회색 선.</p><div class="phone lay-out"></div></div>
+  </section>
+  <section class="notes">
+    <h2>고를 때 볼 점</h2>
+    <ul>
+      <li><b>A</b>는 사진 면적이 가장 커요. 대신 버튼 색이 사진 색에 따라 조금씩 다르게 느껴질 수 있어요.</li>
+      <li><b>B</b>는 버튼과 사진이 분리돼서 "보는 영역"과 "누르는 영역"이 또렷해요. sky200 · sky300처럼 옅은 버튼 색도 흰 바탕 위에서 안정적으로 보여요.</li>
+      <li><b>받은 호감</b>은 상대가 먼저 호감을 보낸 상태예요. 카드 오른쪽 위에 작은 장미 표시를 두고, 버튼은 "호감으로 답하기"(Primary)로 바뀌어요. 누르면 바로 서로 연결돼요.</li>
+      <li>두 안 모두 끝난 일은 작게 접혀서 남은 행동이 넓어져요(④).</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+const IC={
+ heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg>',
+ heartF:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg>',
+ letter:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M4 7l8 6 8-6"/></svg>',
+ check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+ two:'<svg viewBox="0 0 28 24" fill="currentColor" style="width:22px"><path d="M10 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0117 10c0 5.6-7 10-7 10z" opacity=".95"/><path d="M18 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0125 10c0 5.6-7 10-7 10z" opacity=".6"/></svg>'};
+const NAV=`<nav class="nav"><i class="on"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg><span class="dot"></span></i><i>${IC.heart}<span class="dot"></span></i><i>${IC.letter}</i><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 5h14v10H10l-5 4z"/><path d="M9 9h6M9 12h4"/></svg><span class="dot"></span></i><i><img src="img/me.jpg" alt=""></i></nav>`;
+let S='none',P='deep';
+function row(){
+ if(S==='conn')return `<div class="row one"><span class="b pri">${IC.two}서로 연결됨 · 편지함에서 이어가기</span></div>`;
+ if(S==='got')return `<div class="row"><span class="b pri">${IC.heart}호감으로 답하기</span><span class="b sec">${IC.letter}편지 보내기</span></div>`;
+ const hs=S==='heart'||S==='both',ls=S==='letter'||S==='both',fold=hs!==ls;
+ const h=hs?`<span class="b done">${IC.heartF}${fold?'보냄':'호감 보냄'}</span>`:`<span class="b pri">${IC.heart}호감 보내기</span>`;
+ const l=ls?`<span class="b done">${IC.check}${fold?'보냄':'편지 보냄'}</span>`:`<span class="b sec">${IC.letter}편지 보내기</span>`;
+ return `<div class="row${fold?' fold':''}">${ls&&!hs?l+h:h+l}</div>`;}
+function screen(){return `<div class="top"><h3 class="ttl">오늘의 인연</h3><p class="sub">매일 12시 · 15시 · 18시 · 21시, 두 명씩</p><div class="leaf"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14"/><path d="M5 19l8-8"/></svg>100</div></div>
+<div class="card"><img src="img/p.jpg" alt="작은파도 사진"><div class="shade"></div><span class="activity"><i></i>최근 활동</span>${S==='got'?`<span class="got">${IC.heartF}나에게 호감을 보냈어요</span>`:''}
+<div class="copy"><b>작은파도, 30세</b><div class="loc">부산 수영구</div><small>✦ 이 사람의 한 장면</small><p>교육 분야에서 일하고 있어요. 평일에는 책을 읽으며 쉬고 주말에는 가벼운 산에 올라요.</p></div>__ROWA__</div>__ROWB__
+<div class="pager"><span>‹</span><span><b>4</b> / 8</span><span>›</span></div>${NAV}`;}
+function render(){
+ const r=row();
+ document.querySelector('.phone.lay-in').innerHTML=screen().replace('__ROWA__',r).replace('__ROWB__','');
+ document.querySelector('.phone.lay-out').innerHTML=screen().replace('__ROWA__','').replace('__ROWB__',r);
+ document.querySelectorAll('.phone').forEach(p=>p.dataset.p=P);
+ document.querySelectorAll('#pick-state button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===S)));
+ document.querySelectorAll('#pick-p button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===P)));}
+document.getElementById('pick-state').addEventListener('click',e=>{const b=e.target.closest('button');if(b){S=b.dataset.v;render();}});
+document.getElementById('pick-p').addEventListener('click',e=>{const b=e.target.closest('button');if(b){P=b.dataset.v;render();}});
+render();
+</script>

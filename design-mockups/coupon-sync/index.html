@@ -1,0 +1,41 @@
+<meta charset="utf-8">
+<title>쿠폰함 씽크</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리(고른 조합 · 바뀐 점) → 부분마다 지금 · 고른 조합 두 장 */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:24px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px;text-wrap:balance}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:82ch}
+ul b{color:var(--ink);font-weight:600}
+section{display:grid;gap:10px}
+h2{font:700 18px/1.4 var(--sans);margin:0}h3{font:600 15px/1.4 var(--sans);margin:14px 0 0}h3 small{font-weight:400;color:var(--ink-2);font-size:13px;margin-left:6px}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,260px));gap:16px}
+figure{margin:0;display:grid;gap:6px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:18px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2)}
+.tag.new{background:var(--tag-new);color:#fff}
+@media (max-width:640px){.row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<div class="wrap">
+  <header>
+    <h1>쿠폰함 · 팀 링크에 맞추기</h1>
+    <ul>
+      <li><b>팀 링크:</b> 마이페이지 "쿠폰함" → 머리 제목 "쿠폰함", 받은 쿠폰 · 매장 포인트 · 검색 · 지도 · 주변 매장. 안쪽은 받은 쿠폰(사용 가능 · 완료 · 만료) · 쿠폰 자세히 · 매장. <b>기능은 우리와 같아요</b>(빠진 것 없음, 우리는 분류 칩이 더 있어요).</li>
+      <li><b>우리 · 다른 점:</b> 머리 제목이 비고 큰 제목("가까운 곳, 야화 혜택" · "나의 쿠폰함" · "함께 머물 작은 혜택" · 매장 이름)이 따로 있어요. 흰 카드 + 테두리가 거의 모든 카드에, 연한 하늘 상자(안내 · 분류 줄 · 매장 혜택 카드)와 하늘 글자 탭, 쿠폰 위 분홍 짧은 선이 남아 있어요.</li>
+      <li><b>고친 안(다섯 화면 모두):</b> 머리 제목(쿠폰함 · 받은 쿠폰 · 쿠폰 자세히 · 매장 이름) + 큰 제목 · 설명 · 시연 덧글 빼기. 카드는 회색 바탕 · 테두리 없음, 분류 · 상태 칩은 고른 것만 진한 채움. "매장 자세히" · "지도에서 보기" 같은 보조 버튼은 회색(카드 안이면 흰색), 주 버튼(쿠폰 받기 · 내 쿠폰 보기)만 파랑. 분홍 선 빼기.</li>
+      <li><b>A · B:</b> 매장 혜택 글자("칵테일 첫 잔 20% 할인")만 달라요. A는 지금처럼 파랑(콘텐츠 강조), B는 진한 글자.</li>
+      <li><b>더 찾아서 고친 것:</b> 머리 제목을 넣으면 지도가 머리 줄 위로 올라와 스크롤할 때 "쿠폰함" 글자 뒤에 지도가 비쳐요(지도 겹 순서가 머리보다 위). 머리 줄을 지도보다 위로 올려서 다른 화면처럼 흐림 막이 덮게 했어요.</li>
+    </ul>
+  </header>
+  <section><h2>팀 링크</h2><div class="row" style="grid-template-columns:repeat(5,minmax(0,220px))"><figure><img src="img/t0.jpg" alt="쿠폰함" loading="lazy"><figcaption><span class="tag">쿠폰함</span></figcaption></figure><figure><img src="img/t1.jpg" alt="아래" loading="lazy"><figcaption><span class="tag">아래</span></figcaption></figure><figure><img src="img/t_coupons1.jpg" alt="받은 쿠폰" loading="lazy"><figcaption><span class="tag">받은 쿠폰</span></figcaption></figure><figure><img src="img/t_cdetail.jpg" alt="쿠폰 자세히" loading="lazy"><figcaption><span class="tag">쿠폰 자세히</span></figcaption></figure><figure><img src="img/t_shop.jpg" alt="매장" loading="lazy"><figcaption><span class="tag">매장</span></figcaption></figure></div></section>
+  <section><h2>쿠폰함 첫 화면</h2><div class="row" style="grid-template-columns:repeat(3,minmax(0,220px))"><figure><img src="img/n_pl.jpg" alt="지금" loading="lazy"><figcaption><span class="tag">지금</span></figcaption></figure><figure><img src="img/a_pl.jpg" alt="A · 혜택 글자 파랑" loading="lazy"><figcaption><span class="tag new">A · 혜택 글자 파랑</span></figcaption></figure><figure><img src="img/b_pl.jpg" alt="B · 혜택 글자 진하게" loading="lazy"><figcaption><span class="tag new">B · 혜택 글자 진하게</span></figcaption></figure></div><div class="row" style="grid-template-columns:repeat(4,minmax(0,220px))"><figure><img src="img/n_pl2.jpg" alt="지금 · 아래" loading="lazy"><figcaption><span class="tag">지금 · 아래</span></figcaption></figure><figure><img src="img/a_pl2.jpg" alt="A · 아래" loading="lazy"><figcaption><span class="tag new">A · 아래</span></figcaption></figure><figure><img src="img/b_pl2.jpg" alt="B · 아래" loading="lazy"><figcaption><span class="tag new">B · 아래</span></figcaption></figure><figure><img src="img/x_bugc.jpg" alt="고치기 전 · 머리 뒤 지도 비침" loading="lazy"><figcaption><span class="tag">고치기 전 · 머리 뒤 지도 비침</span></figcaption></figure></div></section>
+  <section><h2>받은 쿠폰</h2><div class="row" style="grid-template-columns:repeat(3,minmax(0,220px))"><figure><img src="img/n_cp.jpg" alt="지금" loading="lazy"><figcaption><span class="tag">지금</span></figcaption></figure><figure><img src="img/a_cp.jpg" alt="고친 안 · 1장" loading="lazy"><figcaption><span class="tag new">고친 안 · 1장</span></figcaption></figure><figure><img src="img/a_cp0.jpg" alt="고친 안 · 0장" loading="lazy"><figcaption><span class="tag new">고친 안 · 0장</span></figcaption></figure></div></section>
+  <section><h2>쿠폰 자세히 · 매장 · 매장 포인트</h2><div class="row" style="grid-template-columns:repeat(5,minmax(0,220px))"><figure><img src="img/n_cd.jpg" alt="쿠폰 · 지금" loading="lazy"><figcaption><span class="tag">쿠폰 · 지금</span></figcaption></figure><figure><img src="img/a_cd.jpg" alt="쿠폰 · 고친 안" loading="lazy"><figcaption><span class="tag new">쿠폰 · 고친 안</span></figcaption></figure><figure><img src="img/n_sh.jpg" alt="매장 · 지금" loading="lazy"><figcaption><span class="tag">매장 · 지금</span></figcaption></figure><figure><img src="img/a_sh.jpg" alt="매장 · 고친 안" loading="lazy"><figcaption><span class="tag new">매장 · 고친 안</span></figcaption></figure><figure><img src="img/a_sh2.jpg" alt="매장 · 아래" loading="lazy"><figcaption><span class="tag new">매장 · 아래</span></figcaption></figure></div><div class="row" style="grid-template-columns:repeat(2,minmax(0,220px))"><figure><img src="img/n_pt.jpg" alt="포인트 · 지금" loading="lazy"><figcaption><span class="tag">포인트 · 지금</span></figcaption></figure><figure><img src="img/a_pt.jpg" alt="포인트 · 고친 안" loading="lazy"><figcaption><span class="tag new">포인트 · 고친 안</span></figcaption></figure></div></section>
+</div>

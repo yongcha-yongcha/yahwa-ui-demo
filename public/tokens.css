@@ -180,7 +180,7 @@
   --color-fg-chevron:var(--cool-neutral-300);
   --color-fg-field-off:var(--cool-neutral-400);
   --color-fg-valid:var(--sage-600);
-  --color-fg-activity:var(--mint-700);
+  --color-fg-activity:var(--cool-neutral-800) /* 2026-11-16 F12: 링크 칩 세팅(흰 칩 + 진회색 글씨), 초록은 점만 */;
   --color-fg-activity-dot:var(--mint-400);
 
   /* 배경 */
@@ -195,6 +195,20 @@
   --color-bg-kakao:var(--kakao-yellow);
   --color-bg-button-primary:var(--sky-600);
   --color-bg-button-primary-active:var(--sky-700);
+  --color-fg-button-primary:var(--color-fg-inverse) /* 기본 버튼 글씨 · 옅은 파랑 버튼일 때 남색으로 바뀌어요 (2026-11-15 F1·F3) */;
+  /* 버튼 시스템 (2026-11-15, 시안 design-mockups/button-system/) · Primary는 위 기본 버튼 토큰을 그대로 따라가요 */
+  --btn-primary-bg:var(--color-bg-button-primary);
+  --btn-primary-fg:var(--color-fg-button-primary);
+  --btn-primary-press:var(--color-bg-button-primary-active);
+  --btn-secondary-bg:var(--sky-100);       /* 연한 바탕 · Primary가 sky200/300이면 sky50 */
+  --btn-secondary-fg:var(--sky-700);       /* Primary 색 글씨 · sky100 위 5.8 : 1 */
+  --btn-secondary-press:var(--sky-200);
+  --btn-tertiary-bg:var(--white);
+  --btn-tertiary-fg:var(--cool-neutral-900);
+  --btn-tertiary-line:var(--cool-neutral-200);
+  --btn-tertiary-press:var(--cool-neutral-50);
+  --btn-text-fg:var(--sky-700);
+  --btn-text-press:var(--sky-50);
   --color-bg-inverse:var(--cool-neutral-800);
   --color-bg-inverse-deep:var(--cool-neutral-950);
   --color-bg-inverse-strong:var(--cool-neutral-900);
@@ -212,7 +226,7 @@
   --color-bg-icon:var(--cool-neutral-50);
   --color-bg-field-off:var(--cool-neutral-50);
   --color-bg-field-clear:var(--cool-neutral-300);
-  --color-bg-activity:var(--mint-50);
+  --color-bg-activity:color-mix(in srgb,var(--white) 93%,transparent);
   --color-bg-surface:var(--white);
 
   /* 테두리 */
@@ -482,10 +496,10 @@
   --story-note-rule:color-mix(in srgb,var(--sky-100) 55%,transparent);
   --story-note-shadow:0 1px 2px color-mix(in srgb,var(--cool-neutral-800) 6%,transparent),0 8px 20px color-mix(in srgb,var(--cool-neutral-800) 6%,transparent);
   --story-line:28px;
-  --story-tape-1:color-mix(in srgb,var(--sky-200) 70%,transparent);--story-tape-1-fg:var(--sky-700);
-  --story-tape-2:color-mix(in srgb,var(--rose-200) 80%,transparent);--story-tape-2-fg:var(--rose-700);
-  --story-tape-3:color-mix(in srgb,var(--gold-200) 85%,transparent);--story-tape-3-fg:var(--gold-700);
-  --story-tape-4:color-mix(in srgb,var(--sage-200) 85%,transparent);--story-tape-4-fg:var(--sage-700);
+  --story-tape-1:var(--sky-100) /* 2026-11-16 F12: 검·흰·회·파 — 필수 한 장만 파랑, 나머지는 회색 */;--story-tape-1-fg:var(--sky-700);
+  --story-tape-2:var(--cool-neutral-100);--story-tape-2-fg:var(--cool-neutral-700);
+  --story-tape-3:var(--cool-neutral-100);--story-tape-3-fg:var(--cool-neutral-700);
+  --story-tape-4:var(--cool-neutral-100);--story-tape-4-fg:var(--cool-neutral-700);
   --story-slot-line:var(--color-border-focus);
   --story-lock-line:var(--color-border-hover);
   --story-card-1:var(--sky-50);--story-card-2:var(--rose-50);--story-card-3:var(--gold-50);

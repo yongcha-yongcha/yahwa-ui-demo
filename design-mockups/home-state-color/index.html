@@ -1,0 +1,89 @@
+<meta charset="utf-8">
+<title>홈 상태별 색</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리 → 팀 링크 한 줄 → 지금(카드 아래 · 카드 안) → 제안 2 · 3, 각 줄은 상태 다섯 칸(보내기 전 · 호감 보냄 · 편지 보냄 · 둘 다 · 서로 연결됨) */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--panel:#FFFFFF;--chip:#E9EDF1;--tag-new:#377398;
+  --sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:36px}
+header h1{font:700 24px/1.35 var(--sans);margin:0 0 6px;letter-spacing:-.3px}
+header p{margin:0;color:var(--ink-2);max-width:70ch}
+section{display:grid;gap:12px;min-width:0}
+h2{font:700 18px/1.4 var(--sans);margin:0;display:flex;gap:8px;align-items:center}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2)}
+.tag.new{background:var(--tag-new);color:#fff}
+.note{margin:0;color:var(--ink-2);font-size:13px;max-width:76ch}
+.note b{color:var(--ink);font-weight:600}
+.row{display:grid;grid-template-columns:repeat(5,minmax(150px,1fr));gap:12px;overflow-x:auto;padding-bottom:4px}
+figure{margin:0;display:grid;gap:6px;min-width:0}
+figure img{width:100%;border-radius:14px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:12px;color:var(--ink-2)}
+.link img{width:100%;border-radius:14px;border:1px solid var(--line);display:block;background:#fff}
+.empty{border:1px dashed var(--line);border-radius:14px;display:grid;place-items:center;color:var(--ink-2);font-size:12px;min-height:120px}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>F7 · 홈 상태별 포인트 색</h1>
+    <p>홈 카드의 상태 줄 다섯 가지(보내기 전 · 호감 보냄 · 편지 보냄 · 둘 다 · 서로 연결됨)는 이미 들어가 있어요. 남은 건 <b>보낸 뒤 색</b>이에요. 지금은 보냄이 흰 바탕 회색이고 연결만 파랑인데, 팀 링크는 상태마다 다른 색 알약이에요.</p>
+  </header>
+
+  <section class="link">
+    <h2><span class="tag">팀 링크</span>상태마다 색이 달라요</h2>
+    <img src="img/link.jpg" alt="팀 링크 홈 상태">
+    <p class="note">서로 연결됨은 옅은 파랑 + 겹친 하트, 호감 보냄은 중간 파랑, 편지 보냄은 남색, 둘 다면 알약 두 개예요. 보내기 전 버튼은 없고(프로필에서 보냄), 보낸 결과만 카드 아래에 보여요.</p>
+  </section>
+
+  <section>
+    <h2><span class="tag">지금</span>보냄은 흰 바탕 회색, 연결만 파랑 · 카드 아래</h2>
+    <div class="row">
+      <figure><img src="img/b0.jpg" alt=""><figcaption>보내기 전</figcaption></figure>
+      <figure><img src="img/b1.jpg" alt=""><figcaption>호감 보냄</figcaption></figure>
+      <figure><img src="img/b2.jpg" alt=""><figcaption>편지 보냄</figcaption></figure>
+      <figure><img src="img/b3.jpg" alt=""><figcaption>둘 다</figcaption></figure>
+      <figure><img src="img/b4.jpg" alt=""><figcaption>서로 연결됨</figcaption></figure>
+    </div>
+    <p class="note">끝난 일은 "보냄"으로 작게 접히고 남은 행동이 넓어져요. 행동은 호감 = 주요(파랑), 편지 = 보조(연한 하늘)예요.</p>
+  </section>
+
+  <section>
+    <h2><span class="tag new">2</span>링크식 · 보낸 결과를 파랑 계열로 채움</h2>
+    <div class="row">
+      <div class="empty">보내기 전은 지금과 같음</div>
+      <figure><img src="img/l1.jpg" alt=""><figcaption>호감 보냄 · 중간 파랑</figcaption></figure>
+      <figure><img src="img/l2.jpg" alt=""><figcaption>편지 보냄 · 남색</figcaption></figure>
+      <figure><img src="img/l3.jpg" alt=""><figcaption>둘 다</figcaption></figure>
+      <figure><img src="img/l4.jpg" alt=""><figcaption>서로 연결됨 · 옅은 파랑</figcaption></figure>
+    </div>
+    <p class="note">결과가 한눈에 보이지만 <b>보냄과 남은 행동이 둘 다 진한 색</b>이라 무엇을 눌러야 하는지 흐려져요(편지 보냄 칸: 남색 보냄 옆에 파랑 호감 보내기).</p>
+  </section>
+
+  <section>
+    <h2><span class="tag new">3</span>장미 포인트 · 보냄은 뉴트럴, 서로 연결됨만 장미</h2>
+    <div class="row">
+      <div class="empty">보내기 전은 지금과 같음</div>
+      <figure><img src="img/r1.jpg" alt=""><figcaption>호감 보냄 · 하트만 장미</figcaption></figure>
+      <figure><img src="img/r2.jpg" alt=""><figcaption>편지 보냄</figcaption></figure>
+      <figure><img src="img/r3.jpg" alt=""><figcaption>둘 다</figcaption></figure>
+      <figure><img src="img/r4.jpg" alt=""><figcaption>서로 연결됨 · 연한 장미</figcaption></figure>
+    </div>
+    <p class="note">파랑은 "누를 것"에만 남기고, 끝난 일은 회색, <b>서로 이어진 순간만 장미</b>로 띄워요. 마음함 "서로 호감" · 편지함 "서로 연결됨"의 장미와 같은 말이 돼요.</p>
+  </section>
+
+  <section>
+    <h2><span class="tag">참고</span>버튼 줄을 카드 안에 둘 때 (지금 색)</h2>
+    <div class="row">
+      <figure><img src="img/i0.jpg" alt=""><figcaption>보내기 전</figcaption></figure>
+      <figure><img src="img/i1.jpg" alt=""><figcaption>호감 보냄</figcaption></figure>
+      <figure><img src="img/i2.jpg" alt=""><figcaption>편지 보냄</figcaption></figure>
+      <figure><img src="img/i3.jpg" alt=""><figcaption>둘 다</figcaption></figure>
+      <figure><img src="img/i4.jpg" alt=""><figcaption>서로 연결됨</figcaption></figure>
+    </div>
+    <p class="note">카드 안이면 보냄이 사진 위 회색 유리가 돼요. 지금 기본은 카드 아래예요(시연 도구에서 바꿀 수 있어요).</p>
+  </section>
+</div>

@@ -1,0 +1,55 @@
+<meta charset="utf-8">
+<title>편지함 채팅 없애기</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리(바뀌는 점) → 연결된 편지 화면 C1~C4 → 편지함 목록 → 지금(채팅 · 대화 이어가기) */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:28px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px;text-wrap:balance}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:78ch}
+ul b{color:var(--ink);font-weight:600}
+section{display:grid;gap:12px}
+h2{font:700 18px/1.4 var(--sans);margin:0}
+.note{margin:0;color:var(--ink-2);font-size:13px;max-width:78ch}
+.row{display:grid;grid-template-columns:repeat(4,minmax(0,240px));gap:20px}
+figure{margin:0;display:grid;gap:8px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:20px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+figcaption b{color:var(--ink)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+@media (max-width:900px){.row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<div class="wrap">
+  <header>
+    <h1>편지함 · 앱 안 채팅 없애기</h1>
+    <ul>
+      <li><b>피드백:</b> 야화 안에서는 채팅하지 않아요. 편지 한 통과 답장 한 통으로 서로의 연락처를 받고, 대화는 카카오톡 · 전화로 밖에서 해요.</li>
+      <li><b>모든 안 공통:</b> 연결된 편지를 누르거나 답장을 보낸 뒤에는 채팅 화면이 아니라 <b>편지 화면</b>(두 사람의 편지 + 서로의 연락처 + 복사)으로 가요. 채팅 화면과 입력창은 없애요.</li>
+      <li><b>고를 것:</b> "대화 이어가기" 버튼 자리를 어떻게 할지, 연락처를 위에 둘지 아래에 둘지.</li>
+    </ul>
+  </header>
+  <section><h2>연결된 편지 화면</h2>
+    <div class="row">
+    <figure><img src="img/C1.jpg" alt="C1"><figcaption><span class="tag new">C1</span><b>버튼만 빼기</b> · 지금 화면에서 "대화 이어가기"만 없앴어요. 연락처 위, 편지 아래</figcaption></figure>
+    <figure><img src="img/C2.jpg" alt="C2"><figcaption><span class="tag new">C2</span><b>아래 버튼을 복사로</b> · "느린오후님 카카오톡 ID 복사". 밖에서 이어가는 첫 동작을 크게</figcaption></figure>
+    <figure><img src="img/C3.jpg" alt="C3"><figcaption><span class="tag new">C3</span><b>편지 먼저, 연락처는 끝에</b> · 편지 두 통 → "서로의 연락처가 열렸어요" → 연락처. 편지를 읽고 내려오면 연락처가 나와요</figcaption></figure>
+    <figure><img src="img/C4.jpg" alt="C4"><figcaption><span class="tag new">C4</span><b>맨 위에 한 줄</b> · "서로의 연락처가 열렸어요" → 연락처 → 편지. 팀 링크와 같은 순서</figcaption></figure>
+  </div></section>
+  <section><h2>편지함 목록</h2>
+    <p class="note">연결된 편지는 지금처럼 "서로 연결됨 · 연락처 공개"로 보여요. 맨 아래 "UI 시연 · 대화는 이 브라우저에 저장돼요"만 빼요.</p>
+    <div class="row">
+    <figure><img src="img/list.jpg" alt="지금 목록"><figcaption><span class="tag">지금</span>맨 아래 "대화는 이 브라우저에 저장돼요"</figcaption></figure>
+    <figure><img src="img/listA.jpg" alt="바꾼 목록"><figcaption><span class="tag new">바꾼 뒤</span>아래 문구 없음</figcaption></figure>
+  </div></section>
+  <section><h2>지금</h2>
+    <div class="row">
+    <figure><img src="img/nowchat.jpg" alt="지금 채팅"><figcaption><span class="tag">지금</span>연결된 편지를 누르면 "느린오후님과의 편지" 채팅 화면 + 입력창</figcaption></figure>
+    <figure><img src="img/nowT.jpg" alt="지금 편지 화면"><figcaption><span class="tag">지금</span>편지 화면 아래 "대화 이어가기" → 채팅으로 가요</figcaption></figure>
+  </div></section>
+</div>

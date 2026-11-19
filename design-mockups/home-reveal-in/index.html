@@ -1,0 +1,45 @@
+<meta charset="utf-8">
+<title>인연 열어보기 카드</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리(같이 고친 점) → 지금 · A · B · C 네 장 */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:22px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:76ch}
+ul b{color:var(--ink);font-weight:600}
+.row{display:grid;grid-template-columns:repeat(4,minmax(0,240px));gap:20px}
+figure{margin:0;display:grid;gap:8px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:20px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+figcaption b{color:var(--ink)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+@media (max-width:900px){.row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+section{display:grid;gap:12px}
+h2{font:700 18px/1.4 var(--sans);margin:0}
+</style>
+<div class="wrap">
+  <header>
+    <h1>오늘의 인연 · 열기 전 카드 (C 버튼 없이 카드만)</h1>
+    <ul>
+      <li><b>왜 바꾸나:</b> 연 뒤를 "버튼 없이 카드만"(C)으로 하면 카드가 화면 아래까지 길어져요. 지금은 열기 전 카드 아래에 "인연 열어보기" 버튼이 따로 있어서 카드가 짧아, 열 때 카드 크기가 바뀌어요.</li>
+      <li><b>세 안 모두:</b> 열기 전 · 연 뒤 · 공개 전 카드가 같은 크기. "인연 열어보기"를 카드 안으로 넣어요. 카드 어디를 눌러도 열려요.</li>
+    </ul>
+  </header>
+  <section><h2>열기 전</h2><div class="row">
+    <figure><img src="img/now_pre.jpg" alt="지금"><figcaption><span class="tag">지금</span>카드 아래 따로 흰 버튼 · 카드가 짧아요</figcaption></figure>
+    <figure><img src="img/pA.jpg" alt="A"><figcaption><span class="tag new">A</span><b>카드 안 흰 버튼</b> · 지금 버튼을 그대로 카드 안 아래로("카드 안" 배치)</figcaption></figure>
+    <figure><img src="img/pB.jpg" alt="B"><figcaption><span class="tag new">B</span><b>카드 안 유리 버튼</b> · 흰 18% + 흐림 + 흰 선. 사진 위에서 덜 무거워요</figcaption></figure>
+    <figure><img src="img/pC.jpg" alt="C"><figcaption><span class="tag new">C</span><b>버튼 없이 가운데 표시</b> · 위 "12:00" · 가운데 "도착했어요" + "눌러서 열어보기" 칩. 공개 전 카드와 같은 모양</figcaption></figure>
+  </div></section>
+  <section><h2>연 뒤 · 공개 전 (세 안 공통)</h2><div class="row">
+    <figure><img src="img/opened.jpg" alt="연 뒤"><figcaption><span class="tag">연 뒤</span>버튼 없이 카드만 · 누르면 프로필</figcaption></figure>
+    <figure><img src="img/locked.jpg" alt="공개 전"><figcaption><span class="tag">공개 전</span>지금 그대로 · 위 시간 · 가운데 "공개 예정" + 남은 시간 칩</figcaption></figure>
+  </div></section>
+</div>

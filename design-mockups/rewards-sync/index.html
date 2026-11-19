@@ -1,0 +1,44 @@
+<meta charset="utf-8">
+<title>무료 리프 받기 씽크</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리(고른 조합 · 바뀐 점) → 부분마다 지금 · 고른 조합 두 장 */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:24px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px;text-wrap:balance}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:82ch}
+ul b{color:var(--ink);font-weight:600}
+section{display:grid;gap:10px}
+h2{font:700 18px/1.4 var(--sans);margin:0}h3{font:600 15px/1.4 var(--sans);margin:14px 0 0}h3 small{font-weight:400;color:var(--ink-2);font-size:13px;margin-left:6px}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,260px));gap:16px}
+figure{margin:0;display:grid;gap:6px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:18px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2)}
+.tag.new{background:var(--tag-new);color:#fff}
+@media (max-width:640px){.row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<div class="wrap">
+  <header>
+    <h1>무료 리프 받기 · 팀 링크에 맞추기</h1>
+    <ul>
+      <li><b>팀 링크:</b> 머리 제목 "무료 리프 받기" → 일일미션 · 신뢰를 더해요 · 친구 초대. 할 일은 우리와 같아요(빠진 기능 없음). 인증을 마치면 "✓ 완료"로 보여요.</li>
+      <li><b>우리 · 다른 점:</b> 머리 제목이 비어 있고 큰 제목 "작은 활동, 새로운 인연"이 따로 있어요. 받은 리프 숫자 · 잎이 파랑이라 파랑이 버튼 말고도 많아요. 받은 줄은 "✓ 받았어요"가 회색이라 끝난 줄이 잘 안 갈려요.</li>
+      <li><b>V1:</b> 머리 제목 "무료 리프 받기" + 큰 제목 빼기(다른 안쪽 화면과 같게, 간격 16). 받은 줄은 배지 · 인증과 같게 글자 45% + "✓ 받았어요" 진하게. 색은 그대로.</li>
+      <li><b>V2:</b> V1 + 리프 숫자 · 잎 · +140을 뉴트럴로. 파랑은 "초대 링크 보내기" 버튼에만.</li>
+      <li>왼쪽부터 처음 상태 · 미션 일부 받고 학력 인증 · 직장 확인 중 · 아래로 내린 모습.</li>
+    </ul>
+  </header>
+  <section><h2>친구 초대 · 가운데 정렬 + 초대장 아이콘</h2>
+    <p style="margin:0;color:var(--ink-2);max-width:82ch">V1은 데모에 넣었어요(맨 왼쪽). 친구 초대 카드만 가운데로: 아이콘 → "친구에게 야화 알려 주기" 17 → 리프 +140 → 설명 한 줄 → 버튼. 아이콘은 모두 Figma Icons 페이지에 있는 것: I1 · I2 손그림 봉투(Hand-drawn/Envelope, 원래 색 · 회색), I3 손그림 편지(Letter Sketch, 하트 봉인), I4 Line mail-open(다른 줄 아이콘과 같은 결).</p><div class="row" style="grid-template-columns:repeat(2,minmax(0,220px))"><figure><img src="img/v_top.jpg" alt="V1 넣은 위쪽" loading="lazy"><figcaption><span class="tag">V1 넣은 위쪽</span></figcaption></figure><figure><img src="img/v_now.jpg" alt="지금 친구 초대" loading="lazy"><figcaption><span class="tag">지금 친구 초대</span></figcaption></figure></div><div class="row" style="grid-template-columns:repeat(4,minmax(0,220px))"><figure><img src="img/I1.jpg" alt="I1 손그림 봉투 · 원래 색" loading="lazy"><figcaption><span class="tag new">I1 손그림 봉투 · 원래 색</span></figcaption></figure><figure><img src="img/I2.jpg" alt="I2 손그림 봉투 · 회색" loading="lazy"><figcaption><span class="tag new">I2 손그림 봉투 · 회색</span></figcaption></figure><figure><img src="img/I3.jpg" alt="I3 손그림 편지 · 흰 원" loading="lazy"><figcaption><span class="tag new">I3 손그림 편지 · 흰 원</span></figcaption></figure><figure><img src="img/I4.jpg" alt="I4 Line mail-open · 흰 원" loading="lazy"><figcaption><span class="tag new">I4 Line mail-open · 흰 원</span></figcaption></figure></div>
+  </section>
+  <section><h2>팀 링크</h2><div class="row" style="grid-template-columns:repeat(2,minmax(0,220px))"><figure><img src="img/t0.jpg" alt="팀 · 위" loading="lazy"><figcaption><span class="tag">팀 · 위</span></figcaption></figure><figure><img src="img/t1.jpg" alt="팀 · 아래" loading="lazy"><figcaption><span class="tag">팀 · 아래</span></figcaption></figure></div></section>
+  <section><h2>지금 우리</h2><div class="row" style="grid-template-columns:repeat(3,minmax(0,220px))"><figure><img src="img/n0.jpg" alt="처음" loading="lazy"><figcaption><span class="tag">처음</span></figcaption></figure><figure><img src="img/nm.jpg" alt="일부 받음" loading="lazy"><figcaption><span class="tag">일부 받음</span></figcaption></figure><figure><img src="img/nm2.jpg" alt="아래" loading="lazy"><figcaption><span class="tag">아래</span></figcaption></figure></div></section>
+  <section><h2>V1 · 머리 제목 + 받은 줄 흐리게</h2><div class="row" style="grid-template-columns:repeat(3,minmax(0,220px))"><figure><img src="img/a0.jpg" alt="처음" loading="lazy"><figcaption><span class="tag new">처음</span></figcaption></figure><figure><img src="img/am.jpg" alt="일부 받음" loading="lazy"><figcaption><span class="tag new">일부 받음</span></figcaption></figure><figure><img src="img/am2.jpg" alt="아래" loading="lazy"><figcaption><span class="tag new">아래</span></figcaption></figure></div></section>
+  <section><h2>V2 · V1 + 리프 숫자 뉴트럴</h2><div class="row" style="grid-template-columns:repeat(3,minmax(0,220px))"><figure><img src="img/b0.jpg" alt="처음" loading="lazy"><figcaption><span class="tag new">처음</span></figcaption></figure><figure><img src="img/bm.jpg" alt="일부 받음" loading="lazy"><figcaption><span class="tag new">일부 받음</span></figcaption></figure><figure><img src="img/bm2.jpg" alt="아래" loading="lazy"><figcaption><span class="tag new">아래</span></figcaption></figure></div></section>
+</div>

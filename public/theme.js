@@ -9,7 +9,8 @@ const LABEL={a:'A · 하늘 편지',b:'B · 여름빛 필름'};
 const read=()=>{try{return localStorage.getItem(KEY)}catch(e){return null}};
 const write=v=>{try{localStorage.setItem(KEY,v)}catch(e){}};
 const q=new URLSearchParams(location.search).get('theme');
-let theme=(q==='a'||q==='b')?q:(read()==='b'?'b':'a');if(q==='a'||q==='b')write(q);
+/* 2026-11-16: 시연 도구의 디자인 컨셉 고르기는 뺐어요. 기본은 A, 주소에 ?theme=b를 붙일 때만 B */
+let theme=q==='b'?'b':'a';write(theme);
 root.dataset.theme=theme;
 
 function sync(){
@@ -26,6 +27,6 @@ function mountControls(){
 }
 document.addEventListener('click',e=>{const b=e.target.closest('[data-theme-pick]');if(b){e.preventDefault();set(b.dataset.themePick);}});
 
-function boot(){mountControls();document.querySelectorAll('.tb-grain,.tb-caption,.tb-stamp,.tb-leak,#tb-serif').forEach(el=>el.remove());}
+function boot(){document.querySelector('.demo-dock .dock-concept')?.remove();document.querySelectorAll('.tb-grain,.tb-caption,.tb-stamp,.tb-leak,#tb-serif').forEach(el=>el.remove());}
 if(document.readyState==='complete')boot();else addEventListener('load',boot);
 })();

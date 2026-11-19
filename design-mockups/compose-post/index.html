@@ -1,0 +1,64 @@
+<meta charset="utf-8">
+<title>이야기 쓰기 화면</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리(가져온 것 · 우리 결로 바꾼 것) → P1~P3 (빈 화면 · 쓴 뒤) → 지금 · 팀 링크 */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:28px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px;text-wrap:balance}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:78ch}
+ul b{color:var(--ink);font-weight:600}
+section{display:grid;gap:12px}
+h2{font:700 18px/1.4 var(--sans);margin:0}
+.row{display:grid;grid-template-columns:repeat(6,minmax(0,180px));gap:16px}
+figure{margin:0;display:grid;gap:8px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:20px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+figcaption b{color:var(--ink)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+@media (max-width:1100px){.row{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:640px){.row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<div class="wrap">
+  <header>
+    <h1>익명 이야기 · 이야기 쓰기</h1>
+    <ul>
+      <li><b>지금:</b> 예전 틀 그대로예요. 큰 제목 "익명으로 남기는 이야기" + 설명 두 줄 + 빈 상자 + "파일 선택" 칸 두 개 + 맨 아래 버튼(하단 메뉴에 가려짐).</li>
+      <li><b>팀 링크에서 가져온 것:</b> 머리 줄 "이야기 쓰기" + 오른쪽 올리기, 사진 · 음성은 아이콘 두 개로, 줄 있는 편지지 + 날짜, 안내는 빈 칸 안 글로("최소 5글자 이상 작성해주세요. / 서로를 존중하는 이야기를 남겨주세요.").</li>
+      <li><b>우리 결로 바꾼 것:</b> 공용 머리 줄(가운데 제목 · 오른쪽 글자 버튼, 5글자 전엔 꺼짐), 글은 편지 쓰기와 같은 고운바탕 16/32 + 옅은 줄, 흰 상자 + 테두리 대신 은은한 회색 종이, 아이콘은 Figma Line 세트 24, 사진은 지금처럼 최대 3장.</li>
+    </ul>
+  </header>
+  <section><h2>시안</h2>
+    <div class="row">
+    <figure><img src="img/P1.jpg" alt="P1"><figcaption><span class="tag new">P1</span><b>팀 링크 구조 + 회색 종이</b> · 도구는 종이 위 오른쪽, 날짜는 종이 안 오른쪽 아래</figcaption></figure>
+    <figure><img src="img/P1f.jpg" alt="P1 쓴 뒤"><figcaption><span class="tag">P1</span>쓴 뒤 · 올리기 켜짐, 사진은 종이 아래</figcaption></figure>
+    <figure><img src="img/P2.jpg" alt="P2"><figcaption><span class="tag new">P2</span><b>종이 없이 줄만 · 도구는 아래</b> · 흰 화면에 바로 쓰고, 사진 · 음성 · 글자 수는 아래 막대</figcaption></figure>
+    <figure><img src="img/P2f.jpg" alt="P2 쓴 뒤"><figcaption><span class="tag">P2</span>쓴 뒤 · 막대는 키보드 위에 붙어요</figcaption></figure>
+    <figure><img src="img/P3.jpg" alt="P3"><figcaption><span class="tag new">P3</span><b>도구를 종이 안에 · 아래 큰 버튼</b> · 사진 · 음성 · 날짜가 종이 아래 한 줄, 올리기는 아래 꽉 찬 버튼</figcaption></figure>
+    <figure><img src="img/P3f.jpg" alt="P3 쓴 뒤"><figcaption><span class="tag">P3</span>쓴 뒤 · 사진도 종이 안</figcaption></figure>
+  </div></section>
+  <section><h2>P3 · 음성 메시지 넣기</h2>
+    <p style="margin:0;color:var(--ink-2);font-size:13px;max-width:78ch">마이크를 누르면 시트가 올라와 바로 녹음해요(최대 1분). 녹음한 걸 들어 보고 넣으면 종이 안에 사진처럼 붙고, 올라간 글에서는 같은 모양의 재생 줄로 보여요. 음성은 한 개만이라 넣은 뒤엔 마이크가 흐려져요.</p>
+    <div class="row" style="grid-template-columns:repeat(4,minmax(0,220px))">
+    <figure><img src="img/R0.jpg" alt="녹음 전"><figcaption><span class="tag new">1</span><b>녹음 전</b> · 0:00 / 1:00 · 파란 녹음 버튼</figcaption></figure>
+    <figure><img src="img/R1.jpg" alt="녹음 중"><figcaption><span class="tag new">2</span><b>녹음 중</b> · 빨간 점 "녹음 중" · 시간 · 소리 막대 · 멈추기</figcaption></figure>
+    <figure><img src="img/R2.jpg" alt="들어 보기"><figcaption><span class="tag new">3</span><b>들어 보기</b> · 재생 줄 + 다시 녹음 / 넣기</figcaption></figure>
+    <figure><img src="img/R3.jpg" alt="글에 붙은 모습"><figcaption><span class="tag new">4</span><b>글에 붙은 모습</b> · 사진 아래 재생 줄 + × 빼기</figcaption></figure>
+  </div>
+    <div class="row" style="grid-template-columns:repeat(4,minmax(0,220px))">
+    <figure><img src="img/R6.jpg" alt="목록"><figcaption><span class="tag new">5</span><b>올라간 뒤 · 목록</b> · 글 아래 재생 줄, 목록에서 바로 들어요</figcaption></figure>
+    <figure><img src="img/R4.jpg" alt="상세"><figcaption><span class="tag new">6</span><b>올라간 뒤 · 글 안</b> · 지금의 기본 재생기 대신 같은 재생 줄</figcaption></figure>
+    <figure><img src="img/R5.jpg" alt="재생 중"><figcaption><span class="tag new">7</span><b>재생 중</b> · 멈춤 버튼 · 들은 만큼 막대가 진해져요</figcaption></figure>
+  </div></section>
+  <section><h2>지금 · 팀 링크</h2>
+    <div class="row">
+    <figure><img src="img/now.jpg" alt="지금"><figcaption><span class="tag">지금</span>예전 틀 · 파일 선택 칸</figcaption></figure>
+    <figure><img src="img/team.jpg" alt="팀 링크"><figcaption><span class="tag">팀 링크</span>머리 줄 작성 · 아이콘 두 개 · 줄 있는 종이</figcaption></figure>
+  </div></section>
+</div>

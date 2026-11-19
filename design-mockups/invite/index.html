@@ -1,0 +1,40 @@
+<meta charset="utf-8">
+<title>친구 초대 시안</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 제목 → A · B · C 세 장 → 지금 · 지난 시안(접힘) */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--panel:#FFFFFF;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1100px;margin:0 auto;display:grid;gap:24px}
+h1{font:700 22px/1.35 var(--sans);margin:0}
+.row{display:grid;grid-template-columns:repeat(3,minmax(0,320px));gap:24px}
+figure{margin:0;display:grid;gap:8px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:20px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+figcaption b{color:var(--ink)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+details{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 20px}
+summary{cursor:pointer;font-weight:600;min-height:28px}
+details .row{margin-top:16px;grid-template-columns:repeat(2,minmax(0,260px))}
+@media (max-width:760px){.row{grid-template-columns:1fr;max-width:340px}}
+</style>
+<div class="wrap">
+  <h1>친구 초대 · 세 가지</h1>
+  <div class="row">
+    <figure><img src="img/i_A.jpg" alt="A 초대장"><figcaption><span class="tag new">A</span><b>초대장</b> · 친구가 받을 화면을 표 모양으로 미리 보여 주고, 코드는 떼는 쪽에. 리프는 아래 한 줄</figcaption></figure>
+    <figure><img src="img/i_B.jpg" alt="B 현황"><figcaption><span class="tag new">B</span><b>초대 현황</b> · 초대한 친구 수 · 받은 리프를 위에, 친구마다 어디까지 왔는지 줄로</figcaption></figure>
+    <figure><img src="img/i_C.jpg" alt="C 글 중심"><figcaption><span class="tag new">C</span><b>글 중심</b> · 큰 문장 한 줄과 세 단계 세로 줄, 아래 버튼 + 코드 복사 글자 버튼</figcaption></figure>
+  </div>
+  <details>
+    <summary>지금 · 지난 시안 보기</summary>
+    <div class="row">
+      <figure><img src="img/b_invite.jpg" alt="지금"><figcaption><span class="tag">지금</span></figcaption></figure>
+      <figure><img src="img/a_invite.jpg" alt="지난 시안"><figcaption><span class="tag">지난 시안</span></figcaption></figure>
+    </div>
+  </details>
+</div>

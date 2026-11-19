@@ -1,0 +1,63 @@
+<meta charset="utf-8">
+<title>인증 마크 색</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리 → 지금(홈 · 프로필 · 팀 링크) → 제안 A · B · C 세 칸(카드 아래쪽 + 마크 확대) */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--panel:#FFFFFF;--chip:#E9EDF1;--tag-new:#377398;
+  --sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--panel:#1C2126;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:1120px;margin:0 auto;display:grid;gap:36px}
+header h1{font:700 24px/1.35 var(--sans);margin:0 0 6px;letter-spacing:-.3px}
+header p{margin:0;color:var(--ink-2);max-width:70ch}
+section{display:grid;gap:12px;min-width:0}
+h2{font:700 18px/1.4 var(--sans);margin:0}
+.row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;display:grid;gap:10px;align-content:start;min-width:0}
+.card img{width:100%;display:block;border-radius:12px;border:1px solid var(--line);background:#fff}
+.card b{font-weight:600}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+.note{margin:0;color:var(--ink-2);font-size:13px}
+.note b{color:var(--ink)}
+@media (max-width:860px){.row{grid-template-columns:1fr}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>F9 · 인증 마크 포인트 색</h1>
+    <p>홈 카드는 이름 · 나이 · 사는 곳 · 한 장면이 모두 흰 글씨라, 같은 흰색인 인증 마크가 그 안에 묻혀요. 마크 모양(톱니 배지 + 체크)은 그대로 두고 <b>홈 카드의 마크만 색</b>을 바꿔요. 프로필의 파란 배지는 지금도 포인트 색이에요.</p>
+  </header>
+
+  <section>
+    <h2>지금</h2>
+    <div class="row">
+      <div class="card"><span><span class="tag">홈 카드</span>흰 배지</span><img src="img/zh0.jpg" alt="홈 카드 지금"><img src="img/h0.jpg" alt=""></div>
+      <div class="card"><span><span class="tag">프로필</span>파란 배지 · 흰 체크</span><img src="img/prof.jpg" alt="프로필 지금"></div>
+      <div class="card"><span><span class="tag">팀 링크</span>홈은 흰 배지, 프로필은 연보라</span><img src="img/link_home.jpg" alt="팀 링크 홈"><img src="img/link_prof.jpg" alt="팀 링크 프로필"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>A 파란 배지 · 크기 네 가지 <span class="tag new" style="vertical-align:3px;margin-left:6px">새로</span></h2>
+    <p class="note">이름 글자는 24px이에요. 지금 배지는 20px이라 글자보다 한참 작아 보여요.</p>
+    <div class="row" style="grid-template-columns:repeat(4,minmax(0,1fr))">
+      <div class="card"><span><span class="tag">20</span>지금</span><img src="img/zs20.jpg" alt="20px"><img src="img/s20.jpg" alt=""></div>
+      <div class="card"><span><span class="tag new">22</span></span><img src="img/zs22.jpg" alt="22px"><img src="img/s22.jpg" alt=""></div>
+      <div class="card"><span><span class="tag new">24</span>이름 글자와 같은 높이</span><img src="img/zs24.jpg" alt="24px"><img src="img/s24.jpg" alt=""></div>
+      <div class="card"><span><span class="tag new">26</span></span><img src="img/zs26.jpg" alt="26px"><img src="img/s26.jpg" alt=""></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>홈 카드 마크 색 · 세 가지 (A로 정함)</h2>
+    <div class="row">
+      <div class="card"><span><span class="tag new">A</span><b>파란 배지 · 흰 체크</b></span><img src="img/zhA.jpg" alt="A 확대"><img src="img/hA.jpg" alt="A"><p class="note">프로필과 <b>똑같은 마크</b>예요. 사진 위에서도 가장 또렷하게 "인증"으로 읽혀요.</p></div>
+      <div class="card"><span><span class="tag new">B</span><b>연한 하늘 배지 · 진한 파랑 체크</b></span><img src="img/zhB.jpg" alt="B 확대"><img src="img/hB.jpg" alt="B"><p class="note">팀 링크의 파스텔 배지 결을 하늘색으로. 부드럽지만 밝은 사진 위에선 흰 마크와 비슷해 보일 수 있어요.</p></div>
+      <div class="card"><span><span class="tag new">C</span><b>흰 배지 · 파랑 체크</b></span><img src="img/zhC.jpg" alt="C 확대"><img src="img/hC.jpg" alt="C"><p class="note">지금 흰 배지에 체크만 파랑. 가장 조용하고, 색은 체크 한 점이에요.</p></div>
+    </div>
+  </section>
+</div>

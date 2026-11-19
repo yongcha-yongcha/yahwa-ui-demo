@@ -1,0 +1,40 @@
+<meta charset="utf-8">
+<title>익명 이야기 탭</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리(같이 고친 점) → 지금 · A · B · C 네 장 */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:22px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:76ch}
+ul b{color:var(--ink);font-weight:600}
+.row{display:grid;grid-template-columns:repeat(5,minmax(0,220px));gap:20px}
+figure{margin:0;display:grid;gap:8px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:20px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+figcaption b{color:var(--ink)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+@media (max-width:900px){.row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<div class="wrap">
+  <header>
+    <h1>익명 이야기 · 탭</h1>
+    <ul>
+      <li><b>지금 걸리는 점:</b> 고른 탭만 굵기가 확 커지고(14 보통 → 굵게), 밑줄이 파랑이라 마음함 · 교환 탭(검정 짧은 밑줄)과 결이 달라요. 탭 아래 선과 첫 글의 위 선이 겹쳐 2px로 두껍게 보이고, "이용수칙"이 탭과 같은 줄에 있어 네 번째 탭처럼 보여요.</li>
+      <li><b>A · B · C 공통:</b> 겹친 선을 없애고, 글자는 15 SemiBold 하나로 맞춰 고른 탭은 cool-neutral-900, 나머지는 400이에요.</li>
+    </ul>
+  </header>
+  <div class="row">
+    <figure><img src="img/now.jpg" alt="지금"><figcaption><span class="tag">지금</span>14 · 고르면 굵게 + 파랑 밑줄 · 이용수칙이 탭 줄 끝 · 선 두 겹</figcaption></figure>
+    <figure><img src="img/A.jpg" alt="A"><figcaption><span class="tag new">A</span><b>마음함 탭과 같은 결</b> · 검정 짧은 밑줄 2, 전체 선 없음. 이용수칙은 탭 줄 끝에 책 아이콘 + 13 회색 글자로 구분</figcaption></figure>
+    <figure><img src="img/B.jpg" alt="B"><figcaption><span class="tag new">B</span><b>A + 이용수칙을 머리로</b> · 종 옆 책 아이콘(44). 탭 줄에는 탭만 남아요</figcaption></figure>
+    <figure><img src="img/C.jpg" alt="C"><figcaption><span class="tag new">C</span><b>알약 칩</b> · 36 높이, 고른 칩 검정 바탕 · 흰 글자, 나머지 흰 바탕 + 선. 이용수칙은 B처럼 머리로</figcaption></figure>
+    <figure><img src="img/hb.jpg" alt="마음함"><figcaption><span class="tag">참고</span>마음함 탭(지금 데모)</figcaption></figure>
+  </div>
+</div>

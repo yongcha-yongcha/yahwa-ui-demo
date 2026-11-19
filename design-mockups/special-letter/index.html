@@ -1,0 +1,44 @@
+<meta charset="utf-8">
+<title>특별편지 45 · 70</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리(바뀌는 내용 · 같이 바뀌는 곳) → 지금 · S1 · S1 특별편지 고름 · S2 · S3 */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:28px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px;text-wrap:balance}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:78ch}
+ul b{color:var(--ink);font-weight:600}
+section{display:grid;gap:12px}
+h2{font:700 18px/1.4 var(--sans);margin:0}
+.row{display:grid;grid-template-columns:repeat(5,minmax(0,220px));gap:20px}
+figure{margin:0;display:grid;gap:8px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:20px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+figcaption b{color:var(--ink)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+@media (max-width:900px){.row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<div class="wrap">
+  <header>
+    <h1>편지 보내기 시트 · 편지 45 / 특별편지 70 (팀 링크 기준)</h1>
+    <ul>
+      <li><b>바뀌는 내용:</b> 편지 40 → <b>편지 45</b> "내 편지를 전해요", 무료 답장 편지 80 → <b>특별편지 70</b> + 체크 두 줄 "상대 편지함 최상단 표시" · "상대 무료답장 가능".</li>
+      <li><b>모양:</b> 지금 넣은 A 시트 그대로, 글 · 가격만 바꿨어요. 특별편지 체크는 sky-600.</li>
+      <li><b>같이 바뀌는 곳(팀 링크 규칙):</b> 받은 편지 답장 비용 40 → 45(특별편지면 무료) · 보낸 편지 "무료 답장으로 바꾸기 40" → "특별편지로 바꾸기" 추가 25 · 편지함 · 문구의 "무료 답장 편지" → "특별편지".</li>
+      <li><b>참고:</b> 팀 링크는 성별에 따라 가격이 달라요(남성 45 · 70, 여성 15 · 25). 시안은 화면에 나온 45 · 70으로 찍었어요.</li>
+    </ul>
+  </header>
+  <section><div class="row">
+    <figure><img src="img/now.jpg" alt="지금"><figcaption><span class="tag">지금</span>편지 40 · 무료 답장 편지 80</figcaption></figure>
+    <figure><img src="img/S1.jpg" alt="S1"><figcaption><span class="tag new">S1</span><b>내용만 바꿈</b> · 제목 · 안내는 지금 그대로, 편지 "내 편지를 전해요" + 특별편지 체크 두 줄</figcaption></figure>
+    <figure><img src="img/S1b.jpg" alt="S1 특별편지"><figcaption><span class="tag new">S1</span>특별편지를 고르면 · 보내면 25리프 남아요</figcaption></figure>
+    <figure><img src="img/S2.jpg" alt="S2"><figcaption><span class="tag new">S2</span><b>팀 링크 문구까지</b> · 제목 "어떻게 전할까요?", 안내 "상대가 3일 동안 읽지 않으면 사용한 리프는 돌아와요."는 버튼 위로</figcaption></figure>
+    <figure><img src="img/S3.jpg" alt="S3"><figcaption><span class="tag new">S3</span><b>편지 설명 빼기</b> · 편지는 이름만, 특별편지만 혜택 두 줄. 다른 점이 더 잘 보여요</figcaption></figure>
+  </div></section>
+</div>

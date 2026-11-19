@@ -1,0 +1,139 @@
+/* ─────────────────────────────────────────────────────────────
+   야화 버튼 시스템 (2026-11-15, 시안 design-mockups/button-system/)
+   - 위계: Primary(진한 바탕) · Secondary(연한 바탕 + Primary 색 글씨) · Tertiary(흰 바탕 + 회색 선) · Text(바탕 없음)
+   - 크기: L 52 · M 44 · S 34(누르는 영역 44). 모서리 L·M 12, S 10. 네 위계 모두 같은 높이.
+   - 색: tokens.css의 --btn-* 토큰. 시연 도구 "버튼 색"을 바꾸면 Primary와 Secondary가 함께 바뀌어요(tone.css).
+   - 지금 입힌 곳: 프로필 호감(Primary) · 편지(Secondary) 버튼, 시트 확인(Primary) · 취소(Tertiary), 마음함 아래 버튼(Secondary).
+   ───────────────────────────────────────────────────────────── */
+
+/* 공통 클래스 · 새로 만드는 버튼은 이걸 써요 */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:52px;padding:0 20px;border:0;border-radius:12px;
+  font:600 15px/1 var(--font-sans);cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent;
+  transition:background-color 160ms cubic-bezier(0.23,1,0.32,1),color 160ms ease,transform 120ms cubic-bezier(0.23,1,0.32,1)}
+.btn.btn-M{height:44px;padding:0 16px;font-size:14px}
+.btn.btn-S{height:34px;padding:0 12px;border-radius:10px;font-size:13px;position:relative}
+.btn.btn-S::after{content:"";position:absolute;inset:-5px 0}          /* 누르는 영역 44 */
+.btn.btn-block{display:flex;width:100%}
+.btn:active{transform:scale(.97)}
+.btn:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:2px}
+.btn-primary{background:var(--btn-primary-bg);color:var(--btn-primary-fg)}
+.btn-primary:active{background:var(--btn-primary-press)}
+.btn-secondary{background:var(--btn-secondary-bg);color:var(--btn-secondary-fg)}
+.btn-secondary:active{background:var(--btn-secondary-press)}
+.btn-tertiary{background:var(--btn-tertiary-bg);color:var(--btn-tertiary-fg);box-shadow:inset 0 0 0 1px var(--btn-tertiary-line)}
+.btn-tertiary:active{background:var(--btn-tertiary-press)}
+.btn-text{background:none;color:var(--btn-text-fg);padding-inline:12px}
+.btn-text.btn-S{padding-inline:8px}
+.btn-text:active{background:var(--btn-text-press)}
+.btn:disabled{background:var(--btn-disabled-bg);color:var(--btn-disabled-fg);box-shadow:none;transform:none;cursor:default}
+.btn-text:disabled{background:none}
+.btn.is-done{background:var(--btn-secondary-bg);color:var(--btn-secondary-fg);transform:none;cursor:default}
+
+/* ── 시트 · 확인(Primary) + 취소(Tertiary) ── */
+.phone .photo-sheet-primary:not(.lt-decline-go){background:var(--btn-primary-bg);color:var(--btn-primary-fg)}
+.phone .photo-sheet-primary:not(.lt-decline-go):active{background:var(--btn-primary-press)}
+.phone .photo-sheet-ghost{background:var(--btn-tertiary-bg);color:var(--btn-tertiary-fg);box-shadow:inset 0 0 0 1px var(--btn-tertiary-line)}
+.phone .photo-sheet-ghost:active{background:var(--btn-tertiary-press)}
+
+/* ── 마음함 아래 버튼 · Secondary ── */
+.phone #heartbox .ob-bottom .ob-next{background:var(--btn-secondary-bg);color:var(--btn-secondary-fg)}
+.phone #heartbox .ob-bottom .ob-next:active{background:var(--btn-secondary-press)}
+
+/* ── 프로필 · 호감 · 편지 떠 있는 둥근 버튼 (시안 design-mockups/profile-actions B, 2026-11-18) ──
+   테두리 없이 회색 그림자 두 겹으로 바탕과 구분. 할 수 있는 일 = 흰 바탕(편지) · 진한 파랑(호감),
+   끝나고 기다리는 중 = 회색, 새로 온 것 = 장미 점, 서로 이어짐 = 장미 */
+#match-profile .profile-actions .act{--act-shadow:0 10px 24px -6px color-mix(in srgb,var(--cool-neutral-900) 32%,transparent),0 2px 6px color-mix(in srgb,var(--cool-neutral-900) 12%,transparent)}
+#match-profile #send-interest.act{background:var(--btn-primary-bg);color:var(--btn-primary-fg);box-shadow:var(--act-shadow)}
+#match-profile #write-letter.act{background:var(--color-bg-surface);color:var(--sky-600);box-shadow:var(--act-shadow)}
+#match-profile #write-letter.act:active{background:var(--cool-neutral-50)}
+/* 호감 보냄 = 회색 바탕 + 회색 하트, 누를 수 없어요 */
+#match-profile #send-interest.act.is-sent:disabled{background:var(--cool-neutral-100);color:var(--cool-neutral-400);box-shadow:var(--act-shadow)}
+/* 보내는 순간은 진한 파랑 그대로 */
+#match-profile #send-interest.act.is-popping,
+#match-profile #send-interest.act.is-sent.is-popping:disabled{background:var(--btn-primary-bg);color:var(--btn-primary-fg);box-shadow:var(--act-shadow)}
+/* 서로 호감 = 장미 바탕 + 흰 하트 */
+#match-profile #send-interest.act.is-sent.is-mutual:disabled{background:var(--rose-500);color:var(--white);box-shadow:var(--act-shadow)}
+/* 편지 상태(data-lt): 보냄(답장 기다림) 회색 · 서로 연결됨 장미 · 안 읽은 받은 편지 장미 점 */
+#match-profile #write-letter.act[data-lt="sent"]{background:var(--cool-neutral-100);color:var(--cool-neutral-400)}
+#match-profile #write-letter.act[data-lt="conn"]{background:var(--rose-500);color:var(--white)}
+#match-profile #write-letter.act[data-lt="new"]::after{content:'';position:absolute;right:2px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--color-fg-love);box-shadow:0 0 0 2px var(--color-bg-surface)}
+
+/* ── 홈 상태 줄 (F7) · 열린 카드 아래쪽, 인연 열어보기와 같은 자리 ── */
+#discovery .daily-card .nov-actions{position:absolute;z-index:5;left:20px;right:20px;bottom:20px;display:grid;grid-template-columns:1fr 1fr;gap:8px;
+  transition:opacity 320ms cubic-bezier(0.23,1,0.32,1)}
+#discovery .daily-card .nov-actions.one{grid-template-columns:1fr}
+#discovery .daily-card .nov-actions .btn{width:100%;padding:0 12px;box-shadow:0 6px 18px color-mix(in srgb,var(--cool-neutral-950) 18%,transparent)}
+#discovery .daily-card .nov-actions .btn svg{width:18px;height:18px;flex:none}
+/* 끝난 일(시안 done-state ④ 작게 접기): 사진 위에 옅게 깔리는 흰 테두리 칩, 그림자 없음. 하나만 끝났으면 폭을 줄여 남은 행동이 넓어져요 */
+#discovery .daily-card .nov-actions .btn.is-done{cursor:default;background:color-mix(in srgb,var(--white) 18%,transparent);color:var(--white);
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--white) 35%,transparent)}
+#discovery .daily-card .nov-actions.fold{grid-template-columns:auto 1fr}
+#discovery .daily-card .nov-actions.fold .btn.is-done{padding:0 16px;font-size:14px}
+#discovery .daily-card[data-opening] .nov-actions{opacity:0;pointer-events:none}
+/* 버튼 줄만큼 이름 · 한 장면 글을 위로 올려요 (20 + 52 + 12) */
+#discovery #daily-grid.nov-single-deck .daily-card.has-actions .nov-open-copy{padding-bottom:84px!important}
+
+/* ── 홈 상태 줄 자리 · 카드 아래(시안 home-row-place B) ──
+   시연 도구 "버튼 자리"에서 카드 아래를 고르면 카드가 64px 짧아지고(간격 12 → 76), 버튼 줄이 카드 밖 흰 바탕에 놓여요. */
+#nov-actions-below{display:none}
+html[data-cardrow="below"]{--home-card-pager-gap:76px}
+html[data-cardrow="below"] #discovery .daily-card>.nov-actions{display:none}
+html[data-cardrow="below"] #discovery #daily-grid.nov-single-deck .daily-card.has-actions .nov-open-copy{padding-bottom:20px!important}
+html[data-cardrow="below"] #discovery #nov-actions-below:not([hidden]){display:grid;position:absolute;z-index:3;left:0;right:0;/* 부모가 이미 카드와 같은 폭(좌우 20 안쪽)이라 0 */bottom:calc(var(--home-pager-h) + 12px);
+  grid-template-columns:1fr 1fr;gap:8px}
+html[data-cardrow="below"] #discovery #nov-actions-below.fold{grid-template-columns:auto 1fr}
+html[data-cardrow="below"] #discovery #nov-actions-below.one{grid-template-columns:1fr}
+#nov-actions-below .btn{width:100%;padding:0 12px}
+/* 카드 아래 배치에서는 인연 열어보기도 카드 밖 같은 자리(시안 open-to-actions B). 색은 시연 도구 "인연 열어보기 버튼"을 따르고, 흰 버튼일 때는 회색 선을 둘러요 */
+html[data-cardrow="below"] #discovery .daily-card .rv-open{display:none}
+html[data-cardrow="below"] #discovery .daily-card.rv-ready .card-scene-preview{bottom:20px!important}
+.nov-open-below{background:var(--reveal-btn-bg);color:var(--reveal-btn-fg);box-shadow:inset 0 0 0 1px var(--btn-tertiary-line);cursor:pointer}
+html:is([data-open="deep"],[data-open="sky200"],[data-open="sky300"]) .nov-open-below{box-shadow:none}
+.nov-below-ghost .btn{width:100%}
+/* 아직 공개 전: 비활성 버튼(회색) + 언제 열 수 있는지 */
+.nov-locked-below{background:var(--btn-disabled-bg);color:var(--btn-disabled-fg);cursor:default}
+#nov-actions-below .btn svg{width:18px;height:18px;flex:none}
+#nov-actions-below .btn.is-done{cursor:default;background:var(--btn-tertiary-bg);color:var(--btn-secondary-fg);box-shadow:inset 0 0 0 1px var(--btn-tertiary-line)}
+#nov-actions-below.fold .btn.is-done{padding:0 16px;font-size:14px}
+
+/* ── 넘김 표시 (시안 home-pager) ──
+   1 · 옆 카드 살짝: 지금 카드는 가운데, 이전 · 다음 카드가 양옆에 20씩. 폭은 화면 비율로 계산해서 어떤 폭에서도 같아요
+   (카드 = 화면 폭 − 양옆 30, 그중 간격 10 · 보이는 폭 20). 아래 ‹ 1 / 8 ›는 숨기고 그 높이만큼 카드가 커져요.
+   5 · 사진 위 숫자: 카드 오른쪽 위에 "1 / 8", 아래 ‹ 1 / 8 ›는 숨겨요. */
+html:is([data-pager="peek"],[data-pager="chip"]){--home-pager-h:0px}
+html:is([data-pager="peek"],[data-pager="chip"]) #discovery #nov-deck-controls{display:none!important}
+html[data-pager="peek"]{--deck-peek:20px;--deck-peek-gap:10px}
+html[data-pager="peek"] #discovery #daily-grid.nov-single-deck{padding:0 calc(var(--deck-peek) + var(--deck-peek-gap))!important;scroll-padding:0 calc(var(--deck-peek) + var(--deck-peek-gap));gap:var(--deck-peek-gap)!important}
+html[data-pager="peek"] #discovery #nov-actions-below:not([hidden]){left:calc(var(--deck-peek) + var(--deck-peek-gap) - var(--layout-gutter));right:calc(var(--deck-peek) + var(--deck-peek-gap) - var(--layout-gutter))}
+.nov-count{display:none}
+html[data-pager="chip"] #discovery #daily-grid .daily-card>.nov-count{display:block;position:absolute;z-index:6;top:16px;right:16px;padding:5px 8px;border-radius:10px;
+  background:color-mix(in srgb,var(--cool-neutral-950) 42%,transparent);color:var(--white);font:600 12px/1 var(--font-sans);font-variant-numeric:tabular-nums;pointer-events:none}
+
+@media (prefers-reduced-motion:reduce){.btn{transition:none}.btn:active{transform:none}}
+
+/* F7 홈 상태별 포인트 색 · 3 장미 포인트 (시안 design-mockups/home-state-color, 2026-11-17)
+   파랑은 누를 것(호감 보내기 · 편지 보내기)에만, 끝난 일(보냄)은 뉴트럴 그대로,
+   호감 보냄의 채운 하트와 서로 연결됨만 장미 — 마음함 "서로 호감" · 편지함 "서로 연결됨"과 같은 말 */
+#discovery .nov-actions .btn.is-done svg[fill="currentColor"]{color:var(--color-fg-love)}
+html #discovery .nov-actions.one .btn-primary{background:var(--color-bg-love-soft);color:var(--color-fg-love-strong);box-shadow:none}
+html #discovery .nov-actions.one .btn-primary:active{background:color-mix(in srgb,var(--rose-200,#F3CED7) 70%,var(--color-bg-love-soft))}
+html #discovery .nov-actions.one .btn-primary svg{color:var(--color-fg-love)}
+
+/* 서로 연결됨 버튼 톤 (팀 피드백 3 · 시안 love-tone A, 2026-11-19): 연한 장미 + 진한 장미 글자 → 장미 바탕 + 흰 글자 */
+html #discovery .nov-actions.one .btn-primary{background:var(--rose-500);color:var(--white)}
+html #discovery .nov-actions.one .btn-primary:active{background:var(--rose-600)}
+html #discovery .nov-actions.one .btn-primary svg{color:var(--white)}
+
+/* ── Action Card · 카드 전체가 버튼 (시안 design-mockups/upgrade-btn X1, 2026-11-19) ──
+   뉴트럴 회색 카드 · 제목 15 + 아래 한 줄 12 + 오른쪽 꺾쇠. 따로 된 버튼 없이 카드 어디를 눌러도 돼요.
+   지금 입힌 곳: 보낸 편지 "특별편지로 바꾸기 · 추가 25리프"(편지 바로 아래, 안내 두 줄 위) */
+.act-card{display:flex;align-items:center;gap:12px;width:100%;min-height:64px;padding:12px 12px 12px 16px;border:0;border-radius:16px;background:var(--cool-neutral-50);text-align:left;font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color 160ms ease,transform 120ms cubic-bezier(0.23,1,0.32,1)}
+#fx-body .act-card{margin:16px 0 12px}
+.act-card:active{background:var(--cool-neutral-100);transform:scale(.98)}
+.act-card:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:2px}
+.act-card>span{flex:1;min-width:0}
+.act-card b{display:block;font:600 15px/22px var(--font-sans);color:var(--color-fg-primary)}
+.act-card small{display:flex;align-items:center;gap:2px;font:400 12px/18px var(--font-sans);color:var(--color-fg-tertiary)}
+.act-card small svg{width:13px;height:13px;flex:none;fill:none;stroke:var(--cool-neutral-500);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.act-card>svg{width:20px;height:20px;flex:none;fill:none;stroke:var(--cool-neutral-400);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+@media (prefers-reduced-motion:reduce){.act-card{transition:none}.act-card:active{transform:none}}
