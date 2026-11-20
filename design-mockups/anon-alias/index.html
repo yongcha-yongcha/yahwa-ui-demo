@@ -1,0 +1,50 @@
+<meta charset="utf-8">
+<title>익명 이야기 닉네임</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* 레이아웃: 머리(고른 조합 · 바뀐 점) → 부분마다 지금 · 고른 조합 두 장 */
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:24px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px;text-wrap:balance}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:82ch}
+ul b{color:var(--ink);font-weight:600}
+section{display:grid;gap:10px}
+h2{font:700 18px/1.4 var(--sans);margin:0}h3{font:600 15px/1.4 var(--sans);margin:14px 0 0}h3 small{font-weight:400;color:var(--ink-2);font-size:13px;margin-left:6px}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,260px));gap:16px}
+figure{margin:0;display:grid;gap:6px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:18px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2)}
+.tag.new{background:var(--tag-new);color:#fff}
+@media (max-width:640px){.row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<div class="wrap">
+  <header>
+    <h1>익명 이야기 · 글마다 바뀌는 닉네임 + 프로필 눌러 교환</h1>
+    <ul>
+      <li><b>피드백:</b> 남성 · 여성 표시 없이, 글마다 새로 정해지는 익명 이름. 같은 글 안에서는 한 사람이 같은 이름을 계속 써요. 프로필 교환은 대놓고 버튼으로 두지 않고 프로필(얼굴 · 이름)을 눌렀을 때만 바텀 시트로.</li>
+      <li><b>이름 짓기(우리 결):</b> "때 · 곳 + 마음 + 작은 꽃 · 작은 동물" 세 마디. 예: 퇴근길에 다정한 라일락 · 달빛 아래 수줍은 수국 · 비 오는 날 느긋한 고양이 · 옥상에서 조용한 반딧불이. 낱말 12개씩 → 1,728가지, 글 번호 + 사람으로 고정해서 같은 글 안에선 안 바뀌어요.</li>
+      <li><b>표시:</b> 성별 칩 · "익명 1 · 익명 2"는 빼요. 글쓴이에겐 작은 회색 "글쓴이", 내 글 · 댓글엔 "나". 얼굴은 파스텔 원(이름마다 색) — A는 꽃 · 동물 이름 첫 글자(고운바탕), B는 손그림 꽃 하나.</li>
+      <li><b>답글:</b> 본문 앞에 "@이름"을 파랑으로(참고 이미지 결). 답글 쓰는 중 바에도 "@이름에게 답글". 시간은 이름 줄에서 아래 줄(시간 · 공감 · 답글 달기)로 내려서 긴 이름이 들어가도 한 줄에 맞아요.</li>
+      <li><b>교환 시트:</b> 글 아래 "프로필 교환 요청" 버튼은 빼고, 얼굴이나 이름을 누르면 "프로필 교환을 신청할까요?" → 가운데 카드(얼굴 64 · 이름 · 이 글의 글쓴이 / 이 글에 이야기를 남긴 사람) → 사용할 리프 10 · 보유 → 취소 · 요청하기. 보낸 뒤 다시 누르면 "교환 요청을 보냈어요"(닫기). 내 얼굴은 눌러도 안 열려요. 받은 요청은 지금처럼 알림 · 교환 탭으로.</li>
+    </ul>
+  </header>
+  <section><h2>고친 안 · 얼굴은 지금 그대로 + 팀 링크 닉네임</h2>
+    <ul style="margin:0">
+      <li><b>얼굴:</b> 지금 쓰는 손그림 얼굴 그대로(성별 칩만 빼요).</li>
+      <li><b>닉네임:</b> 팀 링크와 같은 "마음 + 꽃" 두 마디. 팀 링크 낱말은 12개 · 12개라 같은 결로 더 만들어 24개 · 28개(672가지). 글마다 다시 정하고, 한 글 안에서는 사람마다 서로 다른 이름이 나와요(글쓴이 → 댓글 단 순서대로).</li>
+      <li><b>팀 링크 마음:</b> 차분한 · 다정한 · 수줍은 · 명랑한 · 포근한 · 느긋한 · 싱그러운 · 따뜻한 · 반가운 · 유쾌한 · 솔직한 · 담백한</li>
+      <li><b>더 만든 마음:</b> 상냥한 · 산뜻한 · 은은한 · 청초한 · 말랑한 · 설레는 · 단정한 · 맑은 · 수수한 · 나른한 · 씩씩한 · 고요한</li>
+      <li><b>팀 링크 꽃:</b> 수국 · 튤립 · 장미 · 프리지아 · 데이지 · 동백 · 라일락 · 코스모스 · 백합 · 목련 · 해바라기 · 안개꽃</li>
+      <li><b>더 만든 꽃:</b> 수선화 · 작약 · 물망초 · 라벤더 · 은방울꽃 · 금잔화 · 달맞이꽃 · 나팔꽃 · 매화 · 벚꽃 · 백일홍 · 연꽃 · 카네이션 · 개나리 · 진달래 · 국화 (달맞이꽃 · 나팔꽃 · 연꽃은 밤에 피거나 야화 무드라 넣었어요)</li>
+    </ul><div class="row" style="grid-template-columns:repeat(4,minmax(0,220px))"><figure><img src="img/k_list.jpg" alt="목록" loading="lazy"><figcaption><span class="tag new">목록</span></figcaption></figure><figure><img src="img/k_list2.jpg" alt="목록 · 내 글 "나"" loading="lazy"><figcaption><span class="tag new">목록 · 내 글 "나"</span></figcaption></figure><figure><img src="img/k_post.jpg" alt="글" loading="lazy"><figcaption><span class="tag new">글</span></figcaption></figure><figure><img src="img/k_cm.jpg" alt="댓글 · 답글 @이름" loading="lazy"><figcaption><span class="tag new">댓글 · 답글 @이름</span></figcaption></figure></div><div class="row" style="grid-template-columns:repeat(4,minmax(0,220px))"><figure><img src="img/k_reply.jpg" alt="답글 쓰는 중" loading="lazy"><figcaption><span class="tag new">답글 쓰는 중</span></figcaption></figure><figure><img src="img/k_sh.jpg" alt="글쓴이 얼굴 누름" loading="lazy"><figcaption><span class="tag new">글쓴이 얼굴 누름</span></figcaption></figure><figure><img src="img/k_sh2.jpg" alt="댓글 쓴 사람 누름" loading="lazy"><figcaption><span class="tag new">댓글 쓴 사람 누름</span></figcaption></figure><figure><img src="img/k_sent.jpg" alt="이미 보냈을 때" loading="lazy"><figcaption><span class="tag new">이미 보냈을 때</span></figcaption></figure></div>
+  </section>
+  <section><h2>지금</h2><div class="row" style="grid-template-columns:repeat(4,minmax(0,220px))"><figure><img src="img/n_post.jpg" alt="글" loading="lazy"><figcaption><span class="tag">글</span></figcaption></figure><figure><img src="img/n_cm.jpg" alt="댓글 · 답글" loading="lazy"><figcaption><span class="tag">댓글 · 답글</span></figcaption></figure><figure><img src="img/n_reply.jpg" alt="답글 쓰는 중" loading="lazy"><figcaption><span class="tag">답글 쓰는 중</span></figcaption></figure><figure><img src="img/n_req.jpg" alt="교환 요청 버튼 → 시트" loading="lazy"><figcaption><span class="tag">교환 요청 버튼 → 시트</span></figcaption></figure></div></section>
+  <section><h2>(앞 시안) A · 이름 첫 글자 얼굴 · 세 마디 이름</h2><div class="row" style="grid-template-columns:repeat(4,minmax(0,220px))"><figure><img src="img/a_list.jpg" alt="목록" loading="lazy"><figcaption><span class="tag new">목록</span></figcaption></figure><figure><img src="img/a_list2.jpg" alt="목록 · 내 글 "나"" loading="lazy"><figcaption><span class="tag new">목록 · 내 글 "나"</span></figcaption></figure><figure><img src="img/a_post.jpg" alt="글" loading="lazy"><figcaption><span class="tag new">글</span></figcaption></figure><figure><img src="img/a_cm.jpg" alt="댓글 · 답글 @이름" loading="lazy"><figcaption><span class="tag new">댓글 · 답글 @이름</span></figcaption></figure></div><div class="row" style="grid-template-columns:repeat(4,minmax(0,220px))"><figure><img src="img/a_reply.jpg" alt="답글 쓰는 중" loading="lazy"><figcaption><span class="tag new">답글 쓰는 중</span></figcaption></figure><figure><img src="img/a_sh.jpg" alt="글쓴이 얼굴 누름" loading="lazy"><figcaption><span class="tag new">글쓴이 얼굴 누름</span></figcaption></figure><figure><img src="img/a_sh2.jpg" alt="댓글 쓴 사람 누름" loading="lazy"><figcaption><span class="tag new">댓글 쓴 사람 누름</span></figcaption></figure><figure><img src="img/a_sent.jpg" alt="이미 보냈을 때" loading="lazy"><figcaption><span class="tag new">이미 보냈을 때</span></figcaption></figure></div></section>
+  <section><h2>(앞 시안) B · 손그림 꽃 얼굴</h2><div class="row" style="grid-template-columns:repeat(3,minmax(0,220px))"><figure><img src="img/b_list.jpg" alt="목록" loading="lazy"><figcaption><span class="tag new">목록</span></figcaption></figure><figure><img src="img/b_cm.jpg" alt="댓글 · 답글" loading="lazy"><figcaption><span class="tag new">댓글 · 답글</span></figcaption></figure><figure><img src="img/b_sh.jpg" alt="교환 시트" loading="lazy"><figcaption><span class="tag new">교환 시트</span></figcaption></figure></div></section>
+</div>

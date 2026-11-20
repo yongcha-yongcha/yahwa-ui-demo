@@ -1,0 +1,42 @@
+<meta charset="utf-8">
+<title>프로필 교환 아이콘</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:24px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px;text-wrap:balance}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:82ch}
+ul b{color:var(--ink);font-weight:600}
+section{display:grid;gap:10px}
+h2{font:700 18px/1.4 var(--sans);margin:0}
+.row{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:16px}
+figure{margin:0;display:grid;gap:6px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:14px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+</style>
+<div class="wrap">
+  <header>
+    <h1>게시글 머리 · 프로필 교환 아이콘 (우리 Figma Line 세트)</h1>
+    <ul>
+      <li><b>지금:</b> 팀 링크에서 가져온 그림(사람 카드 둘 + 화살표, 30×24)이라 다른 머리 아이콘보다 가늘고 작아 보여요.</li>
+      <li><b>후보:</b> 우리 Icons 페이지 Line 세트에서 24 그대로. 뒤로 · 종 · 책과 같은 굵기 · 크기예요. 안 본 받은 요청이면 빨간 점은 그대로.</li>
+      <li><b>X1 users</b> 두 사람 · <b>X2 id-card</b> 프로필 카드 · <b>X3 handshake</b> 악수 · <b>X4 repeat</b> 주고받기 화살표.</li>
+    </ul>
+  </header>
+  <section><h2>지금</h2><div class="row"><figure><img src="img/p0.jpg" alt="지금 교환 아이콘"><figcaption><span class="tag">지금</span>팀 링크 그림</figcaption></figure></div></section>
+  <section><h2>후보</h2><div class="row">
+    <figure><img src="img/p1.jpg" alt="X1 users"><figcaption><span class="tag new">X1</span>users · 두 사람</figcaption></figure>
+    <figure><img src="img/p2.jpg" alt="X2 id-card"><figcaption><span class="tag new">X2</span>id-card · 프로필 카드</figcaption></figure>
+    <figure><img src="img/p3.jpg" alt="X3 handshake"><figcaption><span class="tag new">X3</span>handshake · 악수</figcaption></figure>
+    <figure><img src="img/p4.jpg" alt="X4 repeat"><figcaption><span class="tag new">X4</span>repeat · 주고받기</figcaption></figure>
+  </div></section>
+  <section><h2>함께 고친 것 · 익명 이야기 머리</h2><div class="row"><figure><img src="img/c0.jpg" alt="이용수칙 책과 알림 종"><figcaption><span class="tag new">적용</span>이용수칙 책을 종과 같은 Line 세트(book-open) · 같은 색으로</figcaption></figure></div></section>
+</div>

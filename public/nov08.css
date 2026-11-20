@@ -1499,7 +1499,7 @@ body.cloud-edition .phone{margin:0!important;border-radius:32px;box-shadow:0 8px
 .xc-it{display:flex;gap:12px;padding:var(--xc-row-pad) 0}
 .xc-it+.xc-it{box-shadow:0 -1px 0 var(--color-border-default)}
 .xc-av{position:relative;flex:none;display:grid;place-items:center;width:var(--xc-avatar);height:var(--xc-avatar);border-radius:50%;background:var(--color-bg-love-soft);color:var(--color-fg-love-strong)}
-.xc-av svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.xc-av:not(.is-sketch) svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .xc-av.is-photo{background:none}.xc-av img{width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:50% 30%}
 .xc-new{position:absolute;right:0;top:0;width:9px;height:9px;border-radius:50%;background:var(--color-fg-accent);box-shadow:0 0 0 2px var(--color-bg-page)}
 .xc-bd{flex:1;min-width:0}
@@ -2023,8 +2023,9 @@ html[data-certstack="on"] .person-cert:not([data-n="1"]):not([data-n="2"]){margi
 #features .po-community-tabs button[aria-pressed="true"]{color:var(--cool-neutral-900);font-weight:600}
 #features .po-community-tabs button[aria-pressed="true"]::after{content:"";position:absolute;left:0;right:0;bottom:4px;height:2px;background:var(--cool-neutral-900)}
 #features .comm-head-tools{display:flex;align-items:center;gap:4px}
-#features .comm-guide{width:44px;height:44px;border:0;background:none;padding:0;display:grid;place-items:center;color:var(--color-fg-primary);cursor:pointer}
-#features .comm-guide svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+/* 이용수칙 책: 2026-11-20부터 종(알림)과 같은 Figma Line 세트(book-open) · 같은 색 fg-secondary · 24 채움 도형 */
+#features .comm-guide{width:44px;height:44px;border:0;background:none;padding:0;display:grid;place-items:center;color:var(--color-fg-secondary);cursor:pointer}
+#features .comm-guide svg{width:24px;height:24px;fill:currentColor;stroke:none}
 
 /* 받은 편지 거절 버튼 (팀 피드백 4 · 시안 decline-btn B, 2026-11-19)
    "정중히 거절할래요" 글자 대신 답장 쓰기 아래 같은 높이 · 모서리의 회색 막대 버튼. 누르면 거절 확인 시트. */
@@ -2365,3 +2366,42 @@ html[data-bg="white"] #features.has-page-head .ob-top::before,html[data-bg="whit
 #mypage .mp-vis{gap:4px;padding-left:14px}
 #mypage .mp-vis i{margin-right:4px}
 #mypage .mp-vis .chev,#mypage .mp-vis svg{margin-left:2px}
+/* 익명 이야기 팀 링크 씽크 (시안 design-mockups/anon-alias, 2026-11-20) */
+#features .cx-entry .comm-entry-meta{justify-content:flex-start;gap:10px}
+/* 목록 얼굴은 원래 .comm-anon 그대로(32 원) */
+#features .an-who{flex:1;min-width:0;display:grid;gap:2px}
+#features .an-who b{display:flex;align-items:center;font:600 14px/1.3 var(--font-sans);color:var(--color-fg-primary)}
+#features .an-who small{font:400 12px/1.3 var(--font-sans);color:var(--color-fg-muted)}
+#features .an-more{flex:none;display:grid;place-items:center;width:44px;height:44px;margin:-8px -12px -8px 0;padding:0;border:0;background:none;cursor:pointer}
+#features .an-more svg{width:20px;height:20px;fill:var(--cool-neutral-500)}
+#features .an-tag,#features .cx-atag.an-tag{display:inline-grid;place-items:center;height:20px;margin-left:6px;padding:0 6px;border-radius:6px;background:var(--cool-neutral-50);font:600 11px/20px var(--font-sans);font-style:normal;color:var(--cool-neutral-700);box-shadow:none}
+#features .an-at{margin-right:4px;font-weight:600;color:var(--color-fg-accent)}
+#features .an-removed{margin:8px 0 0;font:400 14px/1.6 var(--font-sans);color:var(--color-fg-muted)}
+#features .an-load{display:block;margin:8px auto 0;min-height:44px;padding:0 20px;border:0;background:none;font:500 14px/44px var(--font-sans);color:var(--color-fg-secondary);cursor:pointer}
+#features .an-tagline{margin:24px 0 8px;text-align:center;font:italic 400 13px/1.5 'Gowun Batang',serif;color:var(--color-fg-muted)}
+#features [data-cx^="req:"]{cursor:pointer}
+#features .cx-ch{flex-wrap:nowrap;min-width:0}
+#features .cx-ca time{margin-right:12px;font:400 12px/1 var(--font-sans);color:var(--color-fg-muted)}
+#features .cx-in{background:var(--cool-neutral-50);box-shadow:none}
+#features .cx-in:focus-within{background:var(--color-bg-surface);box-shadow:inset 0 0 0 1.5px var(--cool-neutral-900)}
+#features .an-mic{flex:none;display:grid;place-items:center;width:36px;height:36px;margin-right:2px;padding:0;border:0;background:none;color:var(--cool-neutral-700);cursor:pointer}
+#features .an-mic svg{width:22px;height:22px;fill:currentColor}
+#features .an-voice{display:flex;align-items:center;gap:8px;margin:0 0 8px}
+#features .an-voice .vp{flex:1;min-width:0}
+#features .an-voice button{flex:none;min-height:36px;padding:0 8px;border:0;background:none;font:500 13px/1 var(--font-sans);color:var(--color-fg-muted)}
+.an-card{display:grid;justify-items:center;gap:6px;margin:20px 0 16px;padding:24px 16px 20px;border-radius:16px;background:var(--cool-neutral-50)}
+.an-card-face{display:block;width:64px;height:64px;border-radius:50%;overflow:hidden}
+.an-card-face>*{display:block;width:100%!important;height:100%!important;border-radius:50%;padding:0!important}
+.an-card b{margin-top:6px;font:600 16px/1.4 var(--font-sans);color:var(--color-fg-primary)}
+.an-card small{font:400 12px/1.4 var(--font-sans);color:var(--color-fg-muted)}
+.photo-sheet-pair.an-one{grid-template-columns:1fr}
+/* 게시글 머리 프로필 교환 아이콘 (2026-11-20, 팀 링크와 같은 그림) */
+#features .yh-head-act.yh-xc{position:relative}
+#features .yh-head-act.yh-xc .yh-xc-ic{width:24px;height:24px;fill:currentColor;stroke:none;color:var(--cool-neutral-800)}
+#features .yh-xc-dot{position:absolute;top:10px;right:8px;width:8px;height:8px;border-radius:50%;background:var(--red-500,#D9534F);box-shadow:0 0 0 2px var(--color-bg-page)}
+
+/* 교환 목록 · 교환 요청 얼굴: 사람 아이콘 대신 글에서 보던 손그림 얼굴(2026-11-20) */
+.xc-av.is-sketch,.ip-av.is-sketch{overflow:visible;background:none;color:inherit}
+.xc-av.is-sketch>.gender-sketch,.ip-av.is-sketch>.gender-sketch{display:block;width:100%;height:100%;border-radius:50%;overflow:hidden}
+.xc-av.is-sketch svg,.ip-av.is-sketch svg{display:block;width:100%!important;height:100%!important;border-radius:50%;padding:0!important}
+.xc-av.is-sketch .xc-new{z-index:1}
