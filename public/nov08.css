@@ -2525,14 +2525,16 @@ html .phone .photo-sheet-ghost:active{background:var(--cool-neutral-100)}
 #photos .pg-std-btn{display:inline-flex;align-items:center;gap:4px;height:36px;margin:0;padding:0 12px 0 14px;border:0;border-radius:18px;background:var(--cool-neutral-50);font:600 13px/1 var(--font-sans);color:var(--color-fg-primary);cursor:pointer;transition:transform .12s ease,background-color .12s ease}
 #photos .pg-std-btn:active{transform:scale(.97);background:var(--cool-neutral-100)}
 #photos .pg-std-btn svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;color:var(--cool-neutral-500)}
-.yh-sheet.pg-std{max-height:86%;display:flex;flex-direction:column}
-.yh-sheet.pg-std .yh-sheet-body{display:flex;flex-direction:column;min-height:0;flex:1}
+.yh-sheet.pg-std{height:86%;max-height:86%;display:flex;flex-direction:column}
+.yh-sheet.pg-std .yh-sheet-body{display:flex;flex-direction:column;min-height:0;flex:1;overflow:visible}
+.yh-sheet.pg-std .pg-std-h,.yh-sheet.pg-std .pg-std-chips,.yh-sheet.pg-std .pg-std-foot{flex:none}
 .pg-std-h{margin:4px 0 0;font:600 18px/1.45 var(--font-sans);color:var(--color-fg-primary);word-break:keep-all}
-.pg-std-chips{display:flex;gap:8px;margin:16px -20px 0;padding:0 20px 4px;overflow-x:auto;scrollbar-width:none}
+.pg-std-chips{display:flex;gap:8px;margin:16px -20px 0;padding:0 20px 4px;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scrollbar-width:none}
 .pg-std-chips::-webkit-scrollbar{display:none}
 .pg-std-chips button{flex:none;height:34px;padding:0 14px;border:0;border-radius:17px;background:var(--cool-neutral-50);font:500 13px/34px var(--font-sans);color:var(--color-fg-secondary);white-space:nowrap;cursor:pointer}
 .pg-std-chips button.on{background:var(--cool-neutral-800);color:#fff;font-weight:600}
-.pg-std-list{flex:1;min-height:0;overflow-y:auto;margin:8px -20px 0;padding:8px 20px}
+.pg-std-list{flex:1;min-height:0;overflow-y:auto;margin:8px -20px 0;padding:8px 20px;scrollbar-width:none}
+.pg-std-list::-webkit-scrollbar{display:none}
 .pg-std-rule{display:grid;gap:12px;padding:12px 0 16px}
 .pg-std-rule p{display:flex;gap:8px;margin:0;font:500 14px/1.5 var(--font-sans);color:var(--color-fg-primary);word-break:keep-all}
 .pg-std-rule p i{flex:none;display:grid;place-items:center;width:20px;height:20px;margin-top:1px;border-radius:6px;background:var(--cool-neutral-100);font:600 11px/1 var(--font-sans);font-style:normal;color:var(--color-fg-secondary)}

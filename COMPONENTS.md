@@ -830,9 +830,9 @@ Figma: [Line](https://www.figma.com/design/18xFlsq3rG6MJF6QSZLEHY/yahwa?node-id=
 기존 앱의 얼굴 필수 가이드를 사진 칸 안에 넣지 않고, 버튼 → 바텀 시트로. 코드는 `features.js` 끝쪽 "프로필 기준 보기" 블록(`window.yhSheet`, cls `pg-std`), 모양은 `nov08.css` `.pg-std-*` · `.pg-mark`, 사진은 `public/photo-guide/*.jpg`.
 - 버튼 `.pg-std-btn`: 설명(`.ob-intro`) 아래 16, 사진 칸 위 24. 높이 36 · 모서리 18 · cool-neutral-50 · 13 SemiBold + 꺾쇠 14 cool-neutral-500. 누르면 0.97 + cool-neutral-100.
 - 시트: 제목 "얼굴이 잘 보이는 정면 사진으로 / 올려 주세요" 18 SemiBold → 사례 칩(옆으로 넘김, 34 · 모서리 17, 고른 칩 cool-neutral-800 + 흰 글자, 고르면 가운데로) → 번호(20 · 모서리 6 · cool-neutral-100) 붙은 기준 14 Medium + ✓ / ✗ 사진 짝(3:4 · 모서리 12 · 안쪽 2px 테두리 sky-500 / red-500, 오른쪽 아래 20 동그라미 표시) → "사진 고르기"(첫 빈 칸 사진 고르기를 열어요).
-- 사례: 얼굴 가림(선글라스 · 마스크 / 후드 · 모자) · 정면 미응시(옆모습 / 카메라 보기) · 얼굴이 너무 작음 · 어둡거나 흐림 · 회전된 사진 · AI 사진 · 보정("내 얼굴을 AI로 바꾸거나 AI로 만든 사진은 올릴 수 없어요" / "과한 AI 보정 · 필터로 내 얼굴과 구분할 수 없는 사진도 안 돼요").
+- 사례: 얼굴 가림(선글라스 · 마스크 / 모자를 깊게 눌러써 눈 가림 — 하늘색 "summer days" 자수 캡, 시안 B1) · 정면 미응시(옆모습 / 카메라 보기) · 얼굴이 너무 작음 · 어둡거나 흐림 · 회전된 사진 · AI 사진 · 보정("내 얼굴을 AI로 바꾸거나 AI로 만든 사진은 올릴 수 없어요" / "과한 AI 보정 · 필터로 내 얼굴과 구분할 수 없는 사진도 안 돼요").
 - 사진은 한 사람(Higgsfield Soul 2.0 기준 사진 + Nano Banana로 같은 인물 변형). 어둡거나 흐림 · 회전은 기준 사진에 CSS `filter` · `rotate`.
-- 시트 높이는 화면 86%까지, 기준 목록만 스크롤. 칩을 바꾸면 목록이 맨 위로.
+- 시트 높이는 화면 86%로 고정(칩을 바꿔도 시트가 튀지 않게), 칩 줄 · 기준 목록만 스크롤하고 스크롤 막대는 숨겨요. 칩을 바꾸면 목록이 맨 위로.
 - Figma: Card Photo Slot 안 `Profile Standard Button`(253:376) · `Profile Standard Sheet`(253:380).
 
 ### Story · 자기소개
