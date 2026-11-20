@@ -2466,9 +2466,9 @@ html[data-gnb="gray"] .screen .home-nav button[aria-current="page"] .my-profile-
 #mypage .mp-av.has-ring img{box-shadow:none;width:calc(100% - 12px);height:calc(100% - 12px);margin:6px}
 #mypage .mp-av .mp-avring{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg);pointer-events:none}
 #mypage .mp-avring circle{fill:none;stroke-width:3;stroke-linecap:round}
-#mypage .mp-avring .bg{stroke:var(--cool-neutral-100)}
-#mypage .mp-avring .fg{stroke:var(--cool-neutral-800);transition:stroke-dashoffset 600ms cubic-bezier(.23,1,.32,1)}
-#mypage .mp-av .mp-pct{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);height:20px;padding:0 7px;border-radius:10px;background:var(--cool-neutral-800);color:#fff;font:600 11px/20px var(--font-sans);white-space:nowrap;box-shadow:0 0 0 2px var(--color-bg-page)}
+#mypage .mp-avring .bg{stroke:var(--sky-50)}
+#mypage .mp-avring .fg{stroke:var(--sky-300);transition:stroke-dashoffset 600ms cubic-bezier(.23,1,.32,1)}
+#mypage .mp-av .mp-pct{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);height:20px;padding:0 7px;border-radius:10px;background:var(--sky-300);color:var(--sky-900);font:600 11px/20px var(--font-sans);white-space:nowrap;box-shadow:0 0 0 2px var(--color-bg-page)}
 
 /* 자기소개 이야기 빼기 (2026-11-20 · 시안 design-mockups/story-remove/ X1 + S1 + B1)
    노트 이야기마다 오른쪽 위 회색 ×(터치 44, 기본 소개엔 없음) · 쓰기 화면 아래 빨강 글자 "이 이야기 빼기" · 확인 시트 빼기는 진한 빨강 */

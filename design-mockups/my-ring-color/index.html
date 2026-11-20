@@ -1,0 +1,38 @@
+<meta charset="utf-8">
+<title>MY 채움 링 색</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:28px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px;text-wrap:balance}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:82ch}
+ul b{color:var(--ink);font-weight:600}
+section{display:grid;gap:10px}
+h2{font:700 18px/1.4 var(--sans);margin:0}
+.row{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:16px}
+figure{margin:0;display:grid;gap:6px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:14px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+</style>
+<div class="wrap">
+  <header>
+    <h1>마이페이지 · 채움 링 밝은 파랑</h1>
+    <ul>
+      <li><b>지금:</b> 링 · % 알약 모두 cool-neutral-800(진한 회색), 빈 부분 cool-neutral-100.</li>
+      <li><b>바꾸는 곳:</b> 링 채운 부분 · 빈 부분 · % 알약을 같은 파랑 계열로. 링 굵기 3 · 알약 모양은 그대로.</li>
+      <li><b>C1 sky-300:</b> 가장 밝고 부드러움. 흰 글자가 안 읽혀서 알약은 sky-300 바탕 + sky-900 글자.</li>
+      <li><b>C2 sky-400:</b> 밝은 하늘색. 알약 흰 글자 대비가 약해요(약 2.7:1).</li>
+      <li><b>C3 sky-500:</b> 브랜드 파랑과 가장 가까운 차분한 파랑. 흰 글자도 읽혀요(약 3.8:1).</li>
+      <li><b>C4 #4FA3E0:</b> 토큰 밖의 맑은 파랑 — 가장 "밝은 블루" 느낌이지만 지금 팔레트(물 빠진 sky)보다 채도가 높아 혼자 튀어요. 흰 글자 대비 약 2.8:1.</li>
+    </ul>
+  </header>
+  <section><h2>색 시안</h2><div class="row"><figure><img src="img/r0.jpg" alt="지금 cool-neutral-800" loading="lazy"><figcaption><span class="tag">지금</span>cool-neutral-800</figcaption></figure><figure><img src="img/r1.jpg" alt="C1 sky-300 · 알약 글자 sky-900" loading="lazy"><figcaption><span class="tag new">C1</span>sky-300 · 알약 글자 sky-900</figcaption></figure><figure><img src="img/r2.jpg" alt="C2 sky-400" loading="lazy"><figcaption><span class="tag new">C2</span>sky-400</figcaption></figure><figure><img src="img/r3.jpg" alt="C3 sky-500 · 빈 부분 sky-100" loading="lazy"><figcaption><span class="tag new">C3</span>sky-500 · 빈 부분 sky-100</figcaption></figure><figure><img src="img/r4.jpg" alt="C4 #4FA3E0 (토큰 밖)" loading="lazy"><figcaption><span class="tag new">C4</span>#4FA3E0 (토큰 밖)</figcaption></figure></div></section>
+</div>

@@ -241,7 +241,7 @@ function rewardsDone(){const r=rewardsToday();return Math.min(r.like||0,2)+Math.
 const RW_ENV='<svg viewBox="0 0 170 110" width="136" height="88" fill="none"><path d="M27 76C50 92 109 95 147 68C154 63 148 57 137 61" stroke="#92C0DF" stroke-width="1.4" stroke-linecap="round"/><path d="M46 23L119 17L128 74L51 81L46 23Z" fill="#D6EAF8"/><path d="M113 22L122 79L45 85L40 28L113 22ZM40 28L80 55L113 22" stroke="#4E8AB0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M79 49C67 35 59 49 79 65C99 48 91 36 79 49Z" fill="#FFFFFF" stroke="#4E8AB0" stroke-width="1.3"/><path d="M131 26L137 20M139 35L147 34" stroke="#92C0DF" stroke-width="1.5" stroke-linecap="round"/></svg>';
 function rewardsView(){const r=rewardsToday(),LF='<svg class="rw-lf" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 18C3 7 12 3 21 3c0 10-5 17-13 16M4 22 16 9"/></svg>',CK='<svg class="rw-ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
  const gain=(n,extra)=>'<small>'+LF+'<i>+'+n+'</i>'+(extra?' · '+extra:'')+'</small>';
- const item=(name,sub,state2,go)=>{const done=state2==='done';const v=done?'<span class="rw-v is-done">'+CK+'받았어요</span>':'<span class="rw-v'+(state2==='go'?' is-go':'')+'">'+(state2==='go'?go.label:state2)+chev('r','md')+'</span>';return done?'<div class="rw-row is-done"><span class="rw-k"><b>'+name+'</b>'+sub+'</span>'+v+'</div>':'<button type="button" class="rw-row" '+go.attr+'><span class="rw-k"><b>'+name+'</b>'+sub+'</span>'+v+'</button>';};
+ const item=(name,sub,state2,go)=>{const done=state2==='done';const v=done?'<span class="rw-v is-done">'+CK+'완료</span>':'<span class="rw-v'+(state2==='go'?' is-go':'')+'">'+(state2==='go'?go.label:state2)+chev('r','md')+'</span>';return done?'<div class="rw-row is-done"><span class="rw-k"><b>'+name+'</b>'+sub+'</span>'+v+'</div>':'<button type="button" class="rw-row" '+go.attr+'><span class="rw-k"><b>'+name+'</b>'+sub+'</span>'+v+'</button>';};
  const opened=batchIds().filter(i=>openedMatches.has(i)).length,like=Math.min(r.like||0,2);
  const home={attr:'data-rw-go="discovery"',label:'시작하기'},comm={attr:'data-rw-go="community"',label:'시작하기'};
  const missions=item('첫 호감 보내기',gain(5),like>=2?'done':like+' / 2명',home)
@@ -1289,7 +1289,7 @@ function ipContactBlockView(){/* 지인 차단 J1 (시안 design-mockups/contact
 const ipDocked=v=>IP_DOCK.has(v)&&!(v==='contact-block'&&state.contactSync);
 function ipCertState(kind){const x=state.credentials.find(c=>c.kind===kind);return !x?'none':x.status==='시연 승인'?'ok':x.status==='검토 중'?'wait':'again';}
 function ipCredentialsView(){
-  const badge=([k,i])=>{const s=ipCertState(k),r=CERT_REWARD[k];return '<button type="button" class="ip-badge is-'+s+'" data-fx="'+(s==='ok'?'cert-done':'cert-form')+':'+k+'"><span class="bi">'+ipI(s==='ok'?'check':i)+'</span><b>'+k+'</b><span>'+(s==='ok'?'받았어요':s==='wait'?'확인 중':s==='again'?'다시 제출':ipI('leaf','ip-lf')+'<em>+'+r+'</em>')+'</span></button>';};
+  const badge=([k,i])=>{const s=ipCertState(k),r=CERT_REWARD[k];return '<button type="button" class="ip-badge is-'+s+'" data-fx="'+(s==='ok'?'cert-done':'cert-form')+':'+k+'"><span class="bi">'+ipI(s==='ok'?'check':i)+'</span><b>'+k+'</b><span>'+(s==='ok'?'완료':s==='wait'?'확인 중':s==='again'?'다시 제출':ipI('leaf','ip-lf')+'<em>+'+r+'</em>')+'</span></button>';};
   const row=([k,i,sub])=>{const s=ipCertState(k),x=state.credentials.find(c=>c.kind===k),v=s==='ok'?'<span class="ip-ok">'+ipI('check','ip-ok-i')+'인증됨</span>':s==='wait'?'확인 중':s==='again'?'다시 제출':'';return '<button type="button" class="ip-row" data-fx="'+(s==='ok'?'cert-done':'cert-form')+':'+k+'">'+ipI(i)+'<span class="k">'+k+' 인증<small>'+(s==='ok'&&x?.value?esc(x.value):sub)+'</small></span>'+(v?'<span class="v">'+v+'</span>':'')+ipI('chev','ip-ch')+'</button>';};
   return '<div class="ip-wrap"><div class="ip-badges">'+CERT_KINDS.map(badge).join('')+'</div><p class="ip-sh">인증하기</p><div class="ip-card">'+CERT_KINDS.map(row).join('')+'</div>'
    +ipFacts([['shield','승인된 배지만 프로필에 보여요. 제출한 서류는 확인 뒤 지워요.']])+'</div>';}
@@ -1327,7 +1327,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-fx]');if(!
 
 /* 뉴트럴 묶음 카드 · 인증한 뒤 (시안 design-mockups/neutral-rows B + 아이콘 + C1 · D2 원 32, 2026-11-19)
    - 알림 설정 · 내 연락처: 이어진 줄을 회색 카드(cool-neutral-50) 하나로 묶고 안쪽만 옅은 구분선. 내 연락처 줄 앞에 카카오 · 전화 아이콘.
-   - 배지 · 인증: 줄의 "시작하기" 글자는 빼요. 인증한 타일은 진한 체크 원(32) + 흐린 바탕 · 글자 "받았어요",
+   - 배지 · 인증: 줄의 "시작하기" 글자는 빼요. 인증한 타일은 진한 체크 원(32) + 흐린 바탕 · 글자 "완료"(2026-11-20, 예전 "받았어요"),
      줄은 "✓ 인증됨" + 인증한 내용. 인증한 줄 · 타일을 누르면 빈 양식 대신 "인증한 내용" 시트(인증 취소 · 다시 인증하기). */
 const NB_IC={kakao:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.5c-4.7 0-8.5 3-8.5 6.7 0 2.4 1.6 4.5 4 5.7l-.8 3.3 3.7-2.4c.5.1 1 .1 1.6.1 4.7 0 8.5-3 8.5-6.7S16.7 4.5 12 4.5z" fill="#3A1D1D"/></svg>',
  phone:'<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>'};
