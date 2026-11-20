@@ -1,0 +1,101 @@
+<meta charset="utf-8">
+<title>인증 배지 위계</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;
+ --sky-50:#ECF5FC;--sky-100:#D6EAF8;--sky-500:#4E8AB0;--sky-600:#377398;--cn-50:#F1F4F6;--cn-100:#E3E7EA;--cn-200:#CFD5DA;--cn-300:#B5BDC4;--cn-400:#98A2AA;--cn-500:#818C94;--cn-700:#505C65;--cn-800:#39444D;--cn-900:#273037;--cn-950:#1A2126}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:32px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px;text-wrap:balance}
+h2{font:700 18px/1.4 var(--sans);margin:0}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:82ch}
+ul b{color:var(--ink);font-weight:600}
+section{display:grid;gap:12px}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:16px}
+.v{display:grid;gap:10px;min-width:0}
+.cap{font-size:13px;color:var(--ink-2)}
+/* 무대: 앱 화면 조각은 늘 흰 앱 바탕 */
+.stage{background:#fff;border-radius:18px;padding:16px;display:grid;gap:14px;color:#273037;border:1px solid var(--line)}
+.card{position:relative;height:200px;border-radius:18px;overflow:hidden;background:#888 url(img/p.jpg) center 30%/cover}
+.card::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 40%,rgb(26 33 38/.55))}
+.card .who{position:absolute;left:16px;bottom:14px;z-index:1;display:flex;align-items:center;gap:8px;color:#fff;font:600 22px/1.3 var(--sans);text-shadow:0 1px 6px rgb(0 0 0/.3)}
+.prof{display:flex;align-items:center;gap:10px;font:400 28px/1.2 'Gowun Batang',serif;color:#273037}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pair .lbl{font:600 11px/1 var(--sans);color:var(--cn-500);margin-bottom:6px}
+.bdg{display:inline-flex;align-items:center;flex:none}
+.bdg svg{display:block;overflow:visible}
+/* 모달 */
+.modal{background:#fff;border-radius:24px;padding:24px 20px 8px;box-shadow:0 16px 40px -20px rgb(39 48 55/.35);border:1px solid var(--line);color:#273037;position:relative}
+.modal .x{position:absolute;right:14px;top:14px;width:32px;height:32px;display:grid;place-items:center;color:var(--cn-500)}
+.modal .x svg{width:20px;height:20px;stroke:currentColor;stroke-width:1.8;fill:none}
+.modal .hd{display:grid;gap:12px;margin-bottom:8px}
+.modal .hd b{font:700 19px/1.4 var(--sans)}
+.row{display:flex;align-items:center;gap:12px;min-height:56px;border-top:1px solid var(--cn-100);font:600 15px/1.4 var(--sans)}
+.hd+.row{border-top:0}
+.row .t{flex:1;min-width:0}
+.row .t small{display:block;font:400 12px/1.4 var(--sans);color:var(--cn-500);margin-top:2px}
+.row em{font:500 13px/1 var(--sans);font-style:normal;color:var(--sky-600);display:inline-flex;align-items:center;gap:4px}
+.row em svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none}
+.row .ic{width:22px;height:22px;stroke:var(--cn-700);stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.dim{position:relative;padding:20px 12px;border-radius:18px;background:rgb(39 48 55/.42)}
+</style>
+<div class="wrap">
+  <header>
+    <h1>인증 배지 위계 · 흰 배지(본인 인증) + 파랑 배지(학력 · 직장 · 소득)</h1>
+    <ul>
+      <li><b>규칙:</b> 나이 · 전화번호 본인 인증만 → 흰 배지 한 장. 학력 · 직장 · 소득 중 하나라도 인증 → 흰 배지 + 파랑 배지를 겹쳐서. 파랑이 늘 앞(더 높은 신뢰).</li>
+      <li><b>흰 배지:</b> 사진 위에선 흰 바탕 + 파랑 체크. 흰 화면(프로필 이름 줄 · 모달)에선 흰 바탕만으론 안 보여서 cool-neutral-300 얇은 테두리.</li>
+      <li><b>겹친 배지 5가지(B1~B5)</b>를 카드 · 프로필 이름 줄에 같이 놓아 봤어요. 아래 <b>모달 2가지(P1 · P2)</b>는 줄 왼쪽에 해당 배지, 오른쪽에 인증 종류.</li>
+    </ul>
+  </header>
+
+  <section><h2>본인 인증만 · 흰 배지</h2><div class="grid" id="basic"></div></section>
+  <section><h2>겹친 배지 · 학력 · 직장 · 소득 하나라도</h2><div class="grid" id="stack"></div></section>
+  <section><h2>배지를 눌렀을 때 · 인증 모달 (맨 앞 P3이 고른 안)</h2><div class="grid" id="modals"></div></section>
+</div>
+<script>
+const P='M20.2099 8.532C22.5899 10.183 22.5899 13.814 20.2099 15.47C20.8299 18.257 18.2499 20.834 15.4699 20.218C13.8099 22.59 10.1799 22.59 8.52994 20.218C5.73994 20.834 3.15994 18.257 3.77994 15.47C1.40994 13.814 1.40994 10.183 3.77994 8.532C3.15994 5.745 5.73994 3.16798 8.52994 3.78298C10.1799 1.40698 13.8099 1.40698 15.4699 3.78298C18.2499 3.16798 20.8299 5.745 20.2099 8.532Z';
+const CK='M8.6 12l2.4 2.4 4.4-4.6';
+/* 배지 한 장: kind w(흰) / b(파랑), onPhoto면 흰 배지 테두리 없음 */
+const one=(kind,x,y,s,onPhoto,ring)=>{const sc=s/24;const t=`translate(${x} ${y}) scale(${sc})`;
+ if(kind==='b')return `<g transform="${t}">${ring?`<path d="${P}" fill="${ring}" stroke="${ring}" stroke-width="${3.2/sc}" stroke-linejoin="round"/>`:''}<path d="${P}" fill="var(--sky-500)"/><path d="${CK}" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>`;
+ return `<g transform="${t}">${ring?`<path d="${P}" fill="${ring}" stroke="${ring}" stroke-width="${3.2/sc}" stroke-linejoin="round"/>`:''}<path d="${P}" fill="#fff" ${onPhoto?'':'stroke="var(--cn-300)" stroke-width="1.3"'}/><path d="${CK}" fill="none" stroke="var(--sky-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>`;};
+const svg=(w,h,inner)=>`<span class="bdg"><svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true">${inner}</svg></span>`;
+const S=24; /* 이름 옆 배지 크기 */
+const bg=onPhoto=>onPhoto?'rgba(0,0,0,0)':'#fff';
+const B={
+ basic:(p)=>svg(S,S,one('w',0,0,S,p)),
+ B1:(p)=>svg(S+9,S,one('w',9,0,S,p)+one('b',0,0,S,p,p?null:'#fff')),
+ B2:(p)=>svg(S+5,S+5,one('w',0,0,S,p)+one('b',5,5,S,p,p?null:'#fff')),
+ B3:(p)=>svg(S+4,S+4,one('b',0,0,S,p)+one('w',S-10,S-10,14,p,p?null:'#fff')),
+ B4:(p)=>svg(S+4,S+4,`<g transform="translate(2 2)">${one('w',-2,-2,S+4,p)}${one('b',2,2,S-4,p)}</g>`),
+ B5:(p)=>svg(S*2+4,S,one('w',0,0,S,p)+one('b',S+4,0,S,p))
+};
+const NOTE={B1:'겹침 · 파랑이 앞, 흰 배지가 오른쪽 뒤로 살짝(9). 지금 겹친 배지 자리 그대로.',B2:'대각선 겹침 · 흰 배지 위 왼쪽 뒤, 파랑이 오른쪽 아래 앞(5 · 5). 쌓인 느낌.',B3:'파랑 한 장 + 오른쪽 아래 작은 흰 배지(14). 한 덩어리로 읽혀 가장 단정.',B4:'한 장처럼 · 큰 흰 배지 안에 파랑 배지(테두리처럼 흰 띠). 한 모양이라 크기가 안 늘어나요.',B5:'나란히 · 흰 배지 + 파랑 배지 간격 4. 가장 읽기 쉽지만 이름 옆이 길어져요.'};
+const card=(b)=>`<div class="card"><div class="who">봄빛, 26세 ${b(true)}</div></div>`;
+const prof=(b)=>`<div class="prof">봄빛 · 26세 ${b(false)}</div>`;
+document.getElementById('basic').innerHTML=`<div class="v"><div class="stage">${card(B.basic)}${prof(B.basic)}</div><div class="cap"><span class="tag new">흰 배지</span>사진 위는 흰 바탕만, 흰 화면에선 얇은 회색 테두리</div></div>`;
+document.getElementById('stack').innerHTML=['B1','B2','B3','B4','B5'].map(k=>`<div class="v"><div class="stage">${card(B[k])}${prof(B[k])}</div><div class="cap"><span class="tag new">${k}</span>${NOTE[k]}</div></div>`).join('');
+const IC={'나이 · 전화번호':'<rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 18.5h3"/>','직장':'<rect x="3.5" y="7.5" width="17" height="11.5" rx="2"/><path d="M9 7.5V6a3 3 0 0 1 6 0v1.5 M3.5 12.5h17"/>','학력':'<path d="M4 5.5C7 4.5 10 4.8 12 6.5c2-1.7 5-2 8-1V18c-3-1-6-.7-8 1-2-1.7-5-2-8-1Z M12 6.5V19"/>','소득':'<circle cx="12" cy="12" r="8.5"/><path d="M14.5 9.2c-.6-.8-1.5-1.2-2.5-1.2-1.4 0-2.5.8-2.5 2s1.1 1.7 2.5 2 2.5.8 2.5 2-1.1 2-2.5 2c-1 0-2-.4-2.6-1.2 M12 6.5V8 M12 16v1.5"/>'};
+const X='<span class="x"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></span>';
+const big=(k)=>{const f=B[k];return f(false).replace(/width="(\d+)" height="(\d+)"/,(m,w,h)=>`width="${w*1.75}" height="${h*1.75}"`);};
+const rowP1=(kind,label)=>`<div class="row">${svg(22,22,one(kind,0,0,22,false))}<span class="t">${label}</span></div>`;
+const rowP2=(kind,label,sub)=>`<div class="row">${svg(22,22,one(kind,0,0,22,false))}<span class="t">${label}<small>${sub}</small></span><em><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>인증됨</em></div>`;
+const rowP3=(kind,label)=>`<div class="row">${svg(22,22,one(kind,0,0,22,false))}<span class="t">${label}</span><em><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>인증됨</em></div>`;
+const modal=(head,rows)=>`<div class="dim"><div class="modal">${X}<div class="hd">${head}<b>봄빛님의 인증</b></div>${rows}</div></div>`;
+document.getElementById('modals').innerHTML=[
+ [`P3 · B3 + P1 + 인증됨`,modal(big('B3'),rowP3('w','나이 · 전화번호')+rowP3('b','직장')+rowP3('b','소득')),'P1 그대로 + 줄 오른쪽 "✓ 인증됨"(sky-600). 설명 줄은 없이 한 줄로.'],
+ [`P3 · 본인 인증만`,modal(big('basic'),rowP3('w','나이 · 전화번호')),'본인 인증만일 때도 같은 모양.'],
+ [`P1 · 겹친 배지(B3)`,modal(big('B3'),rowP1('w','나이 · 전화번호')+rowP1('b','직장')+rowP1('b','소득')),'줄마다 왼쪽에 그 인증의 배지(본인 인증은 흰, 학력 · 직장 · 소득은 파랑) + 인증 종류만. "인증됨" 글자는 배지가 대신해서 뺐어요.'],
+ [`P2 · 겹친 배지(B1)`,modal(big('B1'),rowP2('w','나이 · 전화번호','본인 명의 휴대폰')+rowP2('b','직장','재직 증명')+rowP2('b','소득','소득 증빙')),'P1에 작은 설명 한 줄 + 오른쪽 "✓ 인증됨"을 남긴 안. 정보는 많지만 조금 바빠요.'],
+ [`본인 인증만`,modal(big('basic'),rowP1('w','나이 · 전화번호')),'흰 배지 한 장 · 줄도 하나.']
+].map(([t,h,c])=>`<div class="v">${h}<div class="cap"><span class="tag new">${t}</span>${c}</div></div>`).join('');
+</script>

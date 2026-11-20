@@ -112,8 +112,17 @@ function buildMine(){
   if(!box){box=document.createElement('section');box.id='pv-me';box.className='pv-me';box.setAttribute('aria-label','나의 정보');preview.querySelector('.photo-carousel').after(box);}
   const cred=$('preview-credentials');
   mount(box,{name,age:age?age+'세':'',job:val('job'),region:$('region')?.value||'',tags,facts:miniFacts(val('height'),val('mbti'),val('smoking'),val('drinking'),val('religion'),val('education')),empty:'상세 정보를 아직 입력하지 않았어요.'},cred?[cred]:[]);
+  mineRepOnly();
   dots($('preview-photo'),preview.querySelector('.photo-carousel'));
-  /* 이야기 사이 사진은 index.html 쪽에서 이미 넣어요(.story-photo-frame, 상대 프로필 .match-story-photo와 같은 1:1 · 모서리 12) */
+}
+/* 내 소개도 상대 프로필과 같게 (2026-11-20): 맨 위는 대표 사진 한 장, 넘기지 않아요.
+   이야기 사이 사진(.story-photo-frame, index.html이 넣음)은 대표를 빼고 두 번째 사진부터 한 장씩, 남으면 마지막 이야기 뒤에 */
+function mineRepOnly(){
+  const strip=$('preview-photo');if(strip){[...strip.children].slice(1).forEach(e=>e.remove());strip.scrollLeft=0;strip.setAttribute('aria-label','대표 사진');}
+  const list=$('preview-answers');if(!list)return;
+  list.querySelectorAll('.story-photo-frame').forEach(e=>e.remove());
+  const rest=(typeof photoUrls!=='undefined'?photoUrls.filter(Boolean):[]).slice(1),cards=[...list.querySelectorAll('.q-card')];
+  rest.forEach((src,k)=>{const f=document.createElement('figure');f.className='story-photo-frame';const img=document.createElement('img');img.src=src;img.alt='나의 사진 '+(k+2);img.loading='lazy';f.append(img);const card=cards[k];if(card&&k<cards.length-1)card.after(f);else list.append(f);});
 }
 
 /* ── 상대 프로필 */
@@ -138,8 +147,22 @@ function buildTheirs(){
     facts:miniFacts(hv&&!/cm$/.test(hv)?hv+'cm':hv,clean(f['나의 성격']),clean(f['흡연']),clean(f['음주']),clean(f['종교']),clean(f['학력']))},badges);
   /* 이야기 연결점(맞춤 인연)은 소개 본문 뒤에 */
   const reason=match.querySelector('.story-match-reason');if(reason)box.after(reason);
+  repOnly(m,gallery);
   dots($('match-gallery'),gallery);
   topBar(m);
+}
+/* 맨 위는 대표 사진 한 장만 — 넘기지 않아요 (2026-11-20). 사진만 넘겨 보고 소개는 안 읽는 걸 막으려고,
+   나머지 사진은 이야기 사이 · 마지막 이야기 뒤에 한 장씩, 대표와 겹치지 않게 */
+function repOnly(m,gallery){
+  const strip=$('match-gallery');if(!strip)return;
+  [...strip.children].slice(1).forEach(e=>e.remove());
+  strip.scrollLeft=0;strip.setAttribute('aria-label',m.name+'의 대표 사진');
+  gallery.querySelectorAll('.match-photo-back,.match-photo-forward').forEach(e=>e.remove());
+  const stories=$('match-answers');if(!stories)return;
+  stories.querySelectorAll('.match-story-photo').forEach(e=>e.remove());
+  const rest=(m.photos||[]).slice(1),cards=[...stories.querySelectorAll('.q-card')];
+  const frame=(ph,k)=>{const f=document.createElement('figure');f.className='match-story-photo';const d=document.createElement('div');d.style.backgroundImage='url('+ph.src+')';d.style.backgroundPosition=ph.position||'50% 40%';d.style.backgroundSize=ph.size||'cover';d.setAttribute('role','img');d.setAttribute('aria-label',m.name+'의 사진 '+(k+2));f.append(d);return f;};
+  rest.forEach((ph,k)=>{const card=cards[k];const f=frame(ph,k);if(card&&k<cards.length-1)card.after(f);else stories.append(f);});
 }
 /* ── 상대 프로필 위쪽 머리 (시안 B): 맨 위에서는 뒤로 · 더보기만, 본문 이름이 머리 밑으로 사라지면 작은 사진 + 이름이 떠올라요 */
 function topBar(m){

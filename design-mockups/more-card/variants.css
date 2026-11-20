@@ -1,0 +1,17 @@
+.nov-more-card.mv{border:0}
+/* M1 텍스트만 */
+.nov-more-card.m1{background:var(--cool-neutral-50);gap:12px}
+.nov-more-card.m1 h2{font-size:28px;line-height:1.45}
+.nov-more-card.m1 button{margin-top:20px}
+/* M2 뭉개뭉개 그라데이션 */
+.nov-more-card.m2{position:relative;overflow:hidden;isolation:isolate;background:var(--sky-50)}
+.nov-more-card.m2::before{content:"";position:absolute;inset:-30%;z-index:-1;filter:blur(36px);background:
+ radial-gradient(38% 30% at 30% 28%,var(--sky-200),transparent 70%),
+ radial-gradient(34% 28% at 75% 22%,var(--purple-100),transparent 70%),
+ radial-gradient(40% 32% at 70% 62%,var(--orange-100),transparent 70%),
+ radial-gradient(36% 30% at 26% 70%,var(--mint-100),transparent 72%),
+ radial-gradient(30% 24% at 52% 45%,#fff,transparent 70%)}
+.nov-more-card.m2 h2{font-size:27px}
+/* M3 새 그래픽 */
+.nov-more-card.m3{background:var(--cool-neutral-50)}
+.nov-more-card.m3 svg.mv-art{width:168px;height:120px;stroke:none}
