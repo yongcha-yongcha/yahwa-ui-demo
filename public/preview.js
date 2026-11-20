@@ -157,7 +157,7 @@ function repOnly(m,gallery){
   const strip=$('match-gallery');if(!strip)return;
   [...strip.children].slice(1).forEach(e=>e.remove());
   strip.scrollLeft=0;strip.setAttribute('aria-label',m.name+'의 대표 사진');
-  gallery.querySelectorAll('.match-photo-back,.match-photo-forward').forEach(e=>e.remove());
+  /* 화살표는 지우지 않고 숨겨요 — index.html renderMatch가 다시 그릴 때 이 버튼을 찾아서, 지우면 오류로 프로필이 안 열려요 */gallery.querySelectorAll('.match-photo-back,.match-photo-forward').forEach(e=>{e.style.display='none';e.tabIndex=-1;e.setAttribute('aria-hidden','true');});
   const stories=$('match-answers');if(!stories)return;
   stories.querySelectorAll('.match-story-photo').forEach(e=>e.remove());
   const rest=(m.photos||[]).slice(1),cards=[...stories.querySelectorAll('.q-card')];
