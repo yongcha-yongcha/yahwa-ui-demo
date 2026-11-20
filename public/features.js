@@ -123,7 +123,7 @@ drawRelease=function(){refreshBatch();prioritizeDemoMatch();baseDraw(batchIds())
  const CK='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
  dailyGrid.innerHTML='<section class="rv-card" aria-labelledby="rv-title"><span class="rv-chip"><i aria-hidden="true"></i>확인 중</span><h2 id="rv-title">프로필을 확인하고 있어요</h2><p class="rv-sub">확인이 끝나면 첫 인연이 도착해요. 끝나는 대로 알림으로 알려 드릴게요.</p>'
   +'<ol class="rv-steps"><li class="is-done"><span class="rv-mk">'+CK+'</span><div><b>가입과 소개 작성</b><small>모두 마쳤어요</small></div></li><li class="is-now" aria-current="step"><span class="rv-mk"><i></i></span><div><b>사진 · 소개 확인 중</b><small>사진 속 얼굴과 소개 글을 살펴보고 있어요</small></div></li><li><span class="rv-mk"></span><div><b>첫 인연 도착</b><small>매일 12시 · 15시 · 18시 · 21시</small></div></li></ol>'
-  +'<div class="rv-acts"><button type="button" class="rv-ghost" data-fx="my-preview">내 소개 미리보기</button><button type="button" class="rv-link" data-fx="community">기다리는 동안 익명 이야기 둘러보기'+chev('r','sm')+'</button></div></section>';
+  +'<div class="rv-acts"><button type="button" class="rv-ghost" data-fx="my-preview">내 소개 미리보기</button></div></section>';
  syncNotificationBadges();return;}[...dailyGrid.children].forEach((card,i)=>{if(unavail(batchIds()[i])||!state.visible){card.hidden=true;return;}card.dataset.person=batchIds()[i];const click=card.onclick;card.onclick=()=>{click();dailyReward();};});if(!state.visible){const msg=document.createElement('div');msg.className='fx-after-grid fx-card';msg.innerHTML='<h2>잠시 쉬어가는 중이에요.</h2><p>준비가 되면 다시 새로운 인연을 만나보세요.</p>'+button('다시 공개하기','visibility');dailyGrid.replaceChildren(msg);document.getElementById('release-label').textContent='인연 공개 일시 중지';document.getElementById('release-next').textContent='내 속도로 다시 시작해요';}if(state.visible)renderBatchCards();for(const id of state.extra){if(!state.visible||!genderEligible(id)||unavail(id))continue;const m=demoMatches[id],b=document.createElement('button');b.className='daily-card';b.innerHTML=`<div class="match-sheet-thumb" style="background-image:url('${m.photos[0].src}');background-size:${m.photos[0].size||'200% 200%'};background-position:${m.photos[0].position}"></div><div class="daily-copy"><strong>${esc(m.name)}</strong><p>${esc(m.meta)}</p><span class="card-tag-row">${m.tags.slice(0,2).map(t=>`<span class="tag-token" title="#${esc(t)}">#${esc(t)}</span>`).join('')}</span></div>`;b.onclick=()=>{matchIndex=id;show('match-profile');};dailyGrid.append(b);}syncNotificationBadges();};
 const originalSend=$('send-interest').onclick;$('send-interest').onclick=()=>{if(sentInterests.has(matchIndex))return;originalSend();state.likeAt[matchIndex]=now();const n=R.reward(state,'like',now());if(window.yhLikeBurst)yhLikeBurst.play({leaf:n,mutual:incomingInterestIds.has(matchIndex)});else if(n)toast('마음을 보냈어요 · '+n+'리프 적립');persist();};
 syncInterestAction=function(){baseInterest();const lt=state.letters.find(l=>l.person===matchIndex&&!['기간 만료','거절','리프 반환'].includes(R.status(l,now())));const btn=$('write-letter');btn.textContent=lt?'편지 확인하기':'편지 보내기';
@@ -170,7 +170,7 @@ else if(view==='inquiry'){h=title('문의하기')+'<label class="nb-ta">문의 �
 else if(view==='terms-info'){h=title('서비스 이용 안내','현재는 UI 시연본입니다. 실제 가입·결제·매장 할인·서버 메시지·연락처 전달은 연결되지 않았어요. 정식 약관과 개인정보처리방침은 서비스 출시 전에 확정해야 합니다.');}
 else if(view==='logout-confirm'||view==='reset-confirm'){h=title(view==='logout-confirm'?'로그아웃할까요?':'시연 기록을 초기화할까요?',view==='logout-confirm'?'이 기기의 기록은 유지돼요.':'브라우저에 저장된 기능 체험 기록이 초기값으로 돌아가요. 실제 계정 삭제나 환불은 실행되지 않아요.')+button('확인',view==='logout-confirm'?'logout':'reset');}
 else if(view==='credentials'){h=credentialsView();}
-else if(view==='profile-review'){h=title(state.reviewStatus==='pending'?'프로필을 확인하고 있어요.':'첫 소개가 준비되었어요.',state.reviewStatus==='pending'?'커뮤니티와 플레이스는 계속 둘러볼 수 있어요.':'현재 예시 프로필은 승인된 상태로 체험할 수 있어요.')+button('내 소개 확인하기','my-preview')+'<small>실제 심사 서비스는 연결되지 않았어요. 화면 아래 ‘시연 도구’의 ‘프로필 · 인증’에서 검토 중과 승인 완료를 바꿔볼 수 있어요.</small>';}
+else if(view==='profile-review'){h=title(state.reviewStatus==='pending'?'프로필을 확인하고 있어요.':'첫 소개가 준비되었어요.',state.reviewStatus==='pending'?'플레이스는 계속 둘러볼 수 있어요.':'현재 예시 프로필은 승인된 상태로 체험할 수 있어요.')+button('내 소개 확인하기','my-preview')+'<small>실제 심사 서비스는 연결되지 않았어요. 화면 아래 ‘시연 도구’의 ‘프로필 · 인증’에서 검토 중과 승인 완료를 바꿔볼 수 있어요.</small>';}
 else if(view==='letter-decline'){h=title('편지를 거절할까요?','편지 목록에서 사라지고, 상대에게 연락처가 공개되지 않아요.')+button('거절하기','decline-confirm:'+c.id);}
 else if(view==='coupon-detail'){h=couponView(c.id,false);}
 else if(view==='point-ledger'){h=title('매장 포인트 내역')+`<div class="fx-card"><small>보유 포인트</small><div class="fx-amount">${state.points.toLocaleString()} P</div></div>`+history(state.pointLedger)+button('리프로 바꾸기','convert')+row('포인트는 어떻게 쓰나요?','point-help');}
@@ -429,7 +429,7 @@ function showPersonCert(el){document.getElementById('cert-info-popup')?.remove()
 
 document.addEventListener('click',e=>{const el=e.target.closest('[data-cert-person]');if(!el)return;e.preventDefault();e.stopImmediatePropagation();showPersonCert(el);},true);
 document.addEventListener('keydown',e=>{const el=e.target.closest('[data-cert-person]');if(el&&['Enter',' '].includes(e.key)){e.preventDefault();e.stopImmediatePropagation();showPersonCert(el);}},true);
-function activityLabel(i){const a=state.recentActivity[i],elapsed=a?now()-a.at:Infinity;return state.settings.activity&&a?.visible&&elapsed>=0&&elapsed<86400000?'<span class="recent-activity"><i aria-hidden="true"></i>최근활동</span>':'';}
+function activityLabel(i){const a=state.recentActivity[i],elapsed=a?now()-a.at:Infinity;/* 2026-11-20 (2차 피드백): 스위치 없이 24시간 안에 접속한 사람만 자동으로 보여요. 그 밖엔 아무것도 안 보여요 */return elapsed>=0&&elapsed<86400000?'<span class="recent-activity"><i aria-hidden="true"></i>최근활동</span>':'';}
 function insertActivity(host,i){if(!host)return;if(host.matches('.heart-person-info')){decorateCardMeta(host,i);return;}host.querySelectorAll('.recent-activity,.person-cert').forEach(x=>x.remove());host.insertAdjacentHTML('beforeend',activityLabel(i)+personCert(i));}
 function decorateCardMeta(host,i){const m=demoMatches[i];if(!host||!m)return;host.querySelectorAll('.recent-activity,.person-cert').forEach(x=>x.remove());const name=host.querySelector('strong');if(!name)return;let row=host.querySelector('.card-name-line');if(!row){row=document.createElement('div');row.className='card-name-line';name.before(row);row.append(name);}if(activityLabel(i)){const a=document.createElement('span');a.className='recent-activity card-activity';a.title='24시간 내 활동';a.setAttribute('aria-label','24시간 내 활동');a.innerHTML='<i aria-hidden="true"></i><span aria-hidden="true">'+'최근활동'+'</span>';row.append(a);}row.querySelector('.person-age')?.remove();const age=document.createElement('span');age.className='person-age';age.textContent=(m.meta||'').split('·')[0].trim()+'세';row.append(age);row.insertAdjacentHTML('beforeend',personCert(i));const meta=host.querySelector('p');const mbti=Object.values(m.facts||{}).find(v=>/^[EI][NS][TF][JP]$/.test(v));if(meta){meta.classList.add('card-meta-line');meta.replaceChildren();const basic=document.createElement('span');basic.className='card-basic-meta';basic.textContent=m.meta;meta.append(basic);if(mbti){const personality=document.createElement('span');personality.className='card-mbti';personality.textContent=mbti;meta.append(personality);}}}
 
@@ -557,10 +557,23 @@ const HA_IC={
  two:'<svg viewBox="0 0 28 24" aria-hidden="true" fill="currentColor" style="width:22px"><path d="M10 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0117 10c0 5.6-7 10-7 10z" opacity=".95"/><path d="M18 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0125 10c0 5.6-7 10-7 10z" opacity=".6"/></svg>'};
 const homeLetterOut=id=>state.letters.find(l=>l.person===id&&l.direction==='out'&&!['기간 만료','거절','리프 반환'].includes(R.status(l,now())));
 const homeLinked=id=>state.letters.find(l=>l.person===id&&l.connectedAt);
+/* 홈 카드 관계 버튼 (2026-11-20 · 2차 피드백 3번 · 시안 design-mockups/home-relation-states/, 서로는 P1 장미):
+   홈에서 보내는 버튼은 없고, 이 인연과 무엇이 오갔는지만 "프로필 보기 ›" 자리에 보여 줘요.
+   칸은 둘 — 호감(보냄 · 받음 · 서로 호감) · 편지(보냄 · 받음). 하나면 한 줄, 둘이면 반씩. 편지로 서로 연결되면 한 줄 "서로 연결됨 · 편지함에서 이어가기".
+   흰 알약 + 옅은 테두리(하트만 장미), 서로 호감 · 서로 연결됨만 rose-600 바탕 + 흰 글자. 받은 편지는 그 편지, 서로 연결됨은 편지함, 나머지는 프로필로. */
+const homeLetterIn=id=>state.letters.find(l=>l.person===id&&l.direction==='in'&&!l.connectedAt&&!['기간 만료','거절','리프 반환'].includes(R.status(l,now())));
+function homeRelation(id,name){const hOut=sentInterests.has(id),hIn=incomingInterestIds.has(id),lOut=homeLetterOut(id),lIn=homeLetterIn(id);
+ const pill=(cls,ic,t,ha,label)=>'<span class="btn btn-block is-done hs-pill'+(cls?' '+cls:'')+'" role="button" tabindex="0" data-ha="'+ha+'" aria-label="'+name+' 님, '+(label||t)+'">'+ic+t+'</span>';
+ if(homeLinked(id))return {one:true,html:pill('hs-rose',HA_IC.two,'서로 연결됨 · 편지함에서 이어가기','chats','서로 연결됨, 편지함에서 이어가기')};
+ const p=[];
+ if(hOut&&hIn)p.push(pill('hs-rose',HA_IC.two,'서로 호감','profile','서로 호감, 프로필 보기'));else if(hOut)p.push(pill('',HA_IC.heartF,'호감 보냄','profile','호감 보냄, 프로필 보기'));else if(hIn)p.push(pill('',HA_IC.heartF,'호감 받음','profile','호감 받음, 프로필 보기'));
+ if(lOut&&!lOut.connectedAt)p.push(pill('',HA_IC.check,'편지 보냄','profile','편지 보냄, 프로필 보기'));else if(lIn)p.push(pill('',HA_IC.letter,'편지 받음','letter-in','편지 받음, 편지 열기'));
+ return p.length?{one:p.length===1,html:p.join('')}:null;}
 const homeConnected=id=>(sentInterests.has(id)&&incomingInterestIds.has(id))||!!homeLinked(id);
 function homeAct(id,a){if(a==='open'||a==='profile'){dailyGrid.querySelector('.daily-card[data-person="'+id+'"]')?.click();return;}matchIndex=id;
  if(a==='heart'){if(!sentInterests.has(id)){$('send-interest').onclick?.();persist();}homeActions();return;}
  if(a==='letter'){$('write-letter').onclick?.();return;}
+ if(a==='letter-in'){const l=homeLetterIn(id);if(l&&typeof openLetter==='function')openLetter(l.id);else show('chats');return;}
  if(a==='chats'){const l=homeLinked(id);if(l&&typeof openLetter==='function')openLetter(l.id);else show('chats');}}
 function homeActions(){dailyGrid.querySelectorAll('.daily-card[data-person]').forEach(card=>{const id=Number(card.dataset.person);let row=card.querySelector(':scope>.nov-actions');
  const open=openedMatches.has(id)&&!card.classList.contains('is-locked');
@@ -573,7 +586,7 @@ function homeActions(){dailyGrid.querySelectorAll('.daily-card[data-person]').fo
  if(conn)html='<span class="btn btn-primary btn-block" role="button" tabindex="0" data-ha="chats" aria-label="'+name+' 님과 서로 연결됨, 편지함에서 이어가기">'+HA_IC.two+'서로 연결됨 · 편지함에서 이어가기</span>';
  else{/* 2026-11-19 (팀 피드백 · 시안 home-no-actions A): 홈에는 호감 · 편지 버튼을 두지 않아요(프로필을 안 보고 바로 누르지 않게). 연 카드는 그 자리가 "프로필 보기 ›"로 바뀌고, 호감 · 편지는 프로필 안에서만 */
   html='<span class="btn btn-block nov-open-below nov-profile-below" role="button" tabindex="0" data-ha="profile" aria-label="'+name+' 님 프로필 보기">프로필 보기<svg viewBox="0 0 24 24" aria-hidden="true" style="width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round"><path d="M9 6l6 6-6 6"/></svg></span>';row.classList.remove('fold');}
- row.classList.add('one');row.classList.remove('fold');if(row.dataset.html!==html){row.innerHTML=html;row.dataset.html=html;}});
+ {const rel=homeRelation(id,name);if(rel)html=rel.html;row.classList.toggle('one',!rel||rel.one);}row.classList.remove('fold');if(row.dataset.html!==html){row.innerHTML=html;row.dataset.html=html;}});
  /* 카드 아래 배치(시연 도구 "버튼 자리 · 카드 아래", 시안 home-row-place B): 지금 보이는 카드의 줄을 카드 밖 아래에 한 줄로 */
  const host=dailyGrid.parentElement;let below=$('nov-actions-below');
  if(!below&&host){below=document.createElement('div');below.id='nov-actions-below';below.className='nov-actions';host.append(below);
@@ -622,14 +635,12 @@ renderMyPage=function(){const root=document.querySelector('#mypage .detail-scrol
  const certs=state.credentials.filter(x=>x.status==='시연 승인').length,coupons=state.coupons.filter(x=>couponStatus(x)==='사용 가능').length;
  const nx=mpNext(),C=2*Math.PI*16,full=nx.f===nx.T;
  root.innerHTML='<section class="mp">'
-  +'<div class="mp-me"><button type="button" class="mp-av" data-fx="profile-edit" aria-label="프로필 수정"><img src="'+esc(photo)+'" alt=""><span class="mp-pen"><i class="ic ic-pencil" aria-hidden="true"></i></span></button><div class="mp-nm"><b>'+esc(name)+'</b>'+(meta?'<small>'+esc(meta)+'</small>':'')+'<button type="button" class="mp-vis'+(state.visible?' is-on':'')+'" data-fx="visibility"><i></i>'+(state.visible?'공개 중':'쉬어가는 중')+chev('r','sm')+'</button></div></div>'
+  +'<div class="mp-me"><button type="button" class="mp-av has-ring" data-fx="my-preview" aria-label="내 프로필 보기 · 소개 '+Math.round(nx.f/nx.T*100)+'% 채움"><img src="'+esc(photo)+'" alt=""><svg class="mp-avring" viewBox="0 0 100 100" aria-hidden="true"><circle class="bg" cx="50" cy="50" r="48"/><circle class="fg" cx="50" cy="50" r="48" stroke-dasharray="'+(2*Math.PI*48).toFixed(2)+'" stroke-dashoffset="'+(2*Math.PI*48*(1-nx.f/nx.T)).toFixed(2)+'"/></svg><span class="mp-pct" aria-hidden="true">'+Math.round(nx.f/nx.T*100)+'%</span></button><div class="mp-nm"><b>'+esc(name)+'</b>'+(meta?'<small>'+esc(meta)+'</small>':'')+(state.visible?'':'<span class="mp-vis is-static"><i aria-hidden="true"></i>쉬어가는 중</span>')/* 2026-11-20 R1: 쉬어가는 중일 때만, 누르지 않는 칩 */+'</div></div>'
   +'<div class="mp-pair is-one"><button type="button" class="mp-btn is-line" data-fx="profile-edit">프로필 수정</button></div>'
-  +(full?'':'<button type="button" class="mp-done" data-fx="profile-edit"><span class="mp-ring"><svg viewBox="0 0 40 40" aria-hidden="true"><circle class="mp-ring-bg" cx="20" cy="20" r="16"/><circle class="mp-ring-fg" cx="20" cy="20" r="16" stroke-dasharray="'+C.toFixed(2)+'" stroke-dashoffset="'+(C*(1-nx.f/nx.T)).toFixed(2)+'"/></svg><span>'+nx.f+'/'+nx.T+'</span></span><span class="mp-done-t"><b>'+(nx.f>=nx.T-2?'소개를 거의 다 채웠어요':'소개를 조금 더 채워 볼까요')+'</b><small>'+esc(nx.t)+'</small></span>'+chev('r','md')+'</button>')
-  +'<div class="mp-sh">리프</div><div class="mp-card"><div class="mp-wallet"><span class="mp-lf">'+MP_LN.leaf+'</span><button type="button" class="mp-bal" data-fx="ledger"><small>보유 리프</small><strong>'+state.balance.toLocaleString()+'<span>리프</span></strong></button><button type="button" class="mp-charge" data-fx="wallet">충전</button></div><div class="mp-list">'+mpRow('gift','무료 리프 받기','rewards',rewardsDone()+' / 5')+mpRow('coupon','쿠폰함','my-stores',coupons+'개')+'</div></div>'
-  /* 인연 공개 자리 P2 (시안 design-mockups/visibility-place, 2026-11-20, 팀 링크 씽크): "만남" 묶음을 없애요. 취향 설정은 홈 조절 버튼, 인연 쉬어가기는 설정 · 도움말 › 계정 관리에도 있어요.
-     인연 공개는 이름 아래 칩(.mp-vis)으로, 배지 · 인증은 "인증 · 안전" 묶음으로. */
-  +'<div class="mp-sh">인증 · 안전</div><div class="mp-card mp-list">'+mpRow('shield','배지 · 인증','credentials',certs?certs+'개':'')+mpRow('userx','지인 차단','contact-block')+mpRow('contacts','내 연락처','saved-contacts')+'</div>'
-  +'<div class="mp-sh">앱</div><div class="mp-card mp-list">'+mpRow('bell','알림 설정','settings')+mpRow('settings','설정 · 도움말','my-settings')+'</div>'
+  /* 2026-11-20 G1: 소개 채움은 사진 둘레 링 + % 알약으로 옮기고 카드는 뺐어요 */
+  /* 2026-11-20 (2차 피드백 5번): 묶음 제목 없이 한 목록. 순서는 팀 링크 — 보유 리프 · 배지 · 인증 · 지인 차단 · 내 연락처 · 무료 리프 받기 · 쿠폰함 · 알림 설정 · 설정 · 도움말.
+     공개 칩은 뺐어요(충동적인 쉬어가기 막기 — 인연 쉬어가기는 설정 · 도움말 › 계정 관리 안에만) */
+  +'<div class="mp-card mp-one"><div class="mp-wallet"><span class="mp-lf">'+MP_LN.leaf+'</span><button type="button" class="mp-bal" data-fx="ledger"><small>보유 리프</small><strong>'+state.balance.toLocaleString()+'<span>리프</span></strong></button><button type="button" class="mp-charge" data-fx="wallet">충전</button></div><div class="mp-list">'+mpRow('shield','배지 · 인증','credentials',certs?certs+'개':'')+mpRow('userx','지인 차단','contact-block')+mpRow('contacts','내 연락처','saved-contacts')+mpRow('gift','무료 리프 받기','rewards',rewardsDone()+' / 5')+mpRow('coupon','쿠폰함','my-stores',coupons+'개')+mpRow('bell','알림 설정','settings')+mpRow('settings','설정 · 도움말','my-settings')+'</div></div>'
   +'</section>';};
 function homeSketch(){return '<svg class="location-sketch" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5M5.5 9v12h5v-7h3v7h5V9M16 5V3h3v5"/></svg>';}
 /* Page Header · 기능 화면 공용 머리(시안 “프로필 수정 헤더” C 가운데 정렬): 뒤로 · 가운데 제목 16 · 오른쪽 글자 버튼.
@@ -1068,6 +1079,7 @@ function pfWire(root,d,onChange){const r=root.querySelector('.yh-range');if(r){c
  root.querySelectorAll('.yh-chips').forEach(g=>g.addEventListener('click',e=>{const c=e.target.closest('.yh-chip');if(!c)return;g.querySelectorAll('.yh-chip').forEach(x=>x.setAttribute('aria-checked',x===c));d[g.dataset.k]=c.dataset.v;onChange(g.dataset.k);}));}
 const pfRest=d=>{const r=['religion','smoke','drink','politics'].filter(k=>d[k]!=='상관없음').map(k=>d[k]);return (r.length?r.join(' · '):'그 외 상관없음')+(d.cert?' · 인증 우선':'');};
 /* 공용 시트: 사진 관리 시트와 같은 덮개 · 손잡이 · 300ms/240ms. data-act="close"는 닫기, 나머지는 onAct로 */
+window.yhSheet=(...a)=>yhSheet(...a);/* 다른 파일(story.js 이야기 빼기)에서도 같은 바텀 시트를 써요 */
 function yhSheet(html,onAct,{label='',opener=document.activeElement,cls=''}={}){const phone=document.querySelector('.phone');phone.querySelector('.photo-sheet-layer')?.remove();const DRAWER='cubic-bezier(.32,.72,0,1)',still=matchMedia('(prefers-reduced-motion: reduce)').matches;
  const L=document.createElement('div');L.className='photo-sheet-layer yh-sheet-layer';L.innerHTML='<div class="photo-sheet-dim" data-act="close"></div><div class="photo-sheet yh-sheet '+cls+'" role="dialog" aria-modal="true"'+(label?' aria-label="'+esc(label)+'"':'')+' tabindex="-1"><span class="photo-sheet-handle" aria-hidden="true"></span><div class="yh-sheet-body">'+html+'</div></div>';
  const dim=L.querySelector('.photo-sheet-dim'),sheet=L.querySelector('.photo-sheet');let closing=false;
@@ -1198,7 +1210,18 @@ renderChatList=function(){const list=$('chat-list');list.replaceChildren();const
   b.innerHTML=portrait(l.person)+'<span class="hl-copy"><span class="hl-name">'+esc(m.name)+'</span>'+line+'</span>'+hlSide(d,unread);
   b.onclick=()=>openLetter(l.id);list.append(b);}
  if(!letters.length)list.innerHTML='<p class="fx-empty">아직 도착한 편지가 없어요.</p>';syncNotificationBadges();};
-const hlHearts=renderHearts;renderHearts=function(){hlHearts();hlListify();};
+/* 마음함 사진 카드 (2026-11-20 · 시안 design-mockups/heartbox-grid/): 목록 대신 두 칸 사진 카드에 이름 · 나이 · 인증 배지만.
+   세 탭 모두 오른쪽 위 D-n(어두운 반투명), 새로 온 마음은 이름 옆 장미 점, 7일 지나면 흐림 + "다시 보기"(서로도 같음, 2026-11-20). */
+const hlHearts=renderHearts;renderHearts=function(){hlHearts();const certs={};document.querySelectorAll('#heart-list .heart-person').forEach(b=>{if(b.querySelector('.person-cert'))certs[b.getAttribute('aria-label')]=1;});hlListify();hbCardify(certs);};
+const HB_CERT='<span class="hb-cert" aria-label="인증"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8"/><path d="M4.6 8.2l2.2 2.2 4.6-4.8"/></svg></span>';
+function hbCardify(certs){const el=$('heart-list');if(!el)return;el.classList.remove('hl-list');el.classList.add('hb-grid');
+ el.querySelectorAll('.heart-person').forEach(b=>{const lab=b.getAttribute('aria-label');const i=demoMatches.findIndex(m=>lab===m.name+' 프로필 보기');const m=demoMatches[i];if(!m)return;
+  const ph=m.photos[0],age=(m.meta||'').split('·')[0].trim(),from=state.likeAt[i]||stamp;
+  /* 2026-11-20: 서로도 7일이 지나면 가려져요(누르면 다시 보기 시트 — 이미 동작은 같았고 모양만 맞춤) */const expired=now()-from>=7*R.DAY&&(state.unlocks[i]||0)<now();
+  const isNew=heartTab==='received'&&!expired&&!seenHeartEvents.has(heartEventKey(i));
+  /* 다시 보기로 연 뒤에는 연 때부터 7일(예전엔 처음 마음 날짜 기준이라 D-0으로 보였어요) */const until=(state.unlocks[i]||0)>now()?state.unlocks[i]:from+7*R.DAY;const top=expired?'':'<span class="hb-chip">D-'+Math.max(0,Math.ceil((until-now())/R.DAY))+'</span>';
+  b.className='heart-person hb-card'+(expired?' is-off':'');
+  b.innerHTML='<span class="hb-ph"><span class="hb-img" style="background-image:url(\''+esc(ph.src)+'\');background-position:'+esc(ph.position||'50% 40%')+'"></span>'+top+(expired?'<span class="hb-again">다시 보기</span>':'')+'<span class="hb-cap"><b>'+esc(m.name)+(isNew?'<i class="hb-dot" aria-hidden="true"></i>':'')+'</b><small>'+(age?esc(age)+'세':'')+(certs[lab]?HB_CERT:'')+'</small></span></span>';});}
 function hlListify(){const el=$('heart-list');if(!el)return;el.classList.add('hl-list');
  const mutualIds=new Set([...incomingInterestIds].filter(i=>sentInterests.has(i)));
  const recvNew=[...incomingInterestIds].some(i=>!mutualIds.has(i)&&!state.blocks.includes(i)&&!seenHeartEvents.has(heartEventKey(i)));
@@ -1206,7 +1229,7 @@ function hlListify(){const el=$('heart-list');if(!el)return;el.classList.add('hl
  const me=photoUrls?.[0]||document.getElementById('my-page-photo')?.getAttribute('src')||'/profile-sample-1.png';
  el.querySelectorAll('.heart-person').forEach(b=>{const i=demoMatches.findIndex(m=>b.getAttribute('aria-label')===m.name+' 프로필 보기');const m=demoMatches[i];if(!m)return;
   const ph=m.photos[0],age=(m.meta||'').split('·')[0].trim();const from=state.likeAt[i]||stamp;
-  const expired=heartTab!=='mutual'&&now()-from>=7*R.DAY&&(state.unlocks[i]||0)<now();
+  const expired=now()-from>=7*R.DAY&&(state.unlocks[i]||0)<now();
   const isNew=heartTab==='received'&&!expired&&!seenHeartEvents.has(heartEventKey(i));
   let line,side='';
   if(heartTab==='mutual'){line='<span class="hl-line is-love"><b>서로 호감</b></span>';side='<span class="hl-icon" role="button" tabindex="0" data-hl-letter="'+i+'" aria-label="'+esc(m.name)+'에게 편지 쓰기">'+HL_LETTER+'</span>';}
@@ -1256,7 +1279,7 @@ function ipRequestView(c){const m=demoMatches[c.person]||{},p=state.posts.find(x
    +ipFacts([['eye','수락하면 서로의 인연 프로필이 열려요'],['lock','연락처는 공개되지 않아요'],['clock','답이 없거나 거절돼도 리프는 돌아오지 않아요']])
    +ipDock('<button type="button" class="ip-btn" data-fx="request-send:'+c.person+'">교환 요청하기 <span class="ip-chip">'+ipI('leaf','ip-chip-i')+'10</span></button>')+'</div>';}
 function ipVisibilityView(){const on=!!state.visible,d=state.pausedAt?new Date(state.pausedAt).toLocaleDateString('ko-KR',{month:'long',day:'numeric'}):'';
-  return '<div class="ip-wrap"><div class="ip-card"><button type="button" class="ip-row ip-switch-row" role="switch" aria-checked="'+on+'" data-fx="vis-switch"><span class="k">인연 공개<small>'+(on?'<i class="ip-dot"></i>공개 중 · 오늘의 인연에 소개되고 있어요':'쉬는 중'+(d?' · '+d+'부터':''))+'</small></span><span class="ip-sw'+(on?' is-on':'')+'" aria-hidden="true"></span></button><label class="ip-row ip-act-row"><span class="k">최근 활동 표시<small>24시간 안에 활동했는지만 보여요</small></span><input aria-label="최근 활동 표시" id="activity-toggle" class="fx-switch" type="checkbox" '+(state.settings.activity?'checked':'')+'></label></div>'
+  return '<div class="ip-wrap"><div class="ip-card"><button type="button" class="ip-row ip-switch-row" role="switch" aria-checked="'+on+'" data-fx="vis-switch"><span class="k">인연 공개<small>'+(on?'<i class="ip-dot"></i>공개 중 · 오늘의 인연에 소개되고 있어요':'쉬는 중'+(d?' · '+d+'부터':''))+'</small></span><span class="ip-sw'+(on?' is-on':'')+'" aria-hidden="true"></span></button></div>'
    +'<p class="ip-sh">'+(on?'쉬어가면':'다시 공개하면')+'</p>'
    +(on?ipFacts([['eyeoff','내 프로필이 소개되지 않고, 다른 인연도 볼 수 없어요'],['chat','커뮤니티 · 플레이스는 그대로 쓸 수 있어요'],['mail','주고받던 편지의 보관 기간은 그대로 흘러가요']]):ipFacts([['eye','다음 소개 시간부터 오늘의 인연에 다시 소개돼요'],['mail','쉬는 동안 받은 편지 · 호감은 그대로 남아 있어요']]))+'</div>';}
 function ipContactBlockView(){/* 지인 차단 J1 (시안 design-mockups/contact-block-sync, 2026-11-20): 카드는 "휴대전화 연락처", 불러온 뒤엔 개수 · 날짜 + 카드 안 "업데이트", 아래 버튼은 사라져요 */const sync=state.contactSync,d=sync?new Date(sync.at).toLocaleDateString('ko-KR',{month:'long',day:'numeric'}):'';
@@ -1405,6 +1428,15 @@ const AN_N=['수국','튤립','장미','프리지아','데이지','동백','라�
 const anHash=t=>{let h=2166136261;for(const ch of String(t)){h^=ch.charCodeAt(0);h=Math.imul(h,16777619);}return h>>>0;};
 function anName(p,id){const order=[p.author,...(p.comments||[]).map(c=>c.author)].filter((v,i,a)=>a.indexOf(v)===i);let k=order.indexOf(id);if(k<0)k=order.length;const sd=anHash(p.id);return AN_A[(sd+k*7)%AN_A.length]+' '+AN_N[((sd>>>5)+k*11)%AN_N.length];}
 cxName=function(p,id){return anName(p,id);};
+/* 마이페이지 목록 누름: 줄어든 회색 박스가 리프 카드 폭과 같도록 누르는 순간 비율 계산(시안 my-r2) */
+document.addEventListener('pointerdown',e=>{const r=e.target.closest?.('#mypage .mp-one .mp-row');if(!r)return;const l=r.parentElement,w=l.getBoundingClientRect().width;if(w)l.style.setProperty('--mp-press',(w/(w+24)).toFixed(4));},true);
+/* 프로필 확인이 끝나야 익명 이야기를 써요(2026-11-20): 확인 중이면 목록 대신 잠긴 화면, 글 · 글쓰기 · 교환은 열리지 않아요 */
+const anLocked=()=>state.reviewStatus==='pending';
+{const prev=communityView;communityView=function(){if(!anLocked())return prev.apply(this,arguments);const host=document.createElement('div');host.innerHTML=prev.apply(this,arguments);const head=host.querySelector('.comm-heading');
+  return (head?head.outerHTML:'')+'<div class="an-lock"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></svg><b>프로필 확인이 끝나면 이용할 수 있어요</b><small>확인이 끝나는 대로 알림으로 알려 드릴게요.</small></div>';};}
+{const prev=navTo;navTo=function(v){if(anLocked()&&['post','compose-post','exchange','community-guide'].includes(v)){toast('프로필 확인이 끝나면 이용할 수 있어요.');return;}return prev.apply(this,arguments);};}
+/* 지운 글은 상세로 들어갈 수 없어요(목록 · 알림 · 교환 요청의 함께 이야기한 게시글 어디서든) */
+{const prev=navTo;navTo=function(v,c){if(v==='post'){const p=state.posts.find(x=>x.id===c?.id);if(p?.removed){toast('삭제된 게시글이에요.');return;}}return prev.apply(this,arguments);};}
 /* "익명"은 이름으로 쓰지 않아요(2026-11-20): 글이 있으면 그 글에서의 이름, 글 없이 온 교환 요청은 사람마다 정해진 "마음 + 꽃" 이름 */
 function anPersonName(person,postId){const p=postId&&state.posts.find(x=>x.id===postId);if(p)return anName(p,person);if(person==='me')return '나';const h=anHash('person:'+person);return AN_A[h%AN_A.length]+' '+AN_N[(h>>>5)%AN_N.length];}
 /* 얼굴도 글에서 보던 손그림 그대로: 글쓴이면 그 글 얼굴, 댓글 단 사람이면 그 댓글 얼굴, 글이 없으면 사람마다 하나 */
@@ -1425,7 +1457,7 @@ if(!state.modSeeded){state.modSeeded=1;state.posts.push({id:'mod-post-demo',auth
   host.querySelectorAll('.comm-entry').forEach(el=>{const box=el.querySelector('.cx-entry[data-fx]');if(!box)return;const p=state.posts.find(x=>'post:'+x.id===box.dataset.fx);if(!p)return;
    const meta=box.querySelector('.comm-entry-meta');const face=meta?.querySelector('.comm-anon svg, .comm-anon .gender-sketch');
    if(meta)meta.innerHTML='<span class="comm-anon">'+(face?face.outerHTML:'')+'</span><span class="an-who"><b>'+anName(p,p.author)+(p.author==='me'?'<i class="an-tag">나</i>':'')+'</b><small>'+postAge(p.at)+'</small></span>'+(p.removed?'':'<button type="button" class="an-more" data-fx="feed-more:'+p.id+'" aria-label="더보기">'+AN_MORE+'</button>');
-   if(p.removed){const b=box.querySelector('p');if(b){b.className='an-removed';b.textContent='커뮤니티 가이드 위반으로 삭제된 게시글이에요.';}}});
+   if(p.removed){/* 지운 글(2026-11-20 시안 removed-post D3): 눌러도 열리지 않고, 공감 · 댓글은 연하게 남겨 눌리지 않게 */const b=box.querySelector('p');if(b){b.className='an-removed';b.innerHTML='<span>커뮤니티 가이드 위반으로 삭제된 게시글이에요.</span>';}el.classList.add('is-removed');['data-fx','role','tabindex','aria-label'].forEach(a=>box.removeAttribute(a));box.querySelectorAll('.cx-act').forEach(x=>{x.disabled=true;x.tabIndex=-1;x.removeAttribute('data-cl');x.removeAttribute('data-fx');x.setAttribute('aria-hidden','true');});}});
   host.querySelectorAll('.an-tagline,.an-load').forEach(x=>x.remove());const feeds=host.querySelectorAll('.comm-feed'),feed=feeds[feeds.length-1];if(feed){const items=[...feed.querySelectorAll(':scope>.comm-entry')];items.forEach((el,i)=>{if(i>=anLimit)el.remove();});
    if(items.length>anLimit)feed.insertAdjacentHTML('beforeend','<button type="button" class="an-load" data-fx="feed-load">더보기</button>');}
   return host.innerHTML;};}
@@ -1437,7 +1469,7 @@ if(!state.modSeeded){state.modSeeded=1;state.posts.push({id:'mod-post-demo',auth
    ch?.querySelector('.cx-atag')?.classList.add('an-tag');
    if(x.author!=='me'){el.querySelector('.cx-face')?.setAttribute('data-cx','req:'+x.author);ch?.querySelector('b')?.setAttribute('data-cx','req:'+x.author);}
    const body=el.querySelector('.cx-c>p');
-   if(x.removed){if(body){body.className='an-removed';body.textContent='커뮤니티 가이드 위반으로 삭제된 댓글이에요.';}ca?.remove();ch?.querySelector('.cx-more')?.remove();return;}
+   if(x.removed){if(body){body.className='an-removed';body.innerHTML='<span>커뮤니티 가이드 위반으로 삭제된 댓글이에요.</span>';}el.classList.add('is-removed');el.querySelectorAll('[data-cx]').forEach(n=>n.removeAttribute('data-cx'));ca?.remove();ch?.querySelector('.cx-more')?.remove();return;}
    if(x.parent&&body){const par=p.comments.find(y=>y.id===x.parent);if(par)body.insertAdjacentHTML('afterbegin','<span class="an-at">@'+anName(p,par.author)+'</span>');}
    if(x.audio&&body)body.insertAdjacentHTML('afterend',vpHtml('cmt:'+x.id,x.audio,x.audioDur||0));});
   const rp=host.querySelector('.cx-replying span');if(rp&&c.parent){const par=p.comments.find(y=>y.id===c.parent);if(par)rp.innerHTML='<b class="an-at" style="margin:0">@'+anName(p,par.author)+'</b>에게 답글';}
@@ -1490,7 +1522,21 @@ document.addEventListener('click',e=>{if(view!=='wallet')return;const pk=e.targe
 
 function alignFeatureActions(){const host=document.getElementById('fx-body');if(!host)return;for(const b of [...host.children]){if(b.parentElement!==host||!b.matches('button.fx-small'))continue;const group=document.createElement('div');group.className='fx-actions fx-secondary-actions';host.insertBefore(group,b);let next=b;while(next&&next.matches('button.fx-small')){const after=next.nextElementSibling;group.append(next);next=after;}}}
 
-;(()=>{/* 작성 안내 상자: 2026-11-10 숨김. 다시 보이려면 SHOW_SIGNUP_GUIDE를 true로 */const SHOW_SIGNUP_GUIDE=false;if(!SHOW_SIGNUP_GUIDE)return;const hints={profile:['작성 안내','닉네임은 실명 대신 편하게 불릴 이름으로 적어주세요. 예: 윤슬, 산책하는곰. 사는 곳은 주로 생활하는 시·구를 선택해요.'],photos:['사진 구성 예시','첫 장은 얼굴이 선명한 사진, 다음은 전신·취미·일상 사진으로 구성해보세요. 예: 카페에서 찍은 얼굴 사진 → 산책 사진 → 여행 사진. 각 사진에는 본인이 보여야 해요.'],details:['상세정보 작성 안내','키는 숫자만 적어주세요. 예: 168. 직업·학력·생활 습관은 현재 나에게 맞는 항목을 선택하고, MBTI를 모르면 모름을 선택해도 괜찮아요.'],hashtags:['해시태그 선택 예시','실제 내 일상과 맞는 단어를 골라보세요. 예: 산책메이트 · 카페탐방러 · 다정한사람. 유행하는 표현보다 나를 잘 설명하는 태그가 좋아요.']};for(const [id,[label,copy]] of Object.entries(hints)){const host=document.querySelector('#'+id+' .detail-scroll')||document.getElementById(id);if(!host||host.querySelector('.signup-guide'))continue;const box=document.createElement('details');box.className='signup-guide';const title=document.createElement('summary');title.textContent=label;const p=document.createElement('p');copy.split('→').forEach((t,i)=>{if(i){const a=document.createElement('i');a.className='ic ic-inline ic-arrow-right-small';a.setAttribute('aria-hidden','true');p.append(a);}p.append(t);});box.append(title,p);const intro=host.querySelector('.ob-intro');if(intro)intro.after(box);else host.prepend(box);}})();
+;(()=>{/* 작성 안내 상자: 2026-11-10 숨김. 다시 보이려면 SHOW_SIGNUP_GUIDE를 true로 */const SHOW_SIGNUP_GUIDE=false;if(!SHOW_SIGNUP_GUIDE)return;const hints={profile:['작성 안내','닉네임은 실명 대신 편하게 불릴 이름으로 적어주세요. 예: 윤슬, 산책하는곰. 사는 곳은 주로 생활하는 시·구를 선택해요.'],photos:['사진 구성 예시','첫 장은 얼굴이 선명한 사진, 다음은 전신·취미·일상 사진으로 구성해보세요. 예: 카페에서 찍은 얼굴 사진 → 산책 사진 → 여행 사진. 각 사진에는 본인이 보여야 해요.'],details:['상세정보 작성 안내','키는 숫자만 적어주세요. 예: 168. 직업·학력·생활 습관은 현재 나에게 맞는 항목을 선택하고, MBTI를 모르면 모름을 선택해도 괜찮아요.'],hashtags:['해시태그 선택 예시','실제 내 일상과 맞는 단어를 골라보세요. 예: 산책메이트 · 카페탐방러 · 다정한사람. 유행하는 표현보다 나를 잘 설명하는 태그가 좋아요.']};for(const [id,[label,copy]] of Object.entries(hints)){const host=document.querySelector('#'+id+' .detail-scroll')||document.getElementById(id);if(!host||host.querySelector('.signup-guide'))continue;const box=document.createElement('details');box.className='signup-guide';const title=document.createElement('summary');title.textContent=label;const p=document.createElement('p');copy.split('→').forEach((t,i)=>{if(i){const a=document.createElement('i');a.className='ic ic-inline ic-arrow-right-small';a.setAttribute('aria-hidden','true');p.append(a);}p.append(t);});box.append(title,p);const intro=host.querySelector('.ob-intro');if(intro)intro.after(box);else host.prepend(box);}
+})();
+
+// 가입 · 사진 단계: 프로필 기준 보기 → 기준 바텀 시트(사례 칩 · ✓/✗ 사진 짝 · 사진 고르기)
+{const PG=[['얼굴 가림',[['선글라스 · 마스크로 얼굴을 가리지 않게 해 주세요','mask',''],['후드나 모자로 얼굴 윤곽이 가려지지 않게 해 주세요','hood','']]],['정면 미응시',[['옆모습이나 고개를 크게 돌린 사진은 피해 주세요','side',''],['카메라를 바라보는 사진으로 올려 주세요','down','']]],['얼굴이 너무 작음',[['얼굴이 크게 보이게 가까이서 찍은 사진으로','far','']]],['어둡거나 흐림',[['눈 · 코 · 입이 또렷하게 보이는 밝은 사진으로','ok','dark']]],['회전된 사진',[['똑바로 세운 사진으로 올려 주세요','ok','rot']]],['AI 사진 · 보정',[['내 얼굴을 AI로 바꾸거나 AI로 만든 사진은 올릴 수 없어요','anime',''],['과한 AI 보정 · 필터로 내 얼굴과 구분할 수 없는 사진도 안 돼요','filter','']]]];
+ const mark=ok=>'<span class="pg-mark '+(ok?'ok':'no')+'" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="'+(ok?'M2.6 6.2l2.2 2.2 4.6-4.8':'M3.2 3.2l5.6 5.6M8.8 3.2 3.2 8.8')+'"/></svg></span>';
+ const ph=(n,cls,ok)=>'<div class="pg-std-ph'+(ok?'':' no')+'"><img src="photo-guide/'+n+'.jpg" alt="'+(ok?'좋은 예':'피할 예')+'"'+(cls?' class="'+cls+'"':'')+'>'+mark(ok)+'</div>';
+ const rules=k=>PG[k][1].map((r,i)=>'<div class="pg-std-rule"><p><i>'+(i+1)+'</i>'+r[0]+'</p><div class="pg-std-pair">'+ph('ok','',1)+ph(r[1],r[2],0)+'</div></div>').join('');
+ const center=(ch,on)=>{if(ch&&on)ch.scrollTo({left:Math.max(0,on.offsetLeft-(ch.clientWidth-on.offsetWidth)/2),behavior:'smooth'});};
+ const open=btn=>{window.yhSheet('<h2 class="pg-std-h">얼굴이 잘 보이는 정면 사진으로<br>올려 주세요</h2><div class="pg-std-chips">'+PG.map((x,i)=>'<button type="button" data-act="pg-'+i+'" aria-pressed="'+(i===0)+'"'+(i===0?' class="on"':'')+'>'+x[0]+'</button>').join('')+'</div><div class="pg-std-list">'+rules(0)+'</div><div class="pg-std-foot"><button type="button" class="photo-sheet-primary" data-act="pick">사진 고르기</button></div>',(a,L)=>{
+   if(a.startsWith('pg-')){const k=+a.slice(3),ch=L.querySelector('.pg-std-chips');ch.querySelectorAll('button').forEach((b,i)=>{b.classList.toggle('on',i===k);b.setAttribute('aria-pressed',i===k);});const list=L.querySelector('.pg-std-list');list.innerHTML=rules(k);list.scrollTop=0;center(ch,ch.querySelector('.on'));return false;}
+   if(a==='pick'){const i=photoUrls.findIndex(u=>!u);document.querySelector('#photos input[data-photo="'+(i<0?0:i)+'"]')?.click();}
+  },{label:'프로필 기준',cls:'pg-std',opener:btn});};
+ const intro=document.querySelector('#photos .ob-intro');
+ if(intro&&!document.querySelector('#photos .pg-std-btn')){intro.insertAdjacentHTML('afterend','<button type="button" class="pg-std-btn">프로필 기준 보기<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5"/></svg></button>');const b=document.querySelector('#photos .pg-std-btn');b.addEventListener('click',()=>open(b));}}
 
 // Distinct envelope for the inbox; retain navigation and badge container.
 {const icon=document.querySelector('.home-nav [data-go="chats"] svg');if(icon)icon.innerHTML='<path d="M3 6Q12 5 21 6V19H3Z M3 7L12 14L21 7 M3 19L9 13 M21 19L15 13"/>'; }

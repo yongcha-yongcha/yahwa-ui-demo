@@ -1,0 +1,38 @@
+<meta charset="utf-8">
+<title>인연 카드 오버레이</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:24px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px;text-wrap:balance}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:82ch}
+ul b{color:var(--ink);font-weight:600}
+section{display:grid;gap:10px}
+h2{font:700 18px/1.4 var(--sans);margin:0}
+.row{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:16px}
+figure{margin:0;display:grid;gap:6px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:14px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+</style>
+<div class="wrap">
+  <header>
+    <h1>인연 카드 · 사진 아래 블러 없애고 어둠은 아주 살짝</h1>
+    <ul>
+      <li><b>지금:</b> 사진 아래쪽 59%부터 흐림 6겹(최대 40px) + 어두운 그라데이션(50% → 80%에서 42%).</li>
+      <li><b>세 안 공통:</b> 흐림은 모두 빼요. 레이아웃은 그대로, 오버레이만 참고 이미지처럼 사진이 끝까지 또렷하게. 흰 글자에 아주 옅은 그림자(0 1 2, 22%)를 더해 밝은 사진에서도 읽히게.</li>
+      <li><b>G1 가장 옅게:</b> 55%부터 바닥 22%. 참고 이미지와 가장 비슷해요. 밝은 옷 · 배경이면 두 줄 소개 글이 조금 약해요.</li>
+      <li><b>G2 살짝:</b> 50%부터 72%에 14% → 바닥 32%. 사진은 거의 그대로, 글은 안정적으로 읽혀요.</li>
+      <li><b>G3 조금 더:</b> 45%부터 70%에 20% → 바닥 42%(지금 진하기를 아래로만 모음).</li>
+    </ul>
+  </header>
+  <section><h2>지금 사진(어두운 배경)</h2><div class="row"><figure><img src="img/a0.jpg" alt="지금 흐림 + 어둠" loading="lazy"><figcaption><span class="tag">지금</span>흐림 + 어둠</figcaption></figure><figure><img src="img/a_g1.jpg" alt="G1 가장 옅게" loading="lazy"><figcaption><span class="tag new">G1</span>가장 옅게</figcaption></figure><figure><img src="img/a_g2.jpg" alt="G2 살짝" loading="lazy"><figcaption><span class="tag new">G2</span>살짝</figcaption></figure><figure><img src="img/a_g3.jpg" alt="G3 조금 더" loading="lazy"><figcaption><span class="tag new">G3</span>조금 더</figcaption></figure></div></section>
+  <section><h2>밝은 사진(흰 옷)일 때</h2><div class="row"><figure><img src="img/b0.jpg" alt="지금 흐림 + 어둠" loading="lazy"><figcaption><span class="tag">지금</span>흐림 + 어둠</figcaption></figure><figure><img src="img/b_g1.jpg" alt="G1 가장 옅게" loading="lazy"><figcaption><span class="tag new">G1</span>가장 옅게</figcaption></figure><figure><img src="img/b_g2.jpg" alt="G2 살짝" loading="lazy"><figcaption><span class="tag new">G2</span>살짝</figcaption></figure><figure><img src="img/b_g3.jpg" alt="G3 조금 더" loading="lazy"><figcaption><span class="tag new">G3</span>조금 더</figcaption></figure></div></section>
+</div>

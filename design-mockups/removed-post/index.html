@@ -1,0 +1,40 @@
+<meta charset="utf-8">
+<title>삭제된 글 비활성</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:24px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px;text-wrap:balance}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:82ch}
+ul b{color:var(--ink);font-weight:600}
+section{display:grid;gap:10px}
+h2{font:700 18px/1.4 var(--sans);margin:0}
+.row{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:16px}
+figure{margin:0;display:grid;gap:6px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:14px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+</style>
+<div class="wrap">
+  <header>
+    <h1>익명 이야기 · 가이드 위반으로 삭제된 글 · 댓글 비활성</h1>
+    <ul>
+      <li><b>지금:</b> 지운 글도 얼굴 · 이름 · 날짜 · 공감 0 · 댓글 0이 그대로 보이고, 누르면 상세로 들어가 공감 · 댓글을 쓸 수 있어요.</li>
+      <li><b>세 안 공통:</b> 목록 카드는 눌러도 열리지 않고, 공감 · 댓글 · 더보기(⋯)가 눌리지 않아요. 상세(알림 등으로 들어온 경우)도 같은 규칙, 지운 댓글은 답글 · 공감 없이.</li>
+      <li><b>삭제 문구:</b> "커뮤니티 가이드 위반으로 삭제된 …" 글자도 흐리게 — 본문 회색(fg-muted)보다 한 단계 연한 <code>fg-subtle</code>(cool-neutral-400), 금지 아이콘도 같은 색. 세 안 모두.</li>
+      <li><b>D1 흐리게 · 행동 없음:</b> 얼굴 회색 · 이름 연하게, 공감 · 댓글 줄을 아예 빼요. 상세는 입력창도 빼요.</li>
+      <li><b>D2 회색 한 줄:</b> 얼굴 · 이름 · 날짜 · 공감 · 댓글을 모두 빼고 회색 바탕 한 줄(금지 아이콘 + 문구)만. 목록에서 가장 확실히 "없는 글"로 보여요.</li>
+      <li><b>D3 보이되 비활성:</b> 이름 줄은 흐리게 두고, 공감 · 댓글 아이콘을 연하게 남겨 "눌리지 않음"을 보여 줘요. 상세 입력창도 흐린 채 "댓글을 달 수 없는 글이에요".</li>
+    </ul>
+  </header>
+  <section><h2>목록</h2><div class="row"><figure><img src="img/l0.jpg" alt="지금 공감 · 댓글 눌림" loading="lazy"><figcaption><span class="tag">지금</span>공감 · 댓글 눌림</figcaption></figure><figure><img src="img/l_d1.jpg" alt="D1 흐리게 · 행동 없음" loading="lazy"><figcaption><span class="tag new">D1</span>흐리게 · 행동 없음</figcaption></figure><figure><img src="img/l_d2.jpg" alt="D2 회색 한 줄" loading="lazy"><figcaption><span class="tag new">D2</span>회색 한 줄</figcaption></figure><figure><img src="img/l_d3.jpg" alt="D3 보이되 비활성" loading="lazy"><figcaption><span class="tag new">D3</span>보이되 비활성</figcaption></figure></div></section>
+  <section><h2>지운 글 상세 (알림 등으로 들어왔을 때)</h2><div class="row"><figure><img src="img/t_d1.jpg" alt="D1 공감 · 댓글 · 입력창 없음" loading="lazy"><figcaption><span class="tag new">D1</span>공감 · 댓글 · 입력창 없음</figcaption></figure><figure><img src="img/t_d2.jpg" alt="D2 회색 한 줄만" loading="lazy"><figcaption><span class="tag new">D2</span>회색 한 줄만</figcaption></figure><figure><img src="img/t_d3.jpg" alt="D3 연하게 · 입력 막힘" loading="lazy"><figcaption><span class="tag new">D3</span>연하게 · 입력 막힘</figcaption></figure></div></section>
+  <section><h2>지운 댓글</h2><div class="row"><figure><img src="img/c_d1.jpg" alt="D1 얼굴 회색 · 이름 연하게" loading="lazy"><figcaption><span class="tag new">D1</span>얼굴 회색 · 이름 연하게</figcaption></figure><figure><img src="img/c_d2.jpg" alt="D2 회색 한 줄" loading="lazy"><figcaption><span class="tag new">D2</span>회색 한 줄</figcaption></figure><figure><img src="img/c_d3.jpg" alt="D3 흐린 이름 + 아이콘 한 줄" loading="lazy"><figcaption><span class="tag new">D3</span>흐린 이름 + 아이콘 한 줄</figcaption></figure></div></section>
+</div>

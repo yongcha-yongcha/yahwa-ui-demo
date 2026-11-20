@@ -1,0 +1,40 @@
+<meta charset="utf-8">
+<title>하단 메뉴 뉴트럴</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:24px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px;text-wrap:balance}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:82ch}
+ul b{color:var(--ink);font-weight:600}
+section{display:grid;gap:10px}
+h2{font:700 16px/1.4 var(--sans);margin:0;display:flex;align-items:center;gap:8px}
+.row{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:16px}
+figure{margin:0;display:grid;gap:6px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:14px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2)}
+.tag.new{background:var(--tag-new);color:#fff}
+</style>
+<div class="wrap">
+  <header>
+    <h1>하단 메뉴 · 고른 칸을 회색으로</h1>
+    <ul>
+      <li><b>바뀌는 것:</b> 고른 칸 알약 바탕색과 채운 아이콘 색만. 모양 · 크기 · 움직임 · 빨간 점은 그대로.</li>
+      <li><b>N1 연회색:</b> 가장 조용해요. 고른 칸이 은은하게 칠해진 느낌.</li>
+      <li><b>N2 회색:</b> 한 단계 진하게. "회색으로 칠해진 느낌"이 가장 분명하면서 화면을 누르지 않아요.</li>
+      <li><b>N3 진한 회색:</b> 흰 아이콘 · 검은 알약. 가장 또렷하지만 화면에서 가장 센 요소가 돼요.</li>
+      <li><b>MY 칸:</b> 내 사진 테두리도 파랑 대신 회색(cool-neutral-700).</li>
+    </ul>
+  </header>
+<section><h2><span class="tag">지금</span>파랑: 하늘 100 바탕 + sky-600 아이콘</h2><div class="row"><figure><img src="img/n0_a.jpg" alt="지금 홈" loading="lazy"><figcaption>홈</figcaption></figure><figure><img src="img/n0_b.jpg" alt="지금 익명 이야기" loading="lazy"><figcaption>익명 이야기</figcaption></figure><figure><img src="img/n0_c.jpg" alt="지금 MY" loading="lazy"><figcaption>MY</figcaption></figure></div></section>
+<section><h2><span class="tag new">N1</span>연회색: cool-neutral-100 바탕 + 800 아이콘</h2><div class="row"><figure><img src="img/n1_a.jpg" alt="N1 홈" loading="lazy"><figcaption>홈</figcaption></figure><figure><img src="img/n1_b.jpg" alt="N1 익명 이야기" loading="lazy"><figcaption>익명 이야기</figcaption></figure><figure><img src="img/n1_c.jpg" alt="N1 MY" loading="lazy"><figcaption>MY</figcaption></figure></div></section>
+<section><h2><span class="tag new">N2</span>회색: cool-neutral-200 바탕 + 900 아이콘</h2><div class="row"><figure><img src="img/n2_a.jpg" alt="N2 홈" loading="lazy"><figcaption>홈</figcaption></figure><figure><img src="img/n2_b.jpg" alt="N2 익명 이야기" loading="lazy"><figcaption>익명 이야기</figcaption></figure><figure><img src="img/n2_c.jpg" alt="N2 MY" loading="lazy"><figcaption>MY</figcaption></figure></div></section>
+<section><h2><span class="tag new">N3</span>진한 회색: cool-neutral-800 바탕 + 흰 아이콘</h2><div class="row"><figure><img src="img/n3_a.jpg" alt="N3 홈" loading="lazy"><figcaption>홈</figcaption></figure><figure><img src="img/n3_b.jpg" alt="N3 익명 이야기" loading="lazy"><figcaption>익명 이야기</figcaption></figure><figure><img src="img/n3_c.jpg" alt="N3 MY" loading="lazy"><figcaption>MY</figcaption></figure></div></section>
+</div>

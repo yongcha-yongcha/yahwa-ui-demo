@@ -1,0 +1,38 @@
+<meta charset="utf-8">
+<title>마이페이지 2차</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:28px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px;text-wrap:balance}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:82ch}
+ul b{color:var(--ink);font-weight:600}
+section{display:grid;gap:10px}
+h2{font:700 18px/1.4 var(--sans);margin:0}
+.row{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:16px}
+figure{margin:0;display:grid;gap:6px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:14px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+</style>
+<div class="wrap">
+  <header>
+    <h1>마이페이지 · 2차 피드백</h1>
+    <ul>
+      <li><b>데모에 넣은 것:</b> ① 최근 활동 표시 스위치 없앰(24시간 안 접속이면 자동으로 "최근활동") ② "공개 중" 칩 없앰 — 인연 쉬어가기는 설정 · 도움말 › 계정 관리 안에만 ③ 사진 연필 없앰, 사진을 누르면 내 프로필 보기 · 수정은 "프로필 수정" 버튼 하나 ⑤ 묶음 제목 없이 한 목록(팀 링크 순서).</li>
+      <li><b>아래는 고를 것:</b> 쉬어가는 중일 때만 칩 · 채움 정도를 사진 링으로 · 목록 회색 바탕 줄이기.</li>
+    </ul>
+  </header>
+  <section><h2>L3 다듬기 · 쉴 때는 넓게, 누르면 리프 카드 폭으로</h2><ul style="margin:0"><li><b>쉴 때:</b> 목록 아이콘 · 화살표가 보유 리프 카드 테두리 선에 딱 맞게(예전처럼 넓게).</li><li><b>마우스 올림:</b> 회색 박스가 카드보다 좌우 12씩 넓게 깔려요(모서리 12, 이제 안 잘려요).</li><li><b>누름:</b> 줄 전체가 줄어들며 회색 박스 좌우가 보유 리프 카드 테두리와 정확히 같아져요(폭 320 → 줄어든 비율 약 93%). 떼면 바로 돌아와요.</li><li>잘리던 이유: 마이페이지 스크롤 영역이 카드 폭(좌우 20 안쪽)에서 잘라서. 스크롤 영역을 화면 끝까지 넓히고 안쪽 20을 두어 고쳐요.</li></ul><div class="row"><figure><img src="img/p_q0.jpg" alt="쉴 때 카드 선에 맞춤" loading="lazy"><figcaption><span class="tag new">쉴 때</span>카드 선에 맞춤</figcaption></figure><figure><img src="img/p_q1.jpg" alt="올림 좌우 12 넓게" loading="lazy"><figcaption><span class="tag new">올림</span>좌우 12 넓게</figcaption></figure><figure><img src="img/p_q2.jpg" alt="누름 리프 카드 폭과 같게" loading="lazy"><figcaption><span class="tag new">누름</span>리프 카드 폭과 같게</figcaption></figure></div></section>
+  <section><h2>지금 데모(결정 반영)</h2><div class="row"><figure><img src="img/d0.jpg" alt="지금 위" loading="lazy"><figcaption><span class="tag">지금</span>위</figcaption></figure><figure><img src="img/d1.jpg" alt="지금 아래 · 한 목록, 회색 카드 하나" loading="lazy"><figcaption><span class="tag">지금</span>아래 · 한 목록, 회색 카드 하나</figcaption></figure></div></section>
+  <section><h2>2 · 쉬어가는 중일 때만 칩</h2><ul style="margin:0"><li>공개 중이면 아무것도 없고(위 "지금"), 쉬어가는 중일 때만 이름 아래 회색 점 + "쉬어가는 중". 눌러도 이동하지 않아요(다시 공개는 계정 관리에서).</li></ul><div class="row"><figure><img src="img/r0.jpg" alt="R1 쉬어가는 중일 때" loading="lazy"><figcaption><span class="tag new">R1</span>쉬어가는 중일 때</figcaption></figure></div></section>
+  <section><h2>3 · 채움 정도를 사진 링으로 · 카드 빼기</h2><ul style="margin:0"><li>사진 둘레에 채움 링(cool-neutral-800) + 아래 "83%" 알약. "소개를 거의 다 채웠어요" 카드는 빼요. 무엇이 비었는지는 프로필 수정 안에서 보여요.</li></ul><div class="row"><figure><img src="img/g0.jpg" alt="G1 위" loading="lazy"><figcaption><span class="tag new">G1</span>위</figcaption></figure><figure><img src="img/g1.jpg" alt="G1 아래" loading="lazy"><figcaption><span class="tag new">G1</span>아래</figcaption></figure></div></section>
+  <section><h2>5 · 목록 회색 바탕 줄이기</h2><ul style="margin:0"><li><b>L2 배경 없음:</b> 보유 리프 · 목록 모두 바탕 없이, 누르거나 마우스를 올릴 때만 그 줄에 회색 박스(cool-neutral-50, 모서리 12). 오른쪽은 "지인 차단"을 누르고 있는 모습.</li><li><b>L3 리프만 카드:</b> 보유 리프 + 충전만 회색 카드로 두고, 목록은 배경 없이 누를 때만 회색.</li></ul><div class="row"><figure><img src="img/l2a.jpg" alt="L2 위" loading="lazy"><figcaption><span class="tag new">L2</span>위</figcaption></figure><figure><img src="img/l2b.jpg" alt="L2 누르는 중" loading="lazy"><figcaption><span class="tag new">L2</span>누르는 중</figcaption></figure><figure><img src="img/l3a.jpg" alt="L3 위" loading="lazy"><figcaption><span class="tag new">L3</span>위</figcaption></figure><figure><img src="img/l3b.jpg" alt="L3 누르는 중" loading="lazy"><figcaption><span class="tag new">L3</span>누르는 중</figcaption></figure></div></section>
+</div>

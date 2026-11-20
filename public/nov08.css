@@ -2405,3 +2405,146 @@ html[data-bg="white"] #features.has-page-head .ob-top::before,html[data-bg="whit
 .xc-av.is-sketch>.gender-sketch,.ip-av.is-sketch>.gender-sketch{display:block;width:100%;height:100%;border-radius:50%;overflow:hidden}
 .xc-av.is-sketch svg,.ip-av.is-sketch svg{display:block;width:100%!important;height:100%!important;border-radius:50%;padding:0!important}
 .xc-av.is-sketch .xc-new{z-index:1}
+
+/* 홈 카드 관계 버튼 (2026-11-20 · 시안 design-mockups/home-relation-states/ · 서로는 P1 장미)
+   흰 알약 + 옅은 테두리(버튼 시스템 완료 모양), 하트만 장미. 서로 호감 · 서로 연결됨은 rose-600 바탕 + 흰 글자 · 흰 하트(대비 6.0). 칸이 둘이면 반씩 */
+html[data-cardrow="below"] #discovery #nov-actions-below:not(.one):not(.fold){grid-template-columns:1fr 1fr}
+#discovery .nov-actions .btn.hs-pill{cursor:pointer;font-weight:600}
+#discovery .nov-actions .btn.hs-pill svg[fill="currentColor"]{color:var(--color-fg-love)}
+#discovery .nov-actions .btn.hs-pill.hs-rose{background:var(--rose-600)!important;color:#fff!important;box-shadow:none!important}
+#discovery .nov-actions .btn.hs-pill.hs-rose svg{color:#fff!important}
+#discovery .nov-actions .btn.hs-pill.hs-rose:active{background:var(--rose-700)!important}
+
+/* 지운 글 · 댓글 (2026-11-20 · 시안 design-mockups/removed-post/ D3 보이되 비활성)
+   글자는 fg-subtle(cool-neutral-400, 2026-11-20 금지 아이콘은 뺌), 얼굴 회색 45%, 이름 fg-muted. 목록 공감 · 댓글은 30%로 남기되 눌리지 않고, 카드도 열리지 않아요 */
+#features .an-removed{display:flex;align-items:center;gap:6px;color:var(--color-fg-subtle)!important}
+#features .comm-entry.is-removed .comm-post-link{cursor:default}
+#features .comm-entry.is-removed .comm-anon,#features .cx-cmt.is-removed .cx-face{opacity:.45;filter:grayscale(1)}
+#features .comm-entry.is-removed .an-who b,#features .cx-cmt.is-removed .cx-ch b{color:var(--color-fg-muted)}
+#features .comm-entry.is-removed .cx-acts{opacity:.3;pointer-events:none}
+
+/* 인연 카드 사진 오버레이 (2026-11-20 · 2차 피드백 · 시안 design-mockups/card-overlay/ G3)
+   사진 아래 흐림(card-blur-layer 6겹)은 빼고, 어둠은 아래로만 모아 옅게: 45% 투명 → 70% 20% → 바닥 42%(cool-neutral-950).
+   흰 글자는 아주 옅은 그림자(0 1 2 · 22%)로 밝은 사진에서도 읽히게 */
+#discovery .daily-card .card-blur-layer{display:none!important}
+#discovery .daily-card .card-tint{background:linear-gradient(to bottom,color-mix(in srgb,var(--cool-neutral-950) 0%,transparent) 45%,color-mix(in srgb,var(--cool-neutral-950) 20%,transparent) 70%,color-mix(in srgb,var(--cool-neutral-950) 42%,transparent) 100%)!important}
+#discovery .daily-card .nov-open-copy{text-shadow:0 1px 2px rgb(0 0 0 / .22)}
+
+/* 하단 메뉴 고른 칸 · 회색 (2026-11-20 · 시안 design-mockups/gnb-neutral/ N2, 시연 도구 "하단 메뉴 · 고른 칸" · tone.js gnb)
+   알약 바탕 cool-neutral-200(85%) · 채운 아이콘 cool-neutral-900 · MY 사진 테두리 cool-neutral-700. 모양 · 움직임 · 빨간 점은 그대로 */
+html[data-gnb="gray"]{--gnb-selected-bg:color-mix(in srgb,var(--cool-neutral-200) 85%,transparent);--gnb-icon-active:var(--cool-neutral-900);--gnb-icon-knock:color-mix(in srgb,var(--cool-neutral-200) 85%,var(--paper))}
+html[data-gnb="gray"] .screen .home-nav button[aria-current="page"] .my-profile-avatar{box-shadow:0 0 0 2px var(--cool-neutral-700)}
+
+/* 익명 이야기 잠김 · 프로필 확인 중 (2026-11-20) — 목록 · 글쓰기 · 머리 도구(이용수칙 · 알림) 없이 가운데 한 덩어리 */
+#features .an-lock{display:grid;justify-items:center;gap:8px;margin:96px 0 0;text-align:center}
+#features .an-lock svg{width:32px;height:32px;margin-bottom:8px;fill:none;stroke:var(--color-fg-subtle);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+#features .an-lock b{font:600 16px/1.5 var(--font-sans);color:var(--color-fg-primary)}
+#features .an-lock small{font:400 14px/1.6 var(--font-sans);color:var(--color-fg-muted)}
+#fx-body:has(.an-lock) .comm-head-tools,#features:has(.an-lock) .comm-head-tools,#features:has(.an-lock) .comm-write,#features:has(.an-lock) .cm-mini{display:none!important}
+
+/* 마이페이지 한 목록 (2026-11-20 · 2차 피드백 5번): 묶음 제목이 없어져 소개 카드와 목록 사이를 24로 */
+#mypage .mp-card.mp-one{margin-top:24px}
+
+/* 마이페이지 2차 (2026-11-20 · 시안 design-mockups/my-r2/)
+   R1: 쉬어가는 중일 때만 이름 아래 칩, 누르지 않아요 */
+#mypage .mp-vis.is-static{cursor:default}
+#mypage .mp-vis.is-static:active{opacity:1}
+/* L3: 보유 리프 + 충전만 회색 카드, 목록은 바탕 · 구분선 없이. 누르면 그 줄에 회색 박스가 깔리며 97%로 살짝 작아져요(눌린 느낌), 떼면 바로 돌아와요 */
+#mypage .mp-card.mp-one{background:none}
+#mypage .mp-one .mp-wallet{background:var(--cool-neutral-50);border-radius:var(--mp-card-radius)}
+#mypage .mp-one .mp-list{padding:0;margin-top:8px}
+#mypage .mp-one .mp-wallet+.mp-list,#mypage .mp-one .mp-row+.mp-row{box-shadow:none}
+/* 2026-11-20 누름 다듬기(시안 my-r2 "L3 다듬기"): 쉴 때 아이콘 · 화살표는 리프 카드 테두리 선에 맞추고(줄은 좌우 12씩 밖으로),
+   올리면 회색이 카드보다 12씩 넓게, 누르면 줄 전체가 줄어 회색 좌우가 리프 카드 테두리와 같아져요(--mp-press = 폭 / (폭 + 24), features.js에서 누를 때 계산).
+   스크롤 영역이 카드 폭에서 잘라서 모서리가 사라지던 것 → 스크롤 영역을 화면 끝까지 넓히고 안쪽 20 */
+#mypage .detail-scroll{margin-left:-20px;margin-right:-20px;padding-left:20px;padding-right:20px}
+#mypage .mp-one .mp-row{padding:0 12px;margin:0 -12px;width:calc(100% + 24px);border-radius:12px;transform-origin:50% 50%;transition:transform 120ms cubic-bezier(.23,1,.32,1),background-color 120ms ease}
+#mypage .mp-one .mp-row:active{background:var(--cool-neutral-50);transform:scale(var(--mp-press,.93));opacity:1}
+@media (hover:hover){#mypage .mp-one .mp-row:hover{background:var(--cool-neutral-50)}}
+@media (prefers-reduced-motion:reduce){#mypage .mp-one .mp-row{transition:background-color 120ms ease}#mypage .mp-one .mp-row:active{transform:none}}
+/* G1 (2026-11-20 · 시안 my-r2): 소개 채움은 사진 둘레 링(굵기 3 · 바탕 cool-neutral-100 · 찬 만큼 cool-neutral-800, 12시부터) + 아래 % 알약(20 · cool-neutral-800 · 흰 11). 사진은 링 안 6 안쪽 */
+#mypage .mp-av.has-ring img{box-shadow:none;width:calc(100% - 12px);height:calc(100% - 12px);margin:6px}
+#mypage .mp-av .mp-avring{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg);pointer-events:none}
+#mypage .mp-avring circle{fill:none;stroke-width:3;stroke-linecap:round}
+#mypage .mp-avring .bg{stroke:var(--cool-neutral-100)}
+#mypage .mp-avring .fg{stroke:var(--cool-neutral-800);transition:stroke-dashoffset 600ms cubic-bezier(.23,1,.32,1)}
+#mypage .mp-av .mp-pct{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);height:20px;padding:0 7px;border-radius:10px;background:var(--cool-neutral-800);color:#fff;font:600 11px/20px var(--font-sans);white-space:nowrap;box-shadow:0 0 0 2px var(--color-bg-page)}
+
+/* 자기소개 이야기 빼기 (2026-11-20 · 시안 design-mockups/story-remove/ X1 + S1 + B1)
+   노트 이야기마다 오른쪽 위 회색 ×(터치 44, 기본 소개엔 없음) · 쓰기 화면 아래 빨강 글자 "이 이야기 빼기" · 확인 시트 빼기는 진한 빨강 */
+#story .st-ent{position:relative}
+#story .st-ent+.st-ent,#story .st-ent+.st-blank{margin-top:var(--story-line)}
+#story .st-x{position:absolute;top:-10px;right:-10px;z-index:2;display:grid;place-items:center;width:44px;height:44px;margin:0;padding:0;border:0;background:none;color:var(--cool-neutral-400);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:color 120ms ease,transform 120ms ease}
+#story .st-x svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+#story .st-x:active{color:var(--red-600);transform:scale(.9)}
+#story .st-x:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:-4px;border-radius:12px}
+#story .st-remove{display:flex;justify-content:flex-start;min-height:44px;margin:16px 0 0;padding:0;font:500 14px/1 var(--font-sans);color:var(--red-600)}
+#story .st-remove:active{color:var(--red-700)}
+/* buttons.css의 .phone .photo-sheet-primary · ghost보다 세게: 빼기 진한 빨강, 취소는 흰 + 테두리 대신 회색 바탕 */
+.phone .yh-sheet .photo-sheet-primary.st-rm-danger{background:var(--red-600);color:#fff}
+.phone .yh-sheet .photo-sheet-primary.st-rm-danger:active{background:var(--red-700)}
+.phone .yh-sheet .photo-sheet-ghost.st-rm-cancel{background:var(--cool-neutral-50);color:var(--color-fg-primary);box-shadow:none}
+.phone .yh-sheet .photo-sheet-ghost.st-rm-cancel:active{background:var(--cool-neutral-100)}
+
+/* 마음함 사진 카드 (2026-11-20 · 시안 design-mockups/heartbox-grid/) — 두 칸 · 3:4 · 모서리 16 · 누르면 97%
+   아래쪽은 인연 카드와 같은 옅은 어둠, 오른쪽 위 D-n 칩(어두운 반투명 + 흐림), 새 마음 장미 점, 인증 sky-500 + 흰 체크, 기간 지남은 흐림 + "다시 보기" */
+#heartbox #heart-list.hb-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+#heartbox #heart-list.hb-grid>:not(.heart-person){grid-column:1/-1}
+#heartbox .hb-card{display:block;width:100%;margin:0;padding:0;border:0;background:none;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform 120ms cubic-bezier(.23,1,.32,1)}
+#heartbox .hb-card:active{transform:scale(.97)}
+#heartbox .hb-ph{position:relative;display:block;aspect-ratio:3/4;border-radius:16px;overflow:hidden;background:var(--cool-neutral-100);isolation:isolate}
+#heartbox .hb-img{position:absolute;inset:0;z-index:-2;background-size:cover}
+#heartbox .hb-ph::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(to bottom,rgb(26 33 38/0) 45%,rgb(26 33 38/.2) 70%,rgb(26 33 38/.48) 100%)}
+#heartbox .hb-chip{position:absolute;top:8px;right:8px;height:22px;padding:0 8px;border-radius:11px;background:rgb(26 33 38/.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:#fff;font:600 11px/22px var(--font-sans)}
+#heartbox .hb-cap{position:absolute;left:12px;right:12px;bottom:12px;display:grid;gap:2px;color:#fff;text-shadow:0 1px 2px rgb(0 0 0/.22)}
+#heartbox .hb-cap b{display:flex;align-items:center;gap:6px;font:600 16px/1.3 var(--font-sans)}
+#heartbox .hb-dot{width:6px;height:6px;border-radius:50%;background:var(--color-fg-love);box-shadow:0 0 0 2px rgb(255 255 255/.9)}
+#heartbox .hb-cap small{display:flex;align-items:center;gap:4px;font:600 13px/1.3 var(--font-sans);color:rgb(255 255 255/.92)}
+#heartbox .hb-cert{display:inline-grid;width:15px;height:15px}
+#heartbox .hb-cert svg{width:15px;height:15px}
+#heartbox .hb-cert circle{fill:var(--sky-500)}
+#heartbox .hb-cert path{fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#heartbox .hb-card.is-off .hb-img{filter:blur(10px) grayscale(.3);transform:scale(1.15)}
+#heartbox .hb-again{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);height:32px;padding:0 12px;border-radius:16px;background:rgb(255 255 255/.92);color:var(--color-fg-primary);font:600 13px/32px var(--font-sans);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){#heartbox .hb-card:active{transform:none}}
+
+/* 시트 머리(사진 · 이름 + 구분선) 바로 아래 본문은 구분선에서 20 띄워요(2026-11-20: 다시 보기 시트 "다시 볼까요?"가 선에 붙어 보여서) */
+.photo-sheet-head+.photo-sheet-confirm{padding-top:var(--space-20)}
+.photo-sheet-confirm p{word-break:keep-all}
+
+/* 시트 보조 버튼(취소 · 닫기 등) 회색으로 통일 (2026-11-20): 흰 바탕 + 테두리 대신 cool-neutral-50, 누르면 100.
+   buttons.css의 .phone .photo-sheet-ghost(흰 + 테두리)보다 세게 */
+html .phone .photo-sheet-ghost{background:var(--cool-neutral-50);color:var(--color-fg-primary);box-shadow:none;border:0}
+html .phone .photo-sheet-ghost:active{background:var(--cool-neutral-100)}
+
+/* 자기소개 쓰기 화면: 위 진행 게이지와 "기본 소개 · 필수" 사이 16 (2026-11-20, 공통 머리-본문 16에 맞춤 · 스크롤 시작이 게이지 아래 13이라 3 더) */
+#story .detail-scroll>.st-w-eye{margin-top:3px}
+
+/* 가입 · 사진 단계 · 프로필 기준 보기 + 기준 시트 (2026-11-20) */
+#photos .ob-intro:has(+.pg-std-btn){margin-bottom:16px}
+#photos .pg-std-btn{display:inline-flex;align-items:center;gap:4px;height:36px;margin:0;padding:0 12px 0 14px;border:0;border-radius:18px;background:var(--cool-neutral-50);font:600 13px/1 var(--font-sans);color:var(--color-fg-primary);cursor:pointer;transition:transform .12s ease,background-color .12s ease}
+#photos .pg-std-btn:active{transform:scale(.97);background:var(--cool-neutral-100)}
+#photos .pg-std-btn svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;color:var(--cool-neutral-500)}
+.yh-sheet.pg-std{max-height:86%;display:flex;flex-direction:column}
+.yh-sheet.pg-std .yh-sheet-body{display:flex;flex-direction:column;min-height:0;flex:1}
+.pg-std-h{margin:4px 0 0;font:600 18px/1.45 var(--font-sans);color:var(--color-fg-primary);word-break:keep-all}
+.pg-std-chips{display:flex;gap:8px;margin:16px -20px 0;padding:0 20px 4px;overflow-x:auto;scrollbar-width:none}
+.pg-std-chips::-webkit-scrollbar{display:none}
+.pg-std-chips button{flex:none;height:34px;padding:0 14px;border:0;border-radius:17px;background:var(--cool-neutral-50);font:500 13px/34px var(--font-sans);color:var(--color-fg-secondary);white-space:nowrap;cursor:pointer}
+.pg-std-chips button.on{background:var(--cool-neutral-800);color:#fff;font-weight:600}
+.pg-std-list{flex:1;min-height:0;overflow-y:auto;margin:8px -20px 0;padding:8px 20px}
+.pg-std-rule{display:grid;gap:12px;padding:12px 0 16px}
+.pg-std-rule p{display:flex;gap:8px;margin:0;font:500 14px/1.5 var(--font-sans);color:var(--color-fg-primary);word-break:keep-all}
+.pg-std-rule p i{flex:none;display:grid;place-items:center;width:20px;height:20px;margin-top:1px;border-radius:6px;background:var(--cool-neutral-100);font:600 11px/1 var(--font-sans);font-style:normal;color:var(--color-fg-secondary)}
+.pg-std-pair{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-left:28px}
+.pg-std-ph{position:relative;aspect-ratio:3/4;border-radius:12px;overflow:hidden;background:var(--cool-neutral-100)}
+.pg-std-ph::after{content:"";position:absolute;inset:0;border-radius:12px;box-shadow:inset 0 0 0 2px var(--sky-500)}
+.pg-std-ph.no::after{box-shadow:inset 0 0 0 2px var(--red-500)}
+.pg-std-ph img{width:100%;height:100%;object-fit:cover;display:block}
+.pg-std-ph img.rot{transform:rotate(90deg) scale(1.34)}
+.pg-std-ph img.dark{filter:brightness(.32) contrast(.9) blur(1.6px)}
+.pg-mark{position:absolute;bottom:8px;right:8px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;box-shadow:0 0 0 2px #fff}
+.pg-mark svg{width:12px;height:12px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.pg-mark.ok{background:var(--sky-500)}.pg-mark.no{background:var(--red-500)}
+.pg-std-foot{padding-top:12px}
+.yh-sheet .pg-std-foot .photo-sheet-primary{width:100%}

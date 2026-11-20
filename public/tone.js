@@ -1,10 +1,10 @@
 /* 1차 피드백 F1~F4 비교용 (2026-11-15) · tone.css와 함께 써요
    - 시연 도구의 "디자인 컨셉" 아래에 "배경"과 "버튼 색" 고르기를 붙여요.
    - 고른 값은 이 브라우저에 남고(yahwa-tone-bg / -btn / -open), 처음부터 다시 시작해도 유지돼요.
-   - 주소로도 고를 수 있어요: ?bg=sky|white · ?btn=deep|deep50|soft|mid · ?open=white|deep|sky200|sky300 · ?cardrow=in|below · ?pager=num|peek|chip */
+   - 주소로도 고를 수 있어요: ?bg=sky|white · ?btn=deep|deep50|soft|mid · ?open=white|deep|sky200|sky300 · ?cardrow=in|below · ?pager=num|peek|chip · ?gnb=blue|gray */
 (()=>{
 const root=document.documentElement;
-const OPT={bg:{key:'yahwa-tone-bg',vals:['sky','white'],def:'sky'},btn:{key:'yahwa-tone-btn',vals:['deep','deep50','soft','mid'],def:'deep'},open:{key:'yahwa-tone-open',vals:['white','deep','sky200','sky300'],def:'white'},cardrow:{key:'yahwa-tone-row-v4',vals:['in','below'],def:'below'} /* 2026-11-19: 다시 카드 아래가 기본. 인연 열어보기 → 연 뒤 같은 자리 "프로필 보기 ›"(시안 home-no-actions A). 카드 안에 버튼이 들어가면 서로 연결됨 버튼이 사진을 가려서. 예전 선택이 남아 있어도 새 기본으로 보이게 저장 이름을 바꿨어요 */,pager:{key:'yahwa-tone-pager-v2',vals:['num','peek','chip'],def:'peek'},certstack:{key:'yahwa-tone-certstack',vals:['off','on'],def:'off'} /* 2026-11-18 인증 여러 개일 때 겹친 배지 보여 주기 */ /* 2026-11-16: 옆 카드 살짝이 기본. 예전에 고른 값이 남아 있어도 새 기본으로 보이게 저장 이름을 바꿨어요 */};
+const OPT={bg:{key:'yahwa-tone-bg',vals:['sky','white'],def:'sky'},btn:{key:'yahwa-tone-btn',vals:['deep','deep50','soft','mid'],def:'deep'},open:{key:'yahwa-tone-open',vals:['white','deep','sky200','sky300'],def:'white'},cardrow:{key:'yahwa-tone-row-v4',vals:['in','below'],def:'below'} /* 2026-11-19: 다시 카드 아래가 기본. 인연 열어보기 → 연 뒤 같은 자리 "프로필 보기 ›"(시안 home-no-actions A). 카드 안에 버튼이 들어가면 서로 연결됨 버튼이 사진을 가려서. 예전 선택이 남아 있어도 새 기본으로 보이게 저장 이름을 바꿨어요 */,pager:{key:'yahwa-tone-pager-v2',vals:['num','peek','chip'],def:'peek'},certstack:{key:'yahwa-tone-certstack',vals:['off','on'],def:'off'} /* 2026-11-18 인증 여러 개일 때 겹친 배지 보여 주기 */,gnb:{key:'yahwa-tone-gnb',vals:['blue','gray'],def:'blue'} /* 2026-11-20 하단 메뉴 고른 칸: 파랑 / 회색(시안 gnb-neutral N2) */ /* 2026-11-16: 옆 카드 살짝이 기본. 예전에 고른 값이 남아 있어도 새 기본으로 보이게 저장 이름을 바꿨어요 */};
 const q=new URLSearchParams(location.search);
 const read=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
 const write=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
@@ -33,7 +33,7 @@ function mount(){
  const dock=document.querySelector('.demo-dock');if(!dock||dock.querySelector('.dock-tone'))return sync();
  /* 2026-11-16 정리: 앱 전체에 걸리는 비교(배경 · 버튼 색)는 "디자인 비교" 한 섹션, 인연 홈에만 걸리는 비교는 오늘의 인연 블록 안 */
  const box=document.createElement('section');box.className='dock-section dock-design';
- box.innerHTML='<h2>디자인 비교</h2>'+seg('배경 · 위쪽 하늘 그라데이션','bg',[['sky','켜기'],['white','끄기 (흰 배경)']])+seg('버튼 색','btn',[['deep','진한 파랑','보조 sky100'],['deep50','진한 파랑','보조 sky50'],['soft','sky200','#B7D7EC'],['mid','sky300','#92C0DF']])+seg('인증 배지 · 여러 개일 때','certstack',[['off','하나'],['on','겹친 배지']]);
+ box.innerHTML='<h2>디자인 비교</h2>'+seg('배경 · 위쪽 하늘 그라데이션','bg',[['sky','켜기'],['white','끄기 (흰 배경)']])+seg('버튼 색','btn',[['deep','진한 파랑','보조 sky100'],['deep50','진한 파랑','보조 sky50'],['soft','sky200','#B7D7EC'],['mid','sky300','#92C0DF']])+seg('하단 메뉴 · 고른 칸','gnb',[['blue','파랑','sky100'],['gray','회색','neutral200']])+seg('인증 배지 · 여러 개일 때','certstack',[['off','하나'],['on','겹친 배지']]);
  const head=dock.querySelector('.dock-head');head?head.after(box):dock.prepend(box);
  const time=document.querySelector('.time-demo');if(time&&!time.querySelector('.dock-tone')){const w=document.createElement('div');w.className='dock-tone-row';w.innerHTML=seg('인연 열어보기 버튼','open',[['white','흰 + 파랑','sky700'],['deep','진한 파랑','#377398'],['sky200','sky200','#B7D7EC'],['sky300','sky300','#92C0DF']])+seg('인연 열어보기 자리','cardrow',[['below','카드 아래'],['in','카드 안']])+seg('넘김 표시','pager',[['peek','옆 카드 살짝'],['num','아래 숫자'],['chip','사진 위 숫자']]);time.append(w);}
  sync();

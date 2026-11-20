@@ -1,0 +1,40 @@
+<meta charset="utf-8">
+<title>마음함 사진 카드</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:28px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px;text-wrap:balance}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:82ch}
+ul b{color:var(--ink);font-weight:600}
+section{display:grid;gap:10px}
+h2{font:700 18px/1.4 var(--sans);margin:0}
+.row{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:16px}
+figure{margin:0;display:grid;gap:6px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:14px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+.flow{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(200px,1fr);gap:12px;overflow-x:auto;padding-bottom:8px}
+</style>
+<div class="wrap">
+  <header>
+    <h1>마음함 · 목록 대신 사진 카드</h1>
+    <ul>
+      <li><b>예전 카드(11-17 마음함 하트 줄이기 시안)</b>를 지금 결로 다시: 두 칸 사진 카드에 이름 · 나이 · 인증 배지만. 소개 글 · 해시태그 · "호감을 받았어요" 문구는 없어요.</li>
+      <li><b>사진 위:</b> 오른쪽 위 남은 기간 D-n(어두운 반투명 칩, 인연 홈 숫자 칩과 같은 모양). 새로 온 마음은 이름 옆 장미색 점. 아래쪽은 인연 카드와 같은 옅은 어둠(G3).</li>
+      <li><b>서로:</b> D-n 대신 오른쪽 위 흰 동그라미 편지 아이콘 — 누르면 편지 쓰기(지금 목록과 같은 기능).</li>
+      <li><b>기간 지남:</b> 사진을 흐리게 + 가운데 "다시 보기".</li>
+      <li>탭(보낸 · 받은 · 서로, 새 소식 점)과 아래 안내는 지금 그대로. 누르면 살짝 작아져요.</li>
+    </ul>
+  </header>
+  <section><h2>흐름대로 · 서로 탭은 칩 없이</h2><ul style="margin:0"><li><b>서로 탭:</b> 탭 이름이 이미 "서로"라 카드 위 칩 · 편지 아이콘 없이 사진 · 이름 · 나이 · 배지만. 편지는 카드를 눌러 들어간 프로필의 편지 버튼으로.</li><li>받은 · 보낸 칩(D-n)은 어두운 반투명 그대로.</li></ul><div class="flow"><figure><img src="img/f1.jpg" alt="1 받은" loading="lazy"><figcaption><span class="tag new">1 받은</span>새 마음은 이름 옆 장미 점 · D-n</figcaption></figure><figure><img src="img/f2.jpg" alt="2 카드 누름" loading="lazy"><figcaption><span class="tag new">2 카드 누름</span>상대 프로필 "나에게 호감을 보냈어요"</figcaption></figure><figure><img src="img/f3.jpg" alt="3 보낸" loading="lazy"><figcaption><span class="tag new">3 보낸</span>남은 기간 D-n</figcaption></figure><figure><img src="img/f4.jpg" alt="4 보낸 · 7일 지남" loading="lazy"><figcaption><span class="tag new">4 보낸 · 7일 지남</span>흐림 + 다시 보기</figcaption></figure><figure><img src="img/f5.jpg" alt="5 다시 보기 누름" loading="lazy"><figcaption><span class="tag new">5 다시 보기 누름</span>다시 볼까요? · 10리프</figcaption></figure><figure><img src="img/f6.jpg" alt="6 서로" loading="lazy"><figcaption><span class="tag new">6 서로</span>칩 없이 사진 · 이름 · 나이 · 배지만</figcaption></figure><figure><img src="img/f7.jpg" alt="7 서로 카드 누름" loading="lazy"><figcaption><span class="tag new">7 서로 카드 누름</span>상대 프로필 "서로 호감이 있어요" · 편지 보내기</figcaption></figure></div></section>
+  <section><h2>지금 · 예전</h2><div class="row"><figure><img src="img/l0.jpg" alt="지금 목록" loading="lazy"><figcaption><span class="tag">지금</span>목록</figcaption></figure><figure><img src="img/old.jpg" alt="예전 사진 카드(11-17 시안)" loading="lazy"><figcaption><span class="tag">예전</span>사진 카드(11-17 시안)</figcaption></figure></div></section>
+  <section><h2>시안</h2><div class="row"><figure><img src="img/g0.jpg" alt="받은 새 마음 점 · D-n" loading="lazy"><figcaption><span class="tag new">받은</span>새 마음 점 · D-n</figcaption></figure><figure><img src="img/g1.jpg" alt="보낸 D-n" loading="lazy"><figcaption><span class="tag new">보낸</span>D-n</figcaption></figure><figure><img src="img/g2.jpg" alt="서로 편지 아이콘" loading="lazy"><figcaption><span class="tag new">서로</span>편지 아이콘</figcaption></figure><figure><img src="img/g3.jpg" alt="보낸 · 기간 지남 흐림 + 다시 보기" loading="lazy"><figcaption><span class="tag new">보낸 · 기간 지남</span>흐림 + 다시 보기</figcaption></figure></div></section>
+</div>

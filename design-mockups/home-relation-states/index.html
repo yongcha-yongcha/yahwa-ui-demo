@@ -1,0 +1,53 @@
+<meta charset="utf-8">
+<title>홈 카드 관계 버튼</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:24px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px;text-wrap:balance}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:82ch}
+ul b{color:var(--ink);font-weight:600}
+section{display:grid;gap:10px}
+h2{font:700 18px/1.4 var(--sans);margin:0}
+.row{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:16px}
+figure{margin:0;display:grid;gap:6px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:14px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+</style>
+<div class="wrap">
+  <header>
+    <h1>홈 카드 · 상황별 관계 버튼 (F7 장미 포인트 결)</h1>
+    <ul>
+      <li><b>자리:</b> 연 카드 아래 "프로필 보기 ›" 자리. 아무 일 없을 때만 프로필 보기, 무언가 오갔으면 그 자리가 관계 버튼으로 바뀌어요. 홈에서 호감 · 편지를 보내는 버튼은 여전히 없어요.</li>
+      <li><b>모양:</b> 고르셨던 장미 포인트 결 그대로 — 흰 알약 + 옅은 테두리, 하트만 장미. 서로 호감 · 서로 연결됨만 연한 장미 바탕.</li>
+      <li><b>규칙:</b> 칸은 둘 — 호감 칸(보냄 / 받음 / 서로 호감) · 편지 칸(보냄 / 받음). 하나면 한 줄 가득, 둘이면 반씩. 편지로 서로 연결되면 한 줄 "서로 연결됨 · 편지함에서 이어가기".</li>
+      <li><b>누르면:</b> 받은 편지 → 그 편지, 서로 연결됨 → 편지함, 나머지 → 프로필.</li>
+      <li><b>사진 모자이크:</b> 팀 의견대로 넣지 않아요.</li>
+    </ul>
+  </header>
+  <section><h2>진한 바탕 · 다른 색 (흰 글자 · 흰 하트)</h2><ul style="margin:0"><li><b>색은 모두 우리 토큰 600단계</b>(밝은 레드만 500). 흰 글자 대비 4.5 이상이면 작은 글자도 잘 읽혀요.</li><li><b>P3 밝은 레드</b>는 대비 3.9라 글자가 조금 약해요.</li><li><b>P4 하늘</b>은 메인 파랑이라 "누를 것" 버튼과 같은 색이 돼요.</li></ul>
+<div class="row" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))"><figure><img src="img/p_rose-600_7.jpg" alt="장미 · 지금 R2 서로 호감" loading="lazy"><figcaption><span class="tag new">P1</span>장미 · 지금 R2 · <code>rose-600</code> #994A5D · 흰 글자 대비 6.0</figcaption></figure><figure><img src="img/p_rose-600_8.jpg" alt="장미 · 지금 R2 서로 연결됨" loading="lazy"><figcaption>서로 연결됨</figcaption></figure></div>
+<div class="row" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))"><figure><img src="img/p_red-600_7.jpg" alt="레드 서로 호감" loading="lazy"><figcaption><span class="tag new">P2</span>레드 · <code>red-600</code> #B3434E · 흰 글자 대비 5.5</figcaption></figure><figure><img src="img/p_red-600_8.jpg" alt="레드 서로 연결됨" loading="lazy"><figcaption>서로 연결됨</figcaption></figure></div>
+<div class="row" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))"><figure><img src="img/p_red-500_7.jpg" alt="밝은 레드 서로 호감" loading="lazy"><figcaption><span class="tag new">P3</span>밝은 레드 · <code>red-500</code> #CF5C65 · 흰 글자 대비 3.9</figcaption></figure><figure><img src="img/p_red-500_8.jpg" alt="밝은 레드 서로 연결됨" loading="lazy"><figcaption>서로 연결됨</figcaption></figure></div>
+<div class="row" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))"><figure><img src="img/p_sky-600_7.jpg" alt="하늘(메인 파랑) 서로 호감" loading="lazy"><figcaption><span class="tag new">P4</span>하늘(메인 파랑) · <code>sky-600</code> #377398 · 흰 글자 대비 5.2</figcaption></figure><figure><img src="img/p_sky-600_8.jpg" alt="하늘(메인 파랑) 서로 연결됨" loading="lazy"><figcaption>서로 연결됨</figcaption></figure></div>
+<div class="row" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))"><figure><img src="img/p_purple-600_7.jpg" alt="보라 · 밤꽃 서로 호감" loading="lazy"><figcaption><span class="tag new">P5</span>보라 · 밤꽃 · <code>purple-600</code> #78649C · 흰 글자 대비 5.1</figcaption></figure><figure><img src="img/p_purple-600_8.jpg" alt="보라 · 밤꽃 서로 연결됨" loading="lazy"><figcaption>서로 연결됨</figcaption></figure></div>
+<div class="row" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))"><figure><img src="img/p_sage-600_7.jpg" alt="세이지 서로 호감" loading="lazy"><figcaption><span class="tag new">P6</span>세이지 · <code>sage-600</code> #507D6B · 흰 글자 대비 4.7</figcaption></figure><figure><img src="img/p_sage-600_8.jpg" alt="세이지 서로 연결됨" loading="lazy"><figcaption>서로 연결됨</figcaption></figure></div>
+</section>
+  <section><h2>서로 호감 · 서로 연결됨 색 비교</h2><ul style="margin:0"><li><b>R0 지금:</b> 연한 장미 바탕 + 진한 장미 글자.</li><li><b>R1:</b> 지금 바탕 그대로 + 흰 글자 · 흰 하트. 바탕이 너무 옅어 글자가 거의 안 읽혀요.</li><li><b>R2:</b> 지금 글자 색(진한 장미)을 바탕으로 + 흰 글자 · 흰 하트. 카드 아래에서 가장 눈에 띄어요.</li></ul>
+<div class="row" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))"><figure><img src="img/a7.jpg" alt="R0 서로 호감" loading="lazy"><figcaption><span class="tag new">R0</span>서로 호감</figcaption></figure><figure><img src="img/a8.jpg" alt="R0 서로 연결됨" loading="lazy"><figcaption><span class="tag new">R0</span>서로 연결됨</figcaption></figure></div>
+<div class="row" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))"><figure><img src="img/b7.jpg" alt="R1 서로 호감 · 지금 바탕 + 흰 글자" loading="lazy"><figcaption><span class="tag new">R1</span>서로 호감 · 지금 바탕 + 흰 글자</figcaption></figure><figure><img src="img/b8.jpg" alt="R1 서로 연결됨 · 지금 바탕 + 흰 글자" loading="lazy"><figcaption><span class="tag new">R1</span>서로 연결됨 · 지금 바탕 + 흰 글자</figcaption></figure></div>
+<div class="row" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))"><figure><img src="img/c7.jpg" alt="R2 서로 호감 · 진한 장미 바탕 + 흰 글자" loading="lazy"><figcaption><span class="tag new">R2</span>서로 호감 · 진한 장미 바탕 + 흰 글자</figcaption></figure><figure><img src="img/c8.jpg" alt="R2 서로 연결됨 · 진한 장미 바탕 + 흰 글자" loading="lazy"><figcaption><span class="tag new">R2</span>서로 연결됨 · 진한 장미 바탕 + 흰 글자</figcaption></figure></div></section>
+  <section><h2>아무 일 없을 때 (지금 그대로)</h2><div class="row"><figure><img src="img/s0.jpg" alt="기본" loading="lazy"><figcaption><span class="tag">기본</span>프로필 보기 ›</figcaption></figure></div></section>
+  <section><h2>내가 보냈을 때</h2><div class="row"><figure><img src="img/s1.jpg" alt="1" loading="lazy"><figcaption><span class="tag new">1</span>호감만 보냄</figcaption></figure><figure><img src="img/s2.jpg" alt="2" loading="lazy"><figcaption><span class="tag new">2</span>편지만 보냄</figcaption></figure><figure><img src="img/s3.jpg" alt="3" loading="lazy"><figcaption><span class="tag new">3</span>둘 다 보냄</figcaption></figure></div></section>
+  <section><h2>상대가 보냈을 때</h2><div class="row"><figure><img src="img/s4.jpg" alt="4" loading="lazy"><figcaption><span class="tag new">4</span>호감만 받음</figcaption></figure><figure><img src="img/s5.jpg" alt="5" loading="lazy"><figcaption><span class="tag new">5</span>편지만 받음</figcaption></figure><figure><img src="img/s6.jpg" alt="6" loading="lazy"><figcaption><span class="tag new">6</span>둘 다 받음</figcaption></figure></div></section>
+  <section><h2>서로</h2><div class="row"><figure><img src="img/s7.jpg" alt="7" loading="lazy"><figcaption><span class="tag new">7</span>호감이 맞닿음 · 서로 호감</figcaption></figure><figure><img src="img/s8.jpg" alt="8" loading="lazy"><figcaption><span class="tag new">8</span>편지로 연결 · 서로 연결됨</figcaption></figure></div></section>
+  <section><h2>섞인 경우 (규칙대로)</h2><div class="row"><figure><img src="img/s9.jpg" alt="예" loading="lazy"><figcaption><span class="tag new">예</span>내가 호감 보냄 + 상대 편지 받음</figcaption></figure><figure><img src="img/full.jpg" alt="전체" loading="lazy"><figcaption><span class="tag new">전체</span>둘 다 보냄 · 화면 전체</figcaption></figure></div></section>
+</div>

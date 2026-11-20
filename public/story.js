@@ -14,6 +14,10 @@ const next=document.getElementById('story-next');
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const len=s=>[...(s||'').trim()].length;
 const ok=id=>len(answers[id])>=MIN;
+/* 이야기 빼기: 확인(B1 — 취소 회색 · 빼기 진한 빨강) 뒤 질문과 쓴 글을 함께 지우고 목록으로. 뒤 이야기가 한 칸씩 올라와요 */
+function askRemove(id,opener){if(!id||!chosen.has(id))return;const done=()=>{chosen.delete(id);delete answers[id];window.yhPersist?.();if(justFilled===id)justFilled=-1;view='main';renderMain();settle();say('이야기를 뺐어요');};
+  if(!window.yhSheet){done();return;}
+  window.yhSheet('<div class="photo-sheet-confirm"><b>이 이야기를 뺄까요?</b><p>쓴 글도 함께 지워져요.</p><div class="photo-sheet-pair"><button type="button" class="photo-sheet-ghost st-rm-cancel" data-act="cancel">취소</button><button type="button" class="photo-sheet-primary st-rm-danger" data-act="remove">빼기</button></div></div>',a=>{if(a==='remove')done();},{label:'이야기 빼기',opener});}
 const picks=()=>[...chosen].filter(id=>id!==0);
 const filled=()=>(ok(0)?1:0)+picks().slice(0,2).filter(ok).length;
 const passed=()=>ok(0)&&completedQuestions().length>=3;
@@ -34,7 +38,8 @@ const COUNT=['기본 소개부터 천천히 적어 봐요','두 장 더 담으�
 function entry(id,label,tone){
   const a=answers[id]||'',n=len(a),isNew=justFilled===id;
   const tail=n>=MIN?`<span class="st-ea">${esc(a)}</span>`:n>0?`<span class="st-ea">${esc(a)}</span><span class="st-draft">쓰는 중 · ${n}자</span>`:'<span class="st-ea">눌러서 첫 줄을 적어 보세요.</span>';
-  return `<button type="button" class="st-entry${n?'':' is-empty'}${isNew?' is-new':''}" data-act="write" data-id="${id}"><span class="st-tape t${tone}">${label}</span><span class="st-eq">${esc(questions[id])}</span>${tail}</button>`;
+  /* 2026-11-20 이야기 빼기(시안 story-remove X1): 기본 소개를 뺀 이야기마다 오른쪽 위 회색 × (터치 44). 노트 줄은 감싸개 .st-ent 안에 */
+  return `<div class="st-ent"><button type="button" class="st-entry${n?'':' is-empty'}${isNew?' is-new':''}" data-act="write" data-id="${id}"><span class="st-tape t${tone}">${label}</span><span class="st-eq">${esc(questions[id])}</span>${tail}</button>${id?`<button type="button" class="st-x" data-act="rmask" data-id="${id}" aria-label="${esc(label)} 빼기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17"/></svg></button>`:''}</div>`;
 }
 const lock=(label,why)=>`<button type="button" class="st-blank is-lock" data-act="locked" data-why="${why}">${label} · ${why.replace(/\.$/,'')}</button>`;
 function renderMain(){
@@ -74,7 +79,7 @@ function renderWrite(){
   <div class="st-meter" role="progressbar" aria-label="이야기 작성량" aria-valuemin="0" aria-valuemax="${END}"><svg viewBox="0 0 320 64" aria-hidden="true"><defs><clipPath id="st-reveal"><rect x="10" y="26" width="0" height="26"/></clipPath></defs><path class="st-meter-frame" d="M10 30Q152 28 308 30L307 48Q155 50 10 48Z"/><path class="st-meter-hatch" clip-path="url(#st-reveal)" d="${Array.from({length:37},(_,i)=>'M'+(10+i*8)+' 48l8-18').join(' ')}"/><g class="st-meter-pencil" transform="translate(10 48)"><path d="M0 0l3-11 24-24 8 8L11-3Z M3-11l8 8M6-8l24-24 M0 0l4-1-3-3Z"/></g></svg></div>
   <div class="st-marks" aria-hidden="true">${MARKS.map(m=>`<span class="st-mark${m.cls?' '+m.cls:''}" data-n="${m.n}" style="left:${xPct(m.n)}%"><i></i><small>${m.l}</small></span>`).join('')}</div>
   <div class="st-fb" id="st-fb" aria-live="polite"><p class="st-fb-main"><span></span><span></span></p></div>
-  ${help[1]?`<div class="st-ex"><button type="button" class="st-ex-chip" data-act="ex" aria-expanded="false" aria-controls="st-ex-box"><span class="ic ic-pencil" aria-hidden="true"></span><span>예시 보기</span></button><div class="st-ex-box" id="st-ex-box" role="button" tabindex="0" data-act="copy" aria-label="예시 복사" hidden><p id="st-ex-text">${esc(help[1])}</p><p class="st-ex-hint" aria-hidden="true"><span class="ic ic-copy"></span><span>눌러서 복사</span></p></div></div>`:''}`;
+  ${help[1]?`<div class="st-ex"><button type="button" class="st-ex-chip" data-act="ex" aria-expanded="false" aria-controls="st-ex-box"><span class="ic ic-pencil" aria-hidden="true"></span><span>예시 보기</span></button><div class="st-ex-box" id="st-ex-box" role="button" tabindex="0" data-act="copy" aria-label="예시 복사" hidden><p id="st-ex-text">${esc(help[1])}</p><p class="st-ex-hint" aria-hidden="true"><span class="ic ic-copy"></span><span>눌러서 복사</span></p></div></div>`:''}${id&&chosen.has(id)?'<button type="button" class="st-textbtn st-remove" data-act="rmask" data-id="'+id+'">이 이야기 빼기</button>':''}`;
   root.classList.add('is-writing');
   hint.hidden=true;swapBtn.hidden=true;
   next.textContent='이 이야기 담기';next.onclick=save;
@@ -163,6 +168,7 @@ storyBody.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if
   if(a==='locked'){say(b.dataset.why.replace(/\.$/,''));return;}
   if(a==='ex'){const p=document.getElementById('st-ex-box');const open=p.hidden;p.hidden=!open;b.setAttribute('aria-expanded',open);b.lastElementChild.textContent=open?'예시 접기':'예시 보기';}
   if(a==='swapq')return openSheet(editing);
+  if(a==='rmask')return askRemove(+b.dataset.id,b);
   if(a==='copy'){const text=document.getElementById('st-ex-text').textContent,hintIc=b.querySelector('.st-ex-hint .ic'),hintTx=b.querySelector('.st-ex-hint span:last-child');
     const done=()=>{b.classList.add('is-done');hintIc.className='ic ic-copy-check';hintTx.textContent='복사됨';b.setAttribute('aria-label','예시 복사됨');say('예시를 복사했어요');clearTimeout(b._t);b._t=setTimeout(()=>{b.classList.remove('is-done');hintIc.className='ic ic-copy';hintTx.textContent='눌러서 복사';b.setAttribute('aria-label','예시 복사');},1600);};
     const fallback=()=>{const r=document.createRange();r.selectNodeContents(document.getElementById('st-ex-text'));const s=getSelection();s.removeAllRanges();s.addRange(r);try{document.execCommand('copy');s.removeAllRanges();done();}catch(e){say('예시를 길게 눌러 복사해 주세요');}};

@@ -1,0 +1,38 @@
+<meta charset="utf-8">
+<title>이야기 빼기</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:28px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px;text-wrap:balance}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:82ch}
+ul b{color:var(--ink);font-weight:600}
+section{display:grid;gap:10px}
+h2{font:700 18px/1.4 var(--sans);margin:0}
+.row{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:16px}
+figure{margin:0;display:grid;gap:6px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:14px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+</style>
+<div class="wrap">
+  <header>
+    <h1>자기소개 · 담은 이야기 빼기</h1>
+    <ul>
+      <li><b>지금:</b> 빼는 길이 없어요. 쓰기 화면에는 질문 바꾸기(⇄)만 있고, 글을 지워도 "쓰는 중"으로 남아요. 못 찾은 게 아니라 기능이 없었어요.</li>
+      <li><b>S1 쓰기 화면 아래:</b> 이야기를 눌러 들어간 화면 맨 아래 회색 글자 버튼 "이 이야기 빼기". 고칠 때만 보이는 자리라 목록이 깔끔해요.</li>
+      <li><b>S2 목록 오른쪽 ×:</b> 노트의 이야기마다 오른쪽 위 × (터치 44). 한 번에 보이지만 목록이 조금 바빠져요. 기본 소개(필수)에는 없어요.</li>
+      <li><b>공통 확인:</b> "이 이야기를 뺄까요? · 쓴 글도 함께 지워져요." 취소 · 빼기. 빼면 뒤 이야기가 한 칸씩 올라오고, 세 장보다 적어지면 "이야기 N장을 더 담아 주세요"로 다음 버튼이 다시 잠겨요.</li>
+    </ul>
+  </header>
+  <section><h2>S1 + S2 함께 · 빼기는 빨강</h2><ul style="margin:0"><li><b>S1:</b> 쓰기 화면 아래 "이 이야기 빼기" 글자를 red-600으로.</li><li><b>S2 ×:</b> X1은 평소 회색(cool-neutral-400) — 목록이 덜 시끄러워요. X2는 × 자체를 red-500으로.</li><li><b>확인 시트:</b> 취소는 회색 바탕(흰 + 테두리 대신). 빼기는 B1 진한 빨강 채움(red-600 + 흰 글자) 또는 B2 옅은 빨강(red 12% 바탕 + red-600 글자).</li></ul><div class="row"><figure><img src="img/r_m0.jpg" alt="X1 목록 × 회색" loading="lazy"><figcaption><span class="tag new">X1</span>목록 × 회색</figcaption></figure><figure><img src="img/r_m1.jpg" alt="X2 목록 × 빨강" loading="lazy"><figcaption><span class="tag new">X2</span>목록 × 빨강</figcaption></figure><figure><img src="img/r_w0.jpg" alt="S1 쓰기 화면 아래 빨강 글자" loading="lazy"><figcaption><span class="tag new">S1</span>쓰기 화면 아래 빨강 글자</figcaption></figure><figure><img src="img/r_ca.jpg" alt="B1 빼기 진한 빨강" loading="lazy"><figcaption><span class="tag new">B1</span>빼기 진한 빨강</figcaption></figure><figure><img src="img/r_cb.jpg" alt="B2 빼기 옅은 빨강" loading="lazy"><figcaption><span class="tag new">B2</span>빼기 옅은 빨강</figcaption></figure></div></section>
+  <section><h2>지금</h2><div class="row"><figure><img src="img/a0.jpg" alt="지금 목록" loading="lazy"><figcaption><span class="tag">지금</span>목록</figcaption></figure></div></section>
+  <section><h2>시안</h2><div class="row"><figure><img src="img/w1.jpg" alt="S1 쓰기 화면 아래 "이 이야기 빼기"" loading="lazy"><figcaption><span class="tag new">S1</span>쓰기 화면 아래 "이 이야기 빼기"</figcaption></figure><figure><img src="img/x1.jpg" alt="S2 목록 오른쪽 ×" loading="lazy"><figcaption><span class="tag new">S2</span>목록 오른쪽 ×</figcaption></figure><figure><img src="img/c1.jpg" alt="공통 확인" loading="lazy"><figcaption><span class="tag new">공통</span>확인</figcaption></figure><figure><img src="img/d1.jpg" alt="공통 뺀 뒤 · 뒤 이야기가 올라옴" loading="lazy"><figcaption><span class="tag new">공통</span>뺀 뒤 · 뒤 이야기가 올라옴</figcaption></figure></div></section>
+</div>
