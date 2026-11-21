@@ -1,0 +1,52 @@
+<meta charset="utf-8">
+<title>자기소개 카드</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+:root{--page:#F3F5F7;--ink:#1F2328;--ink-2:#5B636B;--line:#DDE2E7;--chip:#E9EDF1;--tag-new:#377398;--sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#14171A;--ink:#EEF1F4;--ink-2:#A3ACB5;--line:#2C3238;--chip:#262C32;--tag-new:#8CC0DF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:28px}
+h1{font:700 22px/1.35 var(--sans);margin:0 0 6px;text-wrap:balance}
+ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:4px;max-width:82ch}
+ul b{color:var(--ink);font-weight:600}
+section{display:grid;gap:10px}
+h2{font:700 18px/1.4 var(--sans);margin:0}
+.row{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:16px}
+figure{margin:0;display:grid;gap:6px;min-width:0;align-content:start}
+figure img{width:100%;border-radius:14px;border:1px solid var(--line);display:block;background:#fff}
+figcaption{font-size:13px;color:var(--ink-2)}
+.tag{font:600 11px/1 var(--sans);padding:5px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2);margin-right:6px}
+.tag.new{background:var(--tag-new);color:#fff}
+</style>
+<div class="wrap">
+  <header>
+    <h1>자기소개 · 이야기마다 나누기</h1>
+    <ul>
+      <li><b>지금:</b> 줄노트 한 장에 기본 소개 · 이야기 1 · 이야기 2가 같이 들어 있어서 어디서 끊기는지 잘 안 보여요. 줄 · 여백선 · 색 테이프가 글보다 먼저 눈에 들어와요.</li>
+      <li><b>세 안 공통:</b> 줄노트 · 여백선 · 그림자 · 테이프를 빼요. 꼬리표는 작은 회색 글자, 질문은 산세리프 16 굵게 primary, 답은 14 회색 두 줄. × · 질문 붙이기 · 버튼은 그대로예요.</li>
+      <li><b>N1 회색 카드:</b> 이야기마다 cool-neutral-50 카드 하나(모서리 16, 사이 12). 빈 칸도 같은 회색 카드에 "+ 질문 붙이기".</li>
+      <li><b>N2 구분선 목록:</b> 바탕 없이 흰 화면에 이야기 사이만 얇은 선. 가장 조용해요.</li>
+      <li><b>N3 기본 소개만 하늘빛:</b> N1에서 필수인 기본 소개만 sky-50 바탕 + 꼬리표 primary, 답을 네 줄까지. 빈 칸은 회색 점선.</li>
+    </ul>
+  </header>
+  <section><h2>세 장 다 담았을 때</h2><div class="row"><figure><img src="img/n0.jpg" alt="지금 줄노트 한 장" loading="lazy"><figcaption><span class="tag">지금</span>줄노트 한 장</figcaption></figure><figure><img src="img/n1.jpg" alt="N1 회색 카드" loading="lazy"><figcaption><span class="tag new">N1</span>회색 카드</figcaption></figure><figure><img src="img/n2.jpg" alt="N2 구분선 목록" loading="lazy"><figcaption><span class="tag new">N2</span>구분선 목록</figcaption></figure><figure><img src="img/n3.jpg" alt="N3 기본 소개만 하늘빛" loading="lazy"><figcaption><span class="tag new">N3</span>기본 소개만 하늘빛</figcaption></figure></div></section>
+  <section><h2>한 장 남았을 때</h2><div class="row"><figure><img src="img/n0b.jpg" alt="지금 줄노트 한 장" loading="lazy"><figcaption><span class="tag">지금</span>줄노트 한 장</figcaption></figure><figure><img src="img/n1b.jpg" alt="N1 회색 카드" loading="lazy"><figcaption><span class="tag new">N1</span>회색 카드</figcaption></figure><figure><img src="img/n2b.jpg" alt="N2 구분선 목록" loading="lazy"><figcaption><span class="tag new">N2</span>구분선 목록</figcaption></figure><figure><img src="img/n3b.jpg" alt="N3 기본 소개만 하늘빛" loading="lazy"><figcaption><span class="tag new">N3</span>기본 소개만 하늘빛</figcaption></figure></div></section>
+  <section><h2>이어서 · 이야기 쓰는 화면</h2><ul style="margin:0">
+      <li><b>지금:</b> 질문이 따옴표 붙은 명조, 입력칸에 하늘색 노트 줄, 아래에 연필 막대 + 20 · 80 · 150 · 200 눈금(빨강 · 파랑 동그라미)까지 있어서 쓰는 칸보다 장식이 많아요.</li>
+      <li><b>세 안 공통 (목록 N1과 같은 결):</b> 꼬리표 회색, 질문은 따옴표 빼고 우리 명조 21 primary. 제목 옆 바꾸기 아이콘 대신 회색 "질문 고르기" 버튼. 입력칸은 노트 줄 · 테두리를 빼고 회색(cool-neutral-50) 칸, 쓰는 중에만 primary 테두리. 예시 보기 · 이 이야기 빼기 · 아래 버튼은 그대로.</li>
+      <li><b>W1 얇은 막대:</b> 연필 · 눈금 대신 칸 아래 4 두께 회색 막대 하나(위 진행 막대와 같은 진회색). 그 아래 "이제 담을 수 있어요 · 76자" 한 줄. 참고 링크와 가장 가까워요.</li>
+      <li><b>W2 연필 막대 살리기:</b> 칸만 W1처럼 바꾸고 연필 막대 · 눈금은 남기되 색을 회색으로. 쓰는 재미는 남기고 색만 정리.</li>
+      <li><b>W3 칸 안에 막대 · 글자 수:</b> 막대와 "76 / 300자"를 회색 칸 안 아래에 넣어 입력 한 덩어리로. 칸 밖에는 안내 한 줄만.</li>
+    </ul><h2 style="font-size:15px;margin-top:6px">비어 있을 때</h2><div class="row"><figure><img src="img/w0e.jpg" alt="지금 줄노트 칸 · 연필 막대" loading="lazy"><figcaption><span class="tag">지금</span>줄노트 칸 · 연필 막대</figcaption></figure><figure><img src="img/w1e.jpg" alt="W1 회색 칸 + 얇은 막대" loading="lazy"><figcaption><span class="tag new">W1</span>회색 칸 + 얇은 막대</figcaption></figure><figure><img src="img/w2e.jpg" alt="W2 연필 막대는 회색으로 남기기" loading="lazy"><figcaption><span class="tag new">W2</span>연필 막대는 회색으로 남기기</figcaption></figure><figure><img src="img/w3e.jpg" alt="W3 칸 안에 막대 · 글자 수" loading="lazy"><figcaption><span class="tag new">W3</span>칸 안에 막대 · 글자 수</figcaption></figure></div><h2 style="font-size:15px;margin-top:6px">76자 썼을 때</h2><div class="row"><figure><img src="img/w0f.jpg" alt="지금 줄노트 칸 · 연필 막대" loading="lazy"><figcaption><span class="tag">지금</span>줄노트 칸 · 연필 막대</figcaption></figure><figure><img src="img/w1f.jpg" alt="W1 회색 칸 + 얇은 막대" loading="lazy"><figcaption><span class="tag new">W1</span>회색 칸 + 얇은 막대</figcaption></figure><figure><img src="img/w2f.jpg" alt="W2 연필 막대는 회색으로 남기기" loading="lazy"><figcaption><span class="tag new">W2</span>연필 막대는 회색으로 남기기</figcaption></figure><figure><img src="img/w3f.jpg" alt="W3 칸 안에 막대 · 글자 수" loading="lazy"><figcaption><span class="tag new">W3</span>칸 안에 막대 · 글자 수</figcaption></figure></div></section>
+  <section><h2>이어서 · 질문 고르기 시트</h2><ul style="margin:0">
+      <li><b>지금:</b> 질문 카드가 하늘 · 분홍 · 노랑 파스텔로 번갈아 칠해지고, 주제 탭은 흰 바탕 + 테두리. 옆으로 넘겨야 다음 질문이 보여요.</li>
+      <li><b>세 안 공통:</b> 탭은 테두리 대신 회색(cool-neutral-50) 바탕, 고른 탭은 지금처럼 진회색. 질문은 명조 그대로 primary(쓰기 화면 제목과 같은 모양), 예시는 회색. 이미 고른 질문은 회색 글자 + "고른 질문".</li>
+      <li><b>S1 회색 카드 덱:</b> 옆으로 넘기는 덱은 그대로, 카드만 회색 한 가지로.</li>
+      <li><b>S2 회색 카드 세로 목록:</b> 한 주제의 질문을 위아래로 한눈에. 카드는 질문 + 예시 한 줄, "이 질문으로 쓰기"와 점은 빼고 카드를 누르면 바로 쓰기로.</li>
+      <li><b>S3 구분선 목록:</b> S2에서 카드 바탕도 빼고 줄 사이 얇은 선만. 가장 조용하고 한 화면에 가장 많이 보여요.</li>
+    </ul><div class="row"><figure><img src="img/s0.jpg" alt="지금 파스텔 카드 덱 · 테두리 탭" loading="lazy"><figcaption><span class="tag">지금</span>파스텔 카드 덱 · 테두리 탭</figcaption></figure><figure><img src="img/s1.jpg" alt="S1 회색 카드 덱" loading="lazy"><figcaption><span class="tag new">S1</span>회색 카드 덱</figcaption></figure><figure><img src="img/s2.jpg" alt="S2 회색 카드 세로 목록" loading="lazy"><figcaption><span class="tag new">S2</span>회색 카드 세로 목록</figcaption></figure><figure><img src="img/s3.jpg" alt="S3 구분선 목록" loading="lazy"><figcaption><span class="tag new">S3</span>구분선 목록</figcaption></figure></div></section>
+</div>

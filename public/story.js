@@ -69,38 +69,34 @@ function stage(n){
   if(n<END)return ['','길게 쓴 소개일수록 대화가 더 잘 이어져요',`${END}자까지 ${END-n}자 남았어요`];
   return ['','꾹꾹 담은 이야기, 이제 만나러 가볼까요','300자까지 더 쓸 수 있어요'];
 }
-const xPct=n=>(10+Math.min(n,END)/END*296)/320*100;
 function renderWrite(){
   const id=editing,k=picks().indexOf(id),help=questionHelp[id]||[];
   const eye=id===0?'기본 소개 · 필수':`${k>=2?'더 담은 이야기':'이야기 '+(k+1)} · ${catName(id)}`;
-  const swapIc=id===0?'':'<button type="button" class="st-swap" data-act="swapq" aria-label="다른 질문으로 바꾸기"><span class="ic ic-repeat" aria-hidden="true"></span></button>';
-  storyBody.innerHTML=`<p class="st-w-eye">${eye}</p><div class="st-w-head"><h1 class="st-w-q">“${esc(questions[id])}”</h1>${swapIc}</div>
+  /* 2026-11-21 시안 story-cards W1: 제목 옆 바꾸기 아이콘 → "질문 고르기" 버튼, 질문은 따옴표 없이 명조 primary */
+  const swapIc=id===0?'':'<button type="button" class="st-swap st-pick" data-act="swapq">질문 고르기</button>';
+  storyBody.innerHTML=`<p class="st-w-eye">${eye}</p><div class="st-w-head"><h1 class="st-w-q">${esc(questions[id])}</h1>${swapIc}</div>
   <div class="st-paper"><textarea id="st-text" maxlength="300" aria-label="${esc(questions[id])}" aria-describedby="st-help st-fb" placeholder="${esc(help[0]||'여기에 편하게 적어 주세요.')}">${esc(answers[id]||'')}</textarea><span class="st-sr" id="st-help">${esc(help[0]||'')}</span></div>
-  <div class="st-meter" role="progressbar" aria-label="이야기 작성량" aria-valuemin="0" aria-valuemax="${END}"><svg viewBox="0 0 320 64" aria-hidden="true"><defs><clipPath id="st-reveal"><rect x="10" y="26" width="0" height="26"/></clipPath></defs><path class="st-meter-frame" d="M10 30Q152 28 308 30L307 48Q155 50 10 48Z"/><path class="st-meter-hatch" clip-path="url(#st-reveal)" d="${Array.from({length:37},(_,i)=>'M'+(10+i*8)+' 48l8-18').join(' ')}"/><g class="st-meter-pencil" transform="translate(10 48)"><path d="M0 0l3-11 24-24 8 8L11-3Z M3-11l8 8M6-8l24-24 M0 0l4-1-3-3Z"/></g></svg></div>
-  <div class="st-marks" aria-hidden="true">${MARKS.map(m=>`<span class="st-mark${m.cls?' '+m.cls:''}" data-n="${m.n}" style="left:${xPct(m.n)}%"><i></i><small>${m.l}</small></span>`).join('')}</div>
+  <div class="st-bar" role="progressbar" aria-label="이야기 작성량" aria-valuemin="0" aria-valuemax="${END}"><i></i></div>
   <div class="st-fb" id="st-fb" aria-live="polite"><p class="st-fb-main"><span></span><span></span></p></div>
   ${help[1]?`<div class="st-ex"><button type="button" class="st-ex-chip" data-act="ex" aria-expanded="false" aria-controls="st-ex-box"><span class="ic ic-pencil" aria-hidden="true"></span><span>예시 보기</span></button><div class="st-ex-box" id="st-ex-box" role="button" tabindex="0" data-act="copy" aria-label="예시 복사" hidden><p id="st-ex-text">${esc(help[1])}</p><p class="st-ex-hint" aria-hidden="true"><span class="ic ic-copy"></span><span>눌러서 복사</span></p></div></div>`:''}${id&&chosen.has(id)?'<button type="button" class="st-textbtn st-remove" data-act="rmask" data-id="'+id+'">이 이야기 빼기</button>':''}`;
   root.classList.add('is-writing');
   hint.hidden=true;swapBtn.hidden=true;
   next.textContent='이 이야기 담기';next.onclick=save;
   fitScroll();
-  const ta=document.getElementById('st-text');let prev=len(ta.value),t;
+  const ta=document.getElementById('st-text');let prev=len(ta.value);
   paint(prev,null);
   ta.addEventListener('input',()=>{answers[id]=ta.value;const n=len(ta.value);const crossed=paint(n,prev);prev=n;
-    const m=root.querySelector('.st-meter');m.classList.add('is-scribble');clearTimeout(t);t=setTimeout(()=>m.classList.remove('is-scribble'),180);
     if(crossed){window.yhHaptic?.('selection');say(REACHED[crossed]);}});
   ta.addEventListener('change',()=>{window.yhPersist?.()});
 }
 function paint(n,prev){
-  const [cls,main,sub]=stage(n),px=Math.min(n/END,1)*296;
+  const [cls,main,sub]=stage(n);
   root.classList.toggle('is-warn',cls==='warn');root.classList.toggle('is-idle',cls==='idle');
-  root.querySelector('#st-reveal rect').setAttribute('width',px);
-  root.querySelector('.st-meter-pencil').setAttribute('transform',`translate(${10+px} ${48-(px%8)/8*18})`);
-  root.querySelector('.st-meter').setAttribute('aria-valuenow',Math.min(n,END));
+  const bar=root.querySelector('.st-bar');bar.firstChild.style.width=Math.min(n/END,1)*100+'%';bar.setAttribute('aria-valuenow',Math.min(n,END));
   root.querySelector('.st-fb-main span:first-child').textContent=main;
   root.querySelector('.st-fb-main span:last-child').textContent=n+'자';
   let crossed=null;
-  root.querySelectorAll('.st-mark').forEach(m=>{const k=+m.dataset.n,on=n>=k;m.classList.toggle('is-on',on);if(prev!=null&&on&&prev<k){crossed=k;if(!reduce.matches)m.querySelector('i').animate([{transform:'scale(1)'},{transform:'scale(1.6)'},{transform:'scale(1)'}],{duration:260,easing:EASE_OUT});}});
+  MARKS.forEach(m=>{if(prev!=null&&n>=m.n&&prev<m.n)crossed=m.n;});
   next.disabled=n<MIN;
   return crossed;
 }

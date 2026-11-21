@@ -1,0 +1,20 @@
+/* 시트 공통: 탭 테두리 → 회색 바탕, 카드 파스텔 → 회색 */
+.st-sheet-layer.sv .st-tabs button{border:0;background:var(--cool-neutral-50);font-weight:600;color:var(--color-fg-secondary)}
+.st-sheet-layer.sv .st-tabs button[aria-pressed=true]{background:var(--cool-neutral-900);color:var(--color-fg-inverse)}
+.st-sheet-layer.sv .st-qcard,.st-sheet-layer.sv .st-qcard:nth-child(3n+2),.st-sheet-layer.sv .st-qcard:nth-child(3n){background:var(--cool-neutral-50)}
+.st-sheet-layer.sv .st-qcard b{color:var(--color-fg-accent-strong)}
+.st-sheet-layer.sv .st-qcard:disabled b{color:var(--color-fg-tertiary)}
+.st-sheet-layer.sv .st-qcard em{background:var(--cool-neutral-100)}
+
+/* S2 · S3 세로 목록 */
+.st-sheet-layer.s2 .st-deck,.st-sheet-layer.s3 .st-deck{flex-direction:column;align-items:stretch;overflow-x:hidden;overflow-y:auto;scroll-snap-type:none}
+.st-sheet-layer.s2 .st-dots,.st-sheet-layer.s3 .st-dots{display:none}
+.st-sheet-layer.s2 .st-qcard,.st-sheet-layer.s3 .st-qcard{flex:none;height:auto;gap:6px;justify-content:flex-start}
+.st-sheet-layer.s2 .st-qcard small,.st-sheet-layer.s3 .st-qcard small{-webkit-line-clamp:1}
+.st-sheet-layer.s2 .st-qcard .go,.st-sheet-layer.s3 .st-qcard .go{display:none}
+.st-sheet-layer.s2 .st-qcard em,.st-sheet-layer.s3 .st-qcard em{margin-top:6px}
+.st-sheet-layer.s2 .st-deck{gap:10px}
+.st-sheet-layer.s2 .st-qcard{padding:16px 18px}
+.st-sheet-layer.s3 .st-deck{gap:0;padding-top:8px}
+.st-sheet-layer.s3 .st-qcard,.st-sheet-layer.s3 .st-qcard:nth-child(3n+2),.st-sheet-layer.s3 .st-qcard:nth-child(3n){padding:16px 0;border-radius:0;background:none;border-bottom:1px solid var(--color-border-default)}
+.st-sheet-layer.s3 .st-qcard em{background:var(--cool-neutral-50)}

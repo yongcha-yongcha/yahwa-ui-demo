@@ -1,0 +1,31 @@
+/* 공통: 줄노트 · 여백선 · 그림자 · 테이프 빼기 */
+#story.sv .st-note{padding:0;border-radius:0;background:none;box-shadow:none;margin-top:var(--space-20)}
+#story.sv .st-note::before{display:none}
+#story.sv .st-ent+.st-ent,#story.sv .st-ent+.st-blank,#story.sv .st-blank+.st-blank{margin-top:0}
+#story.sv .st-entry{gap:6px}
+#story.sv .st-entry::before{display:none}
+#story.sv .st-tape,#story.sv .st-tape.t2,#story.sv .st-tape.t3,#story.sv .st-tape.t4{height:auto;margin:0;padding:0;transform:none;background:none;font:600 12px/1.4 var(--font-sans);color:var(--color-fg-tertiary)}
+#story.sv .st-eq{font:600 16px/1.45 var(--font-sans);color:var(--color-fg-accent-strong)}
+#story.sv .st-ea{font:400 14px/1.6 var(--font-sans);color:var(--color-fg-secondary)}
+#story.sv .st-x{top:6px;right:6px}
+
+/* N1 회색 카드 나누기 */
+#story.n1 .st-note{display:grid;gap:12px}
+#story.n1 .st-entry{padding:18px 20px 20px;border-radius:16px;background:var(--cool-neutral-50)}
+#story.n1 .st-blank{height:64px;margin:0;border-radius:16px;background:var(--cool-neutral-50);outline:0;padding:0 20px}
+#story.n1 .st-blank.is-lock{background:var(--cool-neutral-50)}
+
+/* N2 구분선 목록 */
+#story.n2 .st-ent{border-bottom:1px solid var(--color-border-default)}
+#story.n2 .st-ent:first-child{border-top:1px solid var(--color-border-default)}
+#story.n2 .st-entry{padding:20px 40px 20px 0;border-radius:0}
+#story.n2 .st-x{top:10px;right:-10px}
+#story.n2 .st-blank{height:68px;margin:0;border-radius:0;background:none;outline:0;padding:0;border-bottom:1px solid var(--color-border-default)}
+
+/* N3 기본 소개만 하늘 바탕, 나머지 회색 카드 */
+#story.n3 .st-note{display:grid;gap:12px}
+#story.n3 .st-entry{padding:18px 20px 20px;border-radius:16px;background:var(--cool-neutral-50)}
+#story.n3 .st-ent:first-child .st-entry{background:var(--sky-50)}
+#story.n3 .st-ent:first-child .st-tape{color:var(--color-fg-accent-strong)}
+#story.n3 .st-ea{-webkit-line-clamp:4}
+#story.n3 .st-blank{height:64px;margin:0;border-radius:16px;background:none;outline:1.5px dashed var(--color-border-strong);outline-offset:-1.5px;padding:0 20px}
