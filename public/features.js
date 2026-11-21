@@ -978,11 +978,18 @@ function cpRecordSheet(opener,onPut){const r={onPut,stage:0,t0:0,sec:0,timer:0,m
  const tick=()=>{if(!L.isConnected){cleanup();return;}r.sec=(Date.now()-r.t0)/1000;let lv=0;if(r.an){const a=new Uint8Array(r.an.fftSize);r.an.getByteTimeDomainData(a);lv=Math.min(1,Math.max(...a.map(x=>Math.abs(x-128)))/64);}else lv=Math.abs(Math.sin(r.sec*5.3)*0.6+Math.sin(r.sec*2.1)*0.4);
   r.bars.push(4+Math.round(lv*30));if(r.bars.length>N)r.bars.shift();const t=L.querySelector('.vs-t');if(t)t.firstChild.textContent=cpTime(r.sec);const w=L.querySelector('.vs-wave');if(w)w.innerHTML=live();if(r.sec>=CP_MAX)stop();};
  const cleanup=()=>{clearInterval(r.timer);r.timer=0;r.stream?.getTracks().forEach(t=>t.stop());r.stream=null;r.ac?.close?.();r.ac=null;r.an=null;};
- const start=async()=>{r.chunks=[];r.bars=Array(N).fill(4);try{r.stream=await navigator.mediaDevices.getUserMedia({audio:true});r.mr=new MediaRecorder(r.stream,{audioBitsPerSecond:24000});r.mr.ondataavailable=ev=>ev.data.size&&r.chunks.push(ev.data);r.mr.start();try{r.ac=new AudioContext();r.an=r.ac.createAnalyser();r.an.fftSize=256;r.ac.createMediaStreamSource(r.stream).connect(r.an);}catch(_){}}catch(_){r.mr=null;}
-  if(!L.isConnected){cleanup();return;}r.stage=1;r.t0=Date.now();r.sec=0;draw();r.timer=setInterval(tick,100);window.yhHaptic?.('impact');};
+ /* 2026-11-21: 누르자마자 "녹음 중"으로 넘어가요. 마이크 허락은 뒤에서 기다리고, 허락되면 그때부터 실제로 녹음(시간도 0부터 다시).
+   예전엔 허락 대답이 올 때까지 화면이 그대로라 눌러도 안 되는 것처럼 보였어요. 마이크를 못 쓰면 소리 없는 시연 녹음으로 이어가요 */
+ const start=()=>{r.chunks=[];r.bars=Array(N).fill(4);r.mr=null;r.stage=1;r.t0=Date.now();r.sec=0;draw();r.timer=setInterval(tick,100);window.yhHaptic?.('impact');
+  const ask=navigator.mediaDevices?.getUserMedia?navigator.mediaDevices.getUserMedia({audio:true}):Promise.reject(new Error('no mic'));
+  ask.then(stream=>{if(!L.isConnected||r.stage!==1){stream.getTracks().forEach(t=>t.stop());return;}
+    r.stream=stream;try{r.mr=new MediaRecorder(stream,{audioBitsPerSecond:24000});r.mr.ondataavailable=ev=>ev.data.size&&r.chunks.push(ev.data);r.mr.start();}catch(_){r.mr=null;}
+    try{r.ac=new AudioContext();r.an=r.ac.createAnalyser();r.an.fftSize=256;r.ac.createMediaStreamSource(stream).connect(r.an);}catch(_){}
+    if(r.mr){r.t0=Date.now();r.sec=0;r.bars=Array(N).fill(4);}},
+   ()=>{if(L.isConnected&&r.stage===1)toast('마이크를 쓸 수 없어 소리 없이 녹음해요');});};
  const stop=()=>{if(r.stage!==1)return;const sec=Math.max(1,Math.round(r.sec));clearInterval(r.timer);r.timer=0;
   const done=url=>{r.url=url;r.sec=sec;cleanup();r.stage=2;draw();};
-  if(r.mr&&r.mr.state!=='inactive'){r.mr.onstop=()=>{const blob=new Blob(r.chunks,{type:r.mr.mimeType||'audio/webm'});const fr=new FileReader();fr.onload=()=>done(fr.result);fr.readAsDataURL(blob);};r.mr.stop();}else done('demo');};
+  if(r.mr&&r.mr.state!=='inactive'){r.mr.onstop=()=>{const blob=new Blob(r.chunks,{type:r.mr.mimeType||'audio/webm'});/* 녹음이 비면(시뮬레이터처럼 마이크 소리가 안 들어올 때) 시연 재생으로 */if(!blob.size){done('demo');return;}const fr=new FileReader();fr.onload=()=>done(fr.result);fr.readAsDataURL(blob);};r.mr.stop();}else done('demo');};
  const L=yhSheet('<div class="photo-sheet-confirm cp-rec"><b>음성 남기기</b><div class="vs"></div></div>',a=>{
   if(a==='rec'){start();return false;}if(a==='stop'){stop();return false;}if(a==='redo'){vpStop();r.stage=0;r.sec=0;draw();return false;}
   if(a==='put'){vpStop();if(r.onPut){r.onPut(r.url,r.sec);return;}cpDraft.audio=r.url;cpDraft.dur=r.sec;render();return;}return false;},{label:'음성 남기기',opener});
@@ -990,8 +997,9 @@ function cpRecordSheet(opener,onPut){const r={onPut,stage:0,t0:0,sec:0,timer:0,m
 /* 재생 줄: 하나만 재생, 들은 만큼 막대가 진해지고 시간은 지난 시간 → 멈추면 전체 길이 */
 let vpNow=null;
 function vpStop(){if(!vpNow)return;const {box,audio,timer}=vpNow;audio?.pause();clearInterval(timer);if(box.isConnected){box.classList.remove('is-play');box.querySelector('.vp-b').innerHTML=CP_PLAY;box.querySelector('.vp-b').setAttribute('aria-label','음성 듣기');box.querySelectorAll('.vw i').forEach(i=>i.classList.remove('on'));box.querySelector('.vp-t').textContent=cpTime(+box.dataset.dur);}vpNow=null;}
-function vpPlay(box){vpStop();const src=VP_SRC[box.dataset.vp],dur=+box.dataset.dur||1,bars=[...box.querySelectorAll('.vw i')],t0=Date.now();let audio=null;
- if(src&&src!=='demo'){audio=new Audio(src);audio.play().catch(()=>{});}
+function vpPlay(box){vpStop();const src=VP_SRC[box.dataset.vp],dur=+box.dataset.dur||1,bars=[...box.querySelectorAll('.vw i')];let t0=Date.now(),audio=null;
+ /* 재생이 안 되는 소리(빈 녹음 · 못 여는 형식)면 멈춘 채로 두지 않고 시연 재생(시간만 흐름)으로 이어가요 (2026-11-21) */const fallback=()=>{if(!audio)return;audio=null;t0=Date.now();if(vpNow&&vpNow.box===box)vpNow.audio=null;};
+ if(src&&src!=='demo'){audio=new Audio(src);audio.addEventListener('error',fallback);audio.play().catch(fallback);}
  const step=()=>{if(!box.isConnected){vpStop();return;}const t=audio?audio.currentTime:(Date.now()-t0)/1000,p=Math.min(1,t/dur),k=Math.round(p*bars.length);bars.forEach((b,i)=>b.classList.toggle('on',i<k));box.querySelector('.vp-t').textContent=cpTime(t);if(p>=1||(audio&&audio.ended))vpStop();};
  box.classList.add('is-play');box.querySelector('.vp-b').innerHTML=CP_PAUSE;box.querySelector('.vp-b').setAttribute('aria-label','멈추기');vpNow={box,audio,timer:setInterval(step,100)};step();}
 document.addEventListener('click',e=>{const b=e.target.closest('.vp-b');if(!b)return;e.preventDefault();e.stopImmediatePropagation();const box=b.closest('.vp');if(vpNow?.box===box)vpStop();else vpPlay(box);},true);
@@ -1484,7 +1492,7 @@ if(!state.modSeeded){state.modSeeded=1;state.posts.push({id:'mod-post-demo',auth
    if(x.audio&&body)body.insertAdjacentHTML('afterend',vpHtml('cmt:'+x.id,x.audio,x.audioDur||0));});
   const rp=host.querySelector('.cx-replying span');if(rp&&c.parent){const par=p.comments.find(y=>y.id===c.parent);if(par)rp.innerHTML='<b class="an-at" style="margin:0">@'+anName(p,par.author)+'</b>에게 답글';}
   const bar=host.querySelector('.cx-bar .cx-in');if(bar&&!c.editComment){bar.querySelector('input')?.insertAdjacentHTML('afterend','<button type="button" class="an-mic" data-fx="cmt-mic" aria-label="음성 댓글">'+CP_IC.mic+'</button>');}
-  if(c.cmAudio){host.querySelector('.cx-bar')?.insertAdjacentHTML('afterbegin','<div class="an-voice">'+vpHtml('cmt-new',c.cmAudio.url,c.cmAudio.sec)+'<button type="button" data-fx="cmt-mic-rm" aria-label="음성 지우기">지우기</button></div>');const send=host.querySelector('.cx-send');if(send)send.disabled=false;}
+  if(c.cmAudio){/* 답글 바(@이름에게 답글) 아래 · 입력칸 바로 위에 — 위에 두면 답글 바의 음수 위 여백과 겹쳐요 (2026-11-21) */(host.querySelector('.cx-bar .cx-in')||host.querySelector('.cx-bar'))?.insertAdjacentHTML(host.querySelector('.cx-bar .cx-in')?'beforebegin':'afterbegin','<div class="an-voice">'+vpHtml('cmt-new',c.cmAudio.url,c.cmAudio.sec)+'<button type="button" data-fx="cmt-mic-rm" aria-label="음성 지우기">지우기</button></div>');const send=host.querySelector('.cx-send');if(send)send.disabled=false;}
   return host.innerHTML;};}
 cxMoreSheet=(function(prev){return function(target){const p=state.posts.find(x=>x.id===context.id);if(!p||target==='post')return prev(target);const x=p.comments.find(c=>c.id===target);if(!x||x.author==='me')return prev(target);
   yhSheet(cxRow('block','이 사람 차단','slash','is-danger')+cxRow('report','이 이야기 신고하기','siren','is-danger'),a=>{if(a==='block')action('block-confirm:'+x.author);if(a==='report')action('report:'+x.author);},{label:'이야기 더보기'});};})(cxMoreSheet);

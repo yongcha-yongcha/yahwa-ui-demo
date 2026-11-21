@@ -2593,3 +2593,7 @@ html #discovery .nov-person-title .person-cert.cert-tier{background:none}
 html body #heartbox .hb-cert.cert-tier{width:16px;height:16px}
 html body #heartbox .hb-cert.cert-tier svg{width:16px;height:16px;overflow:visible}
 html body #heartbox .hb-cert.cert-tier.is-hi{margin-right:3px}
+
+/* 웰컴 사진 교체 (2026-11-20): 하늘 아래 마주 보는 커플 세로 사진. 위 하늘에 문구 · 로고, 두 사람 얼굴이 로고 아래 오게 크게 놓고 아래 거울 사진은 안 써요 */
+.welcome .full-photo.is-sky{width:116%;height:auto;left:-8%;top:0;object-fit:initial;object-position:initial}
+.welcome .full-photo.is-sky~.full-photo-mirror{display:none}
