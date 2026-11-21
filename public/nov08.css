@@ -1669,8 +1669,8 @@ body.cloud-edition .phone{width:100%!important;max-width:none!important;height:7
 @media (display-mode:standalone) and (max-width:759px){
 body.cloud-edition .phone{height:calc(max(780px, 100dvh - var(--sat)) + var(--sat))!important}
 .phone>.screen{border-top:var(--sat) solid transparent;background-origin:border-box!important}
-.phone #welcome .welcome-visual{top:calc(var(--sat) * -1)}
-.phone #welcome .welcome-visual h1{top:calc(51px + var(--sat))}
+.phone :is(#welcome,#splash) .welcome-visual{top:calc(var(--sat) * -1)}
+.phone :is(#welcome,#splash) .welcome-visual h1{top:calc(51px + var(--sat))}
 }
 
 /* 사진 더보기 시트 · 아이콘이 가운데로 밀리던 문제 (2026-11-13). 글자 칸을 넓히는 `.photo-sheet-row>span{flex:1}`이
@@ -2597,3 +2597,18 @@ html body #heartbox .hb-cert.cert-tier.is-hi{margin-right:3px}
 /* 웰컴 사진 교체 (2026-11-20): 하늘 아래 마주 보는 커플 세로 사진. 위 하늘에 문구 · 로고, 두 사람 얼굴이 로고 아래 오게 크게 놓고 아래 거울 사진은 안 써요 */
 .welcome .full-photo.is-sky{width:116%;height:auto;left:-8%;top:0;object-fit:initial;object-position:initial}
 .welcome .full-photo.is-sky~.full-photo-mirror{display:none}
+
+/* 스플래시 · 웰컴과 같은 사진 · 문구 · 로고 · 하트 (시안 S1 · 2026-11-21)
+   자리는 welcome-fit.js가 웰컴과 같은 계산으로 정해요. 아래 버튼 영역이 없어 사진만 조금 크게(116 → 122%) 놓아 화면 끝까지 채워요.
+   가입 · 로그인 전(웰컴으로 가는 길): 스플래시에서 웰컴의 흐림 → 또렷 · 문구 떠오름 모션이 시작되고(#splash.is-entering, 웰컴 규칙 그대로),
+   웰컴으로 넘어가면 지난 시간(--splash-elapsed, index.html setWelcomeEnter)만큼 앞당겨 같은 모션을 이어 가요. 사진은 위 가운데 기준으로 웰컴 크기로 살짝 줄어요.
+   로그인된 상태로 켜기(→ 인연 홈, 스플래시 1초): 0.4초 옅게 나타나며 사진만 웰컴처럼 1.11배에서 제 크기로 0.95초 줌 아웃(흐림 없이, #splash.is-quick) */
+#splash.welcome .welcome-visual{animation:logo-fade .4s ease both}
+#splash.welcome.is-entering .welcome-visual{animation:none}
+#splash .full-photo.is-sky{width:122%;left:-11%}
+@keyframes splash-zoom{from{scale:var(--welcome-photo-scale)}to{scale:1}}
+#splash.is-quick .welcome-photo-motion{animation:splash-zoom 950ms cubic-bezier(.33,1,.68,1) both}
+@keyframes splash-settle{from{scale:1.0517}to{scale:1}}
+#welcome.from-splash.is-entering .welcome-photo-motion{animation-delay:calc(var(--splash-elapsed,0ms) * -1)}
+#welcome.from-splash.is-entering .full-photo.is-sky{transform-origin:50% 0;animation:splash-settle var(--welcome-sheet-duration) var(--welcome-sheet-ease) both}
+@media(prefers-reduced-motion:reduce){#splash.is-quick .welcome-photo-motion,#splash.welcome .welcome-visual,#welcome.from-splash.is-entering .full-photo.is-sky{animation:none}#welcome.from-splash.is-entering .welcome-photo-motion{animation-delay:0ms}}
