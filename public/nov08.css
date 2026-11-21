@@ -2612,3 +2612,7 @@ html body #heartbox .hb-cert.cert-tier.is-hi{margin-right:3px}
 #welcome.from-splash.is-entering .welcome-photo-motion{animation-delay:calc(var(--splash-elapsed,0ms) * -1)}
 #welcome.from-splash.is-entering .full-photo.is-sky{transform-origin:50% 0;animation:splash-settle var(--welcome-sheet-duration) var(--welcome-sheet-ease) both}
 @media(prefers-reduced-motion:reduce){#splash.is-quick .welcome-photo-motion,#splash.welcome .welcome-visual,#welcome.from-splash.is-entering .full-photo.is-sky{animation:none}#welcome.from-splash.is-entering .welcome-photo-motion{animation-delay:0ms}}
+
+/* 마음함 카드 · 겹친 배지(파랑 + 작은 흰 배지)의 아래 · 오른쪽이 잘리던 것 (2026-11-21)
+   나이 줄(small)이 말줄임 때문에 overflow:hidden이라, 칸 밖으로 2~3px 나오는 작은 흰 배지가 잘렸어요. 줄 안쪽 여백을 4 늘리고 바깥 여백으로 되돌려 자리는 그대로 */
+html body #heartbox .hb-cap small:has(.hb-cert.is-hi){padding:0 4px 4px 0;margin:0 -4px -4px 0}
