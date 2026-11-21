@@ -78,14 +78,17 @@ function renderWrite(){
   <div class="st-paper"><textarea id="st-text" maxlength="300" aria-label="${esc(questions[id])}" aria-describedby="st-help st-fb" placeholder="${esc(help[0]||'여기에 편하게 적어 주세요.')}">${esc(answers[id]||'')}</textarea><span class="st-sr" id="st-help">${esc(help[0]||'')}</span></div>
   <div class="st-bar" role="progressbar" aria-label="이야기 작성량" aria-valuemin="0" aria-valuemax="${END}"><i></i></div>
   <div class="st-fb" id="st-fb" aria-live="polite"><p class="st-fb-main"><span></span><span></span></p></div>
-  ${help[1]?`<div class="st-ex"><button type="button" class="st-ex-chip" data-act="ex" aria-expanded="false" aria-controls="st-ex-box"><span class="ic ic-pencil" aria-hidden="true"></span><span>예시 보기</span></button><div class="st-ex-box" id="st-ex-box" role="button" tabindex="0" data-act="copy" aria-label="예시 복사" hidden><p id="st-ex-text">${esc(help[1])}</p><p class="st-ex-hint" aria-hidden="true"><span class="ic ic-copy"></span><span>눌러서 복사</span></p></div></div>`:''}${id&&chosen.has(id)?'<button type="button" class="st-textbtn st-remove" data-act="rmask" data-id="'+id+'">이 이야기 빼기</button>':''}`;
+  ${help[1]?`<div class="st-ex"><div class="st-ex-box" id="st-ex-box"><p class="st-ex-label">예시</p><p id="st-ex-text">${esc(help[1])}</p></div></div>`:''}${id&&chosen.has(id)?'<button type="button" class="st-textbtn st-remove" data-act="rmask" data-id="'+id+'">이 이야기 빼기</button>':''}`;
   root.classList.add('is-writing');
   hint.hidden=true;swapBtn.hidden=true;
   next.textContent='이 이야기 담기';next.onclick=save;
   fitScroll();
   const ta=document.getElementById('st-text');let prev=len(ta.value);
   paint(prev,null);
-  ta.addEventListener('input',()=>{answers[id]=ta.value;const n=len(ta.value);const crossed=paint(n,prev);prev=n;
+  /* 2026-11-21 예시: 입력칸을 직접 누르거나 쓰기 시작하면 숨기고, 칸 밖을 눌러도 다시 안 보임(들어올 때 자동 포커스로는 안 숨김) */
+  const ex=root.querySelector('.st-ex'),hideEx=()=>{if(ex)ex.hidden=true;};
+  ta.addEventListener('pointerdown',hideEx,{once:true});
+  ta.addEventListener('input',()=>{hideEx();answers[id]=ta.value;const n=len(ta.value);const crossed=paint(n,prev);prev=n;
     if(crossed){window.yhHaptic?.('selection');say(REACHED[crossed]);}});
   ta.addEventListener('change',()=>{window.yhPersist?.()});
 }

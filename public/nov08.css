@@ -2657,3 +2657,16 @@ html body #heartbox .hb-cap small:has(.hb-cert.is-hi){padding:0 4px 4px 0;margin
 .st-tabs button{border:0;background:var(--cool-neutral-50);font-weight:600;color:var(--color-fg-secondary);transition:background-color 120ms ease}
 .st-tabs button:active{background:var(--cool-neutral-100)}
 .st-tabs button[aria-pressed=true]{background:var(--cool-neutral-900);color:var(--color-fg-inverse)}
+/* 이야기 쓰기 · 예시 늘 펼침 (2026-11-21 시안 story-cards E1): "예시 보기" 버튼 없이 안내 줄 아래 회색 상자로 처음부터 펼침, 눌러서 복사는 그대로 */
+#story .st-ex{margin-top:16px}
+#story .st-ex-box{margin:0;padding:14px 16px 12px;border-radius:12px;background:var(--cool-neutral-50)}
+#story .st-ex-box:active{background:var(--cool-neutral-100)}
+#story .st-ex-box p.st-ex-label{margin:0 0 4px;font:600 12px/1.4 var(--font-sans);color:var(--color-fg-tertiary)}
+#story .st-ex-box p#st-ex-text{font:400 14px/1.6 var(--font-sans);color:var(--color-fg-secondary)}
+#story .st-ex-hint{margin-top:6px;font-size:12px}
+/* 예시 2차 (2026-11-21): 복사 없앰 · 더 연하게 · 입력칸을 누르거나 쓰기 시작하면 숨기고 다시 안 보임(story.js hideEx) */
+#story .st-ex-box{padding:12px 16px;background:color-mix(in srgb,var(--cool-neutral-50) 55%,var(--white));cursor:default}
+#story .st-ex-box:active{background:color-mix(in srgb,var(--cool-neutral-50) 55%,var(--white))}
+#story .st-ex-box p.st-ex-label{color:var(--color-fg-muted)}
+#story .st-ex-box p#st-ex-text{color:var(--color-fg-tertiary)}
+#story .st-ex[hidden]{display:none}

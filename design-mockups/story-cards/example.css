@@ -1,0 +1,18 @@
+/* 예시 늘 펼침 시안 */
+#story.e1 .st-ex-chip,#story.e2 .st-ex-chip{display:none!important}
+#story.e1 .st-ex-box,#story.e2 .st-ex-box{display:block;margin:0;padding:14px 16px 12px;border-radius:12px;background:var(--cool-neutral-50)}
+#story.e1 .st-ex-box::before,#story.e2 .st-ex-box::before{content:"예시";display:block;margin-bottom:4px;font:600 12px/1.4 var(--font-sans);color:var(--color-fg-tertiary)}
+#story.e1 .st-ex-box p#st-ex-text,#story.e2 .st-ex-box p#st-ex-text{font:400 14px/1.6 var(--font-sans);color:var(--color-fg-secondary)}
+#story.e1 .st-ex-hint,#story.e2 .st-ex-hint{margin-top:6px;font-size:12px}
+#story.e1 .st-ex{margin-top:16px}
+/* E2 질문 바로 아래 */
+#story.e2 .st-ex{margin-top:16px}
+#story.e2 .st-paper{margin-top:12px}
+#story.e2 .st-ex-box p#st-ex-text{font-size:13px}
+/* E3 입력칸 안 (비어 있을 때만) */
+#story.e3 .st-ex{display:none}
+#story.e3 .st-paper textarea::placeholder{color:var(--color-fg-tertiary);line-height:1.7}
+/* E2: 입력칸과 헷갈리지 않게 바탕 없이 글자만 */
+#story.e2 .st-ex-box{padding:0;background:none}
+#story.e2 .st-ex{margin-top:14px}
+#story.e2 .st-paper{margin-top:16px}
