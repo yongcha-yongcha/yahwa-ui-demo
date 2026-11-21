@@ -2551,9 +2551,9 @@ html .phone .photo-sheet-ghost:active{background:var(--cool-neutral-100)}
 .pg-std-foot{padding-top:12px}
 .yh-sheet .pg-std-foot .photo-sheet-primary{width:100%}
 
-/* 가입 흐름 흰 바탕 (2026-11-20): 휴대폰 인증 ~ 소개 미리보기 · 제출 · 완료까지 베이지(--paper) 대신 흰색.
+/* 가입 흐름 흰 바탕 (2026-11-20, 스플래시는 11-21 추가): 휴대폰 인증 ~ 소개 미리보기 · 제출 · 완료까지 베이지(--paper) 대신 흰색.
    화면 안의 바탕색 토큰도 흰색으로 바꿔서 아래 고정 버튼 영역 · 위 머리 흐림이 베이지 띠로 남지 않게. 웰컴 · 스플래시 · B 컨셉은 그대로 */
-html:not([data-theme="b"]) .phone>.screen:is(#auth,#verify,#verify-code,#terms,#profile,#photos,#details,#story,#hashtags,#preview,#submission,#complete){--paper:#fff;--color-bg-page:#fff;background-color:#fff}
+html:not([data-theme="b"]) .phone>.screen:is(#splash,#auth,#verify,#verify-code,#terms,#profile,#photos,#details,#story,#hashtags,#preview,#submission,#complete){--paper:#fff;--color-bg-page:#fff;background-color:#fff}
 
 /* 교환 기록 줄: 성별 칩 · "새로" 칩 대신 닉네임 오른쪽 위 빨강 점 (2026-11-20, 시안 design-mockups/exchange-record-dot D1) */
 .xc-who b{position:relative}
